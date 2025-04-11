@@ -1,1 +1,69 @@
-<h2>Home</h2><p>Welcome to Free Snake Relocation!</p>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Snake Relocation</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #2d6a4f;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+      font-weight: bold;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+    }
+    nav {
+      background-color: #2d6a4f;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px;
+      position: fixed;
+      top: 70px;
+      width: 100%;
+      z-index: 9;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 6px 10px;
+    }
+    nav a:hover {
+      background-color: #40916c;
+      border-radius: 5px;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 130px);
+      border: none;
+      margin-top: 130px;
+    }
+  </style>
+</head>
+<body>
+  <header>Free Snake Relocation</header>
+  <nav>
+    <a href="home.html" target="contentFrame">Home</a>
+    <a href="education.html" target="contentFrame">Education</a>
+    <a href="map.html" target="contentFrame">Map</a>
+    <a href="faq.html" target="contentFrame">FAQ</a>
+    <a href="memorial.html" target="contentFrame">Memorial</a>
+    <a href="resources.html" target="contentFrame">Resources</a>
+    <a href="success.html" target="contentFrame">Success Stories</a>
+    <a href="volunteer.html" target="contentFrame">Volunteer</a>
+  </nav>
+  <iframe name="contentFrame" src="home.html"></iframe>
+</body>
+</html>
