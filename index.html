@@ -53,9 +53,15 @@
       color: white;
     }
 
+    .content-wrapper {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
     iframe {
       width: 100%;
-      height: calc(100vh - 130px);
+      height: calc(100vh - 170px);
       border: none;
     }
 
@@ -71,6 +77,10 @@
 
       .hamburger {
         display: block;
+      }
+
+      .content-wrapper {
+        padding: 15px;
       }
     }
   </style>
@@ -91,7 +101,9 @@
     </div>
   </nav>
 
-  <iframe src="home.html" name="contentFrame"></iframe>
+  <div class="content-wrapper">
+    <iframe src="home.html" name="contentFrame"></iframe>
+  </div>
 
   <script>
     function toggleMenu() {
