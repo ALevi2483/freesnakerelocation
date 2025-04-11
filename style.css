@@ -1,44 +1,55 @@
+
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
-
+.header {
+    background-color: #2e6b46;
+    padding: 1rem;
+    text-align: center;
+    color: white;
+}
 .navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: #2f6e49;
-  color: white;
-  padding: 10px 0;
-  text-align: center;
-  z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #2e6b46;
 }
-
-.navbar h1 {
-  margin: 0;
-  font-size: 24px;
+.navbar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-weight: bold;
 }
-
-.nav-links {
-  margin-top: 5px;
+.navbar a:hover, .navbar a.active {
+    background-color: #1c4630;
+    border-radius: 4px;
 }
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
+.disclaimer-box {
+    padding: 15px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #ccc;
 }
-
-.nav-links a:hover {
-  text-decoration: underline;
+.map-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
 }
-
-.main-frame {
-  position: absolute;
-  top: 100px;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 100px);
-  border: none;
+.map-left {
+    flex: 1;
+    min-width: 280px;
+}
+.map-right {
+    flex: 2;
+    min-width: 360px;
+}
+.relocator-box {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: #f1f1f1;
+    border-radius: 5px;
 }
