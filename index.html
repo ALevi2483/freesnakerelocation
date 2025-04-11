@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Free Snake Relocation</title>
   <style>
     body {
@@ -20,26 +20,58 @@
     }
 
     nav {
+      background-color: #2e7d57;
       display: flex;
       justify-content: center;
-      background-color: #2e7d57;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
-    nav a {
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .nav-links a {
       color: white;
       padding: 1rem;
       text-decoration: none;
       font-weight: bold;
     }
 
-    nav a:hover {
+    .nav-links a:hover {
       background-color: #1c5a40;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 1rem;
+      color: white;
     }
 
     iframe {
       width: 100%;
-      height: calc(100vh - 130px); /* Adjusts height dynamically */
+      height: calc(100vh - 130px);
       border: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        display: none;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
     }
   </style>
 </head>
@@ -47,14 +79,23 @@
   <header>Free Snake Relocation</header>
 
   <nav>
-    <a href="home.html" target="contentFrame">Home</a>
-    <a href="education.html" target="contentFrame">Education</a>
-    <a href="map.html" target="contentFrame">Map</a>
-    <a href="faq.html" target="contentFrame">FAQ</a>
-    <a href="resources.html" target="contentFrame">Resources</a>
-    <a href="volunteer.html" target="contentFrame">Volunteer</a>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="nav-links" id="navLinks">
+      <a href="home.html" target="contentFrame">Home</a>
+      <a href="education.html" target="contentFrame">Education</a>
+      <a href="map.html" target="contentFrame">Map</a>
+      <a href="faq.html" target="contentFrame">FAQ</a>
+      <a href="resources.html" target="contentFrame">Resources</a>
+      <a href="volunteer.html" target="contentFrame">Volunteer</a>
+    </div>
   </nav>
 
   <iframe src="home.html" name="contentFrame"></iframe>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('show');
+    }
+  </script>
 </body>
 </html>
