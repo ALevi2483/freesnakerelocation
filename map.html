@@ -1,49 +1,37 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map - Free Snake Relocation</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Map - Free Snake Relocation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Free Snake Relocation</h1>
-        <div class="navbar">
-            <a href="index.html" target="content-frame">Home</a>
-            <a href="education.html" target="content-frame">Education</a>
-            <a href="map.html" class="active" target="content-frame">Map</a>
-            <a href="faq.html" target="content-frame">FAQ</a>
-            <a href="memorial.html" target="content-frame">Memorial</a>
-            <a href="resources.html" target="content-frame">Resources</a>
-            <a href="success.html" target="content-frame">Success Stories</a>
-            <a href="volunteer.html" target="content-frame">Volunteer</a>
-        </div>
-    </div>
+  <h2>Important: Read the Disclaimer Before Proceeding</h2>
+  <p>
+    Before using this interactive map, please take a moment, and 
+    <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">HERE</a> 
+    to read the disclaimer. The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.
+  </p>
 
-    <div class="disclaimer-box">
-        <p><strong>Important: Read the Disclaimer Before Proceeding</strong><br>
-        Before using this interactive map, please take a moment, and <a href="#" target="_blank">HERE</a> to read the disclaimer. The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
-    </div>
+  <h2>Find a Snake Relocator</h2>
 
-    <div class="map-container">
-        <div class="map-left">
-            <h2>Find a Snake Relocator</h2>
-            <label for="state">State:</label>
-            <select id="state">
-                <option value="AR">AR</option>
-                <option value="TX">TX</option>
-                <option value="VA">VA</option>
-                <!-- Add more states as needed -->
-            </select>
-            <div id="result" class="relocator-box">
-                <p><strong>Austin Wolfe</strong><br>📞 479-802-9709</p>
-            </div>
-        </div>
-        <div class="map-right">
-            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1b7mU0IQ6xRu3B1j7wzAeNFzYYoYiTns&ehbc=2E312F" width="100%" height="480"></iframe>
-        </div>
-    </div>
+  <!-- Replace the src below with your actual embedded map URL -->
+  <iframe src="https://your-actual-google-map-url.com" allowfullscreen loading="lazy"></iframe>
 </body>
 </html>
