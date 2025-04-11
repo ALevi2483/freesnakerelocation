@@ -51,6 +51,8 @@
       cursor: pointer;
       padding: 1rem;
       color: white;
+      background-color: #2e7d57;
+      text-align: center;
     }
 
     iframe {
@@ -63,6 +65,8 @@
       .nav-links {
         flex-direction: column;
         display: none;
+        background-color: #2e7d57;
+        width: 100%;
       }
 
       .nav-links.show {
@@ -71,6 +75,11 @@
 
       .hamburger {
         display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
       }
     }
   </style>
@@ -79,7 +88,6 @@
   <header>Free Snake Relocation</header>
 
   <nav>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="nav-links" id="navLinks">
       <a href="home.html" target="contentFrame" onclick="closeMenu()">Home</a>
       <a href="volunteer.html" target="contentFrame" onclick="closeMenu()">Volunteer</a>
@@ -91,6 +99,9 @@
       <a href="Contact.html" target="contentFrame" onclick="closeMenu()">Contact Us</a>
     </div>
   </nav>
+
+  <!-- Hamburger moved outside nav so it can float at bottom on mobile -->
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
 
   <iframe src="home.html" name="contentFrame"></iframe>
 
