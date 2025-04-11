@@ -1,55 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find a Relocator by State</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relocator by State - Free Snake Relocation</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
     }
+
     header {
-      background-color: #25603b;
-      padding: 20px;
+      background-color: #226644;
       color: white;
+      padding: 1rem;
       text-align: center;
-      font-size: 24px;
+      font-size: 1.8rem;
       font-weight: bold;
     }
+
     nav {
-      background-color: #2f734f;
-      padding: 10px;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      background-color: #2e7d57;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
     }
-    nav a {
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .nav-links a {
       color: white;
-      margin: 0 15px;
+      padding: 1rem;
       text-decoration: none;
       font-weight: bold;
     }
+
+    .nav-links a:hover {
+      background-color: #1c5a40;
+    }
+
     iframe {
       width: 100%;
-      height: 700px;
+      height: calc(100vh - 130px);
       border: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
   <header>Free Snake Relocation</header>
+
   <nav>
-    <a href="index.html" target="_top">Home</a>
-    <a href="education.html" target="_top">Education</a>
-    <a href="map.html" target="_top">Map</a>
-    <a href="faq.html" target="_top">FAQ</a>
-    <a href="memorial.html" target="_top">Memorial</a>
-    <a href="resources.html" target="_top">Resources</a>
-    <a href="volunteer.html" target="_top">Volunteer</a>
-    <a href="relocator-by-state.html" target="_top">Relocator by State</a>
+    <div class="nav-links">
+      <a href="home.html" target="_top">Home</a>
+      <a href="education.html" target="_top">Education</a>
+      <a href="map.html" target="_top">Map</a>
+      <a href="relocator-by-state.html" target="_top">Relocator by State</a>
+      <a href="faq.html" target="_top">FAQ</a>
+      <a href="resources.html" target="_top">Resources</a>
+      <a href="volunteer.html" target="_top">Volunteer</a>
+    </div>
   </nav>
+
   <iframe src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec"></iframe>
 </body>
 </html>
