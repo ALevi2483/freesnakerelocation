@@ -81,12 +81,12 @@
   <nav>
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="nav-links" id="navLinks">
-      <a href="home.html" target="contentFrame">Home</a>
-      <a href="education.html" target="contentFrame">Education</a>
-      <a href="map.html" target="contentFrame">Map</a>
-      <a href="faq.html" target="contentFrame">FAQ</a>
-      <a href="resources.html" target="contentFrame">Resources</a>
-      <a href="volunteer.html" target="contentFrame">Volunteer</a>
+      <a href="home.html" target="contentFrame" onclick="closeMenu()">Home</a>
+      <a href="education.html" target="contentFrame" onclick="closeMenu()">Education</a>
+      <a href="map.html" target="contentFrame" onclick="closeMenu()">Map</a>
+      <a href="faq.html" target="contentFrame" onclick="closeMenu()">FAQ</a>
+      <a href="resources.html" target="contentFrame" onclick="closeMenu()">Resources</a>
+      <a href="volunteer.html" target="contentFrame" onclick="closeMenu()">Volunteer</a>
     </div>
   </nav>
 
@@ -95,6 +95,13 @@
   <script>
     function toggleMenu() {
       document.getElementById('navLinks').classList.toggle('show');
+    }
+
+    function closeMenu() {
+      const nav = document.getElementById('navLinks');
+      if (window.innerWidth <= 768 && nav.classList.contains('show')) {
+        nav.classList.remove('show');
+      }
     }
   </script>
 </body>
