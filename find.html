@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Relocator - Free Snake Relocation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #226644;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    input[type="text"], select, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      max-width: 400px;
+    }
+    .result-box {
+      background: #f3f3f3;
+      padding: 15px;
+      border-left: 5px solid #226644;
+      margin-bottom: 10px;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Find a Snake Relocator</h1>
+
+  <!-- Section 1: GPS or Manual Address Search -->
+  <section id="closest-relocator">
+    <h2>📍 Search by Location</h2>
+    <button onclick="getLocation()">Use My Location</button>
+    <p>OR enter your address:</p>
+    <input type="text" id="manual-address" placeholder="123 Main St, City, State">
+    <button onclick="submitAddress()">Find Closest Relocators</button>
+    <div id="closest-results"></div>
+  </section>
+
+  <!-- Section 2: Relocator by State/City -->
+  <section id="state-search">
+    <h2>📌 Browse by State</h2>
+    <select id="state-select" onchange="loadCities()"></select>
+    <select id="city-select" onchange="showCityRelocators()"></select>
+    <div id="state-results"></div>
+  </section>
+
+  <!-- Section 3: Embedded Map -->
+  <section>
+    <h2>🗺️ View All Relocators on the Map</h2>
+    <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen></iframe>
+  </section>
+
+  <script>
+    // Dummy placeholder for GPS or address location
+    function getLocation() {
+      document.getElementById("closest-results").innerHTML = 
+        '<div class="result-box">🔍 Simulated closest relocators based on GPS.</div>';
+    }
+
+    function submitAddress() {
+      const address = document.getElementById("manual-address").value;
+      if (address.trim()) {
+        document.getElementById("closest-results").innerHTML = 
+          `<div class="result-box">📍 Closest relocators to <strong>${address}</strong> will appear here.</div>`;
+      }
+    }
+
+    // Dummy data (replace with dynamic integration if needed)
+    const data = {
+      "Virginia": ["Chesapeake", "Richmond"],
+      "Texas": ["Houston", "Austin"],
+      "Florida": ["Orlando", "Miami"]
+    };
+
+    function loadCities() {
+      const state = document.getElementById("state-select").value;
+      const citySelect = document.getElementById("city-select");
+      citySelect.innerHTML = "";
+      if (state && data[state]) {
+        data[state].forEach(city => {
+          const opt = document.createElement("option");
+          opt.value = city;
+          opt.textContent = city;
+          citySelect.appendChild(opt);
+        });
+      }
+      showCityRelocators();
+    }
+
+    function showCityRelocators() {
+      const city = document.getElementById("city-select").value;
+      document.getElementById("state-results").innerHTML = 
+        city ? `<div class="result-box">📌 Relocators in <strong>${city}</strong> will be listed here.</div>` : "";
+    }
+
+    window.onload = () => {
+      const stateSelect = document.getElementById("state-select");
+      Object.keys(data).forEach(state => {
+        const opt = document.createElement("option");
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
+    };
+  </script>
+</body>
+</html>
