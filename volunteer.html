@@ -1,45 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Join as a Volunteer - Free Snake Relocation</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.7);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 700px;
-      font-size: 0.95rem;
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-  </style>
 </head>
 <body>
   <div class="content-wrapper">
@@ -59,9 +24,19 @@
     <h2>How to Join</h2>
     <ol>
       <li><strong>Fill Out the Volunteer Registration Form</strong></li>
-      <li>Click <a href="#" onclick="openModal()">HERE</a> to read our disclaimer</li>
+      <li>Click <a href="#" target="_blank" onclick="alertDisclaimer()">HERE</a> to read our disclaimer</li>
       <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header" target="_blank">Volunteer Registration Form</a></li>
     </ol>
+
+    <h3>Want to update your existing listing?</h3>
+    <p>
+      <a href="mailto:FreeSnakeRelocation@gmail.com?subject=Update%20My%20Volunteer%20Listing&body=Hi%2C%20please%20update%20my%20information%20as%20follows%3A%0A%0AFull%20Name%3A%0ACity%2FState%3A%0APhone%20Number%3A%0ARequested%20Changes%3A%0A%0AThank%20you!">Click here</a> to send us your updates by email.
+    </p>
+
+    <h3>Need to be removed from the directory?</h3>
+    <p>
+      <a href="mailto:FreeSnakeRelocation@gmail.com?subject=Remove%20Me%20From%20Directory&body=Hi%2C%20please%20remove%20my%20volunteer%20listing.%0A%0AFull%20Name%3A%0ACity%2FState%3A%0APhone%3A%0A%0AThank%20you!">Click here</a> to send a removal request.
+    </p>
 
     <h3>Confirm Your Eligibility</h3>
     <p>Ensure you meet any necessary state or local permit requirements.</p>
@@ -93,43 +68,9 @@
     A: We recommend reaching out to local herpetological societies, wildlife rescue groups, or experienced relocators for guidance and training.</p>
   </div>
 
-  <!-- Disclaimer Modal -->
-  <div id="disclaimerModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Free Snake Relocation Directory – Disclaimer</h2>
-      <p><strong>1. General Information</strong><br>
-        The Free Snake Relocation Directory is an informational resource only. This group serves as a platform where individuals in need of snake relocation services can connect with independent volunteers willing to assist. We do not vet, train, endorse, or supervise any volunteers.</p>
-
-      <p><strong>2. No Liability for Injury or Damages</strong><br>
-        By using this directory, all parties understand and agree that volunteers act independently and are not agents, employees, or representatives of this group or its administrators. We are not responsible for any injuries, bites, accidents, or property damage during relocation efforts.</p>
-
-      <p><strong>3. No Guarantees or Warranties</strong><br>
-        We make no guarantees regarding the reliability, experience, or success of any volunteer. Homeowners and volunteers must assess risks and determine suitability.</p>
-
-      <p><strong>4. Compliance with Local Laws</strong><br>
-        Volunteers and homeowners are responsible for following all applicable laws and permits.</p>
-
-      <p><strong>5. Homeowner Permission and Property Access</strong><br>
-        Volunteers must obtain permission before entering property and agree to resolve any issues directly with homeowners.</p>
-
-      <p><strong>6. Agreement to Terms</strong><br>
-        By using this site or directory, you agree to all terms stated in this disclaimer and hold the organization harmless from liability.</p>
-    </div>
-  </div>
-
   <script>
-    function openModal() {
-      document.getElementById('disclaimerModal').style.display = 'block';
-    }
-    function closeModal() {
-      document.getElementById('disclaimerModal').style.display = 'none';
-    }
-    window.onclick = function(event) {
-      const modal = document.getElementById('disclaimerModal');
-      if (event.target === modal) {
-        closeModal();
-      }
+    function alertDisclaimer() {
+      alert(`Free Snake Relocation Directory – Disclaimer\n\n1. General Information\nThe Free Snake Relocation Directory is an informational resource only.\nThis group serves as a platform where individuals in need of snake relocation services can connect with independent volunteers willing to assist.\nWe do not vet, train, endorse, or supervise any volunteers.\n\n2. No Liability for Injury or Damages\nBy using this directory, all parties understand and agree that:\nVolunteers act independently and are not agents, employees, or representatives of this group or its administrators.\nThe Free Snake Relocation Directory and its administrators are not responsible for any injuries, bites, accidents, or property damage that may occur during any relocation efforts.\nHomeowners and volunteers engage in snake relocation at their own risk and should take appropriate precautions, including verifying qualifications and experience.\n\n3. No Guarantees or Warranties\nWe make no guarantees regarding the reliability, experience, or success of any volunteer.\nIt is the responsibility of homeowners and volunteers to communicate, assess risks, and determine if relocation is appropriate.\n\n4. Compliance with Local Laws\nVolunteers and homeowners are solely responsible for ensuring their activities comply with local, state, and federal wildlife laws.\nSome jurisdictions may require permits or special training to handle certain species.\n\n5. Homeowner Permission and Property Access\nVolunteers must obtain explicit permission from the homeowner before entering private property or removing a snake.\nVolunteers should clarify the homeowner’s expectations regarding how the snake will be relocated and where it will be released.\nIf property damage occurs, it is the responsibility of the volunteer and homeowner to resolve the issue directly.\nThe Free Snake Relocation Directory and its administrators are not responsible for any disputes or damages.\n\n6. Agreement to Terms\nBy using this group or contacting any volunteer, you acknowledge that you have read, understood, and agreed to this disclaimer.\nYou agree to hold harmless the Free Snake Relocation Directory, its administrators, and its members from any claims, losses, or liabilities arising from participation in any snake relocation activities.`);
     }
   </script>
 </body>
