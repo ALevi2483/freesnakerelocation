@@ -2,10 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Join as a Volunteer - Free Snake Relocation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volunteer - Free Snake Relocation</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    .section {
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      color: #226644;
+      margin-bottom: 0.5rem;
+    }
+    .section p,
+    .section ul,
+    .section ol {
+      max-width: 800px;
+    }
+    .button-container {
+      margin-top: 1rem;
+    }
+    .button-container a {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 10px 15px;
+      background-color: #226644;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .button-container a:hover {
+      background-color: #2e7d57;
+    }
+    .faq details {
+      margin-bottom: 1rem;
+    }
     .modal {
       display: none;
       position: fixed;
@@ -18,7 +49,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .modal-content {
       background: #fff;
       padding: 20px;
@@ -29,7 +59,6 @@
       border-radius: 8px;
       position: relative;
     }
-
     .close-btn {
       position: absolute;
       top: 15px;
@@ -43,51 +72,58 @@
 </head>
 <body>
   <div class="content-wrapper">
-    <h1>Join as a Volunteer - Free Snake Relocation Directory</h1>
+    <div class="section">
+      <h2>📢 Why Volunteer?</h2>
+      <p>The Free Snake Relocation Directory connects volunteer snake handlers with people in need of safe, humane snake removals. By joining as a volunteer, you help protect both people and snakes while promoting conservation and education in your community.</p>
+    </div>
 
-    <h2>Why Volunteer?</h2>
-    <p>The Free Snake Relocation Directory connects volunteer snake handlers with people in need of safe, humane snake removals. By joining as a volunteer, you help protect both people and snakes while promoting conservation and education in your community.</p>
+    <div class="section">
+      <h2>🦎 Who Can Volunteer?</h2>
+      <ul>
+        <li>Experienced snake handlers who understand local species.</li>
+        <li>Wildlife professionals or herpetology enthusiasts.</li>
+        <li>Individuals willing to comply with local wildlife laws.</li>
+        <li>Those with proper tools (hooks, tongs, containers).</li>
+      </ul>
+    </div>
 
-    <h2>Who Can Volunteer?</h2>
-    <ul>
-      <li>Experienced snake handlers who understand local species.</li>
-      <li>Wildlife professionals or herpetology enthusiasts.</li>
-      <li>Individuals willing to comply with local wildlife laws.</li>
-      <li>Those with access to proper tools (snake hooks, tongs, secure transport containers).</li>
-    </ul>
+    <div class="section">
+      <h2>✅ Before You Submit</h2>
+      <p><a href="#" onclick="openDisclaimer()">Click here to read the disclaimer</a> before registering.</p>
+    </div>
 
-    <h2>How to Join</h2>
-    <ol>
-      <li><strong>Fill Out the Volunteer Registration Form</strong></li>
-      <li><a href="#" onclick="openDisclaimer()">Click HERE</a> to read our disclaimer</li>
-      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header" target="_blank">Volunteer Registration Form</a></li>
-    </ol>
+    <div class="section">
+      <h2>📝 How to Join</h2>
+      <div class="button-container">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header" target="_blank">Fill Out the Form</a>
+      </div>
+    </div>
 
-    <h3>Want to update your existing listing?</h3>
-    <p><a href="mailto:freesnakerelocation@gmail.com?subject=Update%20Request&body=Please%20include%20the%20name,%20city,%20and%20phone%20number%20you%20originally%20submitted,%20along%20with%20the%20information%20you%20would%20like%20to%20change.">Click here</a> to send us your updates by email.</p>
+    <div class="section">
+      <h2>🧾 Update / Remove My Listing</h2>
+      <p><strong>Update:</strong> <a href="mailto:freesnakerelocation@gmail.com?subject=Update%20Request&body=Please%20include%20your%20name,%20city,%20and%20phone%20number%20with%20updated%20details.">Click here to email us updates</a></p>
+      <p><strong>Remove:</strong> <a href="mailto:freesnakerelocation@gmail.com?subject=Removal%20Request&body=Please%20include%20your%20name,%20city,%20and%20phone%20number%20to%20remove%20your%20listing.">Click here to request removal</a></p>
+    </div>
 
-    <h3>Need to be removed from the directory?</h3>
-    <p><a href="mailto:freesnakerelocation@gmail.com?subject=Removal%20Request&body=Please%20include%20the%20name,%20city,%20and%20phone%20number%20to%20remove%20from%20the%20directory.">Click here</a> to send a removal request.</p>
-
-    <h2>What Happens After You Sign Up?</h2>
-    <ul>
-      <li>Your information will be added to our interactive map for public reference.</li>
-      <li>You may be contacted directly by people in need of a relocation.</li>
-      <li>You can update or remove your listing at any time by contacting us.</li>
-    </ul>
-
-    <h2>Frequently Asked Questions</h2>
-    <p><strong>Q: Do I need a permit to relocate snakes?</strong><br>
-    A: Some states require permits for handling or relocating wildlife. Check your state’s regulations before signing up.</p>
-
-    <p><strong>Q: Can I charge for my services?</strong><br>
-    A: No, all relocations must be free of charge, but you may accept voluntary donations for travel expenses.</p>
-
-    <p><strong>Q: What if I am unavailable when someone calls?</strong><br>
-    A: If you are unable to respond, we encourage people to check the directory for another available relocator nearby.</p>
-
-    <p><strong>Q: How can I improve my snake handling skills?</strong><br>
-    A: We recommend reaching out to local herpetological societies, wildlife rescue groups, or experienced relocators for guidance and training.</p>
+    <div class="section faq">
+      <h2>❓ FAQ</h2>
+      <details>
+        <summary>Do I need a permit to relocate snakes?</summary>
+        <p>Some states require permits for handling or relocating wildlife. Check your local regulations before signing up.</p>
+      </details>
+      <details>
+        <summary>Can I charge for my services?</summary>
+        <p>No. All relocations must be free of charge. You may accept voluntary donations for travel costs.</p>
+      </details>
+      <details>
+        <summary>What if I am unavailable when someone calls?</summary>
+        <p>We encourage users to check the directory for another available relocator nearby.</p>
+      </details>
+      <details>
+        <summary>How can I improve my snake handling skills?</summary>
+        <p>We recommend reaching out to local herpetological societies, rescue groups, or other relocators.</p>
+      </details>
+    </div>
   </div>
 
   <!-- Disclaimer Modal -->
@@ -95,28 +131,17 @@
     <div class="modal-content">
       <span class="close-btn" onclick="closeDisclaimer()">&times;</span>
       <h2>Free Snake Relocation Directory – Disclaimer</h2>
-      <p><strong>1. General Information</strong><br>
-      The Free Snake Relocation Directory is an informational resource only. This group serves as a platform where individuals in need of snake relocation services can connect with independent volunteers willing to assist. We do not vet, train, endorse, or supervise any volunteers.</p>
-
-      <p><strong>2. No Liability for Injury or Damages</strong><br>
-      By using this directory, all parties understand and agree that:
+      <p><strong>1. General Information</strong><br>The Free Snake Relocation Directory is an informational resource only. This group serves as a platform where individuals in need of snake relocation services can connect with independent volunteers willing to assist. We do not vet, train, endorse, or supervise any volunteers.</p>
+      <p><strong>2. No Liability for Injury or Damages</strong></p>
       <ul>
         <li>Volunteers act independently and are not agents, employees, or representatives of this group or its administrators.</li>
         <li>The Free Snake Relocation Directory and its administrators are not responsible for any injuries, bites, accidents, or property damage that may occur during any relocation efforts.</li>
         <li>Homeowners and volunteers engage in snake relocation at their own risk and should take appropriate precautions, including verifying qualifications and experience.</li>
-      </ul></p>
-
-      <p><strong>3. No Guarantees or Warranties</strong><br>
-      We make no guarantees regarding the reliability, experience, or success of any volunteer. It is the responsibility of homeowners and volunteers to communicate, assess risks, and determine if relocation is appropriate.</p>
-
-      <p><strong>4. Compliance with Local Laws</strong><br>
-      Volunteers and homeowners are solely responsible for ensuring their activities comply with local, state, and federal wildlife laws. Some jurisdictions may require permits or special training to handle certain species.</p>
-
-      <p><strong>5. Homeowner Permission and Property Access</strong><br>
-      Volunteers must obtain explicit permission from the homeowner before entering private property or removing a snake. Volunteers should clarify the homeowner’s expectations regarding how the snake will be relocated and where it will be released. If property damage occurs, it is the responsibility of the volunteer and homeowner to resolve the issue directly. The Free Snake Relocation Directory and its administrators are not responsible for any disputes or damages.</p>
-
-      <p><strong>6. Agreement to Terms</strong><br>
-      By using this group or contacting any volunteer, you acknowledge that you have read, understood, and agreed to this disclaimer. You agree to hold harmless the Free Snake Relocation Directory, its administrators, and its members from any claims, losses, or liabilities arising from participation in any snake relocation activities.</p>
+      </ul>
+      <p><strong>3. No Guarantees or Warranties</strong><br>We make no guarantees regarding the reliability, experience, or success of any volunteer. It is the responsibility of homeowners and volunteers to communicate, assess risks, and determine if relocation is appropriate.</p>
+      <p><strong>4. Compliance with Local Laws</strong><br>Volunteers and homeowners are solely responsible for ensuring their activities comply with local, state, and federal wildlife laws.</p>
+      <p><strong>5. Homeowner Permission and Property Access</strong><br>Volunteers must obtain permission before entering property. Clarify expectations for relocation and release. Any damages are the responsibility of the volunteer and homeowner to resolve.</p>
+      <p><strong>6. Agreement to Terms</strong><br>By using this group or contacting any volunteer, you agree to this disclaimer and hold harmless all parties affiliated with the Free Snake Relocation Directory.</p>
     </div>
   </div>
 
