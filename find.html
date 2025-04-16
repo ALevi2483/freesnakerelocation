@@ -6,100 +6,141 @@
   <title>Find a Snake Relocator</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 0;
-      margin: 0;
-      background-color: #fff;
-    }
-    .content-wrapper {
-      max-width: 1000px;
-      margin: 0 auto;
+    .section {
+      max-width: 800px;
+      margin: 40px auto;
       padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
     h2 {
-      margin-top: 40px;
+      color: #1f5537;
     }
-    .section {
-      margin-bottom: 40px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-    }
-    .section h3 {
-      margin-top: 0;
-    }
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    input[type="text"] {
-      padding: 10px;
-      font-size: 16px;
+    .input-box, .button {
       width: 100%;
-    }
-    button {
-      padding: 10px;
+      padding: 12px;
+      margin: 8px 0;
       font-size: 16px;
-      background-color: #2c7a7b;
-      color: #fff;
+    }
+    .button {
+      background-color: #2b7a78;
+      color: white;
       border: none;
-      border-radius: 4px;
       cursor: pointer;
+    }
+    .button:hover {
+      background-color: #205e5a;
+    }
+    .results {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #e6f4ea;
+      border-left: 4px solid #1f5537;
     }
     iframe {
       width: 100%;
-      height: 500px;
+      height: 600px;
       border: none;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
   <div class="content-wrapper">
     <div class="section">
-      <h3>📍 Find the Closest Snake Relocator</h3>
-      <div class="input-group">
-        <button onclick="getLocation()">Use My Location</button>
-        <input type="text" id="address" placeholder="Enter your address or city" />
-        <button onclick="searchClosest()">Find Help</button>
-      </div>
-      <div id="closest-results"></div>
+      <h2>🔽 Find the Closest Snake Relocator</h2>
+      <button class="button" onclick="useMyLocation()">Use My Location</button>
+      <input type="text" id="addressInput" class="input-box" placeholder="Enter your address or city" />
+      <button class="button" onclick="findClosestRelocators()">Find Help</button>
+      <div id="results" class="results"></div>
     </div>
 
     <div class="section">
-      <h3>📌 Browse by State</h3>
-      <iframe src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec"></iframe>
+      <h2>🔨 Browse by State</h2>
+      <label for="state">State:</label>
+      <select id="state" class="input-box" onchange="filterCities()"></select>
+
+      <label for="city">City:</label>
+      <select id="city" class="input-box" onchange="showRelocatorsByCity()"></select>
+
+      <div id="stateResults" class="results"></div>
     </div>
 
     <div class="section">
-      <h3>🗺️ View All Relocators on the Map</h3>
-      <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w&ehbc=2E312F"></iframe>
+      <h2>🌍 View All Relocators on the Map</h2>
+      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen></iframe>
     </div>
   </div>
 
   <script>
-    function getLocation() {
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec";
+
+    function useMyLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          fetch(`${scriptUrl}?lat=${lat}&lng=${lng}`)
+            .then(res => res.text())
+            .then(data => document.getElementById("results").innerHTML = data);
+        });
       } else {
-        alert("Geolocation is not supported by this browser.");
+        alert("Geolocation is not supported by your browser.");
       }
     }
 
-    function showPosition(position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      window.open(`https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec?lat=${lat}&lng=${lng}`, '_blank');
+    function findClosestRelocators() {
+      const address = document.getElementById("addressInput").value;
+      if (!address) return alert("Please enter an address.");
+      fetch(`${scriptUrl}?address=${encodeURIComponent(address)}`)
+        .then(res => res.text())
+        .then(data => document.getElementById("results").innerHTML = data);
     }
 
-    function searchClosest() {
-      const address = document.getElementById("address").value;
-      if (address) {
-        window.open(`https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec?address=${encodeURIComponent(address)}`, '_blank');
-      }
+    // State and city filter (fetches from Google Sheets via JSON API or static JSON, if available)
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+
+    const locations = {};
+
+    fetch("https://opensheet.elk.sh/1gNJcfqro9BAJKRHHBbkeyzpGpuQIYSXeszyhM7K-bm0/Relocators")
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(row => {
+          const state = row.State.trim();
+          const city = row.City.trim();
+          if (!locations[state]) locations[state] = [];
+          if (!locations[state].includes(city)) locations[state].push(city);
+        });
+
+        Object.keys(locations).sort().forEach(state => {
+          const option = document.createElement("option");
+          option.value = state;
+          option.textContent = state;
+          stateSelect.appendChild(option);
+        });
+      });
+
+    function filterCities() {
+      citySelect.innerHTML = "";
+      const selected = stateSelect.value;
+      if (!locations[selected]) return;
+      locations[selected].sort().forEach(city => {
+        const option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+    }
+
+    function showRelocatorsByCity() {
+      const state = stateSelect.value;
+      const city = citySelect.value;
+      if (!state || !city) return;
+      fetch(`${scriptUrl}?state=${encodeURIComponent(state)}&city=${encodeURIComponent(city)}`)
+        .then(res => res.text())
+        .then(data => document.getElementById("stateResults").innerHTML = data);
     }
   </script>
 </body>
