@@ -9,16 +9,16 @@
     .gallery {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 20px;
+      justify-content: center;
       padding: 20px;
     }
 
     .gallery img {
       width: 200px;
       height: auto;
-      border-radius: 6px;
       cursor: pointer;
+      border-radius: 8px;
       transition: transform 0.2s ease-in-out;
     }
 
@@ -54,15 +54,6 @@
       cursor: pointer;
       font-weight: bold;
     }
-
-    h2 {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    p {
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -71,58 +62,39 @@
     <p>Click any image to view it full size.</p>
 
     <div class="gallery">
-      <!-- GitHub image URLs go here -->
-      <!-- Replace USERNAME and REPO with your actual GitHub username and repo name -->
-      <!-- If you uploaded them to the root folder, remove the /infographics path -->
-      <!-- This example assumes /infographics/ is the folder -->
-
-      <!-- Loop of 17 images -->
-      <!-- Adjust the path if they’re in root instead of a subfolder -->
-      <!-- Use lowercase .jpg if renamed that way in GitHub (Linux case-sensitive) -->
-
-      <!-- Example: https://raw.githubusercontent.com/USERNAME/REPO/main/infographics/01.JPG -->
-      <!-- Modify this based on your actual repo structure -->
-
-      <!-- Here’s the structure assuming they’re in /infographics/ -->
-      <!-- If they’re in the root, just remove "infographics/" from src -->
-
-      <!-- Example GitHub path -->
-      <!-- Replace USERNAME/REPO/main with your correct username and repo branch -->
-      <!-- If using GH Pages, you can also reference relative path like "01.JPG" if it's in same folder -->
-
-      <!-- Just change the value of `basePath` below if needed -->
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/01.JPG" onclick="openModal(this.src)" alt="Infographic 1">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/02.JPG" onclick="openModal(this.src)" alt="Infographic 2">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/03.JPG" onclick="openModal(this.src)" alt="Infographic 3">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/04.JPG" onclick="openModal(this.src)" alt="Infographic 4">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/05.JPG" onclick="openModal(this.src)" alt="Infographic 5">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/06.JPG" onclick="openModal(this.src)" alt="Infographic 6">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/07.JPG" onclick="openModal(this.src)" alt="Infographic 7">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/08.JPG" onclick="openModal(this.src)" alt="Infographic 8">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/09.JPG" onclick="openModal(this.src)" alt="Infographic 9">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/10.JPG" onclick="openModal(this.src)" alt="Infographic 10">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/11.JPG" onclick="openModal(this.src)" alt="Infographic 11">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/12.JPG" onclick="openModal(this.src)" alt="Infographic 12">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/13.JPG" onclick="openModal(this.src)" alt="Infographic 13">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/14.JPG" onclick="openModal(this.src)" alt="Infographic 14">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/15.JPG" onclick="openModal(this.src)" alt="Infographic 15">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/16.JPG" onclick="openModal(this.src)" alt="Infographic 16">
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/17.JPG" onclick="openModal(this.src)" alt="Infographic 17">
     </div>
 
-    <div class="modal" id="modal">
+    <div class="modal" id="modal" onclick="closeModal()">
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <img id="modal-img" src="">
     </div>
   </div>
 
   <script>
-    const galleryDiv = document.querySelector('.gallery');
-    const basePath = "infographics/"; // Change to "" if files are in the root
-    const extension = ".JPG";
-    const count = 17;
-
-    for (let i = 1; i <= count; i++) {
-      const num = i.toString().padStart(2, '0');
-      const img = document.createElement('img');
-      img.src = `${basePath}${num}${extension}`;
-      img.alt = `Infographic ${i}`;
-      img.onclick = function () {
-        openModal(img.src);
-      };
-      galleryDiv.appendChild(img);
-    }
-
     function openModal(src) {
-      document.getElementById("modal-img").src = src;
-      document.getElementById("modal").style.display = "flex";
+      document.getElementById('modal').style.display = 'flex';
+      document.getElementById('modal-img').src = src;
     }
 
     function closeModal() {
-      document.getElementById("modal").style.display = "none";
+      document.getElementById('modal').style.display = 'none';
     }
   </script>
 </body>
