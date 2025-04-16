@@ -3,174 +3,135 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find a Relocator - Free Snake Relocation</title>
+  <title>Find a Snake Relocator</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .section {
-      background-color: #f8f8f8;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 20px auto;
       max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      border-radius: 12px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
+
     .section h2 {
-      font-size: 1.4em;
-      margin-bottom: 10px;
-      color: #10593d;
+      color: #215c42;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    input, select, button {
-      padding: 10px;
+
+    .section input,
+    .section button {
       width: 100%;
-      margin-bottom: 10px;
-      border-radius: 5px;
+      padding: 12px;
+      font-size: 1rem;
+      margin-top: 0.75rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
     }
-    button {
-      background-color: #267a75;
+
+    .section button {
+      background-color: #2d7b71;
       color: white;
       border: none;
       cursor: pointer;
     }
-    .results {
-      background-color: #eaf8e8;
-      border-left: 4px solid #4caf50;
-      padding: 10px;
-      margin-top: 10px;
+
+    .section button:hover {
+      background-color: #245f59;
     }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      border-radius: 8px;
-      margin-top: 10px;
+
+    .results {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #e6f7e6;
+      border-left: 4px solid #2d7b71;
+      border-radius: 6px;
+    }
+
+    .error {
+      color: red;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
   <div class="content-wrapper">
-
     <div class="section">
       <h2>📍 Find the Closest Snake Relocator</h2>
       <button onclick="useMyLocation()">Use My Location</button>
-      <input type="text" id="addressInput" placeholder="Enter your address or city" />
-      <button onclick="findClosest()">Find Help</button>
-      <div id="closestResults" class="results"></div>
+      <input type="text" id="address" placeholder="Enter your address or city" />
+      <button onclick="findRelocators()">Find Help</button>
+      <div id="results"></div>
     </div>
-
-    <div class="section">
-      <h2>📌 Browse by State</h2>
-      <label for="stateSelect">State:</label>
-      <select id="stateSelect" onchange="updateCities()">
-        <option value="">Select a state</option>
-      </select>
-      <label for="citySelect">City:</label>
-      <select id="citySelect" onchange="findByCity()">
-        <option value="">Select a city</option>
-      </select>
-      <div id="cityResults" class="results"></div>
-    </div>
-
-    <div class="section">
-      <h2>🗺️ View All Relocators on the Map</h2>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w&ehbc=2E312F"></iframe>
-    </div>
-
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNurbLdTXB2e20RDm8f2jkZypQlJ--wZzbLzPdffGmEHkYkjE9Xk_Mlxr1F77EvJ-_Qg/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec";
 
-    function findClosest() {
-      const address = document.getElementById("addressInput").value;
-      if (!address) return alert("Please enter an address.");
-      fetch(`${SCRIPT_URL}?address=${encodeURIComponent(address)}`)
+    function findRelocators() {
+      const address = document.getElementById("address").value.trim();
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      if (!address) {
+        resultsDiv.innerHTML = "<p class='error'>Please enter an address.</p>";
+        return;
+      }
+
+      fetch(`${scriptURL}?address=${encodeURIComponent(address)}`)
         .then(res => res.json())
         .then(data => {
-          if (data.length === 0) {
-            document.getElementById("closestResults").innerHTML = "No relocators found.";
-          } else {
-            const html = data.map(r => `<strong>${r.name}</strong><br>${r.phone}<br>${r.distance.toFixed(1)} miles<br><br>`).join('');
-            document.getElementById("closestResults").innerHTML = html;
+          if (!data.length) {
+            resultsDiv.innerHTML = "<p class='error'>No relocators found.</p>";
+            return;
           }
+
+          const html = data
+            .map(d => `<p><strong>${d.name}</strong><br>📞 ${d.phone}<br>📏 ${d.distance.toFixed(1)} miles away</p>`)
+            .join("<hr>");
+          resultsDiv.innerHTML = `<div class="results">${html}</div>`;
         })
-        .catch(err => {
-          console.error(err);
-          document.getElementById("closestResults").innerHTML = "Something went wrong.";
+        .catch(() => {
+          resultsDiv.innerHTML = "<p class='error'>An error occurred while finding relocators.</p>";
         });
     }
 
     function useMyLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=08bd452ce07a444abbfc0fd3e35cee9e`)
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+      if (!navigator.geolocation) {
+        resultsDiv.innerHTML = "<p class='error'>Geolocation is not supported by your browser.</p>";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const coords = `${position.coords.latitude},${position.coords.longitude}`;
+          fetch(`${scriptURL}?coords=${encodeURIComponent(coords)}`)
             .then(res => res.json())
             .then(data => {
-              const address = data.results[0]?.formatted;
-              if (address) {
-                document.getElementById("addressInput").value = address;
-                findClosest();
+              if (!data.length) {
+                resultsDiv.innerHTML = "<p class='error'>No relocators found.</p>";
+                return;
               }
+
+              const html = data
+                .map(d => `<p><strong>${d.name}</strong><br>📞 ${d.phone}<br>📏 ${d.distance.toFixed(1)} miles away</p>`)
+                .join("<hr>");
+              resultsDiv.innerHTML = `<div class="results">${html}</div>`;
+            })
+            .catch(() => {
+              resultsDiv.innerHTML = "<p class='error'>An error occurred while finding relocators.</p>";
             });
-        }, () => alert("Location permission denied."));
-      } else {
-        alert("Geolocation not supported.");
-      }
+        },
+        error => {
+          resultsDiv.innerHTML = "<p class='error'>Unable to retrieve your location.</p>";
+        }
+      );
     }
-
-    const sheetDataUrl = "https://opensheet.elk.sh/1gNJcfqro9BAJKRHHBbkeyzpGpuQIYSXeszyhM7K-bm0/Consolidated%20Information";
-    let stateCityMap = {};
-
-    function loadStateCityOptions() {
-      fetch(sheetDataUrl)
-        .then(res => res.json())
-        .then(data => {
-          data.forEach(row => {
-            const state = row.State;
-            const city = row.City;
-            if (!stateCityMap[state]) stateCityMap[state] = new Set();
-            stateCityMap[state].add(city);
-          });
-
-          const stateSelect = document.getElementById("stateSelect");
-          for (const state in stateCityMap) {
-            const opt = document.createElement("option");
-            opt.value = state;
-            opt.textContent = state;
-            stateSelect.appendChild(opt);
-          }
-        });
-    }
-
-    function updateCities() {
-      const state = document.getElementById("stateSelect").value;
-      const citySelect = document.getElementById("citySelect");
-      citySelect.innerHTML = `<option value="">Select a city</option>`;
-      if (!state) return;
-      [...stateCityMap[state]].sort().forEach(city => {
-        const opt = document.createElement("option");
-        opt.value = city;
-        opt.textContent = city;
-        citySelect.appendChild(opt);
-      });
-    }
-
-    function findByCity() {
-      const state = document.getElementById("stateSelect").value;
-      const city = document.getElementById("citySelect").value;
-      if (!state || !city) return;
-      fetch(sheetDataUrl)
-        .then(res => res.json())
-        .then(data => {
-          const matches = data.filter(row => row.State === state && row.City === city);
-          const html = matches.map(r => `<strong>${r["Full Name"]}</strong><br>${r.Phone}<br><br>`).join('');
-          document.getElementById("cityResults").innerHTML = html || "No relocators found.";
-        });
-    }
-
-    loadStateCityOptions();
   </script>
 </body>
 </html>
