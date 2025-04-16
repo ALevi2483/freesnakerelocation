@@ -2,169 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Find a Snake Relocator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Relocator</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .section {
-      margin: 2rem auto;
-      padding: 1rem;
+      margin: 1rem auto;
       max-width: 700px;
-      border-radius: 8px;
-      background: #f9f9f9;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      background: #f8f8f8;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    .section h3 {
+    h2 {
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
-      cursor: pointer;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
+      gap: 0.5rem;
     }
-    .section h3::before {
-      content: "📌";
-      margin-right: 0.5rem;
-    }
-    .section-content {
-      display: none;
-      margin-top: 1rem;
-    }
-    .section.active .section-content {
-      display: block;
-    }
-    button {
-      background-color: #267269;
-      color: white;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 4px;
-      width: 100%;
+    button, input, select {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
       font-size: 1rem;
-      margin-bottom: 1rem;
-      cursor: pointer;
-    }
-    input, select {
       width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
     }
     .result {
-      background: #e9fff0;
-      border-left: 4px solid #1f7a1f;
+      margin-top: 1rem;
       padding: 0.75rem;
-      margin-bottom: 1rem;
+      background: #e8f7e8;
+      border-left: 4px solid #4caf50;
     }
     .error {
       color: red;
       margin-top: 0.5rem;
     }
+    summary {
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
     iframe {
       width: 100%;
-      height: 600px;
+      height: 500px;
       border: none;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-
-  <div class="section" id="closest-section">
-    <h3 onclick="toggleSection('closest-section')">Find the Closest Relocator</h3>
-    <div class="section-content">
+  <div class="section">
+    <details open>
+      <summary>📍 Find the Closest Relocator</summary>
       <button onclick="getLocation()">Use My Location</button>
       <input type="text" id="address" placeholder="Enter your address or city" />
       <button onclick="findClosest()">Find Help</button>
-      <div id="results"></div>
-    </div>
+      <div id="result" class="result"></div>
+      <div id="error" class="error"></div>
+    </details>
   </div>
 
-  <div class="section" id="browse-section">
-    <h3 onclick="toggleSection('browse-section')">Browse by State</h3>
-    <div class="section-content">
+  <div class="section">
+    <details>
+      <summary>📌 Browse by State</summary>
       <iframe src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec"></iframe>
-    </div>
+    </details>
   </div>
 
-  <div class="section" id="map-section">
-    <h3 onclick="toggleSection('map-section')">View Relocators on the Map</h3>
-    <div class="section-content">
+  <div class="section">
+    <details>
+      <summary>🌍 View Relocators on the Map</summary>
       <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w&ehbc=2E312F"></iframe>
-    </div>
+    </details>
   </div>
 
   <script>
-    function toggleSection(id) {
-      document.querySelectorAll('.section').forEach(section => {
-        if (section.id === id) {
-          section.classList.toggle('active');
-        } else {
-          section.classList.remove('active');
-        }
-      });
-    }
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec";
 
-    const API_URL = "const API_URL = "https://script.google.com/macros/s/AKfycbzNurbLdTXB2e20RDm8f2jkZypQlJ--wZzbLzPdffGmEHkYkjE9Xk_Mlxr1F77EvJ-_Qg/exec";
-
-    function findClosest() {
+    async function findClosest() {
       const address = document.getElementById("address").value;
-      const results = document.getElementById("results");
-      results.innerHTML = "Searching...";
-      fetch(`${API_URL}?address=${encodeURIComponent(address)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (!Array.isArray(data) || data.length === 0) {
-            results.innerHTML = "<p class='error'>No relocators found.</p>";
-            return;
-          }
-          results.innerHTML = data.map(r => `
-            <div class="result">
-              <strong>${r.name}</strong><br/>
-              <a href="tel:${r.phone}">${r.phone}</a><br/>
-              Distance: ${r.distance.toFixed(1)} miles
-            </div>
-          `).join('');
-        })
-        .catch(() => {
-          results.innerHTML = "<p class='error'>An error occurred while finding relocators.</p>";
-        });
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("error").innerHTML = "";
+
+      if (!address) {
+        document.getElementById("error").textContent = "Please enter an address.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
+        const data = await response.json();
+        if (!data || data.length === 0) {
+          document.getElementById("result").innerHTML = "No relocators found.";
+        } else {
+          document.getElementById("result").innerHTML = data.map(r =>
+            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>`
+          ).join("");
+        }
+      } catch (err) {
+        document.getElementById("error").textContent = "An error occurred while finding relocators.";
+      }
     }
 
     function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const coords = `${position.coords.latitude},${position.coords.longitude}`;
-            const results = document.getElementById("results");
-            results.innerHTML = "Searching by GPS...";
-            fetch(`${API_URL}?coords=${encodeURIComponent(coords)}`)
-              .then(res => res.json())
-              .then(data => {
-                if (!Array.isArray(data) || data.length === 0) {
-                  results.innerHTML = "<p class='error'>No relocators found.</p>";
-                  return;
-                }
-                results.innerHTML = data.map(r => `
-                  <div class="result">
-                    <strong>${r.name}</strong><br/>
-                    <a href="tel:${r.phone}">${r.phone}</a><br/>
-                    Distance: ${r.distance.toFixed(1)} miles
-                  </div>
-                `).join('');
-              })
-              .catch(() => {
-                results.innerHTML = "<p class='error'>Error occurred while using GPS.</p>";
-              });
-          },
-          () => {
-            document.getElementById("results").innerHTML = "<p class='error'>Location access denied.</p>";
-          }
-        );
-      } else {
-        document.getElementById("results").innerHTML = "<p class='error'>Geolocation not supported.</p>";
+      if (!navigator.geolocation) {
+        document.getElementById("error").textContent = "Geolocation not supported.";
+        return;
       }
+
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const response = await fetch(`${scriptURL}?lat=${lat}&lng=${lng}`);
+        const data = await response.json();
+        if (!data || data.length === 0) {
+          document.getElementById("result").innerHTML = "No relocators found.";
+        } else {
+          document.getElementById("result").innerHTML = data.map(r =>
+            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>`
+          ).join("");
+        }
+      }, () => {
+        document.getElementById("error").textContent = "Error occurred while using GPS.";
+      });
     }
   </script>
-
 </body>
 </html>
