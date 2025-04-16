@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -95,7 +95,7 @@
           document.getElementById("result").innerHTML = "No relocators found.";
         } else {
           document.getElementById("result").innerHTML = data.map(r =>
-            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>`
+            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>` 
           ).join("");
         }
       } catch (err) {
@@ -118,7 +118,7 @@
           document.getElementById("result").innerHTML = "No relocators found.";
         } else {
           document.getElementById("result").innerHTML = data.map(r =>
-            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>`
+            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>` 
           ).join("");
         }
       }, () => {
