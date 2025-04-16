@@ -6,41 +6,101 @@
   <title>Find a Snake Relocator</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 0;
+      margin: 0;
+      background-color: #fff;
+    }
+    .content-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h2 {
+      margin-top: 40px;
+    }
     .section {
-      margin: 2rem auto;
-      max-width: 700px;
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
     }
     .section h3 {
-      margin-bottom: 0.5rem;
+      margin-top: 0;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #2c7a7b;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
     iframe {
       width: 100%;
-      height: 800px;
+      height: 500px;
       border: none;
     }
   </style>
 </head>
 <body>
   <div class="content-wrapper">
-    <h2>🖉 Find a Snake Relocator</h2>
-
-    <!-- Closest Relocator Search -->
     <div class="section">
-      <h3>🖉 Search by Location</h3>
-      <iframe src="https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec" title="Closest Relocator"></iframe>
+      <h3>📍 Find the Closest Snake Relocator</h3>
+      <div class="input-group">
+        <button onclick="getLocation()">Use My Location</button>
+        <input type="text" id="address" placeholder="Enter your address or city" />
+        <button onclick="searchClosest()">Find Help</button>
+      </div>
+      <div id="closest-results"></div>
     </div>
 
-    <!-- Relocator by State Dropdown -->
     <div class="section">
-      <h3>🖊️ Browse by State</h3>
-      <iframe src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec" title="Relocator by State"></iframe>
+      <h3>📌 Browse by State</h3>
+      <iframe src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec"></iframe>
     </div>
 
-    <!-- Map -->
     <div class="section">
-      <h3>📝 View All Relocators on the Map</h3>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" title="Snake Relocator Map"></iframe>
+      <h3>🗺️ View All Relocators on the Map</h3>
+      <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w&ehbc=2E312F"></iframe>
     </div>
   </div>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      window.open(`https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec?lat=${lat}&lng=${lng}`, '_blank');
+    }
+
+    function searchClosest() {
+      const address = document.getElementById("address").value;
+      if (address) {
+        window.open(`https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec?address=${encodeURIComponent(address)}`, '_blank');
+      }
+    }
+  </script>
 </body>
 </html>
