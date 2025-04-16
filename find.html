@@ -75,10 +75,12 @@
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec";  // Update with the correct Apps Script URL
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzNurbLdTXB2e20RDm8f2jkZypQlJ--wZzbLzPdffGmEHkYkjE9Xk_Mlxr1F77EvJ-_Qg/exec";  // Your correct Apps Script URL
 
     async function findClosest() {
       const address = document.getElementById("address").value;
+      console.log("Address entered:", address);  // Debugging log
+
       document.getElementById("result").innerHTML = "";
       document.getElementById("error").innerHTML = "";
 
@@ -88,10 +90,15 @@
       }
 
       try {
-        // Send the address to the Apps Script Web App URL
+        // Log the address to make sure it's passed correctly
+        console.log("Fetching relocators for address:", address);
+
         const response = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
         const data = await response.json();
         
+        // Debugging: Check the response data
+        console.log("Relocators found:", data);
+
         if (!data || data.length === 0) {
           document.getElementById("result").innerHTML = "No relocators found.";
         } else {
