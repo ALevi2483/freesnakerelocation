@@ -79,32 +79,31 @@
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbzNurbLdTXB2e20RDm8f2jkZypQlJ--wZzbLzPdffGmEHkYkjE9Xk_Mlxr1F77EvJ-_Qg/exec";
 
-async function findClosest() {
-  const address = document.getElementById("address").value;
-  document.getElementById("result").innerHTML = "";
-  document.getElementById("error").innerHTML = "";
+    async function findClosest() {
+      const address = document.getElementById("address").value;
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("error").innerHTML = "";
 
-  if (!address) {
-    document.getElementById("error").textContent = "Please enter an address.";
-    return;
-  }
+      if (!address) {
+        document.getElementById("error").textContent = "Please enter an address.";
+        return;
+      }
 
-  try {
-    // Add address query param
-    const response = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
-    const data = await response.json();
-    if (!data || data.length === 0) {
-      document.getElementById("result").innerHTML = "No relocators found.";
-    } else {
-      document.getElementById("result").innerHTML = data.map(r =>
-        `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>`
-      ).join("");
+      try {
+        // Add address query param
+        const response = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
+        const data = await response.json();
+        if (!data || data.length === 0) {
+          document.getElementById("result").innerHTML = "No relocators found.";
+        } else {
+          document.getElementById("result").innerHTML = data.map(r =>
+            `<div><strong>${r.name}</strong><br>📞 <a href="tel:${r.phone}">${r.phone}</a><br>📏 ${r.distance.toFixed(1)} miles</div><hr>`
+          ).join("");
+        }
+      } catch (err) {
+        document.getElementById("error").textContent = "An error occurred while finding relocators.";
+      }
     }
-  } catch (err) {
-    document.getElementById("error").textContent = "An error occurred while finding relocators.";
-  }
-}
-
   </script>
 </body>
 </html>
