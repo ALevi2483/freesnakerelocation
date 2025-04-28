@@ -35,29 +35,17 @@
       height: 800px;
       border: none;
     }
-    .collapsible {
+    .disclaimer-box {
       background-color: #eef5ee;
-      color: #225533;
-      cursor: pointer;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      outline: none;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-    .active, .collapsible:hover {
-      background-color: #d6ead6;
-    }
-    .collapsible-content {
-      padding: 0 15px;
-      display: none;
-      overflow: hidden;
-      background-color: #ffffff;
       border: 1px solid #cfcfcf;
-      border-radius: 4px;
+      padding: 15px;
+      border-radius: 5px;
       margin-bottom: 20px;
+    }
+    .disclaimer-header {
+      font-weight: bold;
+      color: #225533;
+      margin-bottom: 10px;
     }
     label {
       display: block;
@@ -69,6 +57,10 @@
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 15px;
+    }
+    a {
+      color: blue;
+      text-decoration: underline;
     }
   </style>
 
@@ -83,15 +75,6 @@
         document.getElementById(selection).style.display = 'block';
       }
     }
-
-    function toggleDisclaimer() {
-      var content = document.getElementById('disclaimerContent');
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    }
   </script>
 </head>
 
@@ -99,17 +82,14 @@
   <div class="content-wrapper">
     <h1>Find a Snake Relocator</h1>
 
-    <!-- Moved Disclaimer Here -->
-    <button type="button" class="collapsible" onclick="toggleDisclaimer()">⚠️ Important: Read the Disclaimer Before Proceeding</button>
-    <div class="collapsible-content" id="disclaimerContent">
-      <p>
-        Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.<br><br>
-        The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.
-      </p>
+    <div class="disclaimer-box">
+      <div class="disclaimer-header">⚠️ Important: Read the Disclaimer Before Proceeding</div>
+      <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
+      <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
     </div>
 
-    <!-- Search Method Dropdown -->
     <p><strong>Choose how you want to search:</strong></p>
+
     <select id="searchMethod" onchange="showSection()">
       <option value="">-- Select Search Method --</option>
       <option value="closest">Find Closest Relocator</option>
@@ -140,7 +120,7 @@
       <label for="citySelect">City:</label>
       <select id="citySelect" class="state-city">
         <option value="">Select a city</option>
-        <!-- Cities will populate dynamically based on state -->
+        <!-- Cities populate dynamically based on state -->
       </select>
 
       <div id="relocatorResults" style="margin-top:20px;"></div>
