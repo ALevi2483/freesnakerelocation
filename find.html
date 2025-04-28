@@ -126,29 +126,27 @@
   </div>
 
   <script>
-    // Fetch relocator data from the Google Sheet
-    let relocatorData = [];
+    // Fetch relocator data from the new Web App (correct)
+    let relocatorData = {};
 
     async function fetchRelocatorData() {
-      const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1OQ8U7fxuzst8d7TSYgdG2P6UCR_r9T2Jc3Sfb2pl4S2B4RPjYdPi6K0_Y1x6Z8j5z57bVJwDWVry/pub?gid=408554421&single=true&output=csv";
+      const url = "https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec";
 
-      const response = await fetch(url);
-      const data = await response.text();
-      const rows = data.split("\n").map(row => row.split(","));
-
-      relocatorData = rows.slice(1).map(row => ({
-        name: row[0].trim(),
-        city: row[1].trim(),
-        state: row[2].trim(),
-        phone: row[3].trim()
-      }));
-
-      populateStates();
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        relocatorData = data;
+        populateStates();
+      } catch (error) {
+        console.error('Error fetching relocator data:', error);
+      }
     }
 
     function populateStates() {
       const stateSelect = document.getElementById('stateSelect');
-      const states = [...new Set(relocatorData.map(item => item.state))].sort();
+      stateSelect.innerHTML = '<option value="">Select a state</option>';
+
+      const states = Object.keys(relocatorData).sort();
 
       states.forEach(state => {
         const option = document.createElement('option');
@@ -163,17 +161,16 @@
       const citySelect = document.getElementById('citySelect');
       citySelect.innerHTML = '<option value="">Select a city</option>';
 
-      const cities = relocatorData
-        .filter(item => item.state === selectedState)
-        .map(item => item.city)
-        .sort();
+      if (relocatorData[selectedState]) {
+        const cities = Object.keys(relocatorData[selectedState]).sort();
 
-      cities.forEach(city => {
-        const option = document.createElement('option');
-        option.value = city;
-        option.textContent = city;
-        citySelect.appendChild(option);
-      });
+        cities.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+      }
 
       document.getElementById('relocatorInfo').innerHTML = '';
     }
@@ -181,14 +178,17 @@
     function showRelocatorInfo() {
       const selectedState = document.getElementById('stateSelect').value;
       const selectedCity = document.getElementById('citySelect').value;
-      const relocator = relocatorData.find(item => item.state === selectedState && item.city === selectedCity);
 
-      if (relocator) {
-        document.getElementById('relocatorInfo').innerHTML = `
-          <h3>Relocator Information:</h3>
-          <p><strong>Name:</strong> ${relocator.name}</p>
-          <p><strong>Phone:</strong> ${relocator.phone}</p>
-        `;
+      if (relocatorData[selectedState] && relocatorData[selectedState][selectedCity]) {
+        const relocators = relocatorData[selectedState][selectedCity];
+
+        let output = `<h3>Relocator Information:</h3>`;
+
+        relocators.forEach(r => {
+          output += `<p><strong>Name:</strong> ${r.name}<br><strong>Phone:</strong> ${r.phone}</p>`;
+        });
+
+        document.getElementById('relocatorInfo').innerHTML = output;
       } else {
         document.getElementById('relocatorInfo').innerHTML = '';
       }
