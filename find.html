@@ -4,92 +4,48 @@
   <meta charset="UTF-8">
   <title>Find a Snake Relocator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9f5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    .content-wrapper {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    h1, h2, h3 {
-      color: #225533;
-    }
-    .tabs {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-    }
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      background-color: #ddd;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .active-tab {
-      background-color: #225533;
-      color: white;
-    }
-    .tab-content {
-      display: none;
-    }
-    .active-content {
-      display: block;
-    }
-    iframe {
+    select {
       width: 100%;
-      height: 800px;
-      border: none;
-    }
-    .disclaimer-box {
-      background-color: #eef5ee;
-      border: 1px solid #cfcfcf;
-      padding: 15px;
-      border-radius: 5px;
+      padding: 10px;
+      font-size: 1rem;
       margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    a {
-      color: blue;
-      text-decoration: underline;
     }
   </style>
+</head>
+<body>
+  <h1>Find a Snake Relocator</h1>
+  
+  <label for="searchMethod">Choose how you want to search:</label>
+  <select id="searchMethod">
+    <option value="">-- Select Search Method --</option>
+    <option value="closest">Find Closest Relocator</option>
+    <option value="state">Search by State and City</option>
+    <option value="map">View Relocator Map</option>
+  </select>
+  
+  <div id="closest" style="display:none;">
+    <h2>Find the Closest Snake Relocators</h2>
+    <!-- Add the iframe for closest relocator here -->
+  </div>
+
+  <div id="state" style="display:none;">
+    <h2>Search by State and City</h2>
+    <!-- Add the iframe for state/city here -->
+  </div>
+
+  <div id="map" style="display:none;">
+    <h2>View Relocator Map</h2>
+    <!-- Add the iframe for the map here -->
+  </div>
 
   <script>
-    // Tab switcher functionality
-    function openTab(tabName) {
-      let tabs = document.querySelectorAll('.tab-content');
-      tabs.forEach((tab) => {
-        tab.classList.remove('active-content');
-      });
-      let tab = document.getElementById(tabName);
-      tab.classList.add('active-content');
-
-      let tabButtons = document.querySelectorAll('.tab');
-      tabButtons.forEach((button) => {
-        button.classList.remove('active-tab');
-      });
-      let activeButton = document.getElementById(tabName + '-tab');
-      activeButton.classList.add('active-tab');
-    }
+    document.getElementById('searchMethod').addEventListener('change', function() {
+      var selection = this.value;
+      document.getElementById('closest').style.display = (selection === 'closest') ? 'block' : 'none';
+      document.getElementById('state').style.display = (selection === 'state') ? 'block' : 'none';
+      document.getElementById('map').style.display = (selection === 'map') ? 'block' : 'none';
+    });
   </script>
-</head>
-
-<body>
-  <div class="content-wrapper">
-    <h1>Find a Snake Relocator</h1>
-
-    <!-- Disclaimer -->
-    <div class="disclaimer-box">
-      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important
+</body>
+</html>
