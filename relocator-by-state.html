@@ -2,116 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Find a Snake Relocator</title>
+  <title>Relocator by State and City</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9f5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    .content-wrapper {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    h1, h2, h3 {
-      color: #225533;
-    }
     select {
       width: 100%;
       padding: 10px;
       font-size: 1rem;
       margin-bottom: 20px;
     }
-    .section {
-      display: none;
+
+    .relocator-list {
+      margin-top: 20px;
     }
+
+    .relocator-item {
+      margin-bottom: 10px;
+    }
+
     iframe {
       width: 100%;
       height: 800px;
       border: none;
     }
-    .disclaimer-box {
-      background-color: #eef5ee;
-      border: 1px solid #cfcfcf;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    select.state-city {
-      width: 50%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-    }
-    a {
-      color: blue;
-      text-decoration: underline;
+
+    .section {
+      display: none;
     }
   </style>
+</head>
+<body>
+
+  <h1>Find a Snake Relocator by State and City</h1>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer-box">
+    <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
+    <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
+    <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
+  </div>
+
+  <!-- Dropdown for selecting state and city -->
+  <label for="state">Select State:</label>
+  <select id="state" onchange="updateCities()">
+    <option value="">-- Select State --</option>
+    <!-- Dynamically populated states go here -->
+  </select>
+
+  <label for="city">Select City:</label>
+  <select id="city">
+    <option value="">-- Select City --</option>
+    <!-- Cities for the selected state will populate here -->
+  </select>
+
+  <div class="relocator-list" id="relocators"></div>
 
   <script>
-    function showSection() {
-      var selection = document.getElementById('searchMethod').value;
-      var sections = document.getElementsByClassName('section');
-      for (var i = 0; i < sections.length; i++) {
-        sections[i].style.display = 'none';
+    const relocators = {
+      "California": {
+        "Los Angeles": [
+          { name: "John Doe", phone: "555-1234" },
+          { name: "Jane Smith", phone: "555-5678" }
+        ],
+        "San Francisco": [
+          { name: "Alan Turing", phone: "555-8765" }
+        ]
+      },
+      "New York": {
+        "New York City": [
+          { name: "Alice Johnson", phone: "555-4321" }
+        ]
       }
-      if (selection) {
-        document.getElementById(selection).style.display = 'block';
+      // Add more states and cities here
+    };
+
+    const stateSelect = document.getElementById('state');
+    const citySelect = document.getElementById('city');
+    const relocatorList = document.getElementById('relocators');
+
+    function populateStates() {
+      for (let state in relocators) {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
       }
     }
+
+    function updateCities() {
+      const selectedState = stateSelect.value;
+      citySelect.innerHTML = '<option value="">-- Select City --</option>';
+
+      if (relocators[selectedState]) {
+        const cities = Object.keys(relocators[selectedState]);
+        cities.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+      }
+
+      // Clear the relocators list when the state changes
+      relocatorList.innerHTML = '';
+    }
+
+    function showRelocators() {
+      const selectedState = stateSelect.value;
+      const selectedCity = citySelect.value;
+
+      if (relocators[selectedState] && relocators[selectedState][selectedCity]) {
+        const currentRelocators = relocators[selectedState][selectedCity];
+        relocatorList.innerHTML = currentRelocators.map(relocator => {
+          return `
+            <div class="relocator-item">
+              <strong>${relocator.name}</strong><br>
+              Phone: <a href="tel:${relocator.phone}">${relocator.phone}</a>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    stateSelect.addEventListener('change', showRelocators);
+    citySelect.addEventListener('change', showRelocators);
+
+    // Populate states when the page loads
+    window.onload = populateStates;
   </script>
-</head>
 
-<body>
-  <div class="content-wrapper">
-    <h1>Find a Snake Relocator</h1>
-
-    <!-- Disclaimer -->
-    <div class="disclaimer-box">
-      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
-      <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
-      <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
-    </div>
-
-    <p><strong>Choose how you want to search:</strong></p>
-
-    <select id="searchMethod" onchange="showSection()">
-      <option value="">-- Select Search Method --</option>
-      <option value="closest">Find Closest Relocator</option>
-      <option value="state">Search by State and City</option>
-      <option value="map">View Relocator Map</option>
-    </select>
-
-    <!-- Closest Relocator Section -->
-    <div id="closest" class="section">
-      <h2>Find the Closest Snake Relocators</h2>
-      <p>Enter your address below to find the three closest volunteer snake relocators based on your location.</p>
-      <iframe src="https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec" title="Closest Snake Relocator Finder"></iframe>
-    </div>
-
-    <!-- Search by State and City Section -->
-    <div id="state" class="section">
-      <h2>Search by State and City</h2>
-      <iframe src="https://script.google.com/macros/s/AKfycbwwpW8AuRAbWc95B8JcpbHB_-ugdEWPQql-9utkMe8x8adLSIR2zRKQmtgSJ5TI-QsTlA/exec" title="Relocator by State Tool"></iframe>
-    </div>
-
-    <!-- Relocator Map Section -->
-    <div id="map" class="section">
-      <h2>Find a Relocator on the Map</h2>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
-    </div>
-
-  </div>
 </body>
 </html>
