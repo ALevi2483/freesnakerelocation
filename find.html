@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Find a Snake Relocator</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -13,45 +13,62 @@
       margin: 0;
       padding: 0;
     }
-
     .content-wrapper {
       max-width: 1000px;
       margin: 40px auto;
       padding: 0 20px;
     }
-
     h1, h2 {
       color: #225533;
     }
-
     select {
       width: 100%;
       padding: 10px;
       font-size: 1rem;
       margin-bottom: 20px;
     }
-
     .section {
       display: none;
     }
-
     iframe {
       width: 100%;
       height: 800px;
       border: none;
     }
-
-    .disclaimer {
-      background-color: #fff3cd;
-      border: 1px solid #ffeeba;
-      padding: 10px 15px;
-      margin-bottom: 20px;
-      border-radius: 5px;
+    .collapsible {
+      background-color: #eef5ee;
+      color: #225533;
+      cursor: pointer;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
     }
-
-    a {
-      color: blue;
-      text-decoration: underline;
+    .active, .collapsible:hover {
+      background-color: #d6ead6;
+    }
+    .collapsible-content {
+      padding: 0 15px;
+      display: none;
+      overflow: hidden;
+      background-color: #ffffff;
+      border: 1px solid #cfcfcf;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    select.state-city {
+      width: 50%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
     }
   </style>
 
@@ -62,7 +79,18 @@
       for (var i = 0; i < sections.length; i++) {
         sections[i].style.display = 'none';
       }
-      document.getElementById(selection).style.display = 'block';
+      if (selection) {
+        document.getElementById(selection).style.display = 'block';
+      }
+    }
+
+    function toggleDisclaimer() {
+      var content = document.getElementById('disclaimerContent');
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
     }
   </script>
 </head>
@@ -71,44 +99,84 @@
   <div class="content-wrapper">
     <h1>Find a Snake Relocator</h1>
 
-    <p>Select a search method below:</p>
+    <button type="button" class="collapsible" onclick="toggleDisclaimer()">⚠️ Important: Read the Disclaimer Before Proceeding</button>
+    <div class="collapsible-content" id="disclaimerContent">
+      <p>
+        Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.<br><br>
+        The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.
+      </p>
+    </div>
+
+    <p><strong>Choose how you want to search:</strong></p>
 
     <select id="searchMethod" onchange="showSection()">
       <option value="">-- Select Search Method --</option>
-      <option value="closest">Closest Relocator (by Address)</option>
-      <option value="state">Relocator by State</option>
-      <option value="map">Relocator Map</option>
+      <option value="closest">Find Closest Relocator</option>
+      <option value="state">Search by State and City</option>
+      <option value="map">View Relocator Map</option>
     </select>
 
     <!-- Closest Relocator Section -->
     <div id="closest" class="section">
-      <h2>Find the Closest Snake Relocators to You</h2>
-      <p>Enter your address below to find the three closest volunteer snake relocators based on your location. This tool works best when you include your city and state or postal code.</p>
+      <h2>Find the Closest Snake Relocators</h2>
+      <p>Enter your address below to find the three closest volunteer snake relocators based on your location.</p>
       <iframe src="https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec" title="Closest Snake Relocator Finder"></iframe>
     </div>
 
-    <!-- Relocator by State Section -->
+    <!-- Search by State Section -->
     <div id="state" class="section">
-      <div class="disclaimer">
-        <strong>Important:</strong> Before proceeding, please 
-        <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.<br>
-        The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.
-      </div>
-      <h2>Search for a Relocator by State and City</h2>
-      <iframe src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec" title="Relocator by State Tool"></iframe>
+      <h2>Search by State and City</h2>
+      <label for="stateSelect">State:</label>
+      <select id="stateSelect" class="state-city">
+        <option value="">Select a state</option>
+        <option value="Alabama">Alabama</option>
+        <option value="Alaska">Alaska</option>
+        <option value="Arizona">Arizona</option>
+        <option value="Arkansas">Arkansas</option>
+        <!-- Add all other states here -->
+      </select>
+
+      <label for="citySelect">City:</label>
+      <select id="citySelect" class="state-city">
+        <option value="">Select a city</option>
+        <!-- Cities will populate dynamically based on state -->
+      </select>
+
+      <div id="relocatorResults" style="margin-top:20px;"></div>
     </div>
 
     <!-- Relocator Map Section -->
     <div id="map" class="section">
-      <div class="disclaimer">
-        <strong>Important:</strong> Before using this map, please 
-        <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.<br>
-        The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.
-      </div>
-      <h2>Find a Snake Relocator on the Map</h2>
+      <h2>Find a Relocator on the Map</h2>
       <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
     </div>
 
   </div>
+
+  <script>
+    // Example placeholder cities
+    const citiesByState = {
+      "Alabama": ["Birmingham", "Mobile", "Montgomery"],
+      "Alaska": ["Anchorage", "Fairbanks", "Juneau"],
+      "Arizona": ["Phoenix", "Tucson", "Flagstaff"],
+      "Arkansas": ["Little Rock", "Fayetteville", "Hot Springs"],
+      // Add more states and cities as needed
+    };
+
+    document.getElementById('stateSelect').addEventListener('change', function() {
+      var state = this.value;
+      var citySelect = document.getElementById('citySelect');
+      citySelect.innerHTML = '<option value="">Select a city</option>';
+      if (citiesByState[state]) {
+        citiesByState[state].forEach(function(city) {
+          var option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+      }
+    });
+  </script>
+
 </body>
 </html>
