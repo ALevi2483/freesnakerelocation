@@ -103,18 +103,7 @@
     <!-- Search by State and City Section -->
     <div id="state" class="section">
       <h2>Search by State and City</h2>
-
-      <label for="stateSelect">State:</label>
-      <select id="stateSelect" class="state-city" onchange="populateCities()">
-        <option value="">Select a state</option>
-      </select>
-
-      <label for="citySelect">City:</label>
-      <select id="citySelect" class="state-city" onchange="showRelocatorInfo()">
-        <option value="">Select a city</option>
-      </select>
-
-      <div id="relocatorInfo" style="margin-top:20px;"></div>
+      <iframe src="https://script.google.com/macros/s/AKfycbwwpW8AuRAbWc95B8JcpbHB_-ugdEWPQql-9utkMe8x8adLSIR2zRKQmtgSJ5TI-QsTlA/exec" title="Relocator by State Tool"></iframe>
     </div>
 
     <!-- Relocator Map Section -->
@@ -124,79 +113,5 @@
     </div>
 
   </div>
-
-  <script>
-    // Corrected live JSON fetch
-    let relocatorData = {};
-
-    async function fetchRelocatorData() {
-      const url = "https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec";
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        relocatorData = data;
-        populateStates();
-      } catch (error) {
-        console.error('Error fetching relocator data:', error);
-      }
-    }
-
-    function populateStates() {
-      const stateSelect = document.getElementById('stateSelect');
-      stateSelect.innerHTML = '<option value="">Select a state</option>';
-
-      const states = Object.keys(relocatorData).sort();
-
-      states.forEach(state => {
-        const option = document.createElement('option');
-        option.value = state;
-        option.textContent = state;
-        stateSelect.appendChild(option);
-      });
-    }
-
-    function populateCities() {
-      const selectedState = document.getElementById('stateSelect').value;
-      const citySelect = document.getElementById('citySelect');
-      citySelect.innerHTML = '<option value="">Select a city</option>';
-
-      if (relocatorData[selectedState]) {
-        const cities = Object.keys(relocatorData[selectedState]).sort();
-
-        cities.forEach(city => {
-          const option = document.createElement('option');
-          option.value = city;
-          option.textContent = city;
-          citySelect.appendChild(option);
-        });
-      }
-
-      document.getElementById('relocatorInfo').innerHTML = '';
-    }
-
-    function showRelocatorInfo() {
-      const selectedState = document.getElementById('stateSelect').value;
-      const selectedCity = document.getElementById('citySelect').value;
-
-      if (relocatorData[selectedState] && relocatorData[selectedState][selectedCity]) {
-        const relocators = relocatorData[selectedState][selectedCity];
-
-        let output = `<h3>Relocator Information:</h3>`;
-
-        relocators.forEach(r => {
-          output += `<p><strong>Name:</strong> ${r.name}<br><strong>Phone:</strong> ${r.phone}</p>`;
-        });
-
-        document.getElementById('relocatorInfo').innerHTML = output;
-      } else {
-        document.getElementById('relocatorInfo').innerHTML = '';
-      }
-    }
-
-    // Fetch data when page loads
-    fetchRelocatorData();
-  </script>
-
 </body>
 </html>
