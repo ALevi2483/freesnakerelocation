@@ -18,7 +18,7 @@
       margin: 40px auto;
       padding: 0 20px;
     }
-    h1, h2 {
+    h1, h2, h3 {
       color: #225533;
     }
     select {
@@ -41,11 +41,6 @@
       padding: 15px;
       border-radius: 5px;
       margin-bottom: 20px;
-    }
-    .disclaimer-header {
-      font-weight: bold;
-      color: #225533;
-      margin-bottom: 10px;
     }
     label {
       display: block;
@@ -82,8 +77,9 @@
   <div class="content-wrapper">
     <h1>Find a Snake Relocator</h1>
 
+    <!-- Disclaimer -->
     <div class="disclaimer-box">
-      <div class="disclaimer-header">⚠️ Important: Read the Disclaimer Before Proceeding</div>
+      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
       <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
       <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
     </div>
@@ -104,26 +100,21 @@
       <iframe src="https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec" title="Closest Snake Relocator Finder"></iframe>
     </div>
 
-    <!-- Search by State Section -->
+    <!-- Search by State and City Section -->
     <div id="state" class="section">
       <h2>Search by State and City</h2>
+
       <label for="stateSelect">State:</label>
-      <select id="stateSelect" class="state-city">
+      <select id="stateSelect" class="state-city" onchange="populateCities()">
         <option value="">Select a state</option>
-        <option value="Alabama">Alabama</option>
-        <option value="Alaska">Alaska</option>
-        <option value="Arizona">Arizona</option>
-        <option value="Arkansas">Arkansas</option>
-        <!-- Add all other states here -->
       </select>
 
       <label for="citySelect">City:</label>
-      <select id="citySelect" class="state-city">
+      <select id="citySelect" class="state-city" onchange="showRelocatorInfo()">
         <option value="">Select a city</option>
-        <!-- Cities populate dynamically based on state -->
       </select>
 
-      <div id="relocatorResults" style="margin-top:20px;"></div>
+      <div id="relocatorInfo" style="margin-top:20px;"></div>
     </div>
 
     <!-- Relocator Map Section -->
@@ -135,28 +126,76 @@
   </div>
 
   <script>
-    // Example placeholder cities
-    const citiesByState = {
-      "Alabama": ["Birmingham", "Mobile", "Montgomery"],
-      "Alaska": ["Anchorage", "Fairbanks", "Juneau"],
-      "Arizona": ["Phoenix", "Tucson", "Flagstaff"],
-      "Arkansas": ["Little Rock", "Fayetteville", "Hot Springs"],
-      // Add more states and cities as needed
-    };
+    // Fetch relocator data from the Google Sheet
+    let relocatorData = [];
 
-    document.getElementById('stateSelect').addEventListener('change', function() {
-      var state = this.value;
-      var citySelect = document.getElementById('citySelect');
+    async function fetchRelocatorData() {
+      const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1OQ8U7fxuzst8d7TSYgdG2P6UCR_r9T2Jc3Sfb2pl4S2B4RPjYdPi6K0_Y1x6Z8j5z57bVJwDWVry/pub?gid=408554421&single=true&output=csv";
+
+      const response = await fetch(url);
+      const data = await response.text();
+      const rows = data.split("\n").map(row => row.split(","));
+
+      relocatorData = rows.slice(1).map(row => ({
+        name: row[0].trim(),
+        city: row[1].trim(),
+        state: row[2].trim(),
+        phone: row[3].trim()
+      }));
+
+      populateStates();
+    }
+
+    function populateStates() {
+      const stateSelect = document.getElementById('stateSelect');
+      const states = [...new Set(relocatorData.map(item => item.state))].sort();
+
+      states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
+    }
+
+    function populateCities() {
+      const selectedState = document.getElementById('stateSelect').value;
+      const citySelect = document.getElementById('citySelect');
       citySelect.innerHTML = '<option value="">Select a city</option>';
-      if (citiesByState[state]) {
-        citiesByState[state].forEach(function(city) {
-          var option = document.createElement('option');
-          option.value = city;
-          option.textContent = city;
-          citySelect.appendChild(option);
-        });
+
+      const cities = relocatorData
+        .filter(item => item.state === selectedState)
+        .map(item => item.city)
+        .sort();
+
+      cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+
+      document.getElementById('relocatorInfo').innerHTML = '';
+    }
+
+    function showRelocatorInfo() {
+      const selectedState = document.getElementById('stateSelect').value;
+      const selectedCity = document.getElementById('citySelect').value;
+      const relocator = relocatorData.find(item => item.state === selectedState && item.city === selectedCity);
+
+      if (relocator) {
+        document.getElementById('relocatorInfo').innerHTML = `
+          <h3>Relocator Information:</h3>
+          <p><strong>Name:</strong> ${relocator.name}</p>
+          <p><strong>Phone:</strong> ${relocator.phone}</p>
+        `;
+      } else {
+        document.getElementById('relocatorInfo').innerHTML = '';
       }
-    });
+    }
+
+    // Fetch data when page loads
+    fetchRelocatorData();
   </script>
 
 </body>
