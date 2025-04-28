@@ -21,14 +21,27 @@
     h1, h2, h3 {
       color: #225533;
     }
-    select {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
+    .tabs {
+      display: flex;
+      justify-content: space-around;
       margin-bottom: 20px;
     }
-    .section {
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #ddd;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .active-tab {
+      background-color: #225533;
+      color: white;
+    }
+    .tab-content {
       display: none;
+    }
+    .active-content {
+      display: block;
     }
     iframe {
       width: 100%;
@@ -54,15 +67,21 @@
   </style>
 
   <script>
-    function showSection() {
-      var selection = document.getElementById('searchMethod').value;
-      var sections = document.getElementsByClassName('section');
-      for (var i = 0; i < sections.length; i++) {
-        sections[i].style.display = 'none';
-      }
-      if (selection) {
-        document.getElementById(selection).style.display = 'block';
-      }
+    // Tab switcher functionality
+    function openTab(tabName) {
+      let tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach((tab) => {
+        tab.classList.remove('active-content');
+      });
+      let tab = document.getElementById(tabName);
+      tab.classList.add('active-content');
+
+      let tabButtons = document.querySelectorAll('.tab');
+      tabButtons.forEach((button) => {
+        button.classList.remove('active-tab');
+      });
+      let activeButton = document.getElementById(tabName + '-tab');
+      activeButton.classList.add('active-tab');
     }
   </script>
 </head>
@@ -73,39 +92,4 @@
 
     <!-- Disclaimer -->
     <div class="disclaimer-box">
-      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
-      <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
-      <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
-    </div>
-
-    <p><strong>Choose how you want to search:</strong></p>
-
-    <select id="searchMethod" onchange="showSection()">
-      <option value="">-- Select Search Method --</option>
-      <option value="closest">Find Closest Relocator</option>
-      <option value="state">Search by State and City</option>
-      <option value="map">View Relocator Map</option>
-    </select>
-
-    <!-- Closest Relocator Section -->
-    <div id="closest" class="section">
-      <h2>Find the Closest Snake Relocators</h2>
-      <p>Enter your address below to find the three closest volunteer snake relocators based on your location.</p>
-      <iframe src="https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec" title="Closest Snake Relocator Finder"></iframe>
-    </div>
-
-    <!-- Search by State and City Section -->
-    <div id="state" class="section">
-      <h2>Search by State and City</h2>
-      <iframe src="https://script.google.com/macros/s/AKfycbw23mzM9CnkyVeoQ5Oq_o-F32tq62Z_EOq8G9d5yIE1lq0eL3hH5V0zpycezeL5TKYg1g/exec" title="Relocator by State Tool"></iframe>
-    </div>
-
-    <!-- Relocator Map Section -->
-    <div id="map" class="section">
-      <h2>Find a Relocator on the Map</h2>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
-    </div>
-
-  </div>
-</body>
-</html>
+      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important
