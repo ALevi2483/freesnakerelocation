@@ -1,32 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Relocator by State</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Find a Snake Relocator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f9f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .content-wrapper {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    h1, h2, h3 {
+      color: #225533;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    .section {
+      display: none;
+    }
     iframe {
       width: 100%;
       height: 800px;
       border: none;
     }
+    .disclaimer-box {
+      background-color: #eef5ee;
+      border: 1px solid #cfcfcf;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    select.state-city {
+      width: 50%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+    a {
+      color: blue;
+      text-decoration: underline;
+    }
   </style>
+
+  <script>
+    function showSection() {
+      var selection = document.getElementById('searchMethod').value;
+      var sections = document.getElementsByClassName('section');
+      for (var i = 0; i < sections.length; i++) {
+        sections[i].style.display = 'none';
+      }
+      if (selection) {
+        document.getElementById(selection).style.display = 'block';
+      }
+    }
+  </script>
 </head>
+
 <body>
   <div class="content-wrapper">
-    <h2>Important: Read the Disclaimer Before Proceeding</h2>
-    <p>
-      Before finding a relocator, please take a moment and 
-      <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank"><strong>READ THIS DISCLAIMER</strong></a>. 
-      The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> 
-      resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) 
-      to ensure proper communication, safety, and compliance with local laws.
-    </p>
-    <iframe 
-      src="https://script.google.com/macros/s/AKfycbxNpZRShfGjs0AnamoZ_R6biUZcjxCvORL4uD4uuZDO52sz6edNrKIjRPk7p4JpLt4W1w/exec" 
-      title="Relocator by State Tool">
-    </iframe>
+    <h1>Find a Snake Relocator</h1>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer-box">
+      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
+      <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
+      <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
+    </div>
+
+    <p><strong>Choose how you want to search:</strong></p>
+
+    <select id="searchMethod" onchange="showSection()">
+      <option value="">-- Select Search Method --</option>
+      <option value="closest">Find Closest Relocator</option>
+      <option value="state">Search by State and City</option>
+      <option value="map">View Relocator Map</option>
+    </select>
+
+    <!-- Closest Relocator Section -->
+    <div id="closest" class="section">
+      <h2>Find the Closest Snake Relocators</h2>
+      <p>Enter your address below to find the three closest volunteer snake relocators based on your location.</p>
+      <iframe src="https://script.google.com/macros/s/AKfycbzAeEsExEKtNnvfJFK4G_TimQe2TRcfZJaNTDG6GDoPP0nD3MSOJNGepcKLssgPtuuhKA/exec" title="Closest Snake Relocator Finder"></iframe>
+    </div>
+
+    <!-- Search by State and City Section -->
+    <div id="state" class="section">
+      <h2>Search by State and City</h2>
+      <iframe src="https://script.google.com/macros/s/AKfycbwwpW8AuRAbWc95B8JcpbHB_-ugdEWPQql-9utkMe8x8adLSIR2zRKQmtgSJ5TI-QsTlA/exec" title="Relocator by State Tool"></iframe>
+    </div>
+
+    <!-- Relocator Map Section -->
+    <div id="map" class="section">
+      <h2>Find a Relocator on the Map</h2>
+      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
+    </div>
+
   </div>
 </body>
 </html>
