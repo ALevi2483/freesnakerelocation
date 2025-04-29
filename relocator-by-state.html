@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Relocator by State and City</title>
+  <title>Search Snake Relocators by State</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     select {
@@ -12,12 +12,8 @@
       margin-bottom: 20px;
     }
 
-    .relocator-list {
+    #relocator-list {
       margin-top: 20px;
-    }
-
-    .relocator-item {
-      margin-bottom: 10px;
     }
 
     iframe {
@@ -25,110 +21,131 @@
       height: 800px;
       border: none;
     }
-
-    .section {
-      display: none;
-    }
   </style>
 </head>
 <body>
 
-  <h1>Find a Snake Relocator by State and City</h1>
+  <h1>Search Snake Relocators by State</h1>
 
-  <!-- Disclaimer -->
-  <div class="disclaimer-box">
-    <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
-    <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
-    <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
-  </div>
-
-  <!-- Dropdown for selecting state and city -->
+  <!-- State and City Dropdowns -->
   <label for="state">Select State:</label>
   <select id="state" onchange="updateCities()">
     <option value="">-- Select State --</option>
-    <!-- Dynamically populated states go here -->
+    <!-- States will be populated here -->
   </select>
 
   <label for="city">Select City:</label>
   <select id="city">
     <option value="">-- Select City --</option>
-    <!-- Cities for the selected state will populate here -->
+    <!-- Cities will be populated based on selected state -->
   </select>
 
-  <div class="relocator-list" id="relocators"></div>
+  <!-- List of Relocators -->
+  <div id="relocator-list"></div>
+
+  <div id="map">
+    <h2>Find Relocators on the Map</h2>
+    <div id="googleMap"></div>
+  </div>
 
   <script>
-    const relocators = {
-      "California": {
-        "Los Angeles": [
-          { name: "John Doe", phone: "555-1234" },
-          { name: "Jane Smith", phone: "555-5678" }
-        ],
-        "San Francisco": [
-          { name: "Alan Turing", phone: "555-8765" }
-        ]
-      },
-      "New York": {
-        "New York City": [
-          { name: "Alice Johnson", phone: "555-4321" }
-        ]
-      }
-      // Add more states and cities here
-    };
-
+    let relocators = [];
     const stateSelect = document.getElementById('state');
     const citySelect = document.getElementById('city');
-    const relocatorList = document.getElementById('relocators');
+    const relocatorList = document.getElementById('relocator-list');
+    const googleMap = document.getElementById('googleMap');
+    
+    // Fetch data from Apps Script
+    function fetchData() {
+      fetch('https://script.google.com/macros/s/AKfycbz23.../exec') // Your Apps Script URL
+        .then(response => response.json())
+        .then(data => {
+          relocators = data;
+          populateStates(data.states);
+        });
+    }
 
-    function populateStates() {
-      for (let state in relocators) {
+    // Populate the states dropdown
+    function populateStates(states) {
+      states.forEach(state => {
         const option = document.createElement('option');
         option.value = state;
         option.textContent = state;
         stateSelect.appendChild(option);
-      }
+      });
     }
 
+    // Update cities based on selected state
     function updateCities() {
       const selectedState = stateSelect.value;
       citySelect.innerHTML = '<option value="">-- Select City --</option>';
 
-      if (relocators[selectedState]) {
-        const cities = Object.keys(relocators[selectedState]);
-        cities.forEach(city => {
-          const option = document.createElement('option');
-          option.value = city;
-          option.textContent = city;
-          citySelect.appendChild(option);
-        });
-      }
+      const cities = relocators.citiesByState[selectedState] || [];
+      cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
 
-      // Clear the relocators list when the state changes
+      // Clear out the relocator list and map when the state changes
       relocatorList.innerHTML = '';
+      googleMap.innerHTML = '';
     }
 
-    function showRelocators() {
+    // Display relocators for selected city
+    function displayRelocators() {
       const selectedState = stateSelect.value;
       const selectedCity = citySelect.value;
+      
+      const filteredRelocators = relocators.filter(relocator => 
+        relocator.state === selectedState && relocator.city === selectedCity
+      );
 
-      if (relocators[selectedState] && relocators[selectedState][selectedCity]) {
-        const currentRelocators = relocators[selectedState][selectedCity];
-        relocatorList.innerHTML = currentRelocators.map(relocator => {
-          return `
-            <div class="relocator-item">
-              <strong>${relocator.name}</strong><br>
-              Phone: <a href="tel:${relocator.phone}">${relocator.phone}</a>
-            </div>
-          `;
-        }).join('');
-      }
+      relocatorList.innerHTML = filteredRelocators.map(relocator => `
+        <div>
+          <strong>${relocator.name}</strong>
+          <p>${relocator.phone}</p>
+        </div>
+      `).join('');
+
+      // Display map with markers for relocators
+      const map = new google.maps.Map(googleMap, {
+        center: { lat: filteredRelocators[0]?.lat || 0, lng: filteredRelocators[0]?.lon || 0 },
+        zoom: 10
+      });
+
+      filteredRelocators.forEach(relocator => {
+        new google.maps.Marker({
+          position: { lat: relocator.lat, lng: relocator.lon },
+          map: map,
+          title: relocator.name
+        });
+      });
     }
 
-    stateSelect.addEventListener('change', showRelocators);
-    citySelect.addEventListener('change', showRelocators);
+    // Load Google Maps API
+    function loadGoogleMapsAPI() {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap`;
+      script.async = true;
+      document.head.appendChild(script);
+    }
 
-    // Populate states when the page loads
-    window.onload = populateStates;
+    // Initialize the map
+    function initMap() {
+      const map = new google.maps.Map(googleMap, {
+        center: { lat: 0, lng: 0 },
+        zoom: 3
+      });
+    }
+
+    // Fetch data when page loads
+    window.onload = function () {
+      fetchData();
+      stateSelect.addEventListener('change', updateCities);
+      citySelect.addEventListener('change', displayRelocators);
+    };
   </script>
 
 </body>
