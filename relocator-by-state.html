@@ -39,7 +39,7 @@
       fetch(scriptUrl)
         .then(response => response.json())
         .then(data => {
-          const states = data.states;
+          const states = data;  // This will return all states and cities.
 
           // Populate states dropdown
           const stateSelect = document.getElementById('stateSelect');
@@ -79,6 +79,7 @@
             const selectedCity = e.target.value;
 
             if (selectedState && selectedCity) {
+              // Fetch the relocators for the selected city and state
               fetch(scriptUrl, {
                 method: 'POST',
                 body: JSON.stringify({ state: selectedState, city: selectedCity }),
@@ -86,7 +87,7 @@
               })
               .then(response => response.json())
               .then(data => {
-                const relocators = data.relocators;
+                const relocators = data[selectedState] && data[selectedState][selectedCity] || [];
                 const resultsDiv = document.getElementById('relocatorResults');
                 resultsDiv.innerHTML = '';
 
