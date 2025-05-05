@@ -71,27 +71,31 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 0, 0, 0.5);
     }
 
     .modal-content {
+      position: relative;
       background-color: #fff;
       margin: 10% auto;
       padding: 20px;
       border-radius: 8px;
       width: 80%;
       max-width: 700px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
     }
 
     .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
       background-color: #225533;
       color: white;
-      padding: 10px 20px;
+      padding: 8px 12px;
       border: none;
       border-radius: 5px;
-      margin-top: 20px;
       cursor: pointer;
-      float: right;
+      z-index: 1001;
     }
   </style>
 
@@ -153,27 +157,26 @@
   <!-- Modal for Disclaimer -->
   <div id="disclaimerModal" class="modal">
     <div class="modal-content">
+      <button class="close-button" onclick="closeDisclaimer()">X</button>
       <h2>Free Snake Relocation Directory – Disclaimer</h2>
       <p><strong>1. General Information</strong><br>
         The Free Snake Relocation Directory is an informational resource only. This group serves as a platform where individuals in need of snake relocation services can connect with independent volunteers willing to assist. We do not vet, train, endorse, or supervise any volunteers.
       </p>
       <p><strong>2. No Liability for Injury or Damages</strong><br>
-        Volunteers act independently and are not agents, employees, or representatives of this group or its administrators. The Directory and its administrators are not responsible for any injuries, bites, accidents, or property damage. Use at your own risk.
+        Volunteers act independently and are not agents, employees, or representatives of this group or its administrators. The Free Snake Relocation Directory and its administrators are not responsible for any injuries, bites, accidents, or property damage that may occur during any relocation efforts. Use at your own risk.
       </p>
       <p><strong>3. No Guarantees or Warranties</strong><br>
-        No guarantees regarding reliability or success. All users must assess risks and communicate clearly.
+        We make no guarantees regarding the reliability, experience, or success of any volunteer. It is the responsibility of homeowners and volunteers to communicate, assess risks, and determine if relocation is appropriate.
       </p>
       <p><strong>4. Compliance with Local Laws</strong><br>
-        Responsibility for legal compliance lies with both volunteers and homeowners.
+        Volunteers and homeowners are solely responsible for ensuring their activities comply with local, state, and federal wildlife laws. Some jurisdictions may require permits or special training to handle certain species.
       </p>
       <p><strong>5. Homeowner Permission and Property Access</strong><br>
-        Volunteers must get clear permission before entering property. Any disputes are outside our responsibility.
+        Volunteers must obtain explicit permission from the homeowner before entering private property or removing a snake. Any property damage or misunderstandings must be resolved directly between the homeowner and volunteer.
       </p>
       <p><strong>6. Agreement to Terms</strong><br>
-        By using this site or contacting volunteers, you agree to these terms and hold us harmless from any liabilities.
+        By using this group or contacting any volunteer, you acknowledge that you have read, understood, and agreed to this disclaimer. You agree to hold harmless the Free Snake Relocation Directory, its administrators, and its members from any claims, losses, or liabilities arising from participation in any snake relocation activities.
       </p>
-
-      <button class="close-button" onclick="closeDisclaimer()">Close</button>
     </div>
   </div>
 </body>
