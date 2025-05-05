@@ -13,28 +13,34 @@
       margin: 0;
       padding: 0;
     }
+
     .content-wrapper {
       max-width: 1000px;
       margin: 40px auto;
       padding: 0 20px;
     }
+
     h1, h2, h3 {
       color: #225533;
     }
+
     select {
       width: 100%;
       padding: 10px;
       font-size: 1rem;
       margin-bottom: 20px;
     }
+
     .section {
       display: none;
     }
+
     iframe {
       width: 100%;
       height: 800px;
       border: none;
     }
+
     .disclaimer-box {
       background-color: #eef5ee;
       border: 1px solid #cfcfcf;
@@ -42,14 +48,50 @@
       border-radius: 5px;
       margin-bottom: 20px;
     }
+
     label {
       display: block;
       margin-top: 10px;
       font-weight: bold;
     }
+
     a {
       color: blue;
       text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 700px;
+    }
+
+    .close-button {
+      background-color: #225533;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+      float: right;
     }
   </style>
 
@@ -64,6 +106,14 @@
         document.getElementById(selection).style.display = 'block';
       }
     }
+
+    function showDisclaimer() {
+      document.getElementById('disclaimerModal').style.display = 'block';
+    }
+
+    function closeDisclaimer() {
+      document.getElementById('disclaimerModal').style.display = 'none';
+    }
   </script>
 </head>
 
@@ -74,8 +124,8 @@
     <!-- Disclaimer -->
     <div class="disclaimer-box">
       <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
-      <p>Before proceeding, please <a href="https://docs.google.com/document/d/1El2KrC3_Rjw-3J6ZCLMBmMLsEyYmRtAa/edit" target="_blank">READ THIS DISCLAIMER</a>.</p>
-      <p>The <strong>Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
+      <p>Before proceeding, please <a onclick="showDisclaimer()">READ THIS DISCLAIMER</a>.</p>
+      <p><strong>The Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
     </div>
 
     <p><strong>Choose how you want to search:</strong></p>
@@ -98,7 +148,33 @@
       <h2>Find a Relocator on the Map</h2>
       <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
     </div>
+  </div>
 
+  <!-- Modal for Disclaimer -->
+  <div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+      <h2>Free Snake Relocation Directory – Disclaimer</h2>
+      <p><strong>1. General Information</strong><br>
+        The Free Snake Relocation Directory is an informational resource only. This group serves as a platform where individuals in need of snake relocation services can connect with independent volunteers willing to assist. We do not vet, train, endorse, or supervise any volunteers.
+      </p>
+      <p><strong>2. No Liability for Injury or Damages</strong><br>
+        Volunteers act independently and are not agents, employees, or representatives of this group or its administrators. The Directory and its administrators are not responsible for any injuries, bites, accidents, or property damage. Use at your own risk.
+      </p>
+      <p><strong>3. No Guarantees or Warranties</strong><br>
+        No guarantees regarding reliability or success. All users must assess risks and communicate clearly.
+      </p>
+      <p><strong>4. Compliance with Local Laws</strong><br>
+        Responsibility for legal compliance lies with both volunteers and homeowners.
+      </p>
+      <p><strong>5. Homeowner Permission and Property Access</strong><br>
+        Volunteers must get clear permission before entering property. Any disputes are outside our responsibility.
+      </p>
+      <p><strong>6. Agreement to Terms</strong><br>
+        By using this site or contacting volunteers, you agree to these terms and hold us harmless from any liabilities.
+      </p>
+
+      <button class="close-button" onclick="closeDisclaimer()">Close</button>
+    </div>
   </div>
 </body>
 </html>
