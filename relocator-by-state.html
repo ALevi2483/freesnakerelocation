@@ -1,110 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Find a Snake Relocator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    select {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      margin-bottom: 20px;
-    }
-    #relocatorResults {
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Find a Snake Relocator</h1>
+<h2>Find a Relocator by State & City</h2>
 
-  <label for="stateSelect">Select State:</label>
-  <select id="stateSelect">
-    <option value="">-- Select State --</option>
-  </select>
+<label for="stateSelect">Select State:</label>
+<select id="stateSelect" onchange="populateCities()">
+  <option value="">--Select State--</option>
+</select>
 
-  <label for="citySelect">Select City:</label>
-  <select id="citySelect" disabled>
-    <option value="">-- Select City --</option>
-  </select>
+<label for="citySelect">Select City:</label>
+<select id="citySelect" onchange="showResults()">
+  <option value="">--Select City--</option>
+</select>
 
-  <div id="relocatorResults"></div>
+<div id="results"></div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbw23mzM9CnkyVeoQ5Oq_o-F32tq62Z_EOq8G9d5yIE1lq0eL3hH5V0zpycezeL5TKYg1g/exec'; // Your updated web app URL
+<script>
+  let data = [];
 
-      // Fetch state and city data
-      fetch(scriptUrl)
-        .then(response => response.json())
-        .then(data => {
-          const states = data;  // This will return all states and cities.
-
-          // Populate states dropdown
-          const stateSelect = document.getElementById('stateSelect');
-          for (const state in states) {
-            const option = document.createElement('option');
-            option.value = state;
-            option.textContent = state;
-            stateSelect.appendChild(option);
-          }
-
-          // Handle state selection change
-          stateSelect.addEventListener('change', (e) => {
-            const selectedState = e.target.value;
-
-            // Populate city dropdown based on selected state
-            const citySelect = document.getElementById('citySelect');
-            citySelect.innerHTML = '<option value="">-- Select City --</option>'; // Reset city dropdown
-            citySelect.disabled = !selectedState;
-
-            if (selectedState) {
-              const cities = states[selectedState];
-              cities.forEach(city => {
-                const option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                citySelect.appendChild(option);
-              });
-            }
-
-            // Clear results when state changes
-            document.getElementById('relocatorResults').innerHTML = '';
-          });
-
-          // Fetch relocators when city is selected
-          document.getElementById('citySelect').addEventListener('change', (e) => {
-            const selectedState = document.getElementById('stateSelect').value;
-            const selectedCity = e.target.value;
-
-            if (selectedState && selectedCity) {
-              // Fetch the relocators for the selected city and state
-              fetch(scriptUrl, {
-                method: 'POST',
-                body: JSON.stringify({ state: selectedState, city: selectedCity }),
-                headers: { 'Content-Type': 'application/json' }
-              })
-              .then(response => response.json())
-              .then(data => {
-                const relocators = data[selectedState] && data[selectedState][selectedCity] || [];
-                const resultsDiv = document.getElementById('relocatorResults');
-                resultsDiv.innerHTML = '';
-
-                if (relocators.length > 0) {
-                  relocators.forEach(relocator => {
-                    const div = document.createElement('div');
-                    div.textContent = `${relocator.name} - ${relocator.phone}`;
-                    resultsDiv.appendChild(div);
-                  });
-                } else {
-                  resultsDiv.innerHTML = 'No relocators found for this city.';
-                }
-              });
-            }
-          });
-        });
+  fetch(https://script.google.com/macros/s/AKfycbwwpW8AuRAbWc95B8JcpbHB_-ugdEWPQql-9utkMe8x8adLSIR2zRKQmtgSJ5TI-QsTlA/exec)  // replace with your actual script URL
+    .then(response => response.json())
+    .then(json => {
+      data = json;
+      const states = [...new Set(data.map(entry => entry.State))].sort();
+      const stateSelect = document.getElementById('stateSelect');
+      states.forEach(state => {
+        const opt = document.createElement('option');
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
     });
-  </script>
-</body>
-</html>
+
+  function populateCities() {
+    const selectedState = document.getElementById('stateSelect').value;
+    const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
+    const citySelect = document.getElementById('citySelect');
+    citySelect.innerHTML = '<option value="">--Select City--</option>';
+    cities.forEach(city => {
+      const opt = document.createElement('option');
+      opt.value = city;
+      opt.textContent = city;
+      citySelect.appendChild(opt);
+    });
+    document.getElementById('results').innerHTML = '';
+  }
+
+  function showResults() {
+    const state = document.getElementById('stateSelect').value;
+    const city = document.getElementById('citySelect').value;
+    const filtered = data.filter(r => r.State === state && r.City === city);
+    const resultDiv = document.getElementById('results');
+    resultDiv.innerHTML = filtered.map(entry => 
+      `<div><strong>${entry["Full Name"]}</strong> – ${entry["Phone"]}</div>`
+    ).join('');
+  }
+</script>
