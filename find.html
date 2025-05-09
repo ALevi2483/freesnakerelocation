@@ -136,7 +136,7 @@
       const filtered = data.filter(r => r.State === state && r.City === city);
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.map(r =>
-        <div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>
+        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>`
       ).join('');
     }
   </script>
@@ -192,5 +192,3 @@
   </div>
 </body>
 </html>
-
-
