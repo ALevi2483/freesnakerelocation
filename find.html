@@ -214,13 +214,13 @@
     <p><strong>Choose how you want to search:</strong></p>
     <select id="searchMethod" onchange="showSection()">
       <option value="">-- Select Search Method --</option>
-      <option value="closest">Find Closest Relocator</option>
+      <option value="closest">Find Closest (by Address or GPS)</option>
       <option value="map">View Relocator Map</option>
       <option value="stateCity">Search by State & City</option>
     </select>
 
     <div id="closest" class="section">
-      <h2>Find the Closest Snake Relocators / GPS</h2>
+      <h2>Find Closest (by Address or GPS)</h2>
       <label for="addressInput">Address:</label>
       <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
       <button onclick="findByAddress()">🔍 Search by Address</button>
