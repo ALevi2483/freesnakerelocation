@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Find a Snake Relocator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -90,9 +90,9 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
 
     function showSection() {
-      var selection = document.getElementById('searchMethod').value;
-      var sections = document.getElementsByClassName('section');
-      for (var i = 0; i < sections.length; i++) {
+      const selection = document.getElementById('searchMethod').value;
+      const sections = document.getElementsByClassName('section');
+      for (let i = 0; i < sections.length; i++) {
         sections[i].style.display = 'none';
       }
       if (selection) {
@@ -159,17 +159,15 @@
       navigator.geolocation.getCurrentPosition(async position => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-
         const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
 
         try {
           const res = await fetch(url);
           const data = await res.json();
-
           if (data.length === 0) {
             output.innerHTML = "No relocators found near you.";
           } else {
-            output.innerHTML = data.map(r =>
+            output.innerHTML = data.slice(0, 2).map(r =>
               `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
             ).join('<br><br>');
           }
