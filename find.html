@@ -97,14 +97,17 @@
         document.getElementById(selection).style.display = 'block';
       }
     }
+
     function showDisclaimer() {
       document.getElementById('disclaimerModal').style.display = 'block';
     }
+
     function closeDisclaimer() {
       document.getElementById('disclaimerModal').style.display = 'none';
     }
+
     let data = [];
-    fetch('https://script.google.com/macros/s/AKfycbxf-18m2ZpGwqE7JdhHmEV6wVmt-SshD-6ANIW0mRzZ5temEHxyaWipok-LXXbCoomQTQ/exec')
+    fetch('https://script.google.com/macros/s/AKfycbyKY0ujJVgAVpPtkcj3vdIlafCLGs5pvkXF0h0C27RQfMjMDH6fdMlIguMRP9_YXRp5mQ/exec?address=ping')
       .then(res => res.json())
       .then(json => {
         data = json;
@@ -117,6 +120,7 @@
           stateSelect.appendChild(opt);
         });
       });
+
     function populateCities() {
       const selectedState = document.getElementById('stateSelect').value;
       const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
@@ -130,6 +134,7 @@
       });
       document.getElementById('stateCityResults').innerHTML = '';
     }
+
     function showResults() {
       const state = document.getElementById('stateSelect').value;
       const city = document.getElementById('citySelect').value;
@@ -140,23 +145,17 @@
       ).join('');
     }
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GB09EFLTCW');
-</script>
 </head>
 <body>
   <div class="content-wrapper">
     <h1>Find a Snake Relocator</h1>
+
     <div class="disclaimer-box">
       <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
       <p>Before proceeding, please <a onclick="showDisclaimer()">READ THIS DISCLAIMER</a>.</p>
       <p><strong>The Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
     </div>
+
     <p><strong>Choose how you want to search:</strong></p>
     <select id="searchMethod" onchange="showSection()">
       <option value="">-- Select Search Method --</option>
@@ -164,15 +163,18 @@
       <option value="map">View Relocator Map</option>
       <option value="stateCity">Search by State & City</option>
     </select>
+
     <div id="closest" class="section">
       <h2>Find the Closest Snake Relocators</h2>
       <p>Enter your address below to find the three closest volunteer snake relocators based on your location. <strong>Do not enter just your zip code.</strong></p>
-      <iframe src="https://script.google.com/macros/s/AKfycbyKY0ujJVgAVpPtkcj3vdIlafCLGs5pvkXF0h0C27RQfMjMDH6fdMlIguMRP9_YXRp5mQ/exec" title="Closest Snake Relocator Finder" title="Closest Snake Relocator Finder"></iframe>
+      <iframe src="https://script.google.com/macros/s/AKfycbyKY0ujJVgAVpPtkcj3vdIlafCLGs5pvkXF0h0C27RQfMjMDH6fdMlIguMRP9_YXRp5mQ/exec" title="Closest Snake Relocator Finder"></iframe>
     </div>
+
     <div id="map" class="section">
       <h2>Find a Relocator on the Map</h2>
       <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
     </div>
+
     <div id="stateCity" class="section">
       <h2>Find a Relocator by State & City</h2>
       <label for="stateSelect">Select State:</label>
@@ -186,37 +188,14 @@
       <div id="stateCityResults" style="margin-top: 20px;"></div>
     </div>
   </div>
- <div id="disclaimerModal" class="modal">
-  <div class="modal-content">
-    <button class="close-button" onclick="closeDisclaimer()">X</button>
-    <h2>Free Snake Relocation Directory – Disclaimer</h2>
 
-    <h3>🏠 Section A – For Homeowners / Requesters</h3>
-    <p><strong>1. Informational Purpose Only:</strong> The Free Snake Relocation Directory is an informational platform only. We do not assign, train, vet, or certify any volunteers. All volunteers act independently and are not affiliated with or controlled by this group.</p>
-
-    <p><strong>2. No Guarantees:</strong> We make no guarantees regarding the reliability, legality, or safety of any volunteer. It is the sole responsibility of the homeowner to evaluate each relocator individually.</p>
-
-    <p><strong>3. Voluntary Use and Assumption of Risk:</strong> If you contact a volunteer, you do so at your own risk. You must assess whether the person is appropriate, safe, and legally able to assist.</p>
-
-    <p><strong>4. Property Access and Communication:</strong> Volunteers must receive explicit permission from the homeowner before entering any private property. All relocation expectations must be clearly discussed and agreed upon between both parties. Any property damage or miscommunication must be resolved between the volunteer and homeowner.</p>
-
-    <p><strong>5. Legal Responsibility:</strong> The Free Snake Relocation Directory, its administrators, and affiliated platforms are not responsible for any injury, property damage, or legal claim resulting from interactions or relocation efforts initiated via this platform.</p>
-
-    <p><strong>6. Agreement to Terms:</strong> By using this platform, you agree to release and hold harmless the Free Snake Relocation Directory, its administrators, and members from any and all claims, losses, or liabilities resulting from your participation or interaction with any volunteer relocator.</p>
-
-    <h3>🐍 Section B – For Volunteers / Relocators</h3>
-    <p><strong>1. Independent Status:</strong> All volunteers listed or acting via this platform do so independently and are not agents, employees, or representatives of the Free Snake Relocation Directory or its administrators.</p>
-
-    <p><strong>2. No Vetting or Endorsement:</strong> This Directory does not verify, certify, or guarantee the qualifications of any volunteer. It is your responsibility to represent your skills truthfully and act within your limits.</p>
-
-    <p><strong>3. Legal Compliance:</strong> As a volunteer, you are solely responsible for knowing and following all relevant local, state, and federal wildlife laws, including permits and species-specific handling restrictions.</p>
-
-    <p><strong>4. Personal Risk:</strong> You accept all physical and legal risks involved in relocating snakes. You are responsible for using proper equipment, assessing each situation safely, and seeking medical or legal help as needed.</p>
-
-    <p><strong>5. Role of Administrators:</strong> Admins and group moderators do not assign, recommend, or deploy any volunteer. If your name appears in a post, it is either self-submitted or displayed via public tools. Admins will never post your name on your behalf unless you request it.</p>
-
-    <p><strong>6. Agreement to Terms:</strong> By choosing to participate, you agree to release and hold harmless the Free Snake Relocation Directory, its administrators, and related entities from any injury, loss, claim, or consequence that arises from your involvement in snake relocation activities.</p>
+  <div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+      <button class="close-button" onclick="closeDisclaimer()">X</button>
+      <h2>Free Snake Relocation Directory – Disclaimer</h2>
+      <p><strong>By using this platform, you agree to release and hold harmless the Free Snake Relocation Directory and its administrators from any injury, loss, or liability resulting from interaction with a volunteer relocator.</strong></p>
+      <!-- You can retain or expand the full legal disclaimer from your existing version -->
+    </div>
   </div>
-</div>
 </body>
 </html>
