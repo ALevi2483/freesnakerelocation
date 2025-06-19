@@ -110,13 +110,70 @@
       background-color: #226644;
       color: white;
     }
+
+    .gps-help-box {
+      margin-top: 20px;
+      background-color: #eef5ee;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .gps-help-box button {
+      padding: 10px 20px;
+      background-color: #225533;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .gps-help-box button:hover {
+      background-color: #1a503a;
+    }
   </style>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-GB09EFLTCW');
+  </script>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec";
+
+    async function findByGPS() {
+      const output = document.getElementById("gpsOutput");
+      output.innerHTML = "Locating you...";
+      if (!navigator.geolocation) {
+        output.innerHTML = "Your browser does not support GPS location.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(async position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
+
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+
+          if (!data.length || data.error) {
+            output.innerHTML = "No relocators found near you.";
+          } else {
+            output.innerHTML = data.map(r =>
+              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
+            ).join('<br><br>');
+          }
+        } catch (err) {
+          output.innerHTML = "Error retrieving data. Please try again later.";
+        }
+      }, () => {
+        output.innerHTML = "GPS access was denied or not available.";
+      });
+    }
   </script>
 </head>
 <body>
@@ -127,6 +184,13 @@
     <div class="alert-box">
       <h2 style="margin-top: 0;">Need Help with a Snake Right Now?</h2>
       <p><a href="find.html">Click here to find a local volunteer</a>.</p>
+
+      <div class="gps-help-box">
+        <h3>📍 Find Nearby Snake Relocators</h3>
+        <p>This tool will locate the 3 closest volunteers based on your current location:</p>
+        <button onclick="findByGPS()">Use My Location</button>
+        <div id="gpsOutput" style="margin-top: 15px;"></div>
+      </div>
     </div>
 
     <div class="intro">
@@ -147,7 +211,6 @@
     <p>Our volunteers are real people—mothers, fathers, students, veterans, nature lovers—who offer their time and experience to help safely relocate snakes. We’re not a pest control company. We’re a movement helping people live peacefully with nature while giving snakes a second chance in the wild.</p>
 
     <a href="volunteer.html" class="cta">Become a Volunteer</a>
-
   </div>
 </body>
 </html>
