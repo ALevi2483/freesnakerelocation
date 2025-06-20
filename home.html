@@ -2,146 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Find a Snake Relocator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free Snake Removal – Safe, Humane, Volunteer-Powered Directory</title>
-  <meta name="description" content="Free Snake Relocation is a volunteer-based directory offering humane snake removal at no cost. Find help, learn about native snakes, or become a volunteer today." />
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f9f5;
+      color: #333;
       margin: 0;
       padding: 0;
-      background-color: #f4f9f4;
-      color: #333;
     }
-
     .content-wrapper {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-
-    h1 {
+    h1, h2, h3 {
       color: #225533;
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
     }
-
-    .intro {
-      background-color: #e0f5e9;
-      padding: 20px;
-      border-left: 5px solid #226644;
-      border-radius: 6px;
-      margin-bottom: 30px;
+    select, button, input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 20px;
     }
-
-    .alert-box {
-      background-color: #fffce0;
-      border-left: 5px solid #ffcc00;
-      padding: 20px;
-      border-radius: 6px;
-      margin-bottom: 30px;
-    }
-
-    .alert-box a {
-      font-weight: bold;
-      color: #225533;
-      text-decoration: underline;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    .highlight {
-      background-color: #fff;
-      border-left: 5px solid #4caf50;
-      padding: 20px;
-      border-radius: 6px;
-    }
-
-    .highlight strong {
-      color: #226644;
-    }
-
-    .cta {
-      margin-top: 30px;
-      padding: 10px 20px;
-      background-color: #226644;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 5px;
-      display: inline-block;
-    }
-
-    .cta:hover {
-      background-color: #1a503a;
-    }
-
-    .hidden-h1 {
+    .section {
       display: none;
     }
-
-    .disclaimer-note {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 10px;
+    iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
     }
-
-    .link-group {
-      margin-top: 40px;
-    }
-
-    .link-group a {
-      display: inline-block;
-      margin: 10px 10px 0 0;
-      text-decoration: none;
-      font-weight: bold;
-      color: #226644;
-      border: 2px solid #226644;
-      padding: 10px 15px;
-      border-radius: 5px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .link-group a:hover {
-      background-color: #226644;
-      color: white;
-    }
-
-    .gps-help-box {
-      margin-top: 20px;
+    .disclaimer-box {
       background-color: #eef5ee;
-      padding: 20px;
-      border-radius: 10px;
+      border: 1px solid #cfcfcf;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
     }
-
-    .gps-help-box button {
-      padding: 10px 20px;
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    a {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      position: relative;
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 700px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
       background-color: #225533;
       color: white;
+      padding: 8px 12px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-    }
-
-    .gps-help-box button:hover {
-      background-color: #1a503a;
+      z-index: 1001;
     }
   </style>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GB09EFLTCW');
-  </script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec";
+    function showSection() {
+      const selection = document.getElementById('searchMethod').value;
+      const sections = document.getElementsByClassName('section');
+      for (let i = 0; i < sections.length; i++) {
+        sections[i].style.display = 'none';
+      }
+      if (selection) {
+        document.getElementById(selection).style.display = 'block';
+        if (!localStorage.getItem('hasSeenDisclaimer')) {
+          showDisclaimer();
+          localStorage.setItem('hasSeenDisclaimer', 'true');
+        }
+      }
+    }
+
+    function showDisclaimer() {
+      document.getElementById('disclaimerModal').style.display = 'block';
+    }
+
+    function closeDisclaimer() {
+      document.getElementById('disclaimerModal').style.display = 'none';
+    }
+
+    let data = [];
+    fetch(`${scriptURL}?address=ping`)
+      .then(res => res.json())
+      .then(json => {
+        data = json;
+        const states = [...new Set(data.map(r => r.State))].sort();
+        const stateSelect = document.getElementById('stateSelect');
+        states.forEach(state => {
+          const opt = document.createElement('option');
+          opt.value = state;
+          opt.textContent = state;
+          stateSelect.appendChild(opt);
+        });
+      });
+
+    function populateCities() {
+      const selectedState = document.getElementById('stateSelect').value;
+      const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
+      const citySelect = document.getElementById('citySelect');
+      citySelect.innerHTML = '<option value="">--Select City--</option>';
+      cities.forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      document.getElementById('stateCityResults').innerHTML = '';
+    }
+
+    function showResults() {
+      const state = document.getElementById('stateSelect').value;
+      const city = document.getElementById('citySelect').value;
+      const filtered = data.filter(r => r.State === state && r.City === city);
+      const resultDiv = document.getElementById('stateCityResults');
+      resultDiv.innerHTML = filtered.map(r =>
+        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>`
+      ).join('');
+    }
 
     async function findByGPS() {
       const output = document.getElementById("gpsOutput");
@@ -150,17 +158,14 @@
         output.innerHTML = "Your browser does not support GPS location.";
         return;
       }
-
       navigator.geolocation.getCurrentPosition(async position => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
-
         try {
           const res = await fetch(url);
           const data = await res.json();
-
-          if (!data.length || data.error) {
+          if (data.length === 0) {
             output.innerHTML = "No relocators found near you.";
           } else {
             output.innerHTML = data.map(r =>
@@ -174,43 +179,89 @@
         output.innerHTML = "GPS access was denied or not available.";
       });
     }
+
+    async function findByAddress() {
+      const output = document.getElementById("addressOutput");
+      const address = document.getElementById("addressInput").value.trim();
+      if (!address) {
+        output.innerHTML = "Please enter a full address.";
+        return;
+      }
+      output.innerHTML = "Searching...";
+      const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!data.length || data.error) {
+          output.innerHTML = "No relocators found or address could not be located.";
+        } else {
+          output.innerHTML = data.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
+          ).join('<br><br>');
+        }
+      } catch (err) {
+        output.innerHTML = "Error retrieving data. Please try again later.";
+      }
+    }
   </script>
 </head>
 <body>
   <div class="content-wrapper">
-    <h1 class="hidden-h1">Free Snake Relocation – Volunteer Snake Removal Directory</h1>
-    <h1>🐍 Welcome to Free Snake Relocation!</h1>
+    <h1>Find a Snake Relocator</h1>
 
-    <div class="alert-box">
-      <h2 style="margin-top: 0;">Need Help with a Snake Right Now?</h2>
-      <p><a href="find.html">Click here to find a local volunteer</a>.</p>
+    <div class="disclaimer-box">
+      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
+      <p>Before proceeding, please <a onclick="showDisclaimer()">READ THIS DISCLAIMER</a>.</p>
+      <p><strong>The Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
+    </div>
 
-      <div class="gps-help-box">
-        <h3>📍 Find Nearby Snake Relocators</h3>
-        <p>This tool will locate the 2 closest volunteers based on your current location:</p>
-        <button onclick="findByGPS()">Use My Location</button>
-        <div id="gpsOutput" style="margin-top: 15px;"></div>
+    <p><strong>Choose how you want to search:</strong></p>
+    <select id="searchMethod" onchange="showSection()">
+      <option value="">-- Select Search Method --</option>
+      <option value="closest">Find Closest (by Address or GPS)</option>
+      <option value="map">View Relocator Map</option>
+      <option value="stateCity">Search by State & City</option>
+    </select>
+
+    <div id="closest" class="section">
+      <h2>Find Closest (by Address or GPS)</h2>
+      <label for="addressInput">Address:</label>
+      <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
+      <button onclick="findByAddress()">🔍 Search by Address</button>
+      <div id="addressOutput" style="margin-top:15px; font-weight:normal;"></div>
+
+      <div id="gpsResults" style="margin: 40px 0 20px;">
+        <h3>Or Use My Location</h3>
+        <button onclick="findByGPS()">📍 Use Current Location</button>
+        <div id="gpsOutput" style="margin-top:15px; font-weight:normal;"></div>
       </div>
     </div>
 
-    <div class="intro">
-      <p><strong>Free Snake Relocation</strong> is a volunteer-powered community helping safely relocate snakes from homes, businesses, and other properties. Our mission is to protect both people and snakes by promoting coexistence through education, compassion, and quick response—at no cost to the public.</p>
-      <p class="disclaimer-note"><em>Note: All assistance is provided by independent volunteers. The Free Snake Relocation Directory does not employ, assign, or supervise these individuals.</em></p>
+    <div id="map" class="section">
+      <h2>Find a Relocator on the Map</h2>
+      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
     </div>
 
-    <div class="highlight">
-      <p><strong>We’re here to change the narrative around snakes by offering:</strong></p>
-      <ul>
-        <li>✔️ Free and humane snake relocation (where volunteers are available)</li>
-        <li>📚 Education about native species and their ecological role</li>
-        <li>📞 Support for people who encounter snakes and don’t know what to do</li>
-        <li>💚 Opportunities to make a difference through volunteering</li>
-      </ul>
+    <div id="stateCity" class="section">
+      <h2>Find a Relocator by State & City</h2>
+      <label for="stateSelect">Select State:</label>
+      <select id="stateSelect" onchange="populateCities()">
+        <option value="">--Select State--</option>
+      </select>
+      <label for="citySelect">Select City:</label>
+      <select id="citySelect" onchange="showResults()">
+        <option value="">--Select City--</option>
+      </select>
+      <div id="stateCityResults" style="margin-top: 20px;"></div>
     </div>
+  </div>
 
-    <p>Our volunteers are real people—mothers, fathers, students, veterans, nature lovers—who offer their time and experience to help safely relocate snakes. We’re not a pest control company. We’re a movement helping people live peacefully with nature while giving snakes a second chance in the wild.</p>
-
-    <a href="volunteer.html" class="cta">Become a Volunteer</a>
+  <div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+      <button class="close-button" onclick="closeDisclaimer()">X</button>
+      <h2>Free Snake Relocation Directory – Disclaimer</h2>
+      <p><strong>By using this platform, you agree to release and hold harmless the Free Snake Relocation Directory and its administrators from any injury, loss, or liability resulting from interaction with a volunteer relocator.</strong></p>
+    </div>
   </div>
 </body>
 </html>
