@@ -7,84 +7,18 @@
   <meta name="description" content="Join the Free Snake Relocation Directory as a volunteer. Help relocate snakes safely, support conservation efforts, and connect with those in need of humane removal services." />
   <link rel="stylesheet" href="style.css" />
   <style>
-    .section {
-      margin-bottom: 2rem;
-    }
-    .section h2 {
-      color: #226644;
-      margin-bottom: 0.5rem;
-    }
-    .section p,
-    .section ul,
-    .section ol {
-      max-width: 800px;
-    }
-    .button-container {
-      margin-top: 1rem;
-    }
-    .button-container a {
-      display: inline-block;
-      margin-right: 10px;
-      padding: 10px 15px;
-      background-color: #226644;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .button-container a:hover {
-      background-color: #2e7d57;
-    }
-    .faq details {
-      margin-bottom: 1rem;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.85);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      width: 90%;
-      max-width: 800px;
-      max-height: 85%;
-      overflow-y: auto;
-      border-radius: 8px;
-      position: relative;
-    }
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      color: #000;
-      cursor: pointer;
-    }
-    .hidden-h1 {
-      display: none;
-    }
-    .email-link {
-      display: inline-block;
-      background-color: #226644;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 6px;
-    }
-    .email-link:hover {
-      background-color: #2e7d57;
-    }
+    .section { margin-bottom: 2rem; }
+    .section h2 { color: #226644; margin-bottom: 0.5rem; }
+    .section p, .section ul, .section ol { max-width: 800px; }
+    .button-container { margin-top: 1rem; }
+    .button-container a { display: inline-block; margin-right: 10px; padding: 10px 15px; background-color: #226644; color: white; border-radius: 5px; text-decoration: none; font-weight: bold; }
+    .button-container a:hover { background-color: #2e7d57; }
+    .faq details { margin-bottom: 1rem; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
+    .modal-content { background: #fff; padding: 20px; width: 90%; max-width: 800px; max-height: 85%; overflow-y: auto; border-radius: 8px; position: relative; }
+    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #000; cursor: pointer; }
+    .agree-btn { display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #226644; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; }
+    .hidden-h1 { display: none; }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
   <script>
@@ -98,6 +32,10 @@
     }
     function closeDisclaimer() {
       document.getElementById('disclaimerModal').style.display = 'none';
+    }
+    function agreeAndOpenForm() {
+      closeDisclaimer();
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header", '_blank');
     }
   </script>
 </head>
@@ -128,10 +66,10 @@
     <div class="section">
       <h2>📝 How to Join</h2>
       <div class="button-container">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header" target="_blank">Fill Out the Form</a>
+        <a href="#" onclick="openDisclaimer()">Fill Out the Form</a>
       </div>
     </div>
-    
+
     <div class="section faq">
       <h2>❓ FAQ</h2>
       <details>
@@ -174,6 +112,8 @@
       <p><strong>4. Risk Acceptance:</strong> Snake relocation involves inherent risks. You must take proper precautions and understand you are acting at your own risk.</p>
       <p><strong>5. Admin Behavior:</strong> Admins will not assign or recommend specific volunteers. Any self-identification by volunteers is done at their own initiative.</p>
       <p><strong>6. Agreement:</strong> By volunteering, you agree to hold harmless the Free Snake Relocation Directory, its administrators, and its users from any legal claims, injuries, or losses resulting from your activities.</p>
+
+      <button class="agree-btn" onclick="agreeAndOpenForm()">I AGREE – Continue to Form</button>
     </div>
   </div>
 </body>
