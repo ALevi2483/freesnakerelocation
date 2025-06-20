@@ -35,13 +35,6 @@
       height: 800px;
       border: none;
     }
-    .disclaimer-box {
-      background-color: #eef5ee;
-      border: 1px solid #cfcfcf;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
     label {
       display: block;
       margin-top: 10px;
@@ -66,28 +59,116 @@
     .modal-content {
       position: relative;
       background-color: #fff;
-      margin: 10% auto;
+      margin: 5% auto;
       padding: 20px;
       border-radius: 8px;
-      width: 80%;
+      width: 90%;
       max-width: 700px;
+      max-height: 85%;
+      overflow-y: auto;
       box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .close-button, .agree-button {
+      background-color: #225533;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
     }
     .close-button {
       position: absolute;
       top: 10px;
       right: 15px;
-      background-color: #225533;
-      color: white;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 1001;
     }
   </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <h1>Find a Snake Relocator</h1>
+
+    <p><strong>Choose how you want to search:</strong></p>
+    <select id="searchMethod" onchange="handleSearchMethodChange()">
+      <option value="">-- Select Search Method --</option>
+      <option value="closest">Find Closest (by Address or GPS)</option>
+      <option value="map">View Relocator Map</option>
+      <option value="stateCity">Search by State & City</option>
+    </select>
+
+    <div id="closest" class="section">
+      <h2>Find Closest (by Address or GPS)</h2>
+      <label for="addressInput">Address:</label>
+      <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
+      <button onclick="findByAddress()">🔍 Search by Address</button>
+      <div id="addressOutput" style="margin-top:15px;"></div>
+
+      <div id="gpsResults" style="margin: 40px 0 20px;">
+        <h3>Or Use My Location</h3>
+        <button onclick="findByGPS()">📍 Use Current Location</button>
+        <div id="gpsOutput" style="margin-top:15px;"></div>
+      </div>
+    </div>
+
+    <div id="map" class="section">
+      <h2>Find a Relocator on the Map</h2>
+      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen></iframe>
+    </div>
+
+    <div id="stateCity" class="section">
+      <h2>Find a Relocator by State & City</h2>
+      <label for="stateSelect">Select State:</label>
+      <select id="stateSelect" onchange="populateCities()">
+        <option value="">--Select State--</option>
+      </select>
+      <label for="citySelect">Select City:</label>
+      <select id="citySelect" onchange="showResults()">
+        <option value="">--Select City--</option>
+      </select>
+      <div id="stateCityResults" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- Disclaimer Modal -->
+  <div id="disclaimerModal" class="modal">
+    <div class="modal-content" id="disclaimerContent">
+      <button class="close-button" onclick="closeDisclaimer()">X</button>
+      <h2>Free Snake Relocation Directory – Disclaimer</h2>
+
+      <h3>🏠 Section A – For Homeowners / Requesters</h3>
+      <p><strong>1. Informational Purpose Only:</strong> The Directory is an informational platform only. We do not assign, train, or certify any volunteers. All volunteers act independently.</p>
+      <p><strong>2. No Guarantees:</strong> We do not guarantee reliability, skill, or legal compliance of any listed individual.</p>
+      <p><strong>3. Voluntary Use and Assumption of Risk:</strong> If you contact a volunteer, you do so at your own risk. You must assess whether the person is appropriate for your situation.</p>
+      <p><strong>4. Property Access and Communication:</strong> Volunteers must receive your explicit permission before entering your property. All communication, expectations, and outcomes are between you and the volunteer.</p>
+      <p><strong>5. Legal Responsibility:</strong> We are not responsible for injuries, accidents, legal claims, or property damage related to snake relocations. Use of this platform is at your own discretion.</p>
+      <p><strong>6. Agreement:</strong> By using this site, you agree to hold harmless the Free Snake Relocation Directory and its administrators from any liability related to your use of this directory.</p>
+
+      <h3>🐍 Section B – For Volunteers / Relocators</h3>
+      <p><strong>1. Independent Status:</strong> You act independently and are not affiliated, employed, or supervised by this Directory or its admins.</p>
+      <p><strong>2. No Vetting or Supervision:</strong> We do not verify your qualifications or capabilities. You assume full responsibility for all actions taken.</p>
+      <p><strong>3. Legal Compliance:</strong> You are solely responsible for following all relevant wildlife laws and obtaining any necessary permits.</p>
+      <p><strong>4. Risk Acceptance:</strong> Snake relocation involves inherent risks. You must take proper precautions and understand you are acting at your own risk.</p>
+      <p><strong>5. Admin Behavior:</strong> Admins will not assign or recommend specific volunteers. Any self-identification by volunteers is done at their own initiative.</p>
+      <p><strong>6. Agreement:</strong> By volunteering, you agree to hold harmless the Free Snake Relocation Directory, its administrators, and its users from any legal claims, injuries, or losses resulting from your activities.</p>
+
+      <button id="agreeButton" class="agree-button" disabled>I Agree</button>
+    </div>
+  </div>
+
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
+
+    let disclaimerAccepted = localStorage.getItem("disclaimerAccepted");
+    function handleSearchMethodChange() {
+      const value = document.getElementById('searchMethod').value;
+      if (!disclaimerAccepted) {
+        showDisclaimer(() => {
+          document.getElementById(value).style.display = 'block';
+        });
+      } else {
+        showSection();
+      }
+    }
 
     function showSection() {
       const selection = document.getElementById('searchMethod').value;
@@ -100,12 +181,30 @@
       }
     }
 
-    function showDisclaimer() {
-      document.getElementById('disclaimerModal').style.display = 'block';
+    function showDisclaimer(callback) {
+      document.getElementById("disclaimerModal").style.display = "block";
+      const content = document.getElementById("disclaimerContent");
+      const agreeBtn = document.getElementById("agreeButton");
+
+      content.scrollTop = 0;
+      agreeBtn.disabled = true;
+
+      content.onscroll = function () {
+        if (content.scrollTop + content.clientHeight >= content.scrollHeight - 5) {
+          agreeBtn.disabled = false;
+        }
+      };
+
+      agreeBtn.onclick = function () {
+        document.getElementById("disclaimerModal").style.display = "none";
+        localStorage.setItem("disclaimerAccepted", "true");
+        disclaimerAccepted = true;
+        if (callback) callback();
+      };
     }
 
     function closeDisclaimer() {
-      document.getElementById('disclaimerModal').style.display = 'none';
+      document.getElementById("disclaimerModal").style.display = "none";
     }
 
     let data = [];
@@ -200,64 +299,5 @@
       }
     }
   </script>
-</head>
-<body>
-  <div class="content-wrapper">
-    <h1>Find a Snake Relocator</h1>
-
-    <div class="disclaimer-box">
-      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
-      <p>Before proceeding, please <a onclick="showDisclaimer()">READ THIS DISCLAIMER</a>.</p>
-      <p><strong>The Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
-    </div>
-
-    <p><strong>Choose how you want to search:</strong></p>
-    <select id="searchMethod" onchange="showSection()">
-      <option value="">-- Select Search Method --</option>
-      <option value="closest">Find Closest (by Address or GPS)</option>
-      <option value="map">View Relocator Map</option>
-      <option value="stateCity">Search by State & City</option>
-    </select>
-
-    <div id="closest" class="section">
-      <h2>Find Closest (by Address or GPS)</h2>
-      <label for="addressInput">Address:</label>
-      <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
-      <button onclick="findByAddress()">🔍 Search by Address</button>
-      <div id="addressOutput" style="margin-top:15px; font-weight:normal;"></div>
-
-      <div id="gpsResults" style="margin: 40px 0 20px;">
-        <h3>Or Use My Location</h3>
-        <button onclick="findByGPS()">📍 Use Current Location</button>
-        <div id="gpsOutput" style="margin-top:15px; font-weight:normal;"></div>
-      </div>
-    </div>
-
-    <div id="map" class="section">
-      <h2>Find a Relocator on the Map</h2>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
-    </div>
-
-    <div id="stateCity" class="section">
-      <h2>Find a Relocator by State & City</h2>
-      <label for="stateSelect">Select State:</label>
-      <select id="stateSelect" onchange="populateCities()">
-        <option value="">--Select State--</option>
-      </select>
-      <label for="citySelect">Select City:</label>
-      <select id="citySelect" onchange="showResults()">
-        <option value="">--Select City--</option>
-      </select>
-      <div id="stateCityResults" style="margin-top: 20px;"></div>
-    </div>
-  </div>
-
-  <div id="disclaimerModal" class="modal">
-    <div class="modal-content">
-      <button class="close-button" onclick="closeDisclaimer()">X</button>
-      <h2>Free Snake Relocation Directory – Disclaimer</h2>
-      <p><strong>By using this platform, you agree to release and hold harmless the Free Snake Relocation Directory and its administrators from any injury, loss, or liability resulting from interaction with a volunteer relocator.</strong></p>
-    </div>
-  </div>
 </body>
 </html>
