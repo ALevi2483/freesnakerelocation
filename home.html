@@ -2,60 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Find a Snake Relocator</title>
+  <title>Free Snake Relocation – Safe, Humane, Volunteer-Powered Directory</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9f5;
-      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
       margin: 0;
       padding: 0;
+      background-color: #f4f9f4;
+      color: #333;
     }
+
     .content-wrapper {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
     }
-    h1, h2, h3 {
+
+    h1 {
       color: #225533;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
     }
-    select, button, input {
-      width: 100%;
-      padding: 10px;
+
+    h2 {
+      color: #225533;
+      font-size: 1.75rem;
+      margin-top: 40px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .gps-button {
+      padding: 12px 18px;
       font-size: 1rem;
-      margin-bottom: 20px;
-    }
-    .section {
-      display: none;
-    }
-    iframe {
-      width: 100%;
-      height: 800px;
+      background-color: #337a3b;
+      color: white;
       border: none;
-    }
-    .disclaimer-box {
-      background-color: #eef5ee;
-      border: 1px solid #cfcfcf;
-      padding: 15px;
       border-radius: 5px;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    a {
-      color: blue;
-      text-decoration: underline;
       cursor: pointer;
     }
-    .modal {
+
+    .disclaimer-modal {
       display: none;
       position: fixed;
-      z-index: 999;
+      z-index: 9999;
       left: 0;
       top: 0;
       width: 100%;
@@ -63,204 +59,87 @@
       overflow: auto;
       background-color: rgba(0, 0, 0, 0.5);
     }
-    .modal-content {
-      position: relative;
+
+    .disclaimer-content {
       background-color: #fff;
       margin: 10% auto;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 10px;
       width: 80%;
-      max-width: 700px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      max-width: 600px;
+      position: relative;
     }
-    .close-button {
+
+    .close-btn {
       position: absolute;
       top: 10px;
       right: 15px;
       background-color: #225533;
       color: white;
-      padding: 8px 12px;
       border: none;
+      padding: 5px 10px;
       border-radius: 5px;
       cursor: pointer;
-      z-index: 1001;
     }
   </style>
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
-
-    function showSection() {
-      const selection = document.getElementById('searchMethod').value;
-      const sections = document.getElementsByClassName('section');
-      for (let i = 0; i < sections.length; i++) {
-        sections[i].style.display = 'none';
-      }
-      if (selection) {
-        document.getElementById(selection).style.display = 'block';
-        if (!localStorage.getItem('hasSeenDisclaimer')) {
-          showDisclaimer();
-          localStorage.setItem('hasSeenDisclaimer', 'true');
-        }
-      }
+    function showDisclaimer(callback) {
+      const modal = document.getElementById("disclaimerModal");
+      modal.style.display = "block";
+      const agreeBtn = document.getElementById("agreeDisclaimer");
+      agreeBtn.onclick = () => {
+        modal.style.display = "none";
+        callback();
+      };
     }
 
-    function showDisclaimer() {
-      document.getElementById('disclaimerModal').style.display = 'block';
-    }
-
-    function closeDisclaimer() {
-      document.getElementById('disclaimerModal').style.display = 'none';
-    }
-
-    let data = [];
-    fetch(`${scriptURL}?address=ping`)
-      .then(res => res.json())
-      .then(json => {
-        data = json;
-        const states = [...new Set(data.map(r => r.State))].sort();
-        const stateSelect = document.getElementById('stateSelect');
-        states.forEach(state => {
-          const opt = document.createElement('option');
-          opt.value = state;
-          opt.textContent = state;
-          stateSelect.appendChild(opt);
-        });
-      });
-
-    function populateCities() {
-      const selectedState = document.getElementById('stateSelect').value;
-      const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
-      const citySelect = document.getElementById('citySelect');
-      citySelect.innerHTML = '<option value="">--Select City--</option>';
-      cities.forEach(city => {
-        const opt = document.createElement('option');
-        opt.value = city;
-        opt.textContent = city;
-        citySelect.appendChild(opt);
-      });
-      document.getElementById('stateCityResults').innerHTML = '';
-    }
-
-    function showResults() {
-      const state = document.getElementById('stateSelect').value;
-      const city = document.getElementById('citySelect').value;
-      const filtered = data.filter(r => r.State === state && r.City === city);
-      const resultDiv = document.getElementById('stateCityResults');
-      resultDiv.innerHTML = filtered.map(r =>
-        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>`
-      ).join('');
-    }
-
-    async function findByGPS() {
-      const output = document.getElementById("gpsOutput");
-      output.innerHTML = "Locating you...";
+    function getLocationAndSearch() {
       if (!navigator.geolocation) {
-        output.innerHTML = "Your browser does not support GPS location.";
+        alert("Geolocation is not supported by your browser.");
         return;
       }
-      navigator.geolocation.getCurrentPosition(async position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
-        try {
-          const res = await fetch(url);
-          const data = await res.json();
-          if (data.length === 0) {
-            output.innerHTML = "No relocators found near you.";
-          } else {
-            output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
-            ).join('<br><br>');
-          }
-        } catch (err) {
-          output.innerHTML = "Error retrieving data. Please try again later.";
-        }
-      }, () => {
-        output.innerHTML = "GPS access was denied or not available.";
-      });
-    }
+      navigator.geolocation.getCurrentPosition(success, error);
 
-    async function findByAddress() {
-      const output = document.getElementById("addressOutput");
-      const address = document.getElementById("addressInput").value.trim();
-      if (!address) {
-        output.innerHTML = "Please enter a full address.";
-        return;
+      function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        window.location.href = `find.html?lat=${latitude}&lng=${longitude}`;
       }
-      output.innerHTML = "Searching...";
-      const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        if (!data.length || data.error) {
-          output.innerHTML = "No relocators found or address could not be located.";
-        } else {
-          output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
-          ).join('<br><br>');
-        }
-      } catch (err) {
-        output.innerHTML = "Error retrieving data. Please try again later.";
+
+      function error() {
+        alert("Unable to retrieve your location.");
       }
     }
   </script>
 </head>
 <body>
   <div class="content-wrapper">
-    <h1>Find a Snake Relocator</h1>
+    <h1>Need Help with a Snake Right Now?</h1>
+    <p>Click the button below to find the nearest volunteer who may be able to help you relocate a snake.</p>
+    <button class="gps-button" onclick="showDisclaimer(getLocationAndSearch)">📍 Use My Location to Find Help</button>
 
-    <div class="disclaimer-box">
-      <div style="font-weight:bold; margin-bottom:10px;">⚠️ Important: Read the Disclaimer Before Proceeding</div>
-      <p>Before proceeding, please <a onclick="showDisclaimer()">READ THIS DISCLAIMER</a>.</p>
-      <p><strong>The Free Snake Relocation Directory and its administrators are not responsible for any injuries, damages, or legal matters</strong> resulting from any relocation efforts. Volunteers operate independently, and it is the responsibility of both parties (homeowners and volunteers) to ensure proper communication, safety, and compliance with local laws.</p>
-    </div>
+    <h2>What is Free Snake Relocation?</h2>
+    <p>We are a volunteer-powered, national directory that connects people with snake relocation volunteers across the U.S. Our goal is to prevent unnecessary killing of snakes by connecting the public with people who can safely and humanely remove and relocate them.</p>
 
-    <p><strong>Choose how you want to search:</strong></p>
-    <select id="searchMethod" onchange="showSection()">
-      <option value="">-- Select Search Method --</option>
-      <option value="closest">Find Closest (by Address or GPS)</option>
-      <option value="map">View Relocator Map</option>
-      <option value="stateCity">Search by State & City</option>
-    </select>
+    <h2>How Does It Work?</h2>
+    <p>Volunteers add their information to our public map. You can search by state, city, or GPS to find help near you. We don't charge any fees and volunteers are not compensated by us – any arrangements must be made directly between you and the volunteer.</p>
 
-    <div id="closest" class="section">
-      <h2>Find Closest (by Address or GPS)</h2>
-      <label for="addressInput">Address:</label>
-      <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
-      <button onclick="findByAddress()">🔍 Search by Address</button>
-      <div id="addressOutput" style="margin-top:15px; font-weight:normal;"></div>
-
-      <div id="gpsResults" style="margin: 40px 0 20px;">
-        <h3>Or Use My Location</h3>
-        <button onclick="findByGPS()">📍 Use Current Location</button>
-        <div id="gpsOutput" style="margin-top:15px; font-weight:normal;"></div>
-      </div>
-    </div>
-
-    <div id="map" class="section">
-      <h2>Find a Relocator on the Map</h2>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen title="Relocator Map"></iframe>
-    </div>
-
-    <div id="stateCity" class="section">
-      <h2>Find a Relocator by State & City</h2>
-      <label for="stateSelect">Select State:</label>
-      <select id="stateSelect" onchange="populateCities()">
-        <option value="">--Select State--</option>
-      </select>
-      <label for="citySelect">Select City:</label>
-      <select id="citySelect" onchange="showResults()">
-        <option value="">--Select City--</option>
-      </select>
-      <div id="stateCityResults" style="margin-top: 20px;"></div>
-    </div>
+    <h2>Interested in Volunteering?</h2>
+    <p>If you relocate snakes and want to help your community, <a href="volunteer.html">click here to sign up</a>. We’re always looking for more volunteers to expand our reach and save more snakes!</p>
   </div>
 
-  <div id="disclaimerModal" class="modal">
-    <div class="modal-content">
-      <button class="close-button" onclick="closeDisclaimer()">X</button>
+  <div id="disclaimerModal" class="disclaimer-modal">
+    <div class="disclaimer-content">
+      <button class="close-btn" onclick="document.getElementById('disclaimerModal').style.display='none'">X</button>
       <h2>Free Snake Relocation Directory – Disclaimer</h2>
-      <p><strong>By using this platform, you agree to release and hold harmless the Free Snake Relocation Directory and its administrators from any injury, loss, or liability resulting from interaction with a volunteer relocator.</strong></p>
+      <p><strong>By using this service, you acknowledge that:</strong></p>
+      <ul>
+        <li>All volunteers listed operate independently and are not employees or agents of the Free Snake Relocation Directory.</li>
+        <li>You are solely responsible for communicating with the volunteer and ensuring your own safety.</li>
+        <li>The Free Snake Relocation Directory is not liable for any injury, loss, or damage resulting from use of this service.</li>
+      </ul>
+      <p>Click “Agree and Continue” to proceed and find help.</p>
+      <button id="agreeDisclaimer" class="gps-button">Agree and Continue</button>
     </div>
   </div>
 </body>
