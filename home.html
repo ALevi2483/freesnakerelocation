@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -120,54 +120,6 @@
       }
     }
   </style>
-  <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
-
-    function showDisclaimerModal(callback) {
-      const modal = document.getElementById("disclaimerModal");
-      modal.style.display = "flex";
-      document.getElementById("acceptDisclaimer").onclick = function() {
-        modal.style.display = "none";
-        localStorage.setItem("disclaimerAccepted", "true");
-        if (callback) callback();
-      };
-    }
-
-    function findByGPSHome() {
-      const accepted = localStorage.getItem("disclaimerAccepted");
-      if (!accepted) {
-        showDisclaimerModal(findByGPSHome);
-        return;
-      }
-
-      const output = document.getElementById("gpsHomeOutput");
-      output.innerHTML = "Locating you...";
-      if (!navigator.geolocation) {
-        output.innerHTML = "Your browser does not support GPS location.";
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(async position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
-        try {
-          const res = await fetch(url);
-          const data = await res.json();
-          if (data.length === 0) {
-            output.innerHTML = "No relocators found near you.";
-          } else {
-            output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
-            ).join('<br><br>');
-          }
-        } catch (err) {
-          output.innerHTML = "Error retrieving data. Please try again later.";
-        }
-      }, () => {
-        output.innerHTML = "GPS access was denied or not available.";
-      });
-    }
-  </script>
 </head>
 <body>
   <div class="banner">
@@ -180,14 +132,10 @@
       <h2>🚨 Need Help with a Snake Right Now?</h2>
       <p>Click below to find the closest snake relocators near you.</p>
       <button onclick="findByGPSHome()">📍 Use My Location</button>
-
-      <!-- Moved GPS results here -->
       <div id="gpsHomeOutput" style="margin-top:15px;"></div>
-
       <div class="notice-banner">
         📱 Text the number instead of calling. Many people do not answer unknown numbers.
       </div>
-
       <p style="margin-top:10px;">
         <a href="/find.html">Don't want to use GPS? Click here to search by state or browse the map →</a>
       </p>
@@ -248,5 +196,57 @@
       <button class="accept-btn" id="acceptDisclaimer">I Agree</button>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
+
+      function showDisclaimerModal(callback) {
+        const modal = document.getElementById("disclaimerModal");
+        modal.style.display = "flex";
+        document.getElementById("acceptDisclaimer").onclick = function () {
+          modal.style.display = "none";
+          localStorage.setItem("disclaimerAccepted", "true");
+          if (callback) callback();
+        };
+      }
+
+      window.findByGPSHome = function () {
+        const accepted = localStorage.getItem("disclaimerAccepted");
+        if (!accepted) {
+          showDisclaimerModal(findByGPSHome);
+          return;
+        }
+
+        const output = document.getElementById("gpsHomeOutput");
+        output.innerHTML = "Locating you...";
+        if (!navigator.geolocation) {
+          output.innerHTML = "Your browser does not support GPS location.";
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
+          try {
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.length === 0) {
+              output.innerHTML = "No relocators found near you.";
+            } else {
+              output.innerHTML = data.map(r =>
+                `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
+              ).join('<br><br>');
+            }
+          } catch (err) {
+            output.innerHTML = "Error retrieving data. Please try again later.";
+          }
+        }, () => {
+          output.innerHTML = "GPS access was denied or not available.";
+        });
+      };
+    });
+  </script>
 </body>
 </html>
