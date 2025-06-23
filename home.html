@@ -29,14 +29,48 @@
     }
     .section h2 {
       color: #225533;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     button {
-      padding: 10px 15px;
+      padding: 14px 20px;
       background-color: #225533;
       color: white;
       border: none;
       border-radius: 5px;
+      font-size: 1.1rem;
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    button:hover {
+      background-color: #1a3e28;
+      transform: scale(1.03);
+    }
+    .notice-banner {
+      background-color: #ffefc2;
+      border: 2px solid #cc9933;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #663300;
+    }
+    blockquote {
+      border-left: 4px solid #225533;
+      padding-left: 15px;
+      margin: 20px 0;
+      color: #555;
+      font-style: italic;
+    }
+    a {
+      color: #225533;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
     .modal {
       display: none;
@@ -76,15 +110,14 @@
       font-size: 20px;
       font-weight: bold;
     }
-    .notice-banner {
-      background-color: #ffefc2;
-      border: 2px solid #cc9933;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #663300;
+    @media screen and (max-width: 600px) {
+      .notice-banner {
+        font-size: 1rem;
+        text-align: center;
+      }
+      button {
+        width: 100%;
+      }
     }
   </style>
   <script>
@@ -144,28 +177,45 @@
 
   <div class="content-wrapper">
     <div class="section">
-      <h2>Need Help with a Snake Right Now?</h2>
+      <h2>🚨 Need Help with a Snake Right Now?</h2>
       <p>Click below to find the closest snake relocators near you.</p>
       <button onclick="findByGPSHome()">📍 Use My Location</button>
       <div class="notice-banner">
         📱 Text the number instead of calling. Many people do not answer unknown numbers.
       </div>
+      <p style="margin-top:10px;">
+        <a href="/find.html">Don't want to use GPS? Click here to search by state or browse the map →</a>
+      </p>
+      <p style="font-style: italic; margin-top: 10px;">
+        🆓 This service is 100% free, powered by volunteers in your area.
+      </p>
       <div id="gpsHomeOutput" style="margin-top:15px;"></div>
     </div>
 
     <div class="section">
-      <h2>How It Works</h2>
+      <h2>🐍 How It Works</h2>
       <p>We connect people with volunteer snake relocators in their area. Use our tools to search by GPS, address, or browse the interactive map.</p>
     </div>
 
     <div class="section">
-      <h2>Become a Volunteer</h2>
+      <h2>🤝 Become a Volunteer</h2>
       <p>If you have experience handling snakes and want to help your community, <a href="/volunteer.html">sign up here</a>.</p>
     </div>
 
     <div class="section">
-      <h2>Learn About Snakes</h2>
+      <h2>📚 Learn About Snakes</h2>
       <p>Visit our <a href="/education.html">Education Section</a> to learn about snakes by state and how to coexist safely with them.</p>
+    </div>
+
+    <div class="section">
+      <h2>💬 What People Are Saying</h2>
+      <blockquote>
+        “Thanks to this site, a volunteer came within 30 minutes and safely removed the snake from my backyard. Amazing work!” – Maria R., Florida
+      </blockquote>
+    </div>
+
+    <div class="section" style="font-size: 0.9rem;">
+      🔧 Found an issue or bad listing? <a href="/contact.html">Let us know here.</a>
     </div>
   </div>
 
