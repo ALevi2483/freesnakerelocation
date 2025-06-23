@@ -1,4 +1,4 @@
-<!DOCTYPE html>   
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -91,7 +91,7 @@
       font-size: 1.1rem;
       font-weight: bold;
       color: #663300;
-      display: none; /* hidden by default */
+      display: none;
     }
   </style>
 </head>
@@ -149,23 +149,27 @@
     <div class="modal-content" id="disclaimerContent">
       <button class="close-button" onclick="closeDisclaimer()">X</button>
       <h2>Free Snake Relocation Directory – Disclaimer</h2>
-      <!-- [omitted for brevity, unchanged disclaimer content] -->
+      <p><strong>1. Informational Only:</strong> Volunteers are not vetted. Use at your own risk.</p>
+      <p><strong>2. No Guarantees:</strong> We do not guarantee quality or legality of volunteer actions.</p>
+      <p><strong>3. Independent Use:</strong> You assume all responsibility when contacting a volunteer.</p>
+      <p><strong>4. Volunteer Status:</strong> Volunteers act independently, not as agents of this site.</p>
+      <p><strong>5. Legal Compliance:</strong> Users and volunteers are responsible for following all local laws.</p>
+      <p><strong>6. Agreement:</strong> By using this tool, you agree to hold harmless the Free Snake Relocation Directory and its administrators.</p>
       <button id="agreeButton" class="agree-button" disabled>I Agree</button>
     </div>
   </div>
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
-    let disclaimerAccepted = localStorage.getItem("disclaimerAccepted");
 
     function handleSearchMethodChange() {
       const value = document.getElementById('searchMethod').value;
       if (!value) return;
 
-      // Show the yellow banner once a method is selected
+      const accepted = localStorage.getItem("disclaimerAccepted");
       document.getElementById("noticeBanner").style.display = "block";
 
-      if (!disclaimerAccepted) {
+      if (!accepted) {
         showDisclaimer(() => {
           showSection();
         });
@@ -201,7 +205,6 @@
       agreeBtn.onclick = function () {
         document.getElementById("disclaimerModal").style.display = "none";
         localStorage.setItem("disclaimerAccepted", "true");
-        disclaimerAccepted = true;
         if (callback) callback();
       };
     }
