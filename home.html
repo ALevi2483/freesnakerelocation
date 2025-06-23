@@ -76,6 +76,16 @@
       font-size: 20px;
       font-weight: bold;
     }
+    .notice-banner {
+      background-color: #ffefc2;
+      border: 2px solid #cc9933;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #663300;
+    }
   </style>
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
@@ -137,6 +147,9 @@
       <h2>Need Help with a Snake Right Now?</h2>
       <p>Click below to find the closest snake relocators near you.</p>
       <button onclick="findByGPSHome()">📍 Use My Location</button>
+      <div class="notice-banner">
+        📱 Text the number instead of calling. Many people do not answer unknown numbers.
+      </div>
       <div id="gpsHomeOutput" style="margin-top:15px;"></div>
     </div>
 
@@ -156,7 +169,7 @@
     </div>
   </div>
 
-  <!-- Updated Disclaimer Modal -->
+  <!-- Disclaimer Modal -->
   <div class="modal" id="disclaimerModal">
     <div class="modal-content">
       <span class="close-btn" onclick="document.getElementById('disclaimerModal').style.display='none'">&times;</span>
