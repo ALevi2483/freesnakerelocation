@@ -166,8 +166,8 @@
       const value = document.getElementById('searchMethod').value;
       if (!value) return;
 
-      const accepted = localStorage.getItem("disclaimerAccepted");
       document.getElementById("noticeBanner").style.display = "block";
+      const accepted = localStorage.getItem("disclaimerAccepted");
 
       if (!accepted) {
         showDisclaimer(() => {
@@ -195,6 +195,11 @@
 
       content.scrollTop = 0;
       agreeBtn.disabled = true;
+
+      const canScroll = content.scrollHeight > content.clientHeight;
+      if (!canScroll) {
+        agreeBtn.disabled = false;
+      }
 
       content.onscroll = function () {
         if (content.scrollTop + content.clientHeight >= content.scrollHeight - 5) {
