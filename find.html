@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>  
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -171,14 +171,15 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
-
     let disclaimerAccepted = localStorage.getItem("disclaimerAccepted");
 
     function handleSearchMethodChange() {
       const value = document.getElementById('searchMethod').value;
+      if (!value) return; // Do nothing for empty selection
+
       if (!disclaimerAccepted) {
         showDisclaimer(() => {
-          document.getElementById(value).style.display = 'block';
+          showSection();
         });
       } else {
         showSection();
@@ -191,9 +192,8 @@
       for (let i = 0; i < sections.length; i++) {
         sections[i].style.display = 'none';
       }
-      if (selection) {
-        document.getElementById(selection).style.display = 'block';
-      }
+      if (!selection) return;
+      document.getElementById(selection).style.display = 'block';
     }
 
     function showDisclaimer(callback) {
