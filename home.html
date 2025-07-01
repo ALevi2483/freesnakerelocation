@@ -86,7 +86,7 @@
     }
     .modal-content {
       background: #fff;
-      padding: 20px 20px 80px; /* extra bottom padding */
+      padding: 20px 20px 80px;
       width: 90%;
       max-width: 800px;
       max-height: 85%;
@@ -118,6 +118,7 @@
       border-radius: 5px;
       font-size: 1.1rem;
       margin-top: 30px;
+      margin-bottom: env(safe-area-inset-bottom, 25px); /* NEW LINE */
       z-index: 1;
       box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
       cursor: pointer;
