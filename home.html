@@ -86,7 +86,7 @@
     }
     .modal-content {
       background: #fff;
-      padding: 20px;
+      padding: 20px 20px 80px; /* extra bottom padding */
       width: 90%;
       max-width: 800px;
       max-height: 85%;
@@ -94,21 +94,33 @@
       border-radius: 8px;
       position: relative;
     }
-    .close-btn, .accept-btn {
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
       background-color: #225533;
       color: white;
       padding: 10px 15px;
       border: none;
       border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
       font-size: 20px;
       font-weight: bold;
+      cursor: pointer;
+    }
+    .accept-btn {
+      position: sticky;
+      bottom: 0;
+      background-color: #225533;
+      color: white;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      margin-top: 30px;
+      z-index: 1;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
     }
     @media screen and (max-width: 600px) {
       .notice-banner {
@@ -174,7 +186,7 @@
   <!-- Disclaimer Modal -->
   <div class="modal" id="disclaimerModal">
     <div class="modal-content">
-      <span class="close-btn" onclick="document.getElementById('disclaimerModal').style.display='none'">&times;</span>
+      <button class="close-btn" onclick="document.getElementById('disclaimerModal').style.display='none'">&times;</button>
       <h2>Free Snake Relocation Directory – Disclaimer</h2>
 
       <h3>🏠 Section A – For Homeowners / Requesters</h3>
