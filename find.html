@@ -188,6 +188,48 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyQFYbdIPk8SkjERSvqQMX2ococTDIZtMBVx0T9Oc0AG97fe0TJNdSCNJAS47oEojwZ/exec';
+    let data = [];
+
+    fetch(`${scriptURL}?address=ping`)
+      .then(res => res.json())
+      .then(json => {
+        data = json.filter(r => r.State && r.City);
+        const states = [...new Set(data.map(r => r.State))].sort();
+        const stateSelect = document.getElementById('stateSelect');
+        stateSelect.innerHTML = '<option value="">--Select State--</option>';
+        states.forEach(state => {
+          const opt = document.createElement('option');
+          opt.value = state;
+          opt.textContent = state;
+          stateSelect.appendChild(opt);
+        });
+      });
+
+    function populateCities() {
+      const selectedState = document.getElementById('stateSelect').value;
+      const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
+      const citySelect = document.getElementById('citySelect');
+      citySelect.innerHTML = '<option value="">--Select City--</option>';
+      cities.forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      document.getElementById('stateCityResults').innerHTML = '';
+    }
+
+    function showResults() {
+      const state = document.getElementById('stateSelect').value;
+      const city = document.getElementById('citySelect').value;
+      const filtered = data.filter(r => r.State === state && r.City === city);
+      const resultDiv = document.getElementById('stateCityResults');
+      resultDiv.innerHTML = filtered.map(r =>
+        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
+        (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
+        `</div>`
+      ).join('<br><br>');
+    }
 
     function handleSearchMethodChange() {
       const value = document.getElementById('searchMethod').value;
@@ -243,47 +285,6 @@
 
     function closeDisclaimer() {
       document.getElementById("disclaimerModal").style.display = "none";
-    }
-
-    let data = [];
-    fetch(`${scriptURL}?address=ping`)
-      .then(res => res.json())
-      .then(json => {
-        data = json;
-        const states = [...new Set(data.map(r => r.State))].sort();
-        const stateSelect = document.getElementById('stateSelect');
-        states.forEach(state => {
-          const opt = document.createElement('option');
-          opt.value = state;
-          opt.textContent = state;
-          stateSelect.appendChild(opt);
-        });
-      });
-
-    function populateCities() {
-      const selectedState = document.getElementById('stateSelect').value;
-      const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
-      const citySelect = document.getElementById('citySelect');
-      citySelect.innerHTML = '<option value="">--Select City--</option>';
-      cities.forEach(city => {
-        const opt = document.createElement('option');
-        opt.value = city;
-        opt.textContent = city;
-        citySelect.appendChild(opt);
-      });
-      document.getElementById('stateCityResults').innerHTML = '';
-    }
-
-    function showResults() {
-      const state = document.getElementById('stateSelect').value;
-      const city = document.getElementById('citySelect').value;
-      const filtered = data.filter(r => r.State === state && r.City === city);
-      const resultDiv = document.getElementById('stateCityResults');
-      resultDiv.innerHTML = filtered.map(r =>
-        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
-        (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
-        `</div>`
-      ).join('<br><br>');
     }
 
     async function findByGPS() {
