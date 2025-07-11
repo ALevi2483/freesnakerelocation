@@ -1,92 +1,162 @@
-<script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxtmz0CoI5iva6whiEXgRw5IMA1MRYj2-4y9E7DXLtWccCYRmhq3G1bFFDpXeKqRkjPWw/exec';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Find a Snake Relocator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f8f4;
+    }
+    h2 {
+      color: #2d593f;
+    }
+    input, select, button {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      max-width: 400px;
+    }
+    button {
+      background-color: #336633;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2a552a;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .results {
+      margin-top: 15px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    small {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h2>Find a Snake Relocator</h2>
 
-  let fullData = [];
+  <div class="section">
+    <label for="addressInput">Enter Your Address</label>
+    <input type="text" id="addressInput" placeholder="123 Main St, City, State">
+    <button onclick="findByAddress()">🔍 Search by Address</button>
+    <div id="addressOutput" class="results"></div>
+  </div>
 
-  // Initial fetch for populating dropdowns
-  fetch(`${scriptURL}?address=ping`)
-    .then(res => res.json())
-    .then(json => {
-      fullData = json.filter(r => r.State && r.City);
-      const states = [...new Set(fullData.map(r => r.State))].sort();
-      const stateSelect = document.getElementById('stateSelect');
-      stateSelect.innerHTML = '<option value="">--Select State--</option>';
-      states.forEach(state => {
-        const opt = document.createElement('option');
-        opt.value = state;
-        opt.textContent = state;
-        stateSelect.appendChild(opt);
+  <div class="section">
+    <label>Or Use My Location</label><br>
+    <button onclick="findByGPS()">📍 Use Current Location</button>
+    <div id="gpsOutput" class="results"></div>
+  </div>
+
+  <div class="section">
+    <label for="stateSelect">Search by State</label>
+    <select id="stateSelect" onchange="populateCities()"></select>
+
+    <label for="citySelect">Then Select a City</label>
+    <select id="citySelect"></select>
+
+    <button onclick="showResults()">Show Results</button>
+    <div id="stateCityResults" class="results"></div>
+  </div>
+
+  <!-- Script Section -->
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxtmz0CoI5iva6whiEXgRw5IMA1MRYj2-4y9E7DXLtWccCYRmhq3G1bFFDpXeKqRkjPWw/exec';
+    let fullData = [];
+
+    // Populate state dropdown
+    fetch(`${scriptURL}?address=ping`)
+      .then(res => res.json())
+      .then(json => {
+        fullData = json.filter(r => r.State && r.City);
+        const states = [...new Set(fullData.map(r => r.State))].sort();
+        const stateSelect = document.getElementById('stateSelect');
+        stateSelect.innerHTML = '<option value="">--Select State--</option>';
+        states.forEach(state => {
+          const opt = document.createElement('option');
+          opt.value = state;
+          opt.textContent = state;
+          stateSelect.appendChild(opt);
+        });
       });
-    });
 
-  function toggleDisclaimer() {
-    const d = document.getElementById("disclaimerText");
-    d.style.display = d.style.display === "none" ? "block" : "none";
-  }
-
-  function agreeDisclaimer() {
-    localStorage.setItem("disclaimerAccepted", "true");
-    document.getElementById("disclaimerText").style.display = "none";
-    document.getElementById("searchOptions").style.display = "block";
-  }
-
-  window.onload = () => {
-    if (localStorage.getItem("disclaimerAccepted") === "true") {
-      document.getElementById("searchOptions").style.display = "block";
+    function populateCities() {
+      const selectedState = document.getElementById('stateSelect').value;
+      const cities = [...new Set(fullData.filter(r => r.State === selectedState).map(r => r.City))].sort();
+      const citySelect = document.getElementById('citySelect');
+      citySelect.innerHTML = '<option value="">--Select City--</option>';
+      cities.forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      document.getElementById('stateCityResults').innerHTML = '';
     }
-  };
 
-  function populateCities() {
-    const selectedState = document.getElementById('stateSelect').value;
-    const cities = [...new Set(fullData.filter(r => r.State === selectedState).map(r => r.City))].sort();
-    const citySelect = document.getElementById('citySelect');
-    citySelect.innerHTML = '<option value="">--Select City--</option>';
-    cities.forEach(city => {
-      const opt = document.createElement('option');
-      opt.value = city;
-      opt.textContent = city;
-      citySelect.appendChild(opt);
-    });
-    document.getElementById('stateCityResults').innerHTML = '';
-  }
-
-  function showResults() {
-    const state = document.getElementById('stateSelect').value;
-    const city = document.getElementById('citySelect').value;
-    const filtered = fullData.filter(r => r.State === state && r.City === city);
-    const resultDiv = document.getElementById('stateCityResults');
-    resultDiv.innerHTML = filtered.map(r =>
-      `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>`
-    ).join('<br><br>');
-  }
-
-  function handleSearchMethodChange() {
-    const value = document.getElementById('searchMethod').value;
-    if (!value) return;
-    document.getElementById("noticeBanner").style.display = "block";
-    const sections = document.getElementsByClassName('section');
-    for (let i = 0; i < sections.length; i++) {
-      sections[i].style.display = 'none';
+    function showResults() {
+      const state = document.getElementById('stateSelect').value;
+      const city = document.getElementById('citySelect').value;
+      const filtered = fullData.filter(r => r.State === state && r.City === city);
+      const resultDiv = document.getElementById('stateCityResults');
+      resultDiv.innerHTML = filtered.map(r =>
+        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>`
+      ).join('<br><br>');
     }
-    document.getElementById(value).style.display = 'block';
-  }
 
-  async function findByGPS() {
-    const output = document.getElementById("gpsOutput");
-    output.innerHTML = "Locating you...";
-    if (!navigator.geolocation) {
-      output.innerHTML = "Your browser does not support GPS location.";
-      return;
+    async function findByGPS() {
+      const output = document.getElementById("gpsOutput");
+      output.innerHTML = "Locating you...";
+      if (!navigator.geolocation) {
+        output.innerHTML = "Your browser does not support GPS location.";
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(async position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          if (data.length === 0) {
+            output.innerHTML = "No relocators found near you.";
+          } else {
+            output.innerHTML = data.map(r =>
+              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
+            ).join('<br><br>');
+          }
+        } catch (err) {
+          output.innerHTML = "Error retrieving data. Please try again later.";
+        }
+      }, () => {
+        output.innerHTML = "GPS access was denied or not available.";
+      });
     }
-    navigator.geolocation.getCurrentPosition(async position => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
+
+    async function findByAddress() {
+      const output = document.getElementById("addressOutput");
+      const address = document.getElementById("addressInput").value.trim();
+      if (!address) {
+        output.innerHTML = "Please enter a full address.";
+        return;
+      }
+      output.innerHTML = "Searching...";
+      const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
       try {
         const res = await fetch(url);
         const data = await res.json();
-        if (data.length === 0) {
-          output.innerHTML = "No relocators found near you.";
+        if (!data.length || data.error) {
+          output.innerHTML = "No relocators found or address could not be located.";
         } else {
           output.innerHTML = data.map(r =>
             `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
@@ -95,32 +165,7 @@
       } catch (err) {
         output.innerHTML = "Error retrieving data. Please try again later.";
       }
-    }, () => {
-      output.innerHTML = "GPS access was denied or not available.";
-    });
-  }
-
-  async function findByAddress() {
-    const output = document.getElementById("addressOutput");
-    const address = document.getElementById("addressInput").value.trim();
-    if (!address) {
-      output.innerHTML = "Please enter a full address.";
-      return;
     }
-    output.innerHTML = "Searching...";
-    const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      if (!data.length || data.error) {
-        output.innerHTML = "No relocators found or address could not be located.";
-      } else {
-        output.innerHTML = data.map(r =>
-          `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
-        ).join('<br><br>');
-      }
-    } catch (err) {
-      output.innerHTML = "Error retrieving data. Please try again later.";
-    }
-  }
-</script>
+  </script>
+</body>
+</html>
