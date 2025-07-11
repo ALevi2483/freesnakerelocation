@@ -73,8 +73,8 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
     let fullData = [];
 
-    // Load full data for state/city dropdowns only
-    fetch(`${API_URL}?mode=full`)
+    // ✅ FIXED: Use ?address=ping to get full data
+    fetch(`${API_URL}?address=ping`)
       .then(res => res.json())
       .then(json => {
         fullData = json.filter(r => r.State && r.City);
