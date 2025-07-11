@@ -130,7 +130,7 @@
             output.innerHTML = "No relocators found near you.";
           } else {
             output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${parseFloat(r["Distance"]) ? parseFloat(r["Distance"]).toFixed(2) : "?"} mi away</small></div>`
+              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${isNaN(r["Distance"]) ? "?" : Number(r["Distance"]).toFixed(2)} mi away</small></div>`
             ).join('<br><br>');
           }
         } catch (err) {
@@ -157,7 +157,7 @@
           output.innerHTML = "No relocators found or address could not be located.";
         } else {
           output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${parseFloat(r["Distance"]) ? parseFloat(r["Distance"]).toFixed(2) : "?"} mi away</small></div>`
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${isNaN(r["Distance"]) ? "?" : Number(r["Distance"]).toFixed(2)} mi away</small></div>`
           ).join('<br><br>');
         }
       } catch (err) {
