@@ -126,6 +126,8 @@
         try {
           const res = await fetch(url);
           const data = await res.json();
+          console.log("Received data:", data);
+
           if (data.length === 0) {
             output.innerHTML = "No relocators found near you.";
           } else {
@@ -153,6 +155,8 @@
       try {
         const res = await fetch(url);
         const data = await res.json();
+        console.log("Received data:", data);
+
         if (!data.length || data.error) {
           output.innerHTML = "No relocators found or address could not be located.";
         } else {
