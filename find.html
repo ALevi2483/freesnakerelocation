@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Find a Snake Relocator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -34,16 +33,6 @@
       width: 100%;
       height: 800px;
       border: none;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    a {
-      color: blue;
-      text-decoration: underline;
-      cursor: pointer;
     }
     .notice-banner {
       background-color: #ffefc2;
@@ -80,7 +69,7 @@
   <div class="content-wrapper">
     <h1>Find a Snake Relocator</h1>
 
-    <p><a id="showDisclaimerLink" onclick="toggleDisclaimer()">📜 Read Disclaimer</a></p>
+    <p><a onclick="toggleDisclaimer()">📜 Read Disclaimer</a></p>
     <div id="disclaimerText">
       <p><strong>DISCLAIMER:</strong> This directory is provided as a public service. We do not vet or monitor listed volunteers. You are solely responsible for verifying the qualifications and trustworthiness of anyone you contact. Use at your own risk.</p>
       <button class="agree-button" onclick="agreeDisclaimer()">I Agree</button>
@@ -91,7 +80,6 @@
     </div>
 
     <div id="searchOptions" style="display:none;">
-      <p><strong>Choose how you want to search:</strong></p>
       <select id="searchMethod" onchange="handleSearchMethodChange()">
         <option value="">-- Select Search Method --</option>
         <option value="closest">Find Closest (by Address or GPS)</option>
@@ -100,17 +88,14 @@
       </select>
 
       <div id="closest" class="section">
-        <h2>Find Closest (by Address or GPS)</h2>
         <label for="addressInput">Address:</label>
         <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
         <button onclick="findByAddress()">🔍 Search by Address</button>
-        <div id="addressOutput" style="margin-top:15px;"></div>
+        <div id="addressOutput"></div>
 
-        <div id="gpsResults" style="margin: 40px 0 20px;">
-          <h3>Or Use My Location</h3>
-          <button onclick="findByGPS()">📍 Use Current Location</button>
-          <div id="gpsOutput" style="margin-top:15px;"></div>
-        </div>
+        <h3>Or Use My Location</h3>
+        <button onclick="findByGPS()">📍 Use Current Location</button>
+        <div id="gpsOutput"></div>
       </div>
 
       <div id="map" class="section">
@@ -119,16 +104,11 @@
       </div>
 
       <div id="stateCity" class="section">
-        <h2>Find a Relocator by State & City</h2>
-        <label for="stateSelect">Select State:</label>
-        <select id="stateSelect" onchange="populateCities()">
-          <option value="">--Select State--</option>
-        </select>
-        <label for="citySelect">Select City:</label>
-        <select id="citySelect" onchange="showResults()">
-          <option value="">--Select City--</option>
-        </select>
-        <div id="stateCityResults" style="margin-top: 20px;"></div>
+        <label for="stateSelect">State:</label>
+        <select id="stateSelect" onchange="populateCities()"></select>
+        <label for="citySelect">City:</label>
+        <select id="citySelect" onchange="showResults()"></select>
+        <div id="stateCityResults"></div>
       </div>
     </div>
   </div>
@@ -169,6 +149,17 @@
       }
     };
 
+    function handleSearchMethodChange() {
+      const value = document.getElementById('searchMethod').value;
+      if (!value) return;
+      document.getElementById("noticeBanner").style.display = "block";
+      const sections = document.getElementsByClassName('section');
+      for (let i = 0; i < sections.length; i++) {
+        sections[i].style.display = 'none';
+      }
+      document.getElementById(value).style.display = 'block';
+    }
+
     function populateCities() {
       const selectedState = document.getElementById('stateSelect').value;
       const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
@@ -190,20 +181,9 @@
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.map(r =>
         `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
-        (r["Distance"] ? `<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small>` : '') +
+        (Number(r["Distance"]) ? `<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small>` : '') +
         `</div>`
       ).join('<br><br>');
-    }
-
-    function handleSearchMethodChange() {
-      const value = document.getElementById('searchMethod').value;
-      if (!value) return;
-      document.getElementById("noticeBanner").style.display = "block";
-      const sections = document.getElementsByClassName('section');
-      for (let i = 0; i < sections.length; i++) {
-        sections[i].style.display = 'none';
-      }
-      document.getElementById(value).style.display = 'block';
     }
 
     async function findByGPS() {
@@ -220,18 +200,18 @@
         try {
           const res = await fetch(url);
           const data = await res.json();
-         output.innerHTML = data.map(r => {
-  const name = r["Full Name"] || "Unknown";
-  const phone = r["Phone"] || "N/A";
-  const distance = (typeof r["Distance"] === "number") ? `${r["Distance"].toFixed(1)} mi away` : "";
-  return `<div><strong>${name}</strong> – ${phone}<br><small>${distance}</small></div>`;
-}).join('<br><br>');
-
-        } catch {
-          output.innerHTML = "Could not retrieve results.";
+          if (data.length === 0) {
+            output.innerHTML = "No relocators found near you.";
+          } else {
+            output.innerHTML = data.map(r =>
+              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small></div>`
+            ).join('<br><br>');
+          }
+        } catch (err) {
+          output.innerHTML = "Error retrieving data. Please try again later.";
         }
       }, () => {
-        output.innerHTML = "GPS access denied or unavailable.";
+        output.innerHTML = "GPS access was denied or not available.";
       });
     }
 
@@ -243,18 +223,19 @@
         return;
       }
       output.innerHTML = "Searching...";
+      const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
       try {
-        const res = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
+        const res = await fetch(url);
         const data = await res.json();
-       output.innerHTML = data.map(r => {
-  const name = r["Full Name"] || "Unknown";
-  const phone = r["Phone"] || "N/A";
-  const distance = (typeof r["Distance"] === "number") ? `${r["Distance"].toFixed(1)} mi away` : "";
-  return `<div><strong>${name}</strong> – ${phone}<br><small>${distance}</small></div>`;
-}).join('<br><br>');
-
-      } catch {
-        output.innerHTML = "Could not retrieve results.";
+        if (!data.length || data.error) {
+          output.innerHTML = "No relocators found or address could not be located.";
+        } else {
+          output.innerHTML = data.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small></div>`
+          ).join('<br><br>');
+        }
+      } catch (err) {
+        output.innerHTML = "Error retrieving data. Please try again later.";
       }
     }
   </script>
