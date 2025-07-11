@@ -70,10 +70,9 @@
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxtmz0CoI5iva6whiEXgRw5IMA1MRYj2-4y9E7DXLtWccCYRmhq3G1bFFDpXeKqRkjPWw/exec';
     let fullData = [];
 
-    // Populate state dropdown
     fetch(`${scriptURL}?address=ping`)
       .then(res => res.json())
       .then(json => {
@@ -127,7 +126,13 @@
         try {
           const res = await fetch(url);
           const data = await res.json();
-          output.innerHTML = renderClosestResults(data);
+          if (data.length === 0) {
+            output.innerHTML = "No relocators found near you.";
+          } else {
+            output.innerHTML = data.map(r =>
+              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${parseFloat(r["Distance"]) ? parseFloat(r["Distance"]).toFixed(2) : "?"} mi away</small></div>`
+            ).join('<br><br>');
+          }
         } catch (err) {
           output.innerHTML = "Error retrieving data. Please try again later.";
         }
@@ -148,20 +153,16 @@
       try {
         const res = await fetch(url);
         const data = await res.json();
-        output.innerHTML = renderClosestResults(data);
+        if (!data.length || data.error) {
+          output.innerHTML = "No relocators found or address could not be located.";
+        } else {
+          output.innerHTML = data.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${parseFloat(r["Distance"]) ? parseFloat(r["Distance"]).toFixed(2) : "?"} mi away</small></div>`
+          ).join('<br><br>');
+        }
       } catch (err) {
         output.innerHTML = "Error retrieving data. Please try again later.";
       }
-    }
-
-    function renderClosestResults(data) {
-      if (!data || !data.length) {
-        return "No relocators found.";
-      }
-      return data.map(r =>
-        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br>
-        <small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
-      ).join('<br><br>');
     }
   </script>
 </body>
