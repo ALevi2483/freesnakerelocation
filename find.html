@@ -69,7 +69,6 @@
     <div id="stateCityResults" class="results"></div>
   </div>
 
-  <!-- Script Section -->
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxtmz0CoI5iva6whiEXgRw5IMA1MRYj2-4y9E7DXLtWccCYRmhq3G1bFFDpXeKqRkjPWw/exec';
     let fullData = [];
@@ -128,13 +127,7 @@
         try {
           const res = await fetch(url);
           const data = await res.json();
-          if (data.length === 0) {
-            output.innerHTML = "No relocators found near you.";
-          } else {
-            output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
-            ).join('<br><br>');
-          }
+          output.innerHTML = renderClosestResults(data);
         } catch (err) {
           output.innerHTML = "Error retrieving data. Please try again later.";
         }
@@ -155,16 +148,20 @@
       try {
         const res = await fetch(url);
         const data = await res.json();
-        if (!data.length || data.error) {
-          output.innerHTML = "No relocators found or address could not be located.";
-        } else {
-          output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
-          ).join('<br><br>');
-        }
+        output.innerHTML = renderClosestResults(data);
       } catch (err) {
         output.innerHTML = "Error retrieving data. Please try again later.";
       }
+    }
+
+    function renderClosestResults(data) {
+      if (!data || !data.length) {
+        return "No relocators found.";
+      }
+      return data.map(r =>
+        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br>
+        <small>${typeof r["Distance"] === "number" ? r["Distance"].toFixed(2) : "?"} mi away</small></div>`
+      ).join('<br><br>');
     }
   </script>
 </body>
