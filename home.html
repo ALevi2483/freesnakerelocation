@@ -86,7 +86,7 @@
     }
     .modal-content {
       background: #fff;
-      padding: 20px 20px 80px;
+      padding: 20px;
       width: 90%;
       max-width: 800px;
       max-height: 85%;
@@ -108,21 +108,17 @@
       cursor: pointer;
     }
     .accept-btn {
-  position: sticky;
-  bottom: 0;
-  background-color: #225533;
-  color: white;
-  padding: 14px;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  margin-top: 30px;
-  margin-bottom: calc(env(safe-area-inset-bottom, 25px) + 15px); /* Updated line */
-  z-index: 2;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-  cursor: pointer;
-}
+      display: block;
+      background-color: #225533;
+      color: white;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      margin-top: 30px;
+      cursor: pointer;
+    }
     @media screen and (max-width: 600px) {
       .notice-banner {
         font-size: 1rem;
@@ -153,7 +149,7 @@
         <a href="/find.html">Don't want to use GPS? Click here to search by state or browse the map →</a>
       </p>
       <p style="font-style: italic; margin-top: 10px;">
-        🆓 This service is 100% free, powered by volunteers in your area. Be sure to mention FreeSnakeRelocation when making contact with a volunteer.
+        🄃 This service is 100% free, powered by volunteers in your area. Be sure to mention FreeSnakeRelocation when making contact with a volunteer.
       </p>
     </div>
 
@@ -190,7 +186,7 @@
       <button class="close-btn" onclick="document.getElementById('disclaimerModal').style.display='none'">&times;</button>
       <h2>Free Snake Relocation Directory – Disclaimer</h2>
 
-      <h3>🏠 Section A – For Homeowners / Requesters</h3>
+      <h3>🏠 Section A: For Homeowners / Requesters</h3>
       <p><strong>1. Informational Purpose Only:</strong> The Directory is an informational platform only. We do not assign, train, or certify any volunteers. All volunteers act independently.</p>
       <p><strong>2. No Guarantees:</strong> We do not guarantee reliability, skill, or legal compliance of any listed individual.</p>
       <p><strong>3. Voluntary Use and Assumption of Risk:</strong> If you contact a volunteer, you do so at your own risk. You must assess whether the person is appropriate for your situation.</p>
@@ -198,7 +194,7 @@
       <p><strong>5. Legal Responsibility:</strong> We are not responsible for injuries, accidents, legal claims, or property damage related to snake relocations. Use of this platform is at your own discretion.</p>
       <p><strong>6. Agreement:</strong> By using this site, you agree to hold harmless the Free Snake Relocation Directory and its administrators from any liability related to your use of this directory.</p>
 
-      <h3>🐍 Section B – For Volunteers / Relocators</h3>
+      <h3>🐍 Section B: For Volunteers / Relocators</h3>
       <p><strong>1. Independent Status:</strong> You act independently and are not affiliated, employed, or supervised by this Directory or its admins.</p>
       <p><strong>2. No Vetting or Supervision:</strong> We do not verify your qualifications or capabilities. You assume full responsibility for all actions taken.</p>
       <p><strong>3. Legal Compliance:</strong> You are solely responsible for following all relevant wildlife laws and obtaining any necessary permits.</p>
@@ -244,6 +240,7 @@
           const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
           try {
             const res = await fetch(url);
+            if (!res.ok) throw new Error("Non-200 response");
             const data = await res.json();
             if (data.length === 0) {
               output.innerHTML = "No relocators found near you.";
@@ -253,6 +250,7 @@
               ).join('<br><br>');
             }
           } catch (err) {
+            console.error("Fetch error:", err);
             output.innerHTML = "Error retrieving data. Please try again later.";
           }
         }, () => {
