@@ -56,66 +56,79 @@
       color: #663300;
       display: none;
     }
+    #disclaimerText {
+      background-color: #fff8e1;
+      border: 1px solid #d6b700;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      display: none;
+    }
+    .agree-button {
+      background-color: #225533;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-top: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="content-wrapper">
     <h1>Find a Snake Relocator</h1>
 
+    <p><a id="showDisclaimerLink" onclick="toggleDisclaimer()">📜 Read Disclaimer</a></p>
+    <div id="disclaimerText">
+      <p><strong>DISCLAIMER:</strong> This directory is provided as a public service. We do not vet or monitor listed volunteers. You are solely responsible for verifying the qualifications and trustworthiness of anyone you contact. Use at your own risk.</p>
+      <button class="agree-button" onclick="agreeDisclaimer()">I Agree</button>
+    </div>
+
     <div class="notice-banner" id="noticeBanner">
       📱 Text the number instead of calling. Many people do not answer unknown numbers.
     </div>
 
-    <p><a onclick="showDisclaimerModal()">View Disclaimer</a></p>
+    <div id="searchOptions" style="display:none;">
+      <p><strong>Choose how you want to search:</strong></p>
+      <select id="searchMethod" onchange="handleSearchMethodChange()">
+        <option value="">-- Select Search Method --</option>
+        <option value="closest">Find Closest (by Address or GPS)</option>
+        <option value="map">View Relocator Map</option>
+        <option value="stateCity">Search by State & City</option>
+      </select>
 
-    <p><strong>Choose how you want to search:</strong></p>
-    <select id="searchMethod" onchange="handleSearchMethodChange()">
-      <option value="">-- Select Search Method --</option>
-      <option value="closest">Find Closest (by Address or GPS)</option>
-      <option value="map">View Relocator Map</option>
-      <option value="stateCity">Search by State & City</option>
-    </select>
+      <div id="closest" class="section">
+        <h2>Find Closest (by Address or GPS)</h2>
+        <label for="addressInput">Address:</label>
+        <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
+        <button onclick="findByAddress()">🔍 Search by Address</button>
+        <div id="addressOutput" style="margin-top:15px;"></div>
 
-    <div id="closest" class="section">
-      <h2>Find Closest (by Address or GPS)</h2>
-      <label for="addressInput">Address:</label>
-      <input type="text" id="addressInput" placeholder="123 Main St, City, State" />
-      <button onclick="findByAddress()">🔍 Search by Address</button>
-      <div id="addressOutput" style="margin-top:15px;"></div>
-
-      <div id="gpsResults" style="margin: 40px 0 20px;">
-        <h3>Or Use My Location</h3>
-        <button onclick="findByGPS()">📍 Use Current Location</button>
-        <div id="gpsOutput" style="margin-top:15px;"></div>
+        <div id="gpsResults" style="margin: 40px 0 20px;">
+          <h3>Or Use My Location</h3>
+          <button onclick="findByGPS()">📍 Use Current Location</button>
+          <div id="gpsOutput" style="margin-top:15px;"></div>
+        </div>
       </div>
-    </div>
 
-    <div id="map" class="section">
-      <h2>Find a Relocator on the Map</h2>
-      <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen></iframe>
-    </div>
+      <div id="map" class="section">
+        <h2>Find a Relocator on the Map</h2>
+        <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen></iframe>
+      </div>
 
-    <div id="stateCity" class="section">
-      <h2>Find a Relocator by State & City</h2>
-      <label for="stateSelect">Select State:</label>
-      <select id="stateSelect" onchange="populateCities()">
-        <option value="">--Select State--</option>
-      </select>
-      <label for="citySelect">Select City:</label>
-      <select id="citySelect" onchange="showResults()">
-        <option value="">--Select City--</option>
-      </select>
-      <div id="stateCityResults" style="margin-top: 20px;"></div>
-    </div>
-  </div>
-
-  <div id="disclaimerModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:9999;">
-    <div style="background:#fff; padding:30px; margin:50px auto; max-width:800px; border-radius:10px; overflow-y:auto; max-height:80vh;">
-      <h2>Free Snake Relocation Directory Disclaimer</h2>
-      <p><strong>DISCLAIMER:</strong> This website provides a directory of volunteers who have offered to relocate snakes. We do not verify credentials, training, or availability. Contact at your own discretion. We assume no liability for actions taken by individuals listed here. Always prioritize safety.</p>
-      <p>By clicking "I Agree", you acknowledge understanding and accept all responsibility for contacting anyone listed on this directory.</p>
-      <div style="text-align:center; margin-top:30px;">
-        <button onclick="closeDisclaimerModal()" style="background-color:#225533; color:white; padding:15px 25px; font-size:1rem; border:none; border-radius:8px; cursor:pointer;">I Agree</button>
+      <div id="stateCity" class="section">
+        <h2>Find a Relocator by State & City</h2>
+        <label for="stateSelect">Select State:</label>
+        <select id="stateSelect" onchange="populateCities()">
+          <option value="">--Select State--</option>
+        </select>
+        <label for="citySelect">Select City:</label>
+        <select id="citySelect" onchange="showResults()">
+          <option value="">--Select City--</option>
+        </select>
+        <div id="stateCityResults" style="margin-top: 20px;"></div>
       </div>
     </div>
   </div>
@@ -139,6 +152,23 @@
         });
       });
 
+    function toggleDisclaimer() {
+      const d = document.getElementById("disclaimerText");
+      d.style.display = d.style.display === "none" ? "block" : "none";
+    }
+
+    function agreeDisclaimer() {
+      localStorage.setItem("disclaimerAccepted", "true");
+      document.getElementById("disclaimerText").style.display = "none";
+      document.getElementById("searchOptions").style.display = "block";
+    }
+
+    window.onload = () => {
+      if (localStorage.getItem("disclaimerAccepted") === "true") {
+        document.getElementById("searchOptions").style.display = "block";
+      }
+    };
+
     function populateCities() {
       const selectedState = document.getElementById('stateSelect').value;
       const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
@@ -159,8 +189,8 @@
       const filtered = data.filter(r => r.State === state && r.City === city);
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.map(r =>
-        `<div><strong>${r["Full Name"]}</strong> - ${r["Phone"]}` +
-        (r["Distance"] && !isNaN(r["Distance"]) ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
+        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
+        (r["Distance"] ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
         `</div>`
       ).join('<br><br>');
     }
@@ -169,25 +199,11 @@
       const value = document.getElementById('searchMethod').value;
       if (!value) return;
       document.getElementById("noticeBanner").style.display = "block";
-      showSection();
-    }
-
-    function showSection() {
-      const selection = document.getElementById('searchMethod').value;
       const sections = document.getElementsByClassName('section');
       for (let i = 0; i < sections.length; i++) {
         sections[i].style.display = 'none';
       }
-      if (!selection) return;
-      document.getElementById(selection).style.display = 'block';
-    }
-
-    function showDisclaimerModal() {
-      document.getElementById("disclaimerModal").style.display = "block";
-    }
-
-    function closeDisclaimerModal() {
-      document.getElementById("disclaimerModal").style.display = "none";
+      document.getElementById(value).style.display = 'block';
     }
 
     async function findByGPS() {
@@ -203,12 +219,14 @@
         const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
         try {
           const res = await fetch(url);
-          const json = await res.json();
-          output.innerHTML = json.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> - ${r["Phone"]}` +
-            (r["Distance"] && !isNaN(r["Distance"]) ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
-            `</div>`
-          ).join('<br><br>');
+          const data = await res.json();
+          if (data.length === 0) {
+            output.innerHTML = "No relocators found near you.";
+          } else {
+            output.innerHTML = data.map(r =>
+              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"] ? parseFloat(r["Distance"]).toFixed(1) + " mi away" : ""}</small></div>`
+            ).join('<br><br>');
+          }
         } catch (err) {
           output.innerHTML = "Error retrieving data. Please try again later.";
         }
@@ -228,12 +246,14 @@
       const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
       try {
         const res = await fetch(url);
-        const json = await res.json();
-        output.innerHTML = json.map(r =>
-          `<div><strong>${r["Full Name"]}</strong> - ${r["Phone"]}` +
-          (r["Distance"] && !isNaN(r["Distance"]) ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
-          `</div>`
-        ).join('<br><br>');
+        const data = await res.json();
+        if (!data.length || data.error) {
+          output.innerHTML = "No relocators found or address could not be located.";
+        } else {
+          output.innerHTML = data.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"] ? parseFloat(r["Distance"]).toFixed(1) + " mi away" : ""}</small></div>`
+          ).join('<br><br>');
+        }
       } catch (err) {
         output.innerHTML = "Error retrieving data. Please try again later.";
       }
