@@ -190,7 +190,7 @@
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.map(r =>
         `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
-        (Number(r["Distance"]) ? `<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small>` : '') +
+        (r["Distance"] ? `<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small>` : '') +
         `</div>`
       ).join('<br><br>');
     }
@@ -220,18 +220,14 @@
         try {
           const res = await fetch(url);
           const data = await res.json();
-          if (data.length === 0) {
-            output.innerHTML = "No relocators found near you.";
-          } else {
-            output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]) ? Number(r["Distance"]).toFixed(1) + " mi away" : ""}</small></div>`
-            ).join('<br><br>');
-          }
-        } catch (err) {
-          output.innerHTML = "Error retrieving data. Please try again later.";
+          output.innerHTML = data.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small></div>`
+          ).join('<br><br>');
+        } catch {
+          output.innerHTML = "Could not retrieve results.";
         }
       }, () => {
-        output.innerHTML = "GPS access was denied or not available.";
+        output.innerHTML = "GPS access denied or unavailable.";
       });
     }
 
@@ -243,19 +239,14 @@
         return;
       }
       output.innerHTML = "Searching...";
-      const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
       try {
-        const res = await fetch(url);
+        const res = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
         const data = await res.json();
-        if (!data.length || data.error) {
-          output.innerHTML = "No relocators found or address could not be located.";
-        } else {
-          output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]) ? Number(r["Distance"]).toFixed(1) + " mi away" : ""}</small></div>`
-          ).join('<br><br>');
-        }
-      } catch (err) {
-        output.innerHTML = "Error retrieving data. Please try again later.";
+        output.innerHTML = data.map(r =>
+          `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small></div>`
+        ).join('<br><br>');
+      } catch {
+        output.innerHTML = "Could not retrieve results.";
       }
     }
   </script>
