@@ -64,7 +64,7 @@
 
     <label for="citySelect">Then Select a City</label>
     <select id="citySelect"></select>
- 
+
     <button onclick="showResults()">Show Results</button>
     <div id="stateCityResults" class="results"></div>
   </div>
@@ -73,7 +73,8 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
     let fullData = [];
 
-    fetch(`${API_URL}?address=ping`)
+    // Load full data for state/city dropdowns only
+    fetch(`${API_URL}?mode=full`)
       .then(res => res.json())
       .then(json => {
         fullData = json.filter(r => r.State && r.City);
@@ -123,6 +124,8 @@
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         const url = `${API_URL}?lat=${lat}&lng=${lng}`;
+        console.log("Fetching from URL:", url);
+
         try {
           const res = await fetch(url);
           const data = await res.json();
@@ -152,6 +155,8 @@
       }
       output.innerHTML = "Searching...";
       const url = `${API_URL}?address=${encodeURIComponent(address)}`;
+      console.log("Fetching from URL:", url);
+
       try {
         const res = await fetch(url);
         const data = await res.json();
