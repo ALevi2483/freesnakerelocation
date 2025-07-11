@@ -220,9 +220,13 @@
         try {
           const res = await fetch(url);
           const data = await res.json();
-          output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small></div>`
-          ).join('<br><br>');
+         output.innerHTML = data.map(r => {
+  const name = r["Full Name"] || "Unknown";
+  const phone = r["Phone"] || "N/A";
+  const distance = (typeof r["Distance"] === "number") ? `${r["Distance"].toFixed(1)} mi away` : "";
+  return `<div><strong>${name}</strong> – ${phone}<br><small>${distance}</small></div>`;
+}).join('<br><br>');
+
         } catch {
           output.innerHTML = "Could not retrieve results.";
         }
@@ -242,9 +246,13 @@
       try {
         const res = await fetch(`${scriptURL}?address=${encodeURIComponent(address)}`);
         const data = await res.json();
-        output.innerHTML = data.map(r =>
-          `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${Number(r["Distance"]).toFixed(1)} mi away</small></div>`
-        ).join('<br><br>');
+       output.innerHTML = data.map(r => {
+  const name = r["Full Name"] || "Unknown";
+  const phone = r["Phone"] || "N/A";
+  const distance = (typeof r["Distance"] === "number") ? `${r["Distance"].toFixed(1)} mi away` : "";
+  return `<div><strong>${name}</strong> – ${phone}<br><small>${distance}</small></div>`;
+}).join('<br><br>');
+
       } catch {
         output.innerHTML = "Could not retrieve results.";
       }
