@@ -45,59 +45,6 @@
       text-decoration: underline;
       cursor: pointer;
     }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      position: relative;
-      background-color: #fff;
-      margin: 5% auto;
-      padding: 20px 20px 80px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 800px;
-      max-height: 85%;
-      overflow-y: auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    }
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background-color: #225533;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-    .agree-button {
-      position: sticky;
-      bottom: 0;
-      background-color: #225533;
-      color: white;
-      padding: 14px;
-      width: 100%;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.1rem;
-      margin-top: 30px;
-      margin-bottom: env(safe-area-inset-bottom, 25px);
-      z-index: 1;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
     .notice-banner {
       background-color: #ffefc2;
       border: 2px solid #cc9933;
@@ -118,6 +65,8 @@
     <div class="notice-banner" id="noticeBanner">
       📱 Text the number instead of calling. Many people do not answer unknown numbers.
     </div>
+
+    <p><a onclick="showDisclaimerModal()">View Disclaimer</a></p>
 
     <p><strong>Choose how you want to search:</strong></p>
     <select id="searchMethod" onchange="handleSearchMethodChange()">
@@ -160,13 +109,14 @@
     </div>
   </div>
 
-  <!-- Disclaimer Modal -->
-  <div id="disclaimerModal" class="modal">
-    <div class="modal-content" id="disclaimerContent">
-      <button class="close-button" onclick="closeDisclaimer()">X</button>
-      <h2>Free Snake Relocation Directory – Disclaimer</h2>
-      <!-- (Disclaimer content unchanged for brevity) -->
-      <button id="agreeButton" class="agree-button" disabled>I Agree</button>
+  <div id="disclaimerModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:9999;">
+    <div style="background:#fff; padding:30px; margin:50px auto; max-width:800px; border-radius:10px; overflow-y:auto; max-height:80vh;">
+      <h2>Free Snake Relocation Directory Disclaimer</h2>
+      <p><strong>DISCLAIMER:</strong> This website provides a directory of volunteers who have offered to relocate snakes. We do not verify credentials, training, or availability. Contact at your own discretion. We assume no liability for actions taken by individuals listed here. Always prioritize safety.</p>
+      <p>By clicking "I Agree", you acknowledge understanding and accept all responsibility for contacting anyone listed on this directory.</p>
+      <div style="text-align:center; margin-top:30px;">
+        <button onclick="closeDisclaimerModal()" style="background-color:#225533; color:white; padding:15px 25px; font-size:1rem; border:none; border-radius:8px; cursor:pointer;">I Agree</button>
+      </div>
     </div>
   </div>
 
@@ -209,8 +159,8 @@
       const filtered = data.filter(r => r.State === state && r.City === city);
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.map(r =>
-        `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
-        (r["Distance"] ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
+        `<div><strong>${r["Full Name"]}</strong> - ${r["Phone"]}` +
+        (r["Distance"] && !isNaN(r["Distance"]) ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
         `</div>`
       ).join('<br><br>');
     }
@@ -219,13 +169,7 @@
       const value = document.getElementById('searchMethod').value;
       if (!value) return;
       document.getElementById("noticeBanner").style.display = "block";
-      const accepted = localStorage.getItem("disclaimerAccepted");
-
-      if (!accepted) {
-        showDisclaimer(() => showSection());
-      } else {
-        showSection();
-      }
+      showSection();
     }
 
     function showSection() {
@@ -238,33 +182,11 @@
       document.getElementById(selection).style.display = 'block';
     }
 
-    function showDisclaimer(callback) {
-      document.getElementById("disclaimerModal").style.display = "flex";
-      const content = document.getElementById("disclaimerContent");
-      const agreeBtn = document.getElementById("agreeButton");
-
-      content.scrollTop = 0;
-      agreeBtn.disabled = true;
-
-      const canScroll = content.scrollHeight > content.clientHeight;
-      if (!canScroll) {
-        agreeBtn.disabled = false;
-      }
-
-      content.onscroll = function () {
-        if (content.scrollTop + content.clientHeight >= content.scrollHeight - 5) {
-          agreeBtn.disabled = false;
-        }
-      };
-
-      agreeBtn.onclick = function () {
-        document.getElementById("disclaimerModal").style.display = "none";
-        localStorage.setItem("disclaimerAccepted", "true");
-        if (callback) callback();
-      };
+    function showDisclaimerModal() {
+      document.getElementById("disclaimerModal").style.display = "block";
     }
 
-    function closeDisclaimer() {
+    function closeDisclaimerModal() {
       document.getElementById("disclaimerModal").style.display = "none";
     }
 
@@ -281,14 +203,12 @@
         const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
         try {
           const res = await fetch(url);
-          const data = await res.json();
-          if (data.length === 0) {
-            output.innerHTML = "No relocators found near you.";
-          } else {
-            output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"] ? parseFloat(r["Distance"]).toFixed(1) + " mi away" : ""}</small></div>`
-            ).join('<br><br>');
-          }
+          const json = await res.json();
+          output.innerHTML = json.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> - ${r["Phone"]}` +
+            (r["Distance"] && !isNaN(r["Distance"]) ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
+            `</div>`
+          ).join('<br><br>');
         } catch (err) {
           output.innerHTML = "Error retrieving data. Please try again later.";
         }
@@ -308,14 +228,12 @@
       const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
       try {
         const res = await fetch(url);
-        const data = await res.json();
-        if (!data.length || data.error) {
-          output.innerHTML = "No relocators found or address could not be located.";
-        } else {
-          output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"] ? parseFloat(r["Distance"]).toFixed(1) + " mi away" : ""}</small></div>`
-          ).join('<br><br>');
-        }
+        const json = await res.json();
+        output.innerHTML = json.map(r =>
+          `<div><strong>${r["Full Name"]}</strong> - ${r["Phone"]}` +
+          (r["Distance"] && !isNaN(r["Distance"]) ? `<br><small>${parseFloat(r["Distance"]).toFixed(1)} mi away</small>` : '') +
+          `</div>`
+        ).join('<br><br>');
       } catch (err) {
         output.innerHTML = "Error retrieving data. Please try again later.";
       }
