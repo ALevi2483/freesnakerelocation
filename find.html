@@ -70,10 +70,10 @@
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
     let fullData = [];
 
-    fetch(`${scriptURL}?address=ping`)
+    fetch(`${API_URL}?address=ping`)
       .then(res => res.json())
       .then(json => {
         fullData = json.filter(r => r.State && r.City);
@@ -122,7 +122,7 @@
       navigator.geolocation.getCurrentPosition(async position => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        const url = `${scriptURL}?lat=${lat}&lng=${lng}`;
+        const url = `${API_URL}?lat=${lat}&lng=${lng}`;
         try {
           const res = await fetch(url);
           const data = await res.json();
@@ -149,7 +149,7 @@
         return;
       }
       output.innerHTML = "Searching...";
-      const url = `${scriptURL}?address=${encodeURIComponent(address)}`;
+      const url = `${API_URL}?address=${encodeURIComponent(address)}`;
       try {
         const res = await fetch(url);
         const data = await res.json();
