@@ -108,21 +108,21 @@
       cursor: pointer;
     }
     .accept-btn {
-      position: sticky;
-      bottom: 0;
-      background-color: #225533;
-      color: white;
-      padding: 14px;
-      width: 100%;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.1rem;
-      margin-top: 30px;
-      margin-bottom: env(safe-area-inset-bottom, 25px); /* NEW LINE */
-      z-index: 1;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
+  position: sticky;
+  bottom: 0;
+  background-color: #225533;
+  color: white;
+  padding: 14px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  margin-top: 30px;
+  margin-bottom: calc(env(safe-area-inset-bottom, 25px) + 15px); /* Updated line */
+  z-index: 2;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
     @media screen and (max-width: 600px) {
       .notice-banner {
         font-size: 1rem;
