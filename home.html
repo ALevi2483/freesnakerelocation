@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Free Snake Relocation – Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -12,27 +11,60 @@
       color: #333;
       margin: 0;
       padding: 0;
+      line-height: 1.6;
+      font-size: 1rem;
     }
+
     .banner {
       background: #225533;
       color: white;
-      padding: 20px;
+      padding: 12px;
       text-align: center;
     }
+
     .content-wrapper {
       max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 20px;
     }
+
+    .hero {
+      background-color: #e6f5ea;
+      padding: 40px 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      color: #225533;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
     .section {
       margin-bottom: 40px;
     }
+
+    .section:nth-child(even) {
+      background-color: #f0f7f0;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
     .section h2 {
       color: #225533;
+      font-size: 1.4rem;
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     button {
       padding: 14px 20px;
       background-color: #225533;
@@ -43,20 +75,12 @@
       cursor: pointer;
       transition: all 0.2s ease-in-out;
     }
+
     button:hover {
       background-color: #1a3e28;
       transform: scale(1.03);
     }
-    .notice-banner {
-      background-color: #ffefc2;
-      border: 2px solid #cc9933;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #663300;
-    }
+
     blockquote {
       border-left: 4px solid #225533;
       padding-left: 15px;
@@ -64,19 +88,33 @@
       color: #555;
       font-style: italic;
     }
+
     a {
       color: #225533;
       font-weight: bold;
       text-decoration: none;
     }
+
     a:hover {
       text-decoration: underline;
     }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin: 40px 0 20px;
+    }
+
     @media screen and (max-width: 600px) {
-      .notice-banner {
-        font-size: 1rem;
-        text-align: center;
+      .hero h1 {
+        font-size: 1.5em;
       }
+
+      .hero p {
+        font-size: 1em;
+      }
+
       button {
         width: 100%;
       }
@@ -84,6 +122,18 @@
   </style>
 </head>
 <body>
+
+  <div class="banner">
+    <strong>Free Snake Relocation</strong>
+  </div>
+
+  <div class="content-wrapper">
+
+    <div class="hero">
+      <h1>Welcome to Free Snake Relocation</h1>
+      <p>Connecting you with experienced volunteers to safely remove snakes from your property – completely free.</p>
+      <a href="/find.html"><button>🔍 Find a Relocator</button></a>
+    </div>
 
     <div class="section">
       <h2>🐍 How It Works</h2>
@@ -110,6 +160,11 @@
     <div class="section" style="font-size: 0.9rem;">
       🔧 Found an issue or bad listing? <a href="/Contact.html">Let us know here.</a>
     </div>
+
+    <footer>
+      © 2025 Free Snake Relocation · Volunteer-run · <a href="/disclaimer.html">Disclaimer</a>
+    </footer>
+
   </div>
 </body>
 </html>
