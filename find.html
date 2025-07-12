@@ -53,6 +53,13 @@
 <body>
   <h1>Find a Snake Relocator</h1>
 
+  <!-- Search by GPS -->
+  <div class="section">
+    <h2>Search by GPS Location</h2>
+    <button onclick="findByGPS()">Use My Location</button>
+    <div id="gpsResults" class="results"></div>
+  </div>
+
   <!-- Search by State & City -->
   <div class="section">
     <h2>Search by State & City</h2>
@@ -79,6 +86,7 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
     let data = [];
 
+    // Load all data for State/City dropdowns
     fetch(`${scriptURL}?address=ping`)
       .then(res => res.json())
       .then(json => {
@@ -119,6 +127,44 @@
             `</div>`
           ).join('<br><br>')
         : "<em>No relocators found for this city.</em>";
+    }
+
+    function findByGPS() {
+      const gpsDiv = document.getElementById('gpsResults');
+      gpsDiv.innerHTML = "Getting your location...";
+
+      if (!navigator.geolocation) {
+        gpsDiv.innerHTML = "Geolocation is not supported by your browser.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          fetch(`${scriptURL}?lat=${lat}&lon=${lon}`)
+            .then(res => res.json())
+            .then(results => {
+              if (!results || results.length === 0) {
+                gpsDiv.innerHTML = "<em>No nearby relocators found.</em>";
+                return;
+              }
+
+              gpsDiv.innerHTML = results.map(r =>
+                `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
+                (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
+                `</div>`
+              ).join('<br><br>');
+            })
+            .catch(() => {
+              gpsDiv.innerHTML = "<em>Error retrieving results.</em>";
+            });
+        },
+        () => {
+          gpsDiv.innerHTML = "<em>Unable to retrieve your location.</em>";
+        }
+      );
     }
   </script>
 </body>
