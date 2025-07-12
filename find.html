@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -48,10 +48,37 @@
     small {
       color: #555;
     }
+    .disclaimer-link {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      display: block;
+      color: #225533;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .disclaimer-box {
+      display: none;
+      background-color: #fff8e1;
+      border: 1px solid #d6b700;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+      color: #333;
+    }
+    .disclaimer-box button {
+      margin-top: 10px;
+      background-color: #225533;
+    }
   </style>
 </head>
 <body>
   <h1>Find a Snake Relocator</h1>
+
+  <a class="disclaimer-link" onclick="toggleDisclaimer()">📜 Read Disclaimer</a>
+  <div id="disclaimerBox" class="disclaimer-box">
+    <p><strong>DISCLAIMER:</strong> This directory is provided as a public service. We do not vet or monitor listed volunteers. You are solely responsible for verifying the qualifications and trustworthiness of anyone you contact. Use at your own risk.</p>
+    <button onclick="toggleDisclaimer()">Close</button>
+  </div>
 
   <!-- Search by State & City -->
   <div class="section">
@@ -119,6 +146,11 @@
             `</div>`
           ).join('<br><br>')
         : "<em>No relocators found for this city.</em>";
+    }
+
+    function toggleDisclaimer() {
+      const box = document.getElementById("disclaimerBox");
+      box.style.display = box.style.display === "none" ? "block" : "none";
     }
   </script>
 </body>
