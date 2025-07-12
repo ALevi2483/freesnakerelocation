@@ -46,19 +46,6 @@
   <h2>Find a Snake Relocator</h2>
 
   <div class="section">
-    <label for="addressInput">Enter Your Address</label>
-    <input type="text" id="addressInput" placeholder="123 Main St, City, State">
-    <button onclick="findByAddress()">🔍 Search by Address</button>
-    <div id="addressOutput" class="results"></div>
-  </div>
-
-  <div class="section">
-    <label>Or Use My Location</label><br>
-    <button onclick="findByGPS()">📍 Use Current Location</button>
-    <div id="gpsOutput" class="results"></div>
-  </div>
-
-  <div class="section">
     <label for="stateSelect">Search by State</label>
     <select id="stateSelect" onchange="populateCities()"></select>
 
@@ -111,67 +98,6 @@
       resultDiv.innerHTML = filtered.map(r =>
         `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}</div>`
       ).join('<br><br>');
-    }
-
-    async function findByGPS() {
-      const output = document.getElementById("gpsOutput");
-      output.innerHTML = "Locating you...";
-      if (!navigator.geolocation) {
-        output.innerHTML = "Your browser does not support GPS location.";
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(async position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const url = `${API_URL}?lat=${lat}&lng=${lng}`;
-        console.log("Fetching from URL:", url);
-
-        try {
-          const res = await fetch(url);
-          const data = await res.json();
-          console.log("Received data:", data);
-
-          if (data.length === 0) {
-            output.innerHTML = "No relocators found near you.";
-          } else {
-            output.innerHTML = data.map(r =>
-              `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${isNaN(r["Distance"]) ? "?" : Number(r["Distance"]).toFixed(2)} mi away</small></div>`
-            ).join('<br><br>');
-          }
-        } catch (err) {
-          output.innerHTML = "Error retrieving data. Please try again later.";
-        }
-      }, () => {
-        output.innerHTML = "GPS access was denied or not available.";
-      });
-    }
-
-    async function findByAddress() {
-      const output = document.getElementById("addressOutput");
-      const address = document.getElementById("addressInput").value.trim();
-      if (!address) {
-        output.innerHTML = "Please enter a full address.";
-        return;
-      }
-      output.innerHTML = "Searching...";
-      const url = `${API_URL}?address=${encodeURIComponent(address)}`;
-      console.log("Fetching from URL:", url);
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log("Received data:", data);
-
-        if (!data.length || data.error) {
-          output.innerHTML = "No relocators found or address could not be located.";
-        } else {
-          output.innerHTML = data.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${isNaN(r["Distance"]) ? "?" : Number(r["Distance"]).toFixed(2)} mi away</small></div>`
-          ).join('<br><br>');
-        }
-      } catch (err) {
-        output.innerHTML = "Error retrieving data. Please try again later.";
-      }
     }
   </script>
 </body>
