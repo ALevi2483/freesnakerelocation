@@ -86,8 +86,7 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
     let data = [];
 
-    // Load all data for State/City dropdowns
-    fetch(`${scriptURL}?address=ping`)
+    fetch(`${scriptURL}?mode=full`)
       .then(res => res.json())
       .then(json => {
         data = json.filter(r => r.State && r.City);
@@ -152,9 +151,7 @@
               }
 
               gpsDiv.innerHTML = results.map(r =>
-                `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
-                (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
-                `</div>`
+                `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}<br><small>${r["Distance"]} mi away</small></div>`
               ).join('<br><br>');
             })
             .catch(() => {
