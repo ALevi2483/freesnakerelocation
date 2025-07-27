@@ -66,19 +66,40 @@
     .review-card .stars {
       color: #e6b800;
     }
+
+    .review-link {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .review-link a {
+      color: #225533;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .review-link a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
 <h1>🐍 Free Snake Relocation – Reviews</h1>
 
-  <p style="text-align:center; margin-top: 10px;">
+<p class="review-link">
   📝 Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Click here to leave a review</a>
 </p>
 
 <div id="filter">
-  <select id="stateFilter">
-    <option value="">Filter by State</option>
+  <select id="ratingFilter">
+    <option value="">Filter by Rating</option>
+    <option value="5">⭐⭐⭐⭐⭐</option>
+    <option value="4">⭐⭐⭐⭐</option>
+    <option value="3">⭐⭐⭐</option>
+    <option value="2">⭐⭐</option>
+    <option value="1">⭐</option>
   </select>
 </div>
 
@@ -100,19 +121,16 @@
     }));
   }
 
-  function renderReviews(reviews, stateFilter = '') {
+  function renderReviews(reviews) {
     const container = document.getElementById('reviewContainer');
     container.innerHTML = '';
-    const filtered = stateFilter
-      ? reviews.filter(r => r.location.toLowerCase().includes(stateFilter.toLowerCase()))
-      : reviews;
 
-    if (filtered.length === 0) {
-      container.innerHTML = '<p>No reviews found for that state.</p>';
+    if (reviews.length === 0) {
+      container.innerHTML = '<p>No reviews found for that rating.</p>';
       return;
     }
 
-    filtered.forEach(r => {
+    reviews.forEach(r => {
       const card = document.createElement('div');
       card.className = 'review-card';
       card.innerHTML = `
@@ -125,26 +143,21 @@
     });
   }
 
-  function populateStateDropdown(reviews) {
-    const dropdown = document.getElementById('stateFilter');
-    const states = [...new Set(reviews.map(r => (r.location.split(',')[1] || '').trim().toUpperCase()))]
-      .filter(s => s.length === 2)
-      .sort();
-    states.forEach(state => {
-      const opt = document.createElement('option');
-      opt.value = state;
-      opt.textContent = state;
-      dropdown.appendChild(opt);
-    });
+  function setupRatingFilter(reviews) {
+    const dropdown = document.getElementById('ratingFilter');
 
     dropdown.addEventListener('change', () => {
-      renderReviews(reviews, dropdown.value);
+      const selectedRating = dropdown.value;
+      const filtered = selectedRating
+        ? reviews.filter(r => parseInt(r.rating) === parseInt(selectedRating))
+        : reviews;
+      renderReviews(filtered);
     });
   }
 
   fetchReviews().then(reviews => {
     renderReviews(reviews);
-    populateStateDropdown(reviews);
+    setupRatingFilter(reviews);
   });
 </script>
 
