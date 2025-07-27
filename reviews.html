@@ -149,7 +149,7 @@
     dropdown.addEventListener('change', () => {
       const selectedRating = dropdown.value;
       const filtered = selectedRating
-        ? reviews.filter(r => parseInt(r.rating) === parseInt(selectedRating))
+        ? reviews.filter(r => String(r.rating).trim().startsWith(selectedRating))
         : reviews;
       renderReviews(filtered);
     });
