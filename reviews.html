@@ -1,177 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Free Snake Relocation – Reviews</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f8f4;
-      padding: 20px;
+      background-color: #f0f8f0;
+      color: #2d4032;
       margin: 0;
-      color: #333;
+      padding: 0;
     }
-
+    .banner {
+      background: #226633;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    .content-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
     h1 {
       color: #225533;
       text-align: center;
     }
-
-    a {
+    .link-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .link-box a {
       color: #225533;
       font-weight: bold;
       text-decoration: none;
     }
-
-    a:hover {
+    .link-box a:hover {
       text-decoration: underline;
     }
-
-    .feedback-link {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
-
     .summary-box {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      margin: 0 auto 30px;
-      max-width: 700px;
-      border-left: 6px solid #336633;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
     .summary-box h2 {
       margin-top: 0;
-      color: #2d593f;
+      font-size: 1.2em;
     }
-
     .summary-line {
-      font-size: 1.05rem;
-      margin: 5px 0;
+      font-size: 1.1em;
+      margin: 8px 0;
     }
-
-    .review-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .review-card {
-      background: #ffffff;
-      border-left: 6px solid #336633;
-      border-radius: 6px;
+    .review {
+      background: white;
       padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-left: 5px solid #225533;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
-
-    .review-card h3 {
-      margin: 0 0 5px;
-      font-size: 1.1rem;
-      color: #2d593f;
+    .review strong {
+      font-size: 1.1em;
+      color: #225533;
     }
-
-    .review-card .location {
-      font-size: 0.95rem;
-      font-style: italic;
+    .review em {
       color: #555;
     }
-
-    .review-card .stars {
-      color: #e6b800;
+    .review .state {
+      color: #d4af37;
+      font-weight: bold;
     }
-
-    .review-card .comment {
-      margin-top: 10px;
+    .stars {
+      margin-top: 5px;
+      font-size: 1.2em;
+      color: #f5c518;
     }
   </style>
 </head>
 <body>
+  <div class="banner">Free Snake Relocation</div>
+  <div class="content-wrapper">
+    <h1>🐍 Free Snake Relocation – Reviews</h1>
+    <div class="link-box">
+      📝 Have feedback?
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">
+        Click here to leave a review
+      </a>
+    </div>
 
-<h1>🐍 Free Snake Relocation – Reviews</h1>
+    <div class="summary-box">
+      <h2>⭐ Review Summary</h2>
+      <div class="summary-line">⭐⭐⭐⭐⭐ – <span id="count-5">0</span> reviews</div>
+      <div class="summary-line">⭐⭐⭐⭐ – <span id="count-4">0</span> reviews</div>
+      <div class="summary-line">⭐⭐⭐ – <span id="count-3">0</span> reviews</div>
+      <div class="summary-line">⭐⭐ – <span id="count-2">0</span> reviews</div>
+      <div class="summary-line">⭐ – <span id="count-1">0</span> reviews</div>
+    </div>
 
-<div class="feedback-link">
-  📝 Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Click here to leave a review</a>
-</div>
+    <div id="reviews"></div>
+  </div>
 
-<div id="summaryBox" class="summary-box">
-  <h2>⭐ Review Summary</h2>
-  <div class="summary-line">⭐⭐⭐⭐⭐ – <span id="star5">0</span> reviews</div>
-  <div class="summary-line">⭐⭐⭐⭐ – <span id="star4">0</span> reviews</div>
-  <div class="summary-line">⭐⭐⭐ – <span id="star3">0</span> reviews</div>
-  <div class="summary-line">⭐⭐ – <span id="star2">0</span> reviews</div>
-  <div class="summary-line">⭐ – <span id="star1">0</span> reviews</div>
-</div>
+  <script>
+    const SHEET_ID = "1dBEsOK5SzfJ_LsuEiipp4-FRWtXZrC4qkkJO7DjuE8Q";
+    const SHEET_NAME = "Form Responses 1";
+    const API_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
 
-<div id="reviewContainer" class="review-list"></div>
-
-<script>
-  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQNXmSJbeoRIdyKCVCXdkLS2IJBbRTdej0PpCk4GqIf2amuCFiVwV6LFzKYbYMnUgJo2ZyeGr7f9lFy/pub?gid=852639095&single=true&output=csv';
-
-  async function fetchReviews() {
-    const res = await fetch(SHEET_URL);
-    const text = await res.text();
-    const rows = text.split('\n').slice(1);
-    const data = rows.map(r => r.split(',').map(cell => cell.replace(/^"|"$/g, '').trim()));
-    return data.map(([timestamp, name, location, rating, comment]) => ({
-      name,
-      location,
-      rating,
-      comment
-    }));
-  }
-
-  function countStars(str) {
-    const cleaned = str
-      .normalize('NFKD')              // normalize unicode (e.g., ⭐️ → ⭐)
-      .replaceAll(/\s/g, '')          // remove all whitespace
-      .replaceAll('⭐️', '⭐');         // convert emoji variants to standard
-
-    return (cleaned.match(/⭐/g) || []).length;
-  }
-
-  function renderSummary(reviews) {
-    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-
-    reviews.forEach(r => {
-      const stars = countStars(r.rating);
-      if (counts[stars] !== undefined) {
-        counts[stars]++;
-      }
-    });
-
-    for (let i = 1; i <= 5; i++) {
-      document.getElementById(`star${i}`).textContent = counts[i];
+    function countStars(str) {
+      const cleaned = str
+        .normalize('NFKD')             
+        .replace(/\s/g, '')            
+        .replace(/⭐️/g, '⭐')           
+        .replace(/[^⭐]/g, '');         
+      return cleaned.length;
     }
-  }
 
-  function renderReviews(reviews) {
-    const container = document.getElementById('reviewContainer');
-    container.innerHTML = '';
+    function renderSummary(reviews) {
+      const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+      reviews.forEach(r => {
+        const num = countStars(r.rating);
+        if (num >= 1 && num <= 5) counts[num]++;
+      });
 
-    reviews.forEach(r => {
-      const card = document.createElement('div');
-      card.className = 'review-card';
-      card.innerHTML = `
-        <h3>${r.name || 'Anonymous'}</h3>
-        <div class="location">${r.location}</div>
-        <div class="stars">${r.rating}</div>
-        <div class="comment">${r.comment}</div>
-      `;
-      container.appendChild(card);
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`count-${i}`).textContent = counts[i];
+      }
+    }
+
+    function renderReviews(reviews) {
+      const container = document.getElementById("reviews");
+      container.innerHTML = "";
+
+      reviews.forEach(r => {
+        const div = document.createElement("div");
+        div.className = "review";
+        div.innerHTML = `
+          <strong>${r.name || "Anonymous"}</strong><br />
+          <em>${r.city || ""}</em> <span class="state">${r.state || ""}</span><br />
+          <div class="stars">${r.rating}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function fetchReviews() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      return data.map(row => ({
+        name: row["Name"] || "Anonymous",
+        city: row["City"] || "",
+        state: row["State"] || "",
+        rating: row["Rating"] || ""
+      }));
+    }
+
+    fetchReviews().then(reviews => {
+      renderSummary(reviews);
+      renderReviews(reviews);
     });
-  }
-
-  fetchReviews().then(reviews => {
-    renderSummary(reviews);
-    renderReviews(reviews);
-  });
-</script>
-
+  </script>
 </body>
 </html>
