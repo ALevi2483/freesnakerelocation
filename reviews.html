@@ -65,6 +65,7 @@
 
     .review-card .stars {
       color: #e6b800;
+      font-size: 1.2rem;
     }
 
     .review-link {
@@ -136,7 +137,7 @@
       card.innerHTML = `
         <h3>${r.name || 'Anonymous'}</h3>
         <div class="location">${r.location}</div>
-        <div class="stars">${'⭐'.repeat(parseInt(r.rating) || 0)}</div>
+        <div class="stars">${r.rating}</div>
         <div class="comment">${r.comment}</div>
       `;
       container.appendChild(card);
@@ -149,7 +150,7 @@
     dropdown.addEventListener('change', () => {
       const selectedRating = dropdown.value;
       const filtered = selectedRating
-        ? reviews.filter(r => String(r.rating).trim().startsWith(selectedRating))
+        ? reviews.filter(r => (r.rating.trim().split('⭐').length - 1) === parseInt(selectedRating))
         : reviews;
       renderReviews(filtered);
     });
