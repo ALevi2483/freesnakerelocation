@@ -18,30 +18,40 @@
       text-align: center;
     }
 
-    .summary {
-      max-width: 600px;
-      margin: 20px auto 30px;
-      background: #ffffff;
-      border-radius: 6px;
-      padding: 20px;
+    a {
+      color: #225533;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .feedback-link {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+
+    .summary-box {
+      background-color: #ffffff;
+      padding: 15px 20px;
+      margin: 0 auto 30px;
+      max-width: 700px;
+      border-left: 6px solid #336633;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
-    .summary h2 {
-      font-size: 1.2rem;
-      color: #225533;
-      margin-bottom: 10px;
+    .summary-box h2 {
+      margin-top: 0;
+      color: #2d593f;
     }
 
-    .summary ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .summary li {
-      font-size: 1rem;
-      padding: 4px 0;
+    .summary-line {
+      font-size: 1.05rem;
+      margin: 5px 0;
     }
 
     .review-list {
@@ -72,29 +82,12 @@
       color: #555;
     }
 
-    .review-card .comment {
-      margin-top: 10px;
-    }
-
     .review-card .stars {
       color: #e6b800;
-      font-size: 1.2rem;
     }
 
-    .review-link {
-      text-align: center;
+    .review-card .comment {
       margin-top: 10px;
-      font-size: 1rem;
-    }
-
-    .review-link a {
-      color: #225533;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .review-link a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -102,15 +95,17 @@
 
 <h1>🐍 Free Snake Relocation – Reviews</h1>
 
-<p class="review-link">
+<div class="feedback-link">
   📝 Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Click here to leave a review</a>
-</p>
+</div>
 
-<div class="summary">
+<div id="summaryBox" class="summary-box">
   <h2>⭐ Review Summary</h2>
-  <ul id="summaryList">
-    <li>Loading...</li>
-  </ul>
+  <div class="summary-line">⭐⭐⭐⭐⭐ – <span id="star5">0</span> reviews</div>
+  <div class="summary-line">⭐⭐⭐⭐ – <span id="star4">0</span> reviews</div>
+  <div class="summary-line">⭐⭐⭐ – <span id="star3">0</span> reviews</div>
+  <div class="summary-line">⭐⭐ – <span id="star2">0</span> reviews</div>
+  <div class="summary-line">⭐ – <span id="star1">0</span> reviews</div>
 </div>
 
 <div id="reviewContainer" class="review-list"></div>
@@ -132,27 +127,27 @@
   }
 
   function countStars(str) {
-    return str
-      .replaceAll(' ', '')
-      .replaceAll('⭐️', '⭐')
-      .trim()
-      .split('⭐')
-      .length - 1;
+    const cleaned = str
+      .normalize('NFKD')              // normalize unicode (e.g., ⭐️ → ⭐)
+      .replaceAll(/\s/g, '')          // remove all whitespace
+      .replaceAll('⭐️', '⭐');         // convert emoji variants to standard
+
+    return (cleaned.match(/⭐/g) || []).length;
   }
 
-  function showRatingSummary(reviews) {
-    const summary = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  function renderSummary(reviews) {
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
     reviews.forEach(r => {
       const stars = countStars(r.rating);
-      if (stars >= 1 && stars <= 5) summary[stars]++;
+      if (counts[stars] !== undefined) {
+        counts[stars]++;
+      }
     });
 
-    const list = document.getElementById('summaryList');
-    list.innerHTML = '';
-
-    Object.entries(summary).sort((a, b) => b[0] - a[0]).forEach(([stars, count]) => {
-      list.innerHTML += `<li>${'⭐'.repeat(stars)} – ${count} review${count !== 1 ? 's' : ''}</li>`;
-    });
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById(`star${i}`).textContent = counts[i];
+    }
   }
 
   function renderReviews(reviews) {
@@ -173,7 +168,7 @@
   }
 
   fetchReviews().then(reviews => {
-    showRatingSummary(reviews);
+    renderSummary(reviews);
     renderReviews(reviews);
   });
 </script>
