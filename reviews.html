@@ -94,11 +94,11 @@
 
     <div class="summary-box">
       <h2>⭐ Review Summary</h2>
-      <div class="summary-line">⭐⭐⭐⭐⭐ – <span id="count-5">0</span> reviews</div>
-      <div class="summary-line">⭐⭐⭐⭐ – <span id="count-4">0</span> reviews</div>
-      <div class="summary-line">⭐⭐⭐ – <span id="count-3">0</span> reviews</div>
-      <div class="summary-line">⭐⭐ – <span id="count-2">0</span> reviews</div>
-      <div class="summary-line">⭐ – <span id="count-1">0</span> reviews</div>
+      <div class="summary-line"><span class="stars">⭐⭐⭐⭐⭐</span> – <span id="count-5">0</span> reviews</div>
+      <div class="summary-line"><span class="stars">⭐⭐⭐⭐</span> – <span id="count-4">0</span> reviews</div>
+      <div class="summary-line"><span class="stars">⭐⭐⭐</span> – <span id="count-3">0</span> reviews</div>
+      <div class="summary-line"><span class="stars">⭐⭐</span> – <span id="count-2">0</span> reviews</div>
+      <div class="summary-line"><span class="stars">⭐</span> – <span id="count-1">0</span> reviews</div>
     </div>
 
     <div id="reviews"></div>
@@ -110,11 +110,12 @@
     const API_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
 
     function countStars(str) {
+      if (!str) return 0;
       const cleaned = str
-        .normalize('NFKD')             
-        .replace(/\s/g, '')            
-        .replace(/⭐️/g, '⭐')           
-        .replace(/[^⭐]/g, '');         
+        .normalize("NFKD")
+        .replace(/\s/g, "")
+        .replace(/⭐️/g, "⭐")  // Handle compound emojis
+        .replace(/[^⭐]/g, "");
       return cleaned.length;
     }
 
@@ -124,7 +125,6 @@
         const num = countStars(r.rating);
         if (num >= 1 && num <= 5) counts[num]++;
       });
-
       for (let i = 1; i <= 5; i++) {
         document.getElementById(`count-${i}`).textContent = counts[i];
       }
@@ -133,7 +133,6 @@
     function renderReviews(reviews) {
       const container = document.getElementById("reviews");
       container.innerHTML = "";
-
       reviews.forEach(r => {
         const div = document.createElement("div");
         div.className = "review";
@@ -153,7 +152,7 @@
         name: row["Name"] || "Anonymous",
         city: row["City"] || "",
         state: row["State"] || "",
-        rating: row["Rating"] || ""
+        rating: (row["Rating"] || "").replace(/\s/g, "").replace(/⭐️/g, "⭐") // Clean stars
       }));
     }
 
