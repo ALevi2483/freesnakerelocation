@@ -7,104 +7,104 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f8f2;
+      background-color: #eefaf1;
+      color: #333;
       margin: 0;
       padding: 20px;
-      color: #333;
     }
 
-    h1 {
+    .header {
       text-align: center;
-      color: #225533;
     }
 
-    .form-link {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .form-link a {
-      color: #225533;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .form-link a:hover {
-      text-decoration: underline;
-    }
-
-    .review-card {
-      background: #fff;
-      padding: 15px;
+    .review {
+      background: white;
+      border-left: 5px solid #2d593f;
       border-radius: 8px;
-      margin: 20px auto;
-      max-width: 800px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 15px 20px;
+      margin: 15px auto;
+      max-width: 700px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    .review-card h3 {
-      margin: 0 0 5px;
-      color: #225533;
+    .review h3 {
+      margin: 0;
+      font-size: 1.1em;
+      color: #2d593f;
     }
 
-    .review-card p {
+    .review p {
       margin: 5px 0;
     }
 
     .stars {
+      color: #f5b301;
       font-size: 1.2em;
-      color: #e6b800;
-      margin-bottom: 8px;
+    }
+
+    .linkbox {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .linkbox a {
+      font-weight: bold;
+      color: #2d593f;
+      text-decoration: none;
+    }
+
+    .linkbox a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
-  <h1>🐍 Free Snake Relocation – Reviews</h1>
-
-  <div class="form-link">
-    📝 Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Click here to leave a review</a>
+  <div class="header">
+    <h1>🐍 Free Snake Relocation – Reviews</h1>
+    <div class="linkbox">
+      📝 Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Click here to leave a review</a>
+    </div>
   </div>
 
   <div id="reviews"></div>
 
   <script>
-    const sheetID = '1dBEsOK5SzfJ_LsuEiipp4-FRWtXZrC4qkkJO7DjuE8Q';
-    const sheetName = 'Form Responses 1';
-    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNXmSJbeoRIdyKCVCXdkLS2IJBbRTdej0PpCk4GqIf2amuCFiVwV6LFzKYbYMnUgJo2ZyeGr7f9lFy/pub?gid=852639095&single=true&output=csv";
 
-    fetch(url)
-      .then(res => res.text())
-      .then(text => {
-        const json = JSON.parse(text.substr(47).slice(0, -2));
-        const rows = json.table.rows;
-        const reviewsContainer = document.getElementById('reviews');
+    fetch(sheetURL)
+      .then(response => response.text())
+      .then(data => {
+        const lines = data.trim().split("\n");
+        const rows = lines.slice(1).map(line => line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
+
+        const container = document.getElementById("reviews");
 
         rows.forEach(row => {
-          const timestamp = row.c[0]?.v || '';
-          const name = row.c[1]?.v || '';
-          const location = row.c[2]?.v || '';
-          const rating = row.c[3]?.v || '';
-          const comments = row.c[4]?.v || '';
-          const helper = row.c[5]?.v || '';
+          const [timestamp, name, cityState, rating, comments, volunteer] = row;
 
-          const starMatch = rating.match(/^(\d)/);
-          const starsDisplay = starMatch ? '⭐'.repeat(parseInt(starMatch[1])) : '';
+          // Convert rating text like "5 Stars" into actual star emoji count
+          const numStars = parseInt(rating);
+          const starsHTML = "⭐".repeat(numStars);
 
-          const reviewHTML = `
-            <div class="review-card">
-              <h3>${name || '(No name)'}</h3>
-              <p><em>${location}</em></p>
-              <p class="stars">${starsDisplay}</p>
-              ${comments ? `<p><strong>Comments:</strong> ${comments}</p>` : ''}
-              ${helper ? `<p><strong>Volunteer:</strong> ${helper}</p>` : ''}
-              <p><small>${timestamp}</small></p>
-            </div>
+          const reviewBox = document.createElement("div");
+          reviewBox.className = "review";
+
+          reviewBox.innerHTML = `
+            <h3>${name ? name : "Anonymous"}</h3>
+            <p><i>${cityState || "Unknown Location"}</i></p>
+            <p class="stars">${starsHTML}</p>
+            ${comments ? `<p><strong>Comments:</strong> ${comments}</p>` : ""}
+            ${volunteer ? `<p><strong>Helped by:</strong> ${volunteer}</p>` : ""}
+            <p><small><em>${timestamp}</em></small></p>
           `;
-          reviewsContainer.innerHTML += reviewHTML;
+
+          container.appendChild(reviewBox);
         });
+      })
+      .catch(error => {
+        console.error("Error loading reviews:", error);
+        document.getElementById("reviews").innerText = "Unable to load reviews at this time.";
       });
   </script>
-
 </body>
 </html>
