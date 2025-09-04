@@ -1,279 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Find a Snake Relocator | FreeSnakeRelocation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#2d593f" />
+  <meta charset="UTF-8">
+  <title>Find a Snake Relocator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    :root {
-      --bg: #f4f8f4;
-      --card: #ffffff;
-      --text: #1e2a1f;
-      --muted: #55635a;
-      --brand: #2d593f;
-      --brand-dark: #234a34;
-      --border: #e6eae6;
-      --warn-bg: #fff8e1;
-      --warn-border: #d6b700;
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f8f4;
+      margin: 0;
     }
-    * { box-sizing: border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 Arial, sans-serif; }
-    main { max-width: 960px; margin: 0 auto; padding: 20px; }
-    h1, h2 { color: var(--brand); margin: 0 0 12px; }
-    h1 { font-size: 1.8rem; }
-    h2 { font-size: 1.3rem; margin-top: 28px; }
-    p { margin: 0 0 10px; }
-    label { display:block; margin: 0 0 6px; font-weight: 600; }
+    h1, h2 {
+      color: #2d593f;
+    }
     input, select, button {
-      width: 100%; max-width: 480px; padding: 10px 12px; border-radius: 8px;
-      border: 1px solid var(--border); outline: none; font:inherit;
-      background: #fff;
+      padding: 8px;
+      margin: 5px 0 15px;
+      width: 100%;
+      max-width: 400px;
     }
-    input:focus, select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(45,89,63,.15); }
-    .btn-row { display:flex; gap:10px; flex-wrap:wrap; margin: 8px 0 0; }
     button {
-      width:auto; background: var(--brand); color:#fff; border:none; cursor:pointer; font-weight:600;
-      padding:10px 14px;
+      background-color: #336633;
+      color: white;
+      border: none;
+      cursor: pointer;
     }
-    button:hover { background: var(--brand-dark); }
-    .section { margin: 26px 0 40px; }
-    .results, .box {
-      background: var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    button:hover {
+      background-color: #2a552a;
     }
-    .card {
-      border:1px solid var(--border); border-radius:12px; padding:12px; margin:10px 0;
+    .section {
+      margin-bottom: 40px;
     }
-    .card strong { font-size: 1.05rem; }
-    .row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .muted { color: var(--muted); font-size: .92rem; }
-    .hint { font-size:.9rem; color:var(--muted); margin-top:6px; }
+    .results {
+      margin-top: 15px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+      border-radius: 8px;
+    }
+    small {
+      color: #555;
+    }
     .disclaimer-link {
-      display:inline-block; color: var(--brand-dark); cursor:pointer; text-decoration: underline; margin: 6px 0 8px;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      display: block;
+      color: #225533;
+      cursor: pointer;
+      text-decoration: underline;
     }
     .disclaimer-box {
-      display:none; background: var(--warn-bg); border:1px solid var(--warn-border); padding: 14px; border-radius: 10px;
+      display: none;
+      background-color: #fff8e1;
+      border: 1px solid #d6b700;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+      color: #333;
     }
-    .disclaimer-box button { background: var(--brand-dark); margin-top: 8px; }
-    iframe { width: 100%; height: 700px; border: none; border-radius: 12px; }
-    small { color: var(--muted); }
-    .pill {
-      display:inline-block; padding:4px 8px; border-radius:999px; background:#eef3ef; color:#365243; font-size:.8rem;
-      border:1px solid #dfe7e1;
+    .disclaimer-box button {
+      margin-top: 10px;
+      background-color: #225533;
     }
-    .actions a { text-decoration: none; }
-    .actions .pill { margin-right: 8px; }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Find a Snake Relocator</h1>
+  <h1>Find a Snake Relocator</h1>
 
-    <a class="disclaimer-link" onclick="toggleDisclaimer()">📜 Read Disclaimer</a>
-    <div id="disclaimerBox" class="disclaimer-box">
-      <p><strong>DISCLAIMER:</strong> This directory is provided as a public service to help connect individuals with local snake relocation volunteers. FreeSnakeRelocation.com does not verify the identity, background, or certifications of any volunteers listed. All volunteers operate independently, and it is your responsibility to determine whether someone is qualified or trustworthy. If you do not feel comfortable using this service, please do not proceed and instead contact local animal control or wildlife authorities.</p>
-      <button onclick="toggleDisclaimer()">Close</button>
-    </div>
+<a class="disclaimer-link" onclick="toggleDisclaimer()">📜 Read Disclaimer</a>
+<div id="disclaimerBox" class="disclaimer-box">
+  <p><strong>DISCLAIMER:</strong> This directory is provided as a public service to help connect individuals with local snake relocation volunteers. FreeSnakeRelocation.com does not verify the identity, background, or certifications of any volunteers listed. All volunteers operate independently, and it is your responsibility to determine whether someone is qualified or trustworthy. If you do not feel comfortable using this service, please do not proceed and instead contact local animal control or wildlife authorities. </ p>
+  <button onclick="toggleDisclaimer()">Close</button>
+</div>
 
-    <!-- Find by Address / GPS -->
-    <section class="section">
-      <h2>Find the 3 Closest by Address or GPS</h2>
-      <label for="addrInput">Enter address (or city & state)</label>
-      <input id="addrInput" type="text" placeholder="e.g., 123 Main St, Chesapeake, VA" />
-      <div class="btn-row">
-        <button onclick="findByAddress()">Find by Address</button>
-        <button onclick="findByGPS()">Use My Location</button>
-      </div>
-      <div id="nearestResults" class="results" role="region" aria-live="polite"></div>
-      <div class="hint">We’ll show the 3 closest volunteers with an approximate distance.</div>
-    </section>
+  <!-- Search by State & City -->
+  <div class="section">
+    <h2>Search by State & City</h2>
+    <label for="stateSelect">Select State</label>
+    <select id="stateSelect" onchange="populateCities()">
+      <option value="">--Select State--</option>
+    </select>
 
-    <!-- Search by State & City -->
-    <section class="section">
-      <h2>Search by State & City</h2>
-      <label for="stateSelect">Select State</label>
-      <select id="stateSelect" onchange="populateCities()">
-        <option value="">-- Select State --</option>
-      </select>
+    <label for="citySelect">Select City</label>
+    <select id="citySelect" onchange="showResults()">
+      <option value="">--Select City--</option>
+    </select>
 
-      <label for="citySelect" style="margin-top:10px;">Select City</label>
-      <select id="citySelect" onchange="showResults()">
-        <option value="">-- Select City --</option>
-      </select>
+    <div id="stateCityResults" class="results"></div>
+  </div>
 
-      <div id="stateCityResults" class="results"></div>
-    </section>
-
-    <!-- Map Section -->
-    <section class="section">
-      <h2>View Relocators on the Map</h2>
-      <div class="box">
-        <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen loading="lazy" title="Volunteer Map"></iframe>
-      </div>
-    </section>
-  </main>
+  <!-- Map Section -->
+  <div class="section">
+    <h2>View Relocators on the Map</h2>
+    <iframe src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w" allowfullscreen></iframe>
+  </div>
 
   <script>
-    // ======== CONFIG ========
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzvvwx-ehVP6I-CCu6qK4VxApte3BqLZ__ln5HIz2HzfLkwswaxTTVd2jvpjSOxmUEW/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
+    let data = [];
 
-    let fullData = [];
-
-    // JSONP loader with auto-callback
-    function loadJSONP(url) {
-      return new Promise((resolve, reject) => {
-        const cb = `__jsonp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        window[cb] = payload => {
-          try { resolve(payload); }
-          finally {
-            delete window[cb];
-            if (script && script.parentNode) script.parentNode.removeChild(script);
-          }
-        };
-        const script = document.createElement('script');
-        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
-        script.onerror = () => {
-          delete window[cb];
-          if (script && script.parentNode) script.parentNode.removeChild(script);
-          reject(new Error('JSONP load failed'));
-        };
-        document.head.appendChild(script);
-      });
-    }
-
-    // Sanitize any text to avoid injection
-    function sanitize(str) {
-      return String(str || '').replace(/[&<>"']/g, s => (
-        { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[s]
-      ));
-    }
-
-    // Normalize possible shapes
-    function normalizeResults(d) {
-      if (Array.isArray(d)) return d;
-      if (d && Array.isArray(d.results)) return d.results;
-      if (d && d.error) throw new Error(d.error);
-      return [];
-    }
-
-    // Toggle disclaimer
-    function toggleDisclaimer() {
-      const box = document.getElementById("disclaimerBox");
-      const isHidden = getComputedStyle(box).display === "none";
-      box.style.display = isHidden ? "block" : "none";
-    }
-
-    // Load full dataset for the State/City pickers
-    (function initFullList() {
-      const url = `${scriptURL}?mode=full&t=${Date.now()}`;
-      loadJSONP(url)
-        .then(json => {
-          const rows = normalizeResults(json);
-          fullData = rows.filter(r => r && r.State && r.City);
-          const states = [...new Set(fullData.map(r => r.State))].sort((a,b)=>a.localeCompare(b));
-          const stateSelect = document.getElementById('stateSelect');
-          states.forEach(state => {
-            const opt = document.createElement('option');
-            opt.value = state;
-            opt.textContent = state;
-            stateSelect.appendChild(opt);
-          });
-        })
-        .catch(() => {
-          // silent fail for the state/city browser; users can still use nearest
+    fetch(`${scriptURL}?mode=full`)
+      .then(res => res.json())
+      .then(json => {
+        data = json.filter(r => r.State && r.City);
+        const states = [...new Set(data.map(r => r.State))].sort();
+        const stateSelect = document.getElementById('stateSelect');
+        states.forEach(state => {
+          const opt = document.createElement('option');
+          opt.value = state;
+          opt.textContent = state;
+          stateSelect.appendChild(opt);
         });
-    })();
+      });
 
-    // Address → 3 nearest
-    async function findByAddress() {
-      const addr = document.getElementById('addrInput').value.trim();
-      const container = document.getElementById('nearestResults');
-      container.innerHTML = '';
-      if (!addr) {
-        container.innerHTML = "<em>Please enter an address or a city & state.</em>";
-        return;
-      }
-      container.innerHTML = "Searching for nearest relocators…";
-      try {
-        const json = await loadJSONP(`${scriptURL}?address=${encodeURIComponent(addr)}&t=${Date.now()}`);
-        const results = normalizeResults(json);
-        if (!results.length) {
-          container.innerHTML = `<em>No nearby relocators found for “${sanitize(addr)}”. Try a nearby city.</em>`;
-          return;
-        }
-        renderNearest(results);
-      } catch (err) {
-        container.innerHTML = `<em>We couldn’t find results for that address. (${sanitize(String(err))})</em>`;
-      }
-    }
-
-    // GPS → 3 nearest
-    function findByGPS() {
-      const container = document.getElementById('nearestResults');
-      container.innerHTML = '';
-      if (!navigator.geolocation) {
-        container.innerHTML = "<em>Your browser doesn’t support GPS location.</em>";
-        return;
-      }
-      container.innerHTML = "Getting your location…";
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        try {
-          const json = await loadJSONP(`${scriptURL}?lat=${latitude}&lng=${longitude}&t=${Date.now()}`);
-          const results = normalizeResults(json);
-          if (!results.length) {
-            container.innerHTML = "<em>No nearby relocators found from your location.</em>";
-            return;
-          }
-          renderNearest(results);
-        } catch (err) {
-          container.innerHTML = `<em>Sorry, we couldn’t find results from your location. (${sanitize(String(err))})</em>`;
-        }
-      }, () => {
-        container.innerHTML = "<em>We couldn’t access your location. Try typing an address instead.</em>";
-      }, { enableHighAccuracy: true, timeout: 12000 });
-    }
-
-    // Render the 3 nearest as cards
-    function renderNearest(list) {
-      const container = document.getElementById('nearestResults');
-      if (!Array.isArray(list) || list.length === 0) {
-        container.innerHTML = "<em>No nearby relocators found.</em>";
-        return;
-      }
-      container.innerHTML = list.map(r => {
-        const name = sanitize(r["Full Name"] || r.Name || "Volunteer");
-        const cityState = [r.City, r.State].filter(Boolean).map(sanitize).join(', ');
-        const dist = typeof r.DistanceMiles === 'number' ? `${r.DistanceMiles.toFixed(1)} mi away` : '';
-        const telHref = r.Phone ? `tel:${String(r.Phone).replace(/[^0-9+]/g,'')}` : '';
-        const phoneHTML = r.Phone ? `<a class="pill" href="${telHref}">📞 Call</a>` : '';
-        const mapsHTML = (typeof r.Lat === 'number' && typeof r.Lng === 'number')
-          ? `<a class="pill" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.Lat + ',' + r.Lng)}">📍 Open in Maps</a>`
-          : '';
-        return `
-          <div class="card">
-            <div class="row" style="justify-content:space-between;">
-              <div><strong>${name}</strong></div>
-              <div class="muted">${sanitize(cityState)}${dist ? ' · ' + dist : ''}</div>
-            </div>
-            <div class="actions" style="margin-top:8px;">
-              ${phoneHTML}
-              ${mapsHTML}
-              ${copyBtnHTML(name)}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // State/City pickers
     function populateCities() {
       const selectedState = document.getElementById('stateSelect').value;
-      const cities = [...new Set(fullData.filter(r => r.State === selectedState).map(r => r.City))]
-        .sort((a,b)=>a.localeCompare(b));
+      const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
       const citySelect = document.getElementById('citySelect');
-      citySelect.innerHTML = '<option value="">-- Select City --</option>';
+      citySelect.innerHTML = '<option value="">--Select City--</option>';
       cities.forEach(city => {
         const opt = document.createElement('option');
         opt.value = city;
@@ -286,36 +137,20 @@
     function showResults() {
       const state = document.getElementById('stateSelect').value;
       const city = document.getElementById('citySelect').value;
-      const filtered = fullData.filter(r => r.State === state && r.City === city);
+      const filtered = data.filter(r => r.State === state && r.City === city);
       const resultDiv = document.getElementById('stateCityResults');
-      if (!filtered.length) {
-        resultDiv.innerHTML = "<em>No relocators found for this city.</em>";
-        return;
-      }
-      resultDiv.innerHTML = filtered.map(r => {
-        const name = sanitize(r["Full Name"] || r.Name || "Volunteer");
-        const phone = r["Phone"] ? ` – ${sanitize(r["Phone"])}` : '';
-        return `<div class="card"><strong>${name}</strong>${phone}<div class="muted">${sanitize(r.City)}, ${sanitize(r.State)}</div></div>`;
-      }).join('');
+      resultDiv.innerHTML = filtered.length
+        ? filtered.map(r =>
+            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
+            (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
+            `</div>`
+          ).join('<br><br>')
+        : "<em>No relocators found for this city.</em>";
     }
 
-    // Copy contact text
-    function copyBtnHTML(name) {
-      const id = `copy_${Math.random().toString(36).slice(2)}`;
-      // name included in data-label for button-level feedback
-      setTimeout(()=> {
-        const btn = document.getElementById(id);
-        if (btn) btn.addEventListener('click', () => {
-          const card = btn.closest('.card');
-          const text = card ? card.innerText.replace(/\s{2,}/g, ' ').trim() : name;
-          navigator.clipboard.writeText(text).then(() => {
-            const prev = btn.textContent;
-            btn.textContent = '✅ Copied';
-            setTimeout(()=> btn.textContent = prev, 1200);
-          }).catch(()=>{ /* ignore */ });
-        });
-      }, 0);
-      return `<button id="${id}" class="pill" type="button" aria-label="Copy ${sanitize(name)}">📋 Copy</button>`;
+    function toggleDisclaimer() {
+      const box = document.getElementById("disclaimerBox");
+      box.style.display = box.style.display === "none" ? "block" : "none";
     }
   </script>
 </body>
