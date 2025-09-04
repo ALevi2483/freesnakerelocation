@@ -33,7 +33,7 @@
     <button onclick="toggleDisclaimer()">Close</button>
   </div>
 
-  <!-- NEW: Find by Address / GPS -->
+  <!-- Find by Address / GPS -->
   <div class="section">
     <h2>Find the 3 Closest by Address or GPS</h2>
     <label for="addrInput">Enter address (or city & state)</label>
@@ -70,16 +70,24 @@
 
   <script>
     // ======== CONFIG ========
-    // Use your existing deployed Apps Script Web App URL.
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyiC9sfiliUOjv9_liFC_Ex2IgAzNLmhGS-6-oiZXVdLQKLmWyy0HgtFM2rcBcy1Szyww/exec';
 
     let data = [];
 
-    // Load full dataset for state/city search (unchanged)
-    fetch(`${scriptURL}?mode=full`)
+    // Normalize any server shape to an array of results
+    function normalizeResults(data) {
+      if (Array.isArray(data)) return data;                 // v7 array
+      if (data && Array.isArray(data.results)) return data.results; // older {results:[]}
+      if (data && data.error) throw new Error(data.error);  // bubble up server errors
+      return [];
+    }
+
+    // Load full dataset for state/city search
+    fetch(`${scriptURL}?mode=full&t=${Date.now()}`)
       .then(res => res.json())
       .then(json => {
-        data = json.filter(r => r.State && r.City);
+        const rows = normalizeResults(json);
+        data = rows.filter(r => r.State && r.City);
         const states = [...new Set(data.map(r => r.State))].sort();
         const stateSelect = document.getElementById('stateSelect');
         states.forEach(state => {
@@ -89,11 +97,9 @@
           stateSelect.appendChild(opt);
         });
       })
-      .catch(() => {
-        // optional: handle full list load errors silently
-      });
+      .catch(() => { /* silent */ });
 
-    // --- New: Find Closest by Address ---
+    // Find Closest by Address
     async function findByAddress() {
       const addr = document.getElementById('addrInput').value.trim();
       const container = document.getElementById('nearestResults');
@@ -105,16 +111,21 @@
       container.innerHTML = "Searching for nearest relocators…";
 
       try {
-        const res = await fetch(`${scriptURL}?mode=nearest&address=${encodeURIComponent(addr)}`);
-        if (!res.ok) throw new Error('Network response was not ok');
-        const results = await res.json();
+        const res = await fetch(`${scriptURL}?address=${encodeURIComponent(addr)}&t=${Date.now()}`);
+        if (!res.ok) throw new Error(`Network error ${res.status}`);
+        const data = await res.json();
+        const results = normalizeResults(data);
+        if (!results.length) {
+          container.innerHTML = `<em>No nearby relocators found for "${sanitize(addr)}". Try a city & state (e.g., "Chesapeake, VA").</em>`;
+          return;
+        }
         renderNearest(results);
       } catch (err) {
-        container.innerHTML = `<em>Sorry, we couldn’t find results for that address.</em>`;
+        container.innerHTML = `<em>Sorry, we couldn’t find results for that address. (${String(err).replace(/</g,'&lt;')})</em>`;
       }
     }
 
-    // --- New: Find Closest by GPS ---
+    // Find Closest by GPS
     function findByGPS() {
       const container = document.getElementById('nearestResults');
       container.innerHTML = '';
@@ -126,19 +137,24 @@
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const { latitude, longitude } = pos.coords;
         try {
-          const res = await fetch(`${scriptURL}?mode=nearest&lat=${latitude}&lng=${longitude}`);
-          if (!res.ok) throw new Error('Network response was not ok');
-          const results = await res.json();
+          const res = await fetch(`${scriptURL}?lat=${latitude}&lng=${longitude}&t=${Date.now()}`);
+          if (!res.ok) throw new Error(`Network error ${res.status}`);
+          const data = await res.json();
+          const results = normalizeResults(data);
+          if (!results.length) {
+            container.innerHTML = "<em>No nearby relocators found from your location.</em>";
+            return;
+          }
           renderNearest(results);
         } catch (err) {
-          container.innerHTML = `<em>Sorry, we couldn’t find results from your location.</em>`;
+          container.innerHTML = `<em>Sorry, we couldn’t find results from your location. (${String(err).replace(/</g,'&lt;')})</em>`;
         }
       }, () => {
         container.innerHTML = "<em>We couldn’t access your location. Try typing an address instead.</em>";
       }, { enableHighAccuracy: true, timeout: 10000 });
     }
 
-    // --- New: Render top-3 cards ---
+    // Render top-3 cards
     function renderNearest(list) {
       const container = document.getElementById('nearestResults');
       if (!Array.isArray(list) || list.length === 0) {
@@ -147,7 +163,7 @@
       }
       container.innerHTML = list.map(r => {
         const dist = r.DistanceMiles != null ? `${Number(r.DistanceMiles).toFixed(1)} mi away` : '';
-        const phone = r.Phone ? `<a href="tel:${r.Phone.replace(/[^0-9+]/g,'')}">${r.Phone}</a>` : '';
+        const phone = r.Phone ? `<a href="tel:${r.Phone.replace(/[^0-9+]/g,'')}">${sanitize(r.Phone)}</a>` : '';
         const place = [r.City, r.State].filter(Boolean).join(', ');
         return `
           <div class="card">
@@ -158,7 +174,7 @@
       }).join('');
     }
 
-    // --- Existing State/City functions (unchanged) ---
+    // State/City helpers
     function populateCities() {
       const selectedState = document.getElementById('stateSelect').value;
       const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
@@ -180,8 +196,8 @@
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.length
         ? filtered.map(r =>
-            `<div><strong>${sanitize(r["Full Name"] || r.Name || "Volunteer")}</strong> – ${r["Phone"] || ""}` +
-            (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
+            `<div><strong>${sanitize(r["Full Name"] || r.Name || "Volunteer")}</strong> – ${sanitize(r["Phone"] || "")}` +
+            (r["Distance"] ? `<br><small>${sanitize(r["Distance"])} mi away</small>` : '') +
             `</div>`
           ).join('<br><br>')
         : "<em>No relocators found for this city.</em>";
@@ -192,7 +208,7 @@
       box.style.display = box.style.display === "none" ? "block" : "none";
     }
 
-    // Simple sanitize to avoid injecting markup from sheet
+    // Sanitize to avoid HTML injection
     function sanitize(str) {
       return String(str || '').replace(/[&<>"']/g, s => ({
         '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
