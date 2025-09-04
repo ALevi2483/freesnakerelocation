@@ -1,84 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Find a Snake Relocator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f4f8f4;
-      margin: 0;
-    }
-    h1, h2 {
-      color: #2d593f;
-    }
-    input, select, button {
-      padding: 8px;
-      margin: 5px 0 15px;
-      width: 100%;
-      max-width: 400px;
-    }
-    button {
-      background-color: #336633;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #2a552a;
-    }
-    .section {
-      margin-bottom: 40px;
-    }
-    .results {
-      margin-top: 15px;
-      padding: 10px;
-      background: #fff;
-      border-radius: 6px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    iframe {
-      width: 100%;
-      height: 800px;
-      border: none;
-      border-radius: 8px;
-    }
-    small {
-      color: #555;
-    }
-    .disclaimer-link {
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-      display: block;
-      color: #225533;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    .disclaimer-box {
-      display: none;
-      background-color: #fff8e1;
-      border: 1px solid #d6b700;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 6px;
-      color: #333;
-    }
-    .disclaimer-box button {
-      margin-top: 10px;
-      background-color: #225533;
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f8f4; margin: 0; }
+    h1, h2 { color: #2d593f; }
+    input, select, button { padding: 8px; margin: 5px 0 15px; width: 100%; max-width: 400px; }
+    button { background-color: #336633; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #2a552a; }
+    .section { margin-bottom: 40px; }
+    .results { margin-top: 15px; padding: 10px; background: #fff; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .card { padding: 10px; border-radius: 6px; border: 1px solid #e6e6e6; margin-bottom: 10px; }
+    .card strong { color: #1e3a27; }
+    .muted { color: #555; font-size: 0.9rem; }
+    iframe { width: 100%; height: 800px; border: none; border-radius: 8px; }
+    small { color: #555; }
+    .disclaimer-link { font-size: 0.95rem; margin-bottom: 10px; display: block; color: #225533; cursor: pointer; text-decoration: underline; }
+    .disclaimer-box { display: none; background-color: #fff8e1; border: 1px solid #d6b700; padding: 15px; margin: 20px 0; border-radius: 6px; color: #333; }
+    .disclaimer-box button { margin-top: 10px; background-color: #225533; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-row button { width: auto; }
   </style>
 </head>
 <body>
   <h1>Find a Snake Relocator</h1>
 
-<a class="disclaimer-link" onclick="toggleDisclaimer()">📜 Read Disclaimer</a>
-<div id="disclaimerBox" class="disclaimer-box">
-  <p><strong>DISCLAIMER:</strong> This directory is provided as a public service to help connect individuals with local snake relocation volunteers. FreeSnakeRelocation.com does not verify the identity, background, or certifications of any volunteers listed. All volunteers operate independently, and it is your responsibility to determine whether someone is qualified or trustworthy. If you do not feel comfortable using this service, please do not proceed and instead contact local animal control or wildlife authorities. </ p>
-  <button onclick="toggleDisclaimer()">Close</button>
-</div>
+  <a class="disclaimer-link" onclick="toggleDisclaimer()">📜 Read Disclaimer</a>
+  <div id="disclaimerBox" class="disclaimer-box">
+    <p><strong>DISCLAIMER:</strong> This directory is provided as a public service to help connect individuals with local snake relocation volunteers. FreeSnakeRelocation.com does not verify the identity, background, or certifications of any volunteers listed. All volunteers operate independently, and it is your responsibility to determine whether someone is qualified or trustworthy. If you do not feel comfortable using this service, please do not proceed and instead contact local animal control or wildlife authorities.</p>
+    <button onclick="toggleDisclaimer()">Close</button>
+  </div>
+
+  <!-- NEW: Find by Address / GPS -->
+  <div class="section">
+    <h2>Find the 3 Closest by Address or GPS</h2>
+    <label for="addrInput">Enter address (or city & state)</label>
+    <input id="addrInput" type="text" placeholder="e.g., 123 Main St, Chesapeake, VA" />
+    <div class="btn-row">
+      <button onclick="findByAddress()">Find by Address</button>
+      <button onclick="findByGPS()">Use My Location</button>
+    </div>
+    <div id="nearestResults" class="results"></div>
+    <small class="muted">We’ll only show the closest 3 volunteers and their approximate distance.</small>
+  </div>
 
   <!-- Search by State & City -->
   <div class="section">
@@ -103,9 +69,13 @@
   </div>
 
   <script>
+    // ======== CONFIG ========
+    // Use your existing deployed Apps Script Web App URL.
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyj6mYDbzEbGjGbnjOHamQrx3y9HXXmdNk4poQuQrs0HMdSFl-0hdfOhC13oI0YYLBH-A/exec';
+
     let data = [];
 
+    // Load full dataset for state/city search (unchanged)
     fetch(`${scriptURL}?mode=full`)
       .then(res => res.json())
       .then(json => {
@@ -118,8 +88,77 @@
           opt.textContent = state;
           stateSelect.appendChild(opt);
         });
+      })
+      .catch(() => {
+        // optional: handle full list load errors silently
       });
 
+    // --- New: Find Closest by Address ---
+    async function findByAddress() {
+      const addr = document.getElementById('addrInput').value.trim();
+      const container = document.getElementById('nearestResults');
+      container.innerHTML = '';
+      if (!addr) {
+        container.innerHTML = "<em>Please enter an address.</em>";
+        return;
+      }
+      container.innerHTML = "Searching for nearest relocators…";
+
+      try {
+        const res = await fetch(`${scriptURL}?mode=nearest&address=${encodeURIComponent(addr)}`);
+        if (!res.ok) throw new Error('Network response was not ok');
+        const results = await res.json();
+        renderNearest(results);
+      } catch (err) {
+        container.innerHTML = `<em>Sorry, we couldn’t find results for that address.</em>`;
+      }
+    }
+
+    // --- New: Find Closest by GPS ---
+    function findByGPS() {
+      const container = document.getElementById('nearestResults');
+      container.innerHTML = '';
+      if (!navigator.geolocation) {
+        container.innerHTML = "<em>Your browser doesn’t support GPS location.</em>";
+        return;
+      }
+      container.innerHTML = "Getting your location…";
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        try {
+          const res = await fetch(`${scriptURL}?mode=nearest&lat=${latitude}&lng=${longitude}`);
+          if (!res.ok) throw new Error('Network response was not ok');
+          const results = await res.json();
+          renderNearest(results);
+        } catch (err) {
+          container.innerHTML = `<em>Sorry, we couldn’t find results from your location.</em>`;
+        }
+      }, () => {
+        container.innerHTML = "<em>We couldn’t access your location. Try typing an address instead.</em>";
+      }, { enableHighAccuracy: true, timeout: 10000 });
+    }
+
+    // --- New: Render top-3 cards ---
+    function renderNearest(list) {
+      const container = document.getElementById('nearestResults');
+      if (!Array.isArray(list) || list.length === 0) {
+        container.innerHTML = "<em>No nearby relocators found.</em>";
+        return;
+      }
+      container.innerHTML = list.map(r => {
+        const dist = r.DistanceMiles != null ? `${Number(r.DistanceMiles).toFixed(1)} mi away` : '';
+        const phone = r.Phone ? `<a href="tel:${r.Phone.replace(/[^0-9+]/g,'')}">${r.Phone}</a>` : '';
+        const place = [r.City, r.State].filter(Boolean).join(', ');
+        return `
+          <div class="card">
+            <div><strong>${sanitize(r["Full Name"] || r.Name || "Volunteer")}</strong></div>
+            <div>${phone}</div>
+            <div class="muted">${sanitize(place)} ${dist ? ' · ' + dist : ''}</div>
+          </div>`;
+      }).join('');
+    }
+
+    // --- Existing State/City functions (unchanged) ---
     function populateCities() {
       const selectedState = document.getElementById('stateSelect').value;
       const cities = [...new Set(data.filter(r => r.State === selectedState).map(r => r.City))].sort();
@@ -141,7 +180,7 @@
       const resultDiv = document.getElementById('stateCityResults');
       resultDiv.innerHTML = filtered.length
         ? filtered.map(r =>
-            `<div><strong>${r["Full Name"]}</strong> – ${r["Phone"]}` +
+            `<div><strong>${sanitize(r["Full Name"] || r.Name || "Volunteer")}</strong> – ${r["Phone"] || ""}` +
             (r["Distance"] ? `<br><small>${r["Distance"]} mi away</small>` : '') +
             `</div>`
           ).join('<br><br>')
@@ -151,6 +190,13 @@
     function toggleDisclaimer() {
       const box = document.getElementById("disclaimerBox");
       box.style.display = box.style.display === "none" ? "block" : "none";
+    }
+
+    // Simple sanitize to avoid injecting markup from sheet
+    function sanitize(str) {
+      return String(str || '').replace(/[&<>"']/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[s]));
     }
   </script>
 </body>
