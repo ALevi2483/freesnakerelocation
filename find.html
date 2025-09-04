@@ -74,17 +74,37 @@
 
     let data = [];
 
+    // -------- JSONP loader (bypasses CORS) --------
+    function loadJSONP(url, callbackName) {
+      return new Promise((resolve, reject) => {
+        const cb = `__jsonp_${callbackName}_${Date.now()}`;
+        window[cb] = (payload) => {
+          try { resolve(payload); } finally {
+            delete window[cb];
+            script.remove();
+          }
+        };
+        const script = document.createElement('script');
+        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+        script.onerror = () => {
+          delete window[cb];
+          script.remove();
+          reject(new Error('JSONP load failed'));
+        };
+        document.head.appendChild(script);
+      });
+    }
+
     // Normalize any server shape to an array of results
-    function normalizeResults(data) {
-      if (Array.isArray(data)) return data;                 // v7 array
-      if (data && Array.isArray(data.results)) return data.results; // older {results:[]}
-      if (data && data.error) throw new Error(data.error);  // bubble up server errors
+    function normalizeResults(d) {
+      if (Array.isArray(d)) return d;
+      if (d && Array.isArray(d.results)) return d.results;
+      if (d && d.error) throw new Error(d.error);
       return [];
     }
 
-    // Load full dataset for state/city search
-    fetch(`${scriptURL}?mode=full&t=${Date.now()}`)
-      .then(res => res.json())
+    // Load full dataset for state/city (JSONP)
+    loadJSONP(`${scriptURL}?mode=full&t=${Date.now()}`, 'full')
       .then(json => {
         const rows = normalizeResults(json);
         data = rows.filter(r => r.State && r.City);
@@ -99,7 +119,7 @@
       })
       .catch(() => { /* silent */ });
 
-    // Find Closest by Address
+    // Find Closest by Address (JSONP)
     async function findByAddress() {
       const addr = document.getElementById('addrInput').value.trim();
       const container = document.getElementById('nearestResults');
@@ -109,12 +129,9 @@
         return;
       }
       container.innerHTML = "Searching for nearest relocators…";
-
       try {
-        const res = await fetch(`${scriptURL}?address=${encodeURIComponent(addr)}&t=${Date.now()}`);
-        if (!res.ok) throw new Error(`Network error ${res.status}`);
-        const data = await res.json();
-        const results = normalizeResults(data);
+        const json = await loadJSONP(`${scriptURL}?address=${encodeURIComponent(addr)}&t=${Date.now()}`, 'nearestAddr');
+        const results = normalizeResults(json);
         if (!results.length) {
           container.innerHTML = `<em>No nearby relocators found for "${sanitize(addr)}". Try a city & state (e.g., "Chesapeake, VA").</em>`;
           return;
@@ -125,7 +142,7 @@
       }
     }
 
-    // Find Closest by GPS
+    // Find Closest by GPS (JSONP)
     function findByGPS() {
       const container = document.getElementById('nearestResults');
       container.innerHTML = '';
@@ -137,10 +154,8 @@
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const { latitude, longitude } = pos.coords;
         try {
-          const res = await fetch(`${scriptURL}?lat=${latitude}&lng=${longitude}&t=${Date.now()}`);
-          if (!res.ok) throw new Error(`Network error ${res.status}`);
-          const data = await res.json();
-          const results = normalizeResults(data);
+          const json = await loadJSONP(`${scriptURL}?lat=${latitude}&lng=${longitude}&t=${Date.now()}`, 'nearestGPS');
+          const results = normalizeResults(json);
           if (!results.length) {
             container.innerHTML = "<em>No nearby relocators found from your location.</em>";
             return;
