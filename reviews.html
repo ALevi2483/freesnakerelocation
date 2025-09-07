@@ -3,127 +3,224 @@
 <head>
   <meta charset="UTF-8" />
   <title>Free Snake Relocation – Reviews</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
   <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: #eefaf1;
-      color: #333;
-      margin: 0;
-      padding: 20px;
+    :root{
+      --bg:#f3f7f4;
+      --card:#fff;
+      --ink:#1e2a1f;
+      --muted:#5a6a60;
+      --brand:#2d593f;
+      --border:#e4ece6;
+      --star:#f5b301;
+      --shadow:0 2px 10px rgba(0,0,0,.06);
+      --radius:14px;
+      --maxw:960px;
     }
-    .header {
-      text-align: center;
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{
+      font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg); color:var(--ink);
     }
-    .review {
-      background: #fff;
-      border-left: 5px solid #2d593f;
-      border-radius: 8px;
-      padding: 15px 20px;
-      margin: 15px auto;
-      max-width: 700px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:24px}
+    header{display:flex; flex-direction:column; gap:10px; align-items:center; text-align:center; padding:12px 0 8px}
+    header h1{margin:0; font-size:clamp(22px,2.6vw,32px); color:var(--brand); letter-spacing:.2px}
+    header p{margin:0; color:var(--muted)}
+    .cta{
+      margin-top:6px; font-weight:600;
     }
-    .review h3 {
-      margin: 0;
-      font-size: 1.1em;
-      color: #2d593f;
+    .cta a{color:var(--brand); text-decoration:none}
+    .cta a:hover{text-decoration:underline}
+
+    /* Toolbar */
+    .toolbar{
+      display:grid; gap:10px; grid-template-columns: 1fr 160px 160px;
+      align-items:center; margin:18px 0 10px;
     }
-    .review p {
-      margin: 5px 0;
+    @media (max-width:720px){
+      .toolbar{grid-template-columns:1fr 1fr; }
+      .toolbar .sort{grid-column:1 / -1}
     }
-    .stars {
-      color: #f5b301;
-      font-size: 1.2em;
+    .input, select{
+      background:var(--card); border:1px solid var(--border); border-radius:10px;
+      padding:10px 12px; box-shadow:var(--shadow); outline:none;
     }
-    .linkbox {
-      text-align: center;
-      margin: 20px 0;
+    .input::placeholder{color:#93a095}
+    .stats{margin:6px 0 14px; color:var(--muted); font-size:.95rem}
+
+    /* Cards */
+    .grid{display:grid; gap:14px}
+    .card{
+      background:var(--card); border:1px solid var(--border); border-left:5px solid var(--brand);
+      border-radius:var(--radius); padding:14px 18px; box-shadow:var(--shadow);
     }
-    .linkbox a {
-      font-weight: bold;
-      color: #2d593f;
-      text-decoration: none;
-    }
-    .linkbox a:hover {
-      text-decoration: underline;
+    .card h3{margin:0; font-size:18px; color:var(--ink)}
+    .sub{margin:2px 0 8px; color:var(--muted); font-size:.95rem}
+    .stars{color:var(--star); font-size:1.05rem; margin:2px 0 8px}
+    .meta{margin-top:8px; font-size:.88rem; color:var(--muted)}
+    .meta b{color:var(--ink)}
+    .empty, .loading{padding:28px; text-align:center; color:var(--muted)}
+
+    /* Small niceties */
+    .badge{
+      display:inline-block; background:#eef5f0; color:var(--brand);
+      border:1px solid var(--border); border-radius:999px; padding:2px 10px; font-size:.82rem; margin-left:6px;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🐍 Free Snake Relocation – Reviews</h1>
-    <div class="linkbox">
-      📝 Have feedback?
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank" rel="noopener">Click here to leave a review</a>
-    </div>
-  </div>
+  <main class="wrap" aria-labelledby="page-title">
+    <header>
+      <h1 id="page-title">🐍 Free Snake Relocation – Reviews</h1>
+      <p>Real feedback from people our volunteers have helped.</p>
+      <div class="cta">Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank" rel="noopener">Leave a review</a></div>
+    </header>
 
-  <div id="reviews">Loading reviews…</div>
+    <!-- Controls -->
+    <section class="toolbar" aria-label="Review controls">
+      <input id="q" class="input" type="search" placeholder="Search name, city, comments…" aria-label="Search reviews" />
+      <select id="state" aria-label="Filter by state">
+        <option value="">All states</option>
+      </select>
+      <select id="sort" class="sort" aria-label="Sort reviews">
+        <option value="new">Newest first</option>
+        <option value="rating">Highest rating</option>
+        <option value="old">Oldest first</option>
+      </select>
+    </section>
+
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <section id="list" class="grid" aria-busy="true">
+      <div class="loading">Loading reviews…</div>
+    </section>
+  </main>
 
   <script>
-    // Use TSV to avoid comma-in-field issues
-    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNXmSJbeoRIdyKCVCXdkLS2IJBbRTdej0PpCk4GqIf2amuCFiVwV6LFzKYbYMnUgJo2ZyeGr7f9lFy/pub?gid=852639095&single=true&output=tsv";
+    // Data source (TSV prevents comma issues)
+    const TSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNXmSJbeoRIdyKCVCXdkLS2IJBbRTdej0PpCk4GqIf2amuCFiVwV6LFzKYbYMnUgJo2ZyeGr7f9lFy/pub?gid=852639095&single=true&output=tsv";
 
-    const isEmail = (s) => /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(s || "");
-    const clean = (s) => (s || "").replace(/<[^>]*>/g, "").trim();
+    const $ = (id)=>document.getElementById(id);
+    const elList = $("list"), elState = $("state"), elSort = $("sort"), elQ = $("q"), elStats = $("stats");
 
-    fetch(sheetURL)
+    const isEmail = s => /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(s || "");
+    const clean = s => (s || "").replace(/<[^>]*>/g,"").trim();
+    const starHTML = n => "⭐".repeat(Math.max(0, Math.min(5, Number(n)||0)));
+
+    const parseState = (cityState) => {
+      // Expect "City, ST" or similar; fall back to last 2 letters if they look like a state
+      const m = (cityState||"").match(/,\s*([A-Z]{2})\b/i);
+      return m ? m[1].toUpperCase() : "";
+    };
+
+    let DATA = [];
+
+    fetch(TSV)
       .then(r => r.text())
       .then(text => {
         const lines = text.trim().split("\n");
-        // Remove header row; split remaining rows by TAB
-        const rows = lines.slice(1).map(line => line.split("\t"));
-
-        const container = document.getElementById("reviews");
-        container.innerHTML = "";
-
-        rows.forEach(cols => {
-          // Expected columns:
-          // A Timestamp | B Name | C City and State | D Rating | E Comments | F Which volunteer helped you? | G Email Address
-          let [timestamp, name, cityState, rating, comments, volunteer /* , email */] = cols;
+        const rows = lines.slice(1).map(l => l.split("\t"));
+        DATA = rows.map(cols => {
+          let [timestamp, name, cityState, rating, comments, volunteer /*, email*/] = cols;
 
           name = clean(name);
           cityState = clean(cityState);
-          rating = clean(rating);
+          rating = parseInt(clean(rating), 10);
           comments = clean(comments);
           volunteer = clean(volunteer);
 
-          // Never show emails even if someone typed them in the wrong field
           if (isEmail(name)) name = "";
           if (isEmail(cityState)) cityState = "";
           if (isEmail(comments)) comments = "";
           if (isEmail(volunteer)) volunteer = "";
-
-          // Normalize some common filler values
           if (/^(not sure|none|n\/a|unknown)$/i.test(volunteer)) volunteer = "";
 
-          const numStars = parseInt(rating, 10);
-          const starsHTML = Number.isFinite(numStars) ? "⭐".repeat(numStars) : "";
+          let date = new Date(timestamp);
+          if (isNaN(date)) { // try US style fallback
+            const alt = timestamp?.replace(/(\d{1,2})\/(\d{1,2})\/(\d{4})/, "$2/$1/$3");
+            date = new Date(alt);
+          }
 
-          const reviewBox = document.createElement("div");
-          reviewBox.className = "review";
+          const st = parseState(cityState);
 
-          reviewBox.innerHTML = `
-            <h3>${name || "Anonymous"}</h3>
-            <p><i>${cityState || "Unknown Location"}</i></p>
-            ${starsHTML ? `<p class="stars">${starsHTML}</p>` : ""}
-            ${comments ? `<p><strong>Comments:</strong> ${comments}</p>` : ""}
-            ${volunteer ? `<p><strong>Helped by:</strong> ${volunteer}</p>` : ""}
-            ${timestamp ? `<p><small><em>${timestamp}</em></small></p>` : ""}
-          `;
-
-          container.appendChild(reviewBox);
+          return { timestamp, date, name, cityState, rating: rating||0, comments, volunteer, state: st };
         });
 
-        if (!container.children.length) {
-          container.textContent = "No reviews yet.";
-        }
+        populateStateFilter(DATA);
+        render();
       })
       .catch(err => {
-        console.error("Error loading reviews:", err);
-        document.getElementById("reviews").textContent = "Unable to load reviews at this time.";
+        console.error(err);
+        elList.innerHTML = `<div class="empty">Unable to load reviews right now.</div>`;
       });
+
+    function populateStateFilter(data){
+      const states = [...new Set(data.map(r => r.state).filter(Boolean))].sort();
+      states.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s; opt.textContent = s;
+        elState.appendChild(opt);
+      });
+    }
+
+    function formatDate(d){
+      try{
+        return d && !isNaN(d) ? d.toLocaleString(undefined, {year:"numeric", month:"numeric", day:"numeric", hour:"2-digit", minute:"2-digit"}) : "";
+      }catch{ return ""; }
+    }
+
+    function render(){
+      const q = elQ.value.trim().toLowerCase();
+      const st = elState.value;
+      const sort = elSort.value;
+
+      let rows = DATA.filter(r => {
+        const hit = (v)=> (v||"").toLowerCase().includes(q);
+        const matchesQ = !q || hit(r.name) || hit(r.cityState) || hit(r.comments) || hit(r.volunteer);
+        const matchesState = !st || r.state === st;
+        return matchesQ && matchesState;
+      });
+
+      rows.sort((a,b)=>{
+        if (sort === "rating") return b.rating - a.rating || b.date - a.date;
+        if (sort === "old") return a.date - b.date;
+        return b.date - a.date; // newest
+      });
+
+      elList.setAttribute("aria-busy","true");
+      elList.innerHTML = rows.length ? rows.map(toCard).join("") : `<div class="empty">No reviews match your filters.</div>`;
+      elList.removeAttribute("aria-busy");
+
+      elStats.textContent = `${rows.length} review${rows.length===1?"":"s"} shown${st?` • ${st}`:""}`;
+    }
+
+    function toCard(r){
+      const name = r.name || "Anonymous";
+      const city = r.cityState || "Unknown Location";
+      const stars = starHTML(r.rating);
+      const dateStr = formatDate(r.date);
+      const helped = r.volunteer ? `<span class="badge">Helped by: ${escapeHTML(r.volunteer)}</span>` : "";
+
+      return `
+        <article class="card" aria-label="Review">
+          <h3>${escapeHTML(name)} ${helped}</h3>
+          <div class="sub">${escapeHTML(city)}</div>
+          ${stars ? `<div class="stars" aria-label="${r.rating} out of 5 stars">${stars}</div>` : ""}
+          ${r.comments ? `<p><b>Comments:</b> ${escapeHTML(r.comments)}</p>` : ""}
+          ${dateStr ? `<div class="meta"><b>Submitted:</b> ${dateStr}</div>` : ""}
+        </article>
+      `;
+    }
+
+    function escapeHTML(s){
+      return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // Events
+    elQ.addEventListener("input", render);
+    elState.addEventListener("change", render);
+    elSort.addEventListener("change", render);
   </script>
 </body>
 </html>
