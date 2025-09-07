@@ -6,19 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background-color: #eefaf1;
       color: #333;
       margin: 0;
       padding: 20px;
     }
-
     .header {
       text-align: center;
     }
-
     .review {
-      background: white;
+      background: #fff;
       border-left: 5px solid #2d593f;
       border-radius: 8px;
       padding: 15px 20px;
@@ -26,33 +24,27 @@
       max-width: 700px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
     .review h3 {
       margin: 0;
       font-size: 1.1em;
       color: #2d593f;
     }
-
     .review p {
       margin: 5px 0;
     }
-
     .stars {
       color: #f5b301;
       font-size: 1.2em;
     }
-
     .linkbox {
       text-align: center;
       margin: 20px 0;
     }
-
     .linkbox a {
       font-weight: bold;
       color: #2d593f;
       text-decoration: none;
     }
-
     .linkbox a:hover {
       text-decoration: underline;
     }
@@ -62,48 +54,75 @@
   <div class="header">
     <h1>🐍 Free Snake Relocation – Reviews</h1>
     <div class="linkbox">
-      📝 Have feedback? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Click here to leave a review</a>
+      📝 Have feedback?
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank" rel="noopener">Click here to leave a review</a>
     </div>
   </div>
 
-  <div id="reviews"></div>
+  <div id="reviews">Loading reviews…</div>
 
   <script>
-    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNXmSJbeoRIdyKCVCXdkLS2IJBbRTdej0PpCk4GqIf2amuCFiVwV6LFzKYbYMnUgJo2ZyeGr7f9lFy/pub?gid=852639095&single=true&output=csv";
+    // Use TSV to avoid comma-in-field issues
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNXmSJbeoRIdyKCVCXdkLS2IJBbRTdej0PpCk4GqIf2amuCFiVwV6LFzKYbYMnUgJo2ZyeGr7f9lFy/pub?gid=852639095&single=true&output=tsv";
+
+    const isEmail = (s) => /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(s || "");
+    const clean = (s) => (s || "").replace(/<[^>]*>/g, "").trim();
 
     fetch(sheetURL)
-      .then(response => response.text())
-      .then(data => {
-        const lines = data.trim().split("\n");
-        const rows = lines.slice(1).map(line => line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
+      .then(r => r.text())
+      .then(text => {
+        const lines = text.trim().split("\n");
+        // Remove header row; split remaining rows by TAB
+        const rows = lines.slice(1).map(line => line.split("\t"));
 
         const container = document.getElementById("reviews");
+        container.innerHTML = "";
 
-        rows.forEach(row => {
-          const [timestamp, name, cityState, rating, comments, volunteer] = row;
+        rows.forEach(cols => {
+          // Expected columns:
+          // A Timestamp | B Name | C City and State | D Rating | E Comments | F Which volunteer helped you? | G Email Address
+          let [timestamp, name, cityState, rating, comments, volunteer /* , email */] = cols;
 
-          // Convert rating text like "5 Stars" into actual star emoji count
-          const numStars = parseInt(rating);
-          const starsHTML = "⭐".repeat(numStars);
+          name = clean(name);
+          cityState = clean(cityState);
+          rating = clean(rating);
+          comments = clean(comments);
+          volunteer = clean(volunteer);
+
+          // Never show emails even if someone typed them in the wrong field
+          if (isEmail(name)) name = "";
+          if (isEmail(cityState)) cityState = "";
+          if (isEmail(comments)) comments = "";
+          if (isEmail(volunteer)) volunteer = "";
+
+          // Normalize some common filler values
+          if (/^(not sure|none|n\/a|unknown)$/i.test(volunteer)) volunteer = "";
+
+          const numStars = parseInt(rating, 10);
+          const starsHTML = Number.isFinite(numStars) ? "⭐".repeat(numStars) : "";
 
           const reviewBox = document.createElement("div");
           reviewBox.className = "review";
 
           reviewBox.innerHTML = `
-            <h3>${name ? name : "Anonymous"}</h3>
+            <h3>${name || "Anonymous"}</h3>
             <p><i>${cityState || "Unknown Location"}</i></p>
-            <p class="stars">${starsHTML}</p>
+            ${starsHTML ? `<p class="stars">${starsHTML}</p>` : ""}
             ${comments ? `<p><strong>Comments:</strong> ${comments}</p>` : ""}
             ${volunteer ? `<p><strong>Helped by:</strong> ${volunteer}</p>` : ""}
-            <p><small><em>${timestamp}</em></small></p>
+            ${timestamp ? `<p><small><em>${timestamp}</em></small></p>` : ""}
           `;
 
           container.appendChild(reviewBox);
         });
+
+        if (!container.children.length) {
+          container.textContent = "No reviews yet.";
+        }
       })
-      .catch(error => {
-        console.error("Error loading reviews:", error);
-        document.getElementById("reviews").innerText = "Unable to load reviews at this time.";
+      .catch(err => {
+        console.error("Error loading reviews:", err);
+        document.getElementById("reviews").textContent = "Unable to load reviews at this time.";
       });
   </script>
 </body>
