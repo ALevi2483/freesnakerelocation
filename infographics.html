@@ -1,116 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Snake Education Infographics | Free Snake Relocation</title>
-  <meta name="description" content="Browse snake safety and education infographics from Free Snake Relocation. Learn about native species, relocation tips, and how to safely coexist with snakes." />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Free Snake Relocation – Infographics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #f4f8f4;
+      color: #1e2a1f;
+    }
+
+    header {
+      background: #2d593f;
+      padding: 15px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      color: white;
+      font-size: 24px;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #2d593f;
+    }
+
+    p.intro {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 16px;
+      color: #444;
+    }
+
+    /* Grid layout */
+    .grid {
+      display: grid;
       gap: 20px;
-      justify-content: center;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
-    .gallery img {
-      width: 200px;
-      height: auto;
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      overflow: hidden;
       cursor: pointer;
-      border-radius: 8px;
-      transition: transform 0.2s ease-in-out;
+      transition: transform 0.2s ease;
     }
 
-    .gallery img:hover {
-      transform: scale(1.05);
+    .card:hover {
+      transform: scale(1.02);
     }
 
-    .modal {
+    .card img {
+      width: 100%;
+      display: block;
+    }
+
+    .card-title {
+      padding: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      color: #2d593f;
+    }
+
+    /* Lightbox */
+    .lightbox {
       display: none;
       position: fixed;
-      z-index: 1000;
+      z-index: 999;
+      padding-top: 60px;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.85);
-      justify-content: center;
-      align-items: center;
+      overflow: auto;
+      background: rgba(0,0,0,0.9);
     }
 
-    .modal img {
+    .lightbox img {
+      margin: auto;
+      display: block;
       max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
+      max-height: 80vh;
+      border-radius: 6px;
     }
 
-    .close-btn {
+    .close {
       position: absolute;
       top: 20px;
-      right: 30px;
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .hidden-h1 {
-      display: none;
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 20px;
+      }
+      nav a {
+        display: inline-block;
+        margin: 5px;
+      }
     }
   </style>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GB09EFLTCW');
-</script>
 </head>
 <body>
-  <div class="content-wrapper">
-    <h1 class="hidden-h1">Snake Safety and Education Infographics – Free Snake Relocation</h1>
 
+  <header>
+    <h1>Free Snake Relocation</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="volunteer.html">Volunteer</a>
+      <a href="find.html">Find a Relocator</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="snakes.html">Snakes by State</a>
+      <a href="infographics.html">Infographics</a>
+      <a href="faq.html">FAQ</a>
+      <a href="resources.html">Resources</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="media.html">Media</a>
+    </nav>
+  </header>
+
+  <main>
     <h2>Educational Infographics</h2>
-    <p>Click any image to view it full size.</p>
+    <p class="intro">Browse snake identification guides. Click any image to enlarge.</p>
 
-    <div class="gallery">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/01.JPG" onclick="openModal(this.src)" alt="Infographic 1">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/02.JPG" onclick="openModal(this.src)" alt="Infographic 2">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/03.JPG" onclick="openModal(this.src)" alt="Infographic 3">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/04.JPG" onclick="openModal(this.src)" alt="Infographic 4">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/05.JPG" onclick="openModal(this.src)" alt="Infographic 5">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/06.JPG" onclick="openModal(this.src)" alt="Infographic 6">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/07.JPG" onclick="openModal(this.src)" alt="Infographic 7">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/08.JPG" onclick="openModal(this.src)" alt="Infographic 8">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/09.JPG" onclick="openModal(this.src)" alt="Infographic 9">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/10.JPG" onclick="openModal(this.src)" alt="Infographic 10">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/11.JPG" onclick="openModal(this.src)" alt="Infographic 11">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/12.JPG" onclick="openModal(this.src)" alt="Infographic 12">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/13.JPG" onclick="openModal(this.src)" alt="Infographic 13">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/14.JPG" onclick="openModal(this.src)" alt="Infographic 14">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/15.JPG" onclick="openModal(this.src)" alt="Infographic 15">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/16.JPG" onclick="openModal(this.src)" alt="Infographic 16">
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/17.JPG" onclick="openModal(this.src)" alt="Infographic 17">
-    </div>
+    <div class="grid">
+      <!-- Example cards – replace image src with your files -->
+      <div class="card">
+        <img src="images/cottonmouth1.jpg" alt="Cottonmouth infographic">
+        <div class="card-title">Cottonmouth Identification</div>
+      </div>
 
-    <div class="modal" id="modal" onclick="closeModal()">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      <img id="modal-img" src="">
+      <div class="card">
+        <img src="images/venomous-vs-nonvenomous.jpg" alt="Venomous vs Nonvenomous infographic">
+        <div class="card-title">Venomous vs Non-Venomous</div>
+      </div>
+
+      <div class="card">
+        <img src="images/watersnake-vs-cottonmouth.jpg" alt="Watersnake vs Cottonmouth infographic">
+        <div class="card-title">Watersnake vs Cottonmouth</div>
+      </div>
+
+      <div class="card">
+        <img src="images/copperhead-vs-northern.jpg" alt="Copperhead vs Northern Watersnake infographic">
+        <div class="card-title">Copperhead vs Northern Watersnake</div>
+      </div>
+
+      <div class="card">
+        <img src="images/scarlet-kingsnake.jpg" alt="Scarlet Kingsnake vs Scarlet Snake infographic">
+        <div class="card-title">Scarlet Kingsnake Look-Alikes</div>
+      </div>
+
+      <div class="card">
+        <img src="images/garter-vs-ribbon.jpg" alt="Garter vs Ribbon Snake infographic">
+        <div class="card-title">Gartersnake vs Ribbonsnake</div>
+      </div>
     </div>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img id="lightbox-img" src="" alt="">
   </div>
 
   <script>
-    function openModal(src) {
-      document.getElementById('modal').style.display = 'flex';
-      document.getElementById('modal-img').src = src;
-    }
+    const cards = document.querySelectorAll('.card img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.close');
 
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        lightbox.style.display = 'block';
+        lightboxImg.src = card.src;
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
