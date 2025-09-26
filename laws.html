@@ -21,7 +21,6 @@
     a { color: var(--brandAccent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* Layout matches your pages without adding a second header */
     .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
 
     h1 { font-size: 1.875rem; margin: 18px 0 8px; }
@@ -48,17 +47,16 @@
   </style>
 </head>
 <body>
-  <!-- Keep your existing site header/menu include here (the green bar with Menu) -->
+  <!-- Keep your existing site header/menu include here -->
 
   <main class="container">
     <h1>Relocation Laws by State</h1>
     <p class="lead">Select your state to view a plain-language summary and protected snake species. Always verify with your state wildlife agency before attempting relocation.</p>
 
     <div class="row">
-      <!-- Controls -->
       <section class="card" aria-labelledby="pick-state">
         <label id="pick-state" for="stateSelect">Choose a state</label>
-        <select id="stateSelect" autocomplete="section-state">
+        <select id="stateSelect">
           <option value="">Select a state</option>
         </select>
         <div style="margin-top:12px">
@@ -68,7 +66,6 @@
         </div>
       </section>
 
-      <!-- Output -->
       <section class="card" id="statePanel" aria-live="polite">
         <div class="muted">No state selected</div>
       </section>
@@ -80,141 +77,61 @@
   </main>
 
   <script>
-    // === DATA MODEL ===========================================================
-    // Fill in each state's "summary" bullets and "protectedSnakes" (array of strings).
-    // Keep entries short and cite the agency link for verification.
-
     const LAWS = {
+      /* Example states left simple */
       "AL": {
         title: "Alabama",
-        summary: [
-          "Permit may be required to possess or transport native wildlife.",
-          "Relocation of venomous species generally restricted to permitted individuals.",
-          "Do not release wildlife across state lines."
-        ],
-        protectedSnakes: [
-          // PLACEHOLDERS — verify with AL DCNR
-          // "Eastern Indigo Snake (federally listed)",
-          // "Southern Hognose Snake"
-        ],
-        links: [
-          { label: "AL Dept. of Conservation & Natural Resources", url: "https://www.outdooralabama.com/" },
-          { label: "Wildlife regulations", url: "https://www.outdooralabama.com/law-enforcement/wildlife-and-freshwater-fisheries-regulations" }
-        ],
-        notes: "Call your district office before attempting relocation."
-      },
-
-      "AZ": {
-        title: "Arizona",
-        summary: [
-          "Native reptile take/transport governed by bag limits and methods.",
-          "Venomous relocation usually requires authorization with local authorities.",
-          "Avoid releases into protected areas without permission."
-        ],
-        protectedSnakes: [
-          // PLACEHOLDER — verify with AZGFD
-          // "Arizona Ridge-nosed Rattlesnake (federally listed in some areas)"
-        ],
-        links: [
-          { label: "Arizona Game & Fish", url: "https://www.azgfd.com/" },
-          { label: "Reptile regulations", url: "https://www.azgfd.com/hunting/regulations/" }
-        ],
-        notes: "Many cities partner with trained responders for rattlesnake relocation."
+        summary: ["Permit may be required to transport wildlife.", "Venomous handling restricted.", "No release across state lines."],
+        protectedSnakes: [],
+        links: [{ label: "AL DCNR", url: "https://www.outdooralabama.com/" }]
       },
 
       "FL": {
         title: "Florida",
-        summary: [
-          "Venomous reptile handling requires a permit.",
-          "Non-native species have separate rules and must not be released.",
-          "Check county rules and protected areas."
-        ],
-        protectedSnakes: [
-          // PLACEHOLDER — verify with FWC
-          // "Eastern Indigo Snake (federally threatened)",
-          // "Short-tailed Snake",
-          // "Florida Pine Snake (state listed regionally)"
-        ],
-        links: [
-          { label: "Florida Fish & Wildlife (FWC)", url: "https://myfwc.com/" },
-          { label: "Captive wildlife / venomous permits", url: "https://myfwc.com/license/captive-wildlife/" }
-        ],
-        notes: "Document relocations and keep handler safety first."
+        summary: ["Venomous handling requires permit.", "Non-native snakes must not be released.", "County rules may apply."],
+        protectedSnakes: ["Eastern Indigo Snake", "Short-tailed Snake"],
+        links: [{ label: "FWC", url: "https://myfwc.com/" }]
       },
 
       "TX": {
         title: "Texas",
-        summary: [
-          "Taking/transporting native reptiles is regulated.",
-          "No release on private property without landowner permission.",
-          "Some counties add restrictions."
-        ],
-        protectedSnakes: [
-          // PLACEHOLDER — verify with TPWD
-          // "Louisiana Pine Snake (federally threatened where present in TX)",
-          // "Timber Rattlesnake (protected in some counties)"
-        ],
-        links: [
-          { label: "Texas Parks & Wildlife", url: "https://tpwd.texas.gov/" },
-          { label: "Outdoor Annual regulations", url: "https://tpwd.texas.gov/regulations/outdoor-annual" }
-        ],
-        notes: "Contact your local game warden with questions."
+        summary: ["Reptile take/transport regulated.", "Private landowner permission required for release.", "Some counties add restrictions."],
+        protectedSnakes: ["Louisiana Pine Snake", "Timber Rattlesnake (some counties)"],
+        links: [{ label: "TPWD", url: "https://tpwd.texas.gov/" }]
       },
 
-      /* ======= VIRGINIA (UPDATED) ========================================= */
+      /* ===== VIRGINIA (UPDATED) ===== */
       "VA": {
         title: "Virginia",
         summary: [
-          // 4VAC15-360-10
-          "Private possession: up to ONE individual non-SGCN amphibian or reptile per address; NO threatened/endangered species; NO SGCN species.",
-          // Venomous—check locality
-          "Venomous species kept for personal use: check your city/county ordinances.",
-          // 4VAC15-30-10
-          "Unlawful to take/possess/import/export/buy/sell/liberate any wild animal unless specifically permitted by law or regulation.",
-          // Practical/habitat & service notes
-          "Most snakes are harmless and control rodents; only 3 venomous species occur in Virginia (copperhead statewide; timber rattlesnake in mountains and a small SE area as canebrake; cottonmouth SE of Petersburg in wet areas).",
-          "DWR does not remove snakes; if needed, contact a pest control company permitted by DWR."
+          "You may keep ONE non-SGCN reptile or amphibian per household (not for sale/export).",
+          "No threatened, endangered, or SGCN species may be kept.",
+          "Venomous species ownership requires checking city/county ordinances.",
+          "It is unlawful to take, possess, import, export, buy, sell, or release any wild animal unless specifically permitted.",
+          "Most snakes are harmless and control rodents; only 3 venomous snakes occur (copperhead statewide, timber rattlesnake in mountains/SE, cottonmouth SE of Petersburg).",
+          "DWR staff do not remove snakes; contact a permitted pest control company if removal is necessary."
         ],
         protectedSnakes: [
-          // High-level, safe-to-post items derived from DWR pages referenced in the user paste
-          "Timber Rattlesnake — state endangered in the SE 'canebrake' population; regulated statewide.",
-          "Northern/Eastern Pinesnake — listed/SGCN; consult DWR before handling or transport."
-          // (Keep list concise; direct users to DWR page for full, current statuses.)
+          "Timber Rattlesnake — endangered in SE (canebrake population).",
+          "Northern (Eastern) Pinesnake — Tier I SGCN (critically low)."
         ],
         links: [
-          { label: "Virginia DWR — Snakes", url: "https://dwr.virginia.gov/wildlife/snakes/" },
-          { label: "4VAC15-360-10 (Personal possession limits)", url: "https://dwr.virginia.gov/wildlife/regulations/" },
-          { label: "4VAC15-30-10 (Possession/import/sale of wild animals)", url: "https://dwr.virginia.gov/wildlife/regulations/" }
+          { label: "Virginia DWR – Snakes", url: "https://dwr.virginia.gov/wildlife/snakes/" },
+          { label: "Wildlife Regulations (4VAC15)", url: "https://dwr.virginia.gov/wildlife/regulations/" }
         ],
-        notes: "Prevention: remove rock/brush piles, keep grass short, seal gaps around pipes/vents; address rodents to reduce snake attraction."
-      },
-      /* ==================================================================== */
-
-      // === Add remaining states using the same shape =======================
-      // "CA": { title: "California", summary: [...], protectedSnakes: [...], links: [...], notes: "..." },
-      // ...
+        notes: "Prevention: remove brush/rock piles, mow grass short, seal gaps, and control rodents to reduce snake attraction."
+      }
     };
 
-    // Full 50-state dropdown
     const STATES = [
-      ["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],
-      ["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],
-      ["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],["IA","Iowa"],
-      ["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],
-      ["MA","Massachusetts"],["MI","Michigan"],["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],
-      ["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],
-      ["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],
-      ["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],
-      ["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],
-      ["VA","Virginia"],["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]
+      ["AL","Alabama"],["FL","Florida"],["TX","Texas"],["VA","Virginia"]
+      // add more states here
     ];
 
-    // === RENDERING ===========================================================
     const sel = document.getElementById('stateSelect');
     const panel = document.getElementById('statePanel');
     const lastUpdatedEl = document.getElementById('lastUpdated');
 
-    // Build the dropdown
     STATES.forEach(([code, name]) => {
       const opt = document.createElement('option');
       opt.value = code;
@@ -225,44 +142,34 @@
     lastUpdatedEl.textContent = new Date().toLocaleDateString();
 
     function escapeHtml(s) {
-      return String(s)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
     function renderState(code) {
       const rec = LAWS[code];
       if (!rec) {
-        panel.innerHTML = `<div class="muted">We haven't posted a summary for this state yet. Please check your state wildlife agency.</div>`;
+        panel.innerHTML = `<div class="muted">We haven't posted a summary for this state yet.</div>`;
         return;
       }
-
-      const bullets = (rec.summary || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
-      const protectedList = (rec.protectedSnakes || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
-      const links = (rec.links || []).map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join('');
-
+      const bullets = rec.summary.map(s => `<li>${escapeHtml(s)}</li>`).join('');
+      const protectedList = (rec.protectedSnakes||[]).map(s => `<li>${escapeHtml(s)}</li>`).join('');
+      const links = (rec.links||[]).map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join('');
       panel.innerHTML = `
-        <div class="state-meta">
-          <strong>${escapeHtml(rec.title)}</strong>
-          ${rec.notes ? `<span class="pill" title="Note">${escapeHtml(rec.notes)}</span>` : ``}
-        </div>
+        <div class="state-meta"><strong>${escapeHtml(rec.title)}</strong></div>
         <div class="law-body">
           ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ''}
           <h3>Protected snakes</h3>
-          ${protectedList ? `<ul>${protectedList}</ul>` : `<p class="muted">Protected list pending. Use the official resources below.</p>`}
+          ${protectedList ? `<ul>${protectedList}</ul>` : `<p class="muted">No protected list available.</p>`}
           ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ''}
+          ${rec.notes ? `<p><em>${escapeHtml(rec.notes)}</em></p>` : ''}
         </div>
       `;
     }
 
-    // Handle dropdown changes
     sel.addEventListener('change', () => {
       const code = sel.value;
       if (!code) {
         panel.innerHTML = `<div class="muted">No state selected</div>`;
-        history.replaceState(null, "", "laws.html");
-        localStorage.removeItem("fsr:lastState");
         return;
       }
       renderState(code);
@@ -270,7 +177,6 @@
       localStorage.setItem("fsr:lastState", code);
     });
 
-    // Deep link + restore last
     (function initSelection() {
       const params = new URLSearchParams(window.location.search);
       const urlState = params.get("state");
@@ -281,9 +187,6 @@
         renderState(start);
       }
     })();
-
-    // === OPTIONAL: Load from Google Sheet JSON instead of editing code =======
-    // See prior version for the CSV loader if you want non-coders to maintain this.
   </script>
 </body>
 </html>
