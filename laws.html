@@ -83,7 +83,6 @@
     // === DATA MODEL ===========================================================
     // Fill in each state's "summary" bullets and "protectedSnakes" (array of strings).
     // Keep entries short and cite the agency link for verification.
-    // NOTE: Protected species change; verify before publishing.
 
     const LAWS = {
       "AL": {
@@ -94,7 +93,7 @@
           "Do not release wildlife across state lines."
         ],
         protectedSnakes: [
-          // EXAMPLE PLACEHOLDER — verify with AL DCNR
+          // PLACEHOLDERS — verify with AL DCNR
           // "Eastern Indigo Snake (federally listed)",
           // "Southern Hognose Snake"
         ],
@@ -162,27 +161,36 @@
         notes: "Contact your local game warden with questions."
       },
 
+      /* ======= VIRGINIA (UPDATED) ========================================= */
       "VA": {
         title: "Virginia",
         summary: [
-          "Most native wildlife is protected; permits may be required to handle/transport.",
-          "Venomous species handling is restricted.",
-          "No release on public lands without permission."
+          // 4VAC15-360-10
+          "Private possession: up to ONE individual non-SGCN amphibian or reptile per address; NO threatened/endangered species; NO SGCN species.",
+          // Venomous—check locality
+          "Venomous species kept for personal use: check your city/county ordinances.",
+          // 4VAC15-30-10
+          "Unlawful to take/possess/import/export/buy/sell/liberate any wild animal unless specifically permitted by law or regulation.",
+          // Practical/habitat & service notes
+          "Most snakes are harmless and control rodents; only 3 venomous species occur in Virginia (copperhead statewide; timber rattlesnake in mountains and a small SE area as canebrake; cottonmouth SE of Petersburg in wet areas).",
+          "DWR does not remove snakes; if needed, contact a pest control company permitted by DWR."
         ],
         protectedSnakes: [
-          // PLACEHOLDER — verify with DWR
-          // "Northern Pinesnake (state threatened)",
-          // "Eastern Copperhead (regulated; not generally 'protected'—verify context)",
-          // "Timber Rattlesnake (protected/regulated in specific regions)"
+          // High-level, safe-to-post items derived from DWR pages referenced in the user paste
+          "Timber Rattlesnake — state endangered in the SE 'canebrake' population; regulated statewide.",
+          "Northern Pinesnake — listed/SGCN; consult DWR before handling or transport."
+          // (Keep list concise; direct users to DWR page for full, current statuses.)
         ],
         links: [
-          { label: "Virginia Dept. of Wildlife Resources", url: "https://dwr.virginia.gov/" },
-          { label: "Wildlife rehab & permits", url: "https://dwr.virginia.gov/wildlife/wildlife-rehabilitation/" }
+          { label: "Virginia DWR — Snakes", url: "https://dwr.virginia.gov/wildlife/snakes/" },
+          { label: "4VAC15-360-10 (Personal possession limits)", url: "https://dwr.virginia.gov/wildlife/regulations/" },
+          { label: "4VAC15-30-10 (Possession/import/sale of wild animals)", url: "https://dwr.virginia.gov/wildlife/regulations/" }
         ],
-        notes: "Call DWR or a permitted rehabber for guidance."
+        notes: "Prevention: remove rock/brush piles, keep grass short, seal gaps around pipes/vents; address rodents to reduce snake attraction."
       },
+      /* ==================================================================== */
 
-      // === Add remaining states below using this exact shape ================
+      // === Add remaining states using the same shape =======================
       // "CA": { title: "California", summary: [...], protectedSnakes: [...], links: [...], notes: "..." },
       // ...
     };
@@ -275,38 +283,7 @@
     })();
 
     // === OPTIONAL: Load from Google Sheet JSON instead of editing code =======
-    // If you want a non-technical teammate to maintain the lists:
-    //
-    // 1) Make a Google Sheet with columns: StateCode, Title, Summary (| separated),
-    //    ProtectedSnakes (| separated), LinkLabel1, LinkUrl1, LinkLabel2, LinkUrl2, Notes
-    // 2) File > Share > Anyone with the link (view). Then File > Publish to web (CSV).
-    // 3) Fetch the published CSV here, parse, and populate LAWS dynamically.
-    //
-    // Example loader (uncomment and set SHEET_CSV_URL):
-    //
-    // const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/.../pub?output=csv";
-    // fetch(SHEET_CSV_URL).then(r => r.text()).then(csv => {
-    //   const rows = csv.split(/\r?\n/).map(line => line.split(","));
-    //   const [hdr, ...body] = rows;
-    //   const idx = Object.fromEntries(hdr.map((h,i)=>[h.trim(), i]));
-    //   const map = {};
-    //   for (const r of body) {
-    //     const code = (r[idx.StateCode]||"").trim();
-    //     if (!code) continue;
-    //     map[code] = {
-    //       title: (r[idx.Title]||"").trim(),
-    //       summary: (r[idx.Summary]||"").split("|").map(s=>s.trim()).filter(Boolean),
-    //       protectedSnakes: (r[idx.ProtectedSnakes]||"").split("|").map(s=>s.trim()).filter(Boolean),
-    //       links: [
-    //         ...(r[idx.LinkLabel1] ? [{label:r[idx.LinkLabel1], url:r[idx.LinkUrl1]}] : []),
-    //         ...(r[idx.LinkLabel2] ? [{label:r[idx.LinkLabel2], url:r[idx.LinkUrl2]}] : []),
-    //       ],
-    //       notes: (r[idx.Notes]||"").trim()
-    //     };
-    //   }
-    //   Object.assign(LAWS, map);
-    //   if (sel.value) renderState(sel.value);
-    // }).catch(console.error);
+    // See prior version for the CSV loader if you want non-coders to maintain this.
   </script>
 </body>
 </html>
