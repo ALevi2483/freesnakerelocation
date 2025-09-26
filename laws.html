@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relocation Laws by State | Free Snake Relocation</title>
+  <meta name="description" content="Snake relocation laws by U.S. state. Always check your state wildlife agency before handling or relocating wildlife." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #6b7280;
+      --brand: #14532d;
+      --brandAccent: #16a34a;
+      --card: #f8fafc;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+    a { color: var(--brandAccent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { border-bottom: 1px solid var(--border); background: #fff; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    .nav { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .nav a { color: var(--fg); padding: 8px 10px; border-radius: 8px; }
+    .nav a.active, .nav a:hover { background: var(--card); }
+    .brand { font-weight: 700; color: var(--brand); margin-right: 8px; }
+    h1 { font-size: 1.875rem; margin: 18px 0 8px; }
+    p.lead { color: var(--muted); margin: 0 0 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 900px) { .row { grid-template-columns: 360px 1fr; } }
+    label { font-weight: 600; display: block; margin-bottom: 6px; }
+    select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; font-size: 1rem; }
+    .state-meta { color: var(--muted); font-size: .925rem; margin: 8px 0 14px; }
+    .law-body { line-height: 1.55; }
+    .law-body h3 { margin: 18px 0 8px; font-size: 1.125rem; }
+    .law-body ul { margin: 0 0 12px 18px; }
+    .alert { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 10px 12px; border-radius: 10px; font-size: .975rem; }
+    .muted { color: var(--muted); }
+    footer { margin-top: 32px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .95rem; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #f3f4f6; border: 1px solid #e5e7eb; padding: 1px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">FreeSnakeRelocation.com</div>
+      <nav class="nav" aria-label="Primary">
+        <a href="/index.html">Home</a>
+        <a href="/find.html">Find Help</a>
+        <a href="/reviews.html">Reviews</a>
+        <a class="active" href="/laws.html">Laws</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Relocation Laws by State</h1>
+    <p class="lead">Select your state to view a plain language summary. Always verify with your state wildlife agency before attempting relocation.</p>
+
+    <div class="row">
+      <!-- Controls -->
+      <section class="card" aria-labelledby="pick-state">
+        <label id="pick-state" for="stateSelect">Choose a state</label>
+        <select id="stateSelect" autocomplete="section-state">
+          <option value="">Select a state</option>
+        </select>
+        <div style="margin-top:12px">
+          <div class="alert">
+            Reminder: Regulations change. This page is an educational starting point. Check the official links below for current rules.
+          </div>
+        </div>
+      </section>
+
+      <!-- Output -->
+      <section class="card" id="statePanel" aria-live="polite">
+        <div class="muted">No state selected</div>
+      </section>
+    </div>
+
+    <footer>
+      Last updated <span id="lastUpdated">—</span>. If you see an error, email <a href="mailto:info@freesnakerelocation.com">info@freesnakerelocation.com</a>. Use <span class="kbd">laws.html?state=VA</span> to deep link.
+    </footer>
+  </main>
+
+  <script>
+    // 1) Data model. Fill these out with your summaries and official links.
+    // Keep text short and cite the agency link for verification.
+    const LAWS = {
+      "AL": {
+        title: "Alabama",
+        summary: [
+          "Permit may be required to possess or transport native wildlife.",
+          "Non venomous relocation may be allowed with restrictions. Venomous handling is generally restricted to permitted individuals.",
+          "Do not release wildlife across state lines."
+        ],
+        links: [
+          { label: "AL Dept. of Conservation and Natural Resources", url: "https://www.outdooralabama.com/" },
+          { label: "Wildlife regulations", url: "https://www.outdooralabama.com/law-enforcement/wildlife-and-freshwater-fisheries-regulations" }
+        ],
+        notes: "Call your district office before attempting a relocation."
+      },
+      "AZ": {
+        title: "Arizona",
+        summary: [
+          "Certain native reptiles may be captured and transported under specific bag limits and methods.",
+          "Relocation of venomous species usually requires training or authorization in coordination with local authorities.",
+          "Do not relocate into protected areas without permission."
+        ],
+        links: [
+          { label: "Arizona Game and Fish Department", url: "https://www.azgfd.com/" },
+          { label: "Reptile regulations", url: "https://www.azgfd.com/hunting/regulations/" }
+        ],
+        notes: "Many cities partner with trained responders for rattlesnake relocation."
+      },
+      "FL": {
+        title: "Florida",
+        summary: [
+          "Relocation rules depend on species and distance. Venomous reptile handling requires a permit.",
+          "Non native species like pythons have separate rules and must not be released.",
+          "Check county rules and protected areas."
+        ],
+        links: [
+          { label: "Florida Fish and Wildlife Conservation Commission", url: "https://myfwc.com/" },
+          { label: "Venomous reptile permits", url: "https://myfwc.com/license/captive-wildlife/" }
+        ],
+        notes: "Keep handler safety and public safety first. Document relocations."
+      },
+      "TX": {
+        title: "Texas",
+        summary: [
+          "Taking and transporting native reptiles is regulated. Venomous handling often requires special authorization.",
+          "No release on private property without landowner permission.",
+          "Some counties have additional restrictions."
+        ],
+        links: [
+          { label: "Texas Parks and Wildlife", url: "https://tpwd.texas.gov/" },
+          { label: "Regulations overview", url: "https://tpwd.texas.gov/regulations/outdoor-annual" }
+        ],
+        notes: "Contact your local game warden with questions."
+      },
+      "VA": {
+        title: "Virginia",
+        summary: [
+          "Most native wildlife is protected. Handling or transporting may require a permit.",
+          "Venomous species handling is restricted. Do not relocate without proper authorization.",
+          "Never release on public lands without permission."
+        ],
+        links: [
+          { label: "Virginia Dept. of Wildlife Resources", url: "https://dwr.virginia.gov/" },
+          { label: "Wildlife rehabilitation and permits", url: "https://dwr.virginia.gov/wildlife/wildlife-rehabilitation/" }
+        ],
+        notes: "Call DWR or a permitted rehabber for guidance."
+      }
+      // Add remaining states here in the same format
+    };
+
+    // 2) State list
+    const STATES = [
+      ["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],
+      ["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],
+      ["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],["IA","Iowa"],
+      ["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],
+      ["MA","Massachusetts"],["MI","Michigan"],["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],
+      ["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],
+      ["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],
+      ["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],
+      ["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],
+      ["VA","Virginia"],["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]
+    ];
+
+    // 3) Render dropdown
+    const sel = document.getElementById('stateSelect');
+    STATES.forEach(([code, name]) => {
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+
+    // 4) Helpers
+    const panel = document.getElementById('statePanel');
+    const lastUpdatedEl = document.getElementById('lastUpdated');
+    lastUpdatedEl.textContent = new Date().toLocaleDateString();
+
+    function renderState(code) {
+      const rec = LAWS[code];
+      if (!rec) {
+        panel.innerHTML = `<div class="muted">We have not posted a summary for this state yet. Please check your state wildlife agency.</div>`;
+        return;
+      }
+      const bullets = rec.summary?.map(s => `<li>${escapeHtml(s)}</li>`).join('') || '';
+      const links = rec.links?.map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join('') || '';
+      panel.innerHTML = `
+        <div class="state-meta"><strong>${escapeHtml(rec.title)}</strong></div>
+        <div class="law-body">
+          ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ''}
+          ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ''}
+          ${rec.notes ? `<p><em>${escapeHtml(rec.notes)}</em></p>` : ''}
+        </div>
+      `;
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    // 5) Events
+    sel.addEventListener('change', () => {
+      const code = sel.value;
+      if (!code) {
+        panel.innerHTML = `<div class="muted">No state selected</div>`;
+        history.replaceState(null, "", "laws.html");
+        localStorage.removeItem("fsr:lastState");
+        return;
+      }
+      renderState(code);
+      history.replaceState(null, "", `laws.html?state=${encodeURIComponent(code)}`);
+      localStorage.setItem("fsr:lastState", code);
+    });
+
+    // 6) Deep link and restore last selection
+    (function initSelection() {
+      const params = new URLSearchParams(window.location.search);
+      const urlState = params.get("state");
+      const saved = localStorage.getItem("fsr:lastState");
+      const start = urlState || saved || "";
+      if (start && STATES.find(([c]) => c === start)) {
+        sel.value = start;
+        renderState(start);
+      }
+    })();
+  </script>
+</body>
+</html>
