@@ -80,10 +80,111 @@
 
     const LAWS = {
       // Example smaller states left with placeholders. Fill these over time.
-      "AL": { title: "Alabama", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "AK": { title: "Alaska", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "AZ": { title: "Arizona", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "AR": { title: "Arkansas", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
+      "AL": {
+  title: "Alabama",
+  summary: [
+    "All native reptiles and amphibians are regulated by the Alabama Department of Conservation and Natural Resources (ADCNR).",
+    "A hunting license is required to collect or possess most native reptiles, including snakes.",
+    "Endangered, threatened, and species of special concern are strictly protected and cannot be collected, possessed, or relocated without permits."
+  ],
+  relocation: [
+    "On your property: non-venomous snakes may be left alone or gently encouraged to move away. Relocating them off your property without permission is discouraged.",
+    "Across properties/public land: transporting or releasing snakes elsewhere without ADCNR authorization is unlawful.",
+    "Venomous snakes: Alabama has six venomous snake species (Copperhead, Cottonmouth, Timber Rattlesnake, Eastern Diamondback Rattlesnake, Pygmy Rattlesnake, Eastern Coral Snake). Removal or relocation should only be attempted by licensed professionals.",
+    "For safe removal, ADCNR recommends contacting licensed nuisance wildlife control operators."
+  ],
+  protectedSnakes: [
+    "Eastern Indigo Snake (Drymarchon couperi) — federally and state endangered, reintroduction ongoing.",
+    "Eastern Coral Snake (Micrurus fulvius) — protected, rare in Alabama.",
+    "Southern Hognose Snake (Heterodon simus) — state species of highest conservation concern.",
+    "Rainbow Snake (Farancia erytrogramma) — possibly extirpated, protected.",
+    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — considered a species of conservation concern."
+  ],
+  links: [
+    { label: "ADCNR – Nongame Wildlife Program", url: "https://www.outdooralabama.com/wildlife/nongame-wildlife-program" },
+    { label: "ADCNR – Protected Species List", url: "https://www.outdooralabama.com/protected-wildlife" }
+  ],
+  notes: "Alabama has a high diversity of snakes, including several species of conservation concern. Relocation without proper permits is restricted, and federally protected species such as the Eastern Indigo Snake are strictly off-limits."
+},
+
+      "AK": {
+  title: "Alaska",
+  summary: [
+    "Alaska has no native land snakes. The climate is too cold to support wild snake populations.",
+    "All reptiles and amphibians in Alaska are regulated by the Alaska Department of Fish and Game (ADF&G).",
+    "Non-native snakes may not be released into the wild under any circumstance."
+  ],
+  relocation: [
+    "On your property: since there are no native snakes, any snake encountered would be a released or escaped pet. It should not be released outdoors.",
+    "Across properties/public land: unlawful to introduce or relocate non-native snakes into Alaska’s environment.",
+    "Venomous snakes: none are native to Alaska. Venomous snakes may only be in the state under strict captivity and permit rules.",
+    "For assistance with escaped pets, contact local animal control or ADF&G."
+  ],
+  protectedSnakes: [
+    "There are no native snakes in Alaska, therefore no protected snake species.",
+    "All non-native species are regulated to prevent environmental introduction."
+  ],
+  links: [
+    { label: "Alaska Department of Fish and Game – Nonnative Species", url: "https://www.adfg.alaska.gov/index.cfm?adfg=invasive.main" },
+    { label: "ADF&G Wildlife Regulations", url: "https://www.adfg.alaska.gov/index.cfm?adfg=wildliferegulations.main" }
+  ],
+  notes: "Alaska is one of only two U.S. states (with Hawaii) without native snakes. Any snake found outdoors is almost certainly a released or escaped pet, which should not be released into the environment."
+},
+
+      "AZ": {
+  title: "Arizona",
+  summary: [
+    "All native reptiles and amphibians are regulated by the Arizona Game and Fish Department (AZGFD).",
+    "A valid Arizona hunting license is required to collect, possess, or transport most native snakes.",
+    "Certain species are listed as protected, and federally listed threatened/endangered species cannot be taken or possessed under any circumstance."
+  ],
+  relocation: [
+    "On your property: non-venomous snakes may be left alone or gently moved a short distance if safe.",
+    "Across properties/public land: it is unlawful to transport, relocate, or release wildlife elsewhere without AZGFD authorization.",
+    "Venomous snakes: Arizona is home to 13 rattlesnake species as well as the Sonoran Coral Snake. Rattlesnakes are heavily regulated; killing or relocating them without proper permits or outside of legal hunting allowances is unlawful.",
+    "For safe removal, AZGFD recommends contacting licensed wildlife control or snake relocation specialists."
+  ],
+  protectedSnakes: [
+    "Mexican Gartersnake (Thamnophis eques megalops) — federally threatened, state protected.",
+    "Narrow-headed Gartersnake (Thamnophis rufipunctatus) — federally threatened, state protected.",
+    "Desert Massasauga (Sistrurus tergeminus edwardsii) — species of special concern.",
+    "Twin-spotted Rattlesnake (Crotalus pricei) — state protected.",
+    "Arizona Ridge-nosed Rattlesnake (Crotalus willardi willardi) — federally threatened and Arizona’s state reptile."
+  ],
+  links: [
+    { label: "AZGFD – Reptiles", url: "https://www.azgfd.com/wildlife/nongamemanagement/amphibians-reptiles/" },
+    { label: "AZGFD – Rules & Regulations", url: "https://www.azgfd.com/hunting/regulations/" }
+  ],
+  notes: "Arizona has more rattlesnake species than any other U.S. state. Most snakes are protected from indiscriminate killing or relocation. Federally listed gartersnakes and the Arizona Ridge-nosed Rattlesnake are among the most strictly protected."
+},
+
+      "AR": {
+  title: "Arkansas",
+  summary: [
+    "All native reptiles and amphibians are regulated by the Arkansas Game and Fish Commission (AGFC).",
+    "A hunting license is required to collect or possess most native snakes, and seasons/bag limits may apply to certain nongame species.",
+    "Endangered, threatened, and certain nongame species are fully protected and cannot be taken or possessed."
+  ],
+  relocation: [
+    "On your property: non-venomous snakes may be left alone or carefully moved a short distance if safe.",
+    "Across properties/public land: transporting or releasing snakes elsewhere without AGFC authorization is unlawful.",
+    "Venomous snakes: Arkansas has six native venomous species (Copperhead, Cottonmouth, Timber Rattlesnake, Western Diamondback Rattlesnake, Pygmy Rattlesnake, Texas Coral Snake). Relocating or killing them is regulated and often discouraged except in cases of immediate safety.",
+    "For safe removal, AGFC recommends contacting licensed nuisance wildlife control operators."
+  ],
+  protectedSnakes: [
+    "Eastern Hognose Snake (Heterodon platirhinos) — nongame species, collection restricted.",
+    "Western Mudsnake (Farancia abacura reinwardtii) — species of concern.",
+    "Speckled Kingsnake (Lampropeltis holbrooki) — protected from commercial collection.",
+    "Louisiana Pine Snake (Pituophis ruthveni) — federally threatened (very rare in Arkansas).",
+    "Other species may be regulated under AGFC nongame regulations."
+  ],
+  links: [
+    { label: "Arkansas Game and Fish Commission – Nongame Species", url: "https://www.agfc.com/en/wildlife-management/nongame-wildlife/" },
+    { label: "Arkansas Game and Fish Commission – Wildlife Code", url: "https://www.agfc.com/en/resources/regulations/code/" }
+  ],
+  notes: "Arkansas law requires a hunting license for collecting most reptiles. Venomous snakes should not be relocated by the public for safety reasons. Federally listed species such as the Louisiana Pine Snake are strictly protected."
+},
+
       "CA": {
   title: "California",
   summary: [
