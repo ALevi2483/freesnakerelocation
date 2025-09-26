@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Relocation Laws by State | Free Snake Relocation</title>
-  <meta name="description" content="Snake relocation laws by U.S. state. Always check your state wildlife agency before handling or relocating wildlife." />
+  <meta name="description" content="Snake relocation laws and protected species by U.S. state. Always verify with your state wildlife agency before handling or relocating wildlife." />
   <link rel="icon" href="/favicon.ico" />
   <style>
     :root {
@@ -20,34 +20,39 @@
     body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
     a { color: var(--brandAccent); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    header { border-bottom: 1px solid var(--border); background: #fff; }
+
+    /* Layout matches your pages without adding a second header */
     .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
-    .nav { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-    .nav a { color: var(--fg); padding: 8px 10px; border-radius: 8px; }
-    .nav a.active, .nav a:hover { background: var(--card); }
-    .brand { font-weight: 700; color: var(--brand); margin-right: 8px; }
+
     h1 { font-size: 1.875rem; margin: 18px 0 8px; }
     p.lead { color: var(--muted); margin: 0 0 16px; }
+
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
     .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (min-width: 900px) { .row { grid-template-columns: 360px 1fr; } }
+
     label { font-weight: 600; display: block; margin-bottom: 6px; }
     select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; font-size: 1rem; }
-    .state-meta { color: var(--muted); font-size: .925rem; margin: 8px 0 14px; }
+
+    .state-meta { color: var(--muted); font-size: .95rem; margin: 8px 0 14px; }
     .law-body { line-height: 1.55; }
     .law-body h3 { margin: 18px 0 8px; font-size: 1.125rem; }
     .law-body ul { margin: 0 0 12px 18px; }
+
     .alert { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 10px 12px; border-radius: 10px; font-size: .975rem; }
     .muted { color: var(--muted); }
+
     footer { margin-top: 32px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .95rem; }
     .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #f3f4f6; border: 1px solid #e5e7eb; padding: 1px 6px; border-radius: 6px; }
+    .pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: .85rem; background: #fff; margin-right: 6px; }
   </style>
 </head>
 <body>
-  
+  <!-- Keep your existing site header/menu include here (the green bar with Menu) -->
+
   <main class="container">
     <h1>Relocation Laws by State</h1>
-    <p class="lead">Select your state to view a plain language summary. Always verify with your state wildlife agency before attempting relocation.</p>
+    <p class="lead">Select your state to view a plain-language summary and protected snake species. Always verify with your state wildlife agency before attempting relocation.</p>
 
     <div class="row">
       <!-- Controls -->
@@ -58,7 +63,7 @@
         </select>
         <div style="margin-top:12px">
           <div class="alert">
-            Reminder: Regulations change. This page is an educational starting point. Check the official links below for current rules.
+            Reminder: Regulations and protected lists change. This page is an educational starting point. Check the official links below for current rules.
           </div>
         </div>
       </section>
@@ -70,83 +75,119 @@
     </div>
 
     <footer>
-      Last updated <span id="lastUpdated">—</span>. If you see an error, email <a href="mailto:info@freesnakerelocation.com">info@freesnakerelocation.com</a>. Use <span class="kbd">laws.html?state=VA</span> to deep link.
+      Last updated <span id="lastUpdated">—</span>. See a mistake? Email <a href="mailto:info@freesnakerelocation.com">info@freesnakerelocation.com</a>. Tip: use <span class="kbd">laws.html?state=VA</span> to deep link.
     </footer>
   </main>
 
   <script>
-    // 1) Data model. Fill these out with your summaries and official links.
-    // Keep text short and cite the agency link for verification.
+    // === DATA MODEL ===========================================================
+    // Fill in each state's "summary" bullets and "protectedSnakes" (array of strings).
+    // Keep entries short and cite the agency link for verification.
+    // NOTE: Protected species change; verify before publishing.
+
     const LAWS = {
       "AL": {
         title: "Alabama",
         summary: [
           "Permit may be required to possess or transport native wildlife.",
-          "Non venomous relocation may be allowed with restrictions. Venomous handling is generally restricted to permitted individuals.",
+          "Relocation of venomous species generally restricted to permitted individuals.",
           "Do not release wildlife across state lines."
         ],
+        protectedSnakes: [
+          // EXAMPLE PLACEHOLDER — verify with AL DCNR
+          // "Eastern Indigo Snake (federally listed)",
+          // "Southern Hognose Snake"
+        ],
         links: [
-          { label: "AL Dept. of Conservation and Natural Resources", url: "https://www.outdooralabama.com/" },
+          { label: "AL Dept. of Conservation & Natural Resources", url: "https://www.outdooralabama.com/" },
           { label: "Wildlife regulations", url: "https://www.outdooralabama.com/law-enforcement/wildlife-and-freshwater-fisheries-regulations" }
         ],
-        notes: "Call your district office before attempting a relocation."
+        notes: "Call your district office before attempting relocation."
       },
+
       "AZ": {
         title: "Arizona",
         summary: [
-          "Certain native reptiles may be captured and transported under specific bag limits and methods.",
-          "Relocation of venomous species usually requires training or authorization in coordination with local authorities.",
-          "Do not relocate into protected areas without permission."
+          "Native reptile take/transport governed by bag limits and methods.",
+          "Venomous relocation usually requires authorization with local authorities.",
+          "Avoid releases into protected areas without permission."
+        ],
+        protectedSnakes: [
+          // PLACEHOLDER — verify with AZGFD
+          // "Arizona Ridge-nosed Rattlesnake (federally listed in some areas)"
         ],
         links: [
-          { label: "Arizona Game and Fish Department", url: "https://www.azgfd.com/" },
+          { label: "Arizona Game & Fish", url: "https://www.azgfd.com/" },
           { label: "Reptile regulations", url: "https://www.azgfd.com/hunting/regulations/" }
         ],
         notes: "Many cities partner with trained responders for rattlesnake relocation."
       },
+
       "FL": {
         title: "Florida",
         summary: [
-          "Relocation rules depend on species and distance. Venomous reptile handling requires a permit.",
-          "Non native species like pythons have separate rules and must not be released.",
+          "Venomous reptile handling requires a permit.",
+          "Non-native species have separate rules and must not be released.",
           "Check county rules and protected areas."
         ],
-        links: [
-          { label: "Florida Fish and Wildlife Conservation Commission", url: "https://myfwc.com/" },
-          { label: "Venomous reptile permits", url: "https://myfwc.com/license/captive-wildlife/" }
+        protectedSnakes: [
+          // PLACEHOLDER — verify with FWC
+          // "Eastern Indigo Snake (federally threatened)",
+          // "Short-tailed Snake",
+          // "Florida Pine Snake (state listed regionally)"
         ],
-        notes: "Keep handler safety and public safety first. Document relocations."
+        links: [
+          { label: "Florida Fish & Wildlife (FWC)", url: "https://myfwc.com/" },
+          { label: "Captive wildlife / venomous permits", url: "https://myfwc.com/license/captive-wildlife/" }
+        ],
+        notes: "Document relocations and keep handler safety first."
       },
+
       "TX": {
         title: "Texas",
         summary: [
-          "Taking and transporting native reptiles is regulated. Venomous handling often requires special authorization.",
+          "Taking/transporting native reptiles is regulated.",
           "No release on private property without landowner permission.",
-          "Some counties have additional restrictions."
+          "Some counties add restrictions."
+        ],
+        protectedSnakes: [
+          // PLACEHOLDER — verify with TPWD
+          // "Louisiana Pine Snake (federally threatened where present in TX)",
+          // "Timber Rattlesnake (protected in some counties)"
         ],
         links: [
-          { label: "Texas Parks and Wildlife", url: "https://tpwd.texas.gov/" },
-          { label: "Regulations overview", url: "https://tpwd.texas.gov/regulations/outdoor-annual" }
+          { label: "Texas Parks & Wildlife", url: "https://tpwd.texas.gov/" },
+          { label: "Outdoor Annual regulations", url: "https://tpwd.texas.gov/regulations/outdoor-annual" }
         ],
         notes: "Contact your local game warden with questions."
       },
+
       "VA": {
         title: "Virginia",
         summary: [
-          "Most native wildlife is protected. Handling or transporting may require a permit.",
-          "Venomous species handling is restricted. Do not relocate without proper authorization.",
-          "Never release on public lands without permission."
+          "Most native wildlife is protected; permits may be required to handle/transport.",
+          "Venomous species handling is restricted.",
+          "No release on public lands without permission."
+        ],
+        protectedSnakes: [
+          // PLACEHOLDER — verify with DWR
+          // "Northern Pinesnake (state threatened)",
+          // "Eastern Copperhead (regulated; not generally 'protected'—verify context)",
+          // "Timber Rattlesnake (protected/regulated in specific regions)"
         ],
         links: [
           { label: "Virginia Dept. of Wildlife Resources", url: "https://dwr.virginia.gov/" },
-          { label: "Wildlife rehabilitation and permits", url: "https://dwr.virginia.gov/wildlife/wildlife-rehabilitation/" }
+          { label: "Wildlife rehab & permits", url: "https://dwr.virginia.gov/wildlife/wildlife-rehabilitation/" }
         ],
         notes: "Call DWR or a permitted rehabber for guidance."
-      }
-      // Add remaining states here in the same format
+      },
+
+      // === Add remaining states below using this exact shape ================
+      // "CA": { title: "California", summary: [...], protectedSnakes: [...], links: [...], notes: "..." },
+      // ...
     };
 
-    // 2) State list
+    // Full 50-state dropdown
     const STATES = [
       ["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],
       ["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],
@@ -160,8 +201,12 @@
       ["VA","Virginia"],["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]
     ];
 
-    // 3) Render dropdown
+    // === RENDERING ===========================================================
     const sel = document.getElementById('stateSelect');
+    const panel = document.getElementById('statePanel');
+    const lastUpdatedEl = document.getElementById('lastUpdated');
+
+    // Build the dropdown
     STATES.forEach(([code, name]) => {
       const opt = document.createElement('option');
       opt.value = code;
@@ -169,28 +214,7 @@
       sel.appendChild(opt);
     });
 
-    // 4) Helpers
-    const panel = document.getElementById('statePanel');
-    const lastUpdatedEl = document.getElementById('lastUpdated');
     lastUpdatedEl.textContent = new Date().toLocaleDateString();
-
-    function renderState(code) {
-      const rec = LAWS[code];
-      if (!rec) {
-        panel.innerHTML = `<div class="muted">We have not posted a summary for this state yet. Please check your state wildlife agency.</div>`;
-        return;
-      }
-      const bullets = rec.summary?.map(s => `<li>${escapeHtml(s)}</li>`).join('') || '';
-      const links = rec.links?.map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join('') || '';
-      panel.innerHTML = `
-        <div class="state-meta"><strong>${escapeHtml(rec.title)}</strong></div>
-        <div class="law-body">
-          ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ''}
-          ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ''}
-          ${rec.notes ? `<p><em>${escapeHtml(rec.notes)}</em></p>` : ''}
-        </div>
-      `;
-    }
 
     function escapeHtml(s) {
       return String(s)
@@ -199,7 +223,32 @@
         .replace(/>/g, "&gt;");
     }
 
-    // 5) Events
+    function renderState(code) {
+      const rec = LAWS[code];
+      if (!rec) {
+        panel.innerHTML = `<div class="muted">We haven't posted a summary for this state yet. Please check your state wildlife agency.</div>`;
+        return;
+      }
+
+      const bullets = (rec.summary || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
+      const protectedList = (rec.protectedSnakes || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
+      const links = (rec.links || []).map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join('');
+
+      panel.innerHTML = `
+        <div class="state-meta">
+          <strong>${escapeHtml(rec.title)}</strong>
+          ${rec.notes ? `<span class="pill" title="Note">${escapeHtml(rec.notes)}</span>` : ``}
+        </div>
+        <div class="law-body">
+          ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ''}
+          <h3>Protected snakes</h3>
+          ${protectedList ? `<ul>${protectedList}</ul>` : `<p class="muted">Protected list pending. Use the official resources below.</p>`}
+          ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ''}
+        </div>
+      `;
+    }
+
+    // Handle dropdown changes
     sel.addEventListener('change', () => {
       const code = sel.value;
       if (!code) {
@@ -213,7 +262,7 @@
       localStorage.setItem("fsr:lastState", code);
     });
 
-    // 6) Deep link and restore last selection
+    // Deep link + restore last
     (function initSelection() {
       const params = new URLSearchParams(window.location.search);
       const urlState = params.get("state");
@@ -224,6 +273,40 @@
         renderState(start);
       }
     })();
+
+    // === OPTIONAL: Load from Google Sheet JSON instead of editing code =======
+    // If you want a non-technical teammate to maintain the lists:
+    //
+    // 1) Make a Google Sheet with columns: StateCode, Title, Summary (| separated),
+    //    ProtectedSnakes (| separated), LinkLabel1, LinkUrl1, LinkLabel2, LinkUrl2, Notes
+    // 2) File > Share > Anyone with the link (view). Then File > Publish to web (CSV).
+    // 3) Fetch the published CSV here, parse, and populate LAWS dynamically.
+    //
+    // Example loader (uncomment and set SHEET_CSV_URL):
+    //
+    // const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/.../pub?output=csv";
+    // fetch(SHEET_CSV_URL).then(r => r.text()).then(csv => {
+    //   const rows = csv.split(/\r?\n/).map(line => line.split(","));
+    //   const [hdr, ...body] = rows;
+    //   const idx = Object.fromEntries(hdr.map((h,i)=>[h.trim(), i]));
+    //   const map = {};
+    //   for (const r of body) {
+    //     const code = (r[idx.StateCode]||"").trim();
+    //     if (!code) continue;
+    //     map[code] = {
+    //       title: (r[idx.Title]||"").trim(),
+    //       summary: (r[idx.Summary]||"").split("|").map(s=>s.trim()).filter(Boolean),
+    //       protectedSnakes: (r[idx.ProtectedSnakes]||"").split("|").map(s=>s.trim()).filter(Boolean),
+    //       links: [
+    //         ...(r[idx.LinkLabel1] ? [{label:r[idx.LinkLabel1], url:r[idx.LinkUrl1]}] : []),
+    //         ...(r[idx.LinkLabel2] ? [{label:r[idx.LinkLabel2], url:r[idx.LinkUrl2]}] : []),
+    //       ],
+    //       notes: (r[idx.Notes]||"").trim()
+    //     };
+    //   }
+    //   Object.assign(LAWS, map);
+    //   if (sel.value) renderState(sel.value);
+    // }).catch(console.error);
   </script>
 </body>
 </html>
