@@ -200,5 +200,74 @@
     function showError(e){ notice.textContent='Could not load results. See console for details.'; console.error(e); }
     function esc(s){ return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[m])); }
   </script>
+  
+  <!-- Jason Landers Tribute Modal -->
+<div id="jasonModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>In Memory of Jason Landers</h2>
+    <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/IMG_2261.jpeg" 
+         alt="Jason Landers" 
+         style="max-width:250px;border-radius:8px;margin:10px 0;">
+    <p>
+      This page is dedicated to the vision of <strong>Jason Landers</strong>, 
+      the founder of the Free Snake Relocation community. His knowledge, kindness, 
+      and passion for wildlife continue to guide our mission of safe relocation and education.
+    </p>
+    <p>We honor Jason’s legacy every day through this work.</p>
+  </div>
+</div>
+
+<style>
+/* Modal Styles */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+}
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.close {
+  color: #333;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: #000;
+}
+</style>
+
+<script>
+// Show modal on first page load
+window.onload = function() {
+  var modal = document.getElementById("jasonModal");
+  var span = document.getElementsByClassName("close")[0];
+  
+  modal.style.display = "block";  // show automatically on load
+  
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+}
+</script>
+  
 </body>
 </html>
