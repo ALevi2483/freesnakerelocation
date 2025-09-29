@@ -11,7 +11,6 @@
     .content-wrapper{max-width:1000px;margin:0 auto;padding:20px}
     .hero{background:#e6f5ea;padding:50px 20px;border-radius:12px;text-align:center;margin-bottom:32px}
     .hero h1{color:#225533;font-size:2.2rem;margin:0 0 12px}
-    .hero p{font-size:1.1rem;margin:0 0 20px;color:#444}
     .hero a button{padding:14px 18px;background:#225533;color:#fff;border:0;border-radius:6px;font-size:1.05rem;font-weight:600;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,.1);transition:background .2s,transform .2s;margin:5px}
     .hero a button:hover{background:#1a3e28;transform:scale(1.03)}
     .section{margin:26px 0}
@@ -33,12 +32,10 @@
     .results-grid{display:grid;gap:10px}
     .card{background:#fff;border:1px solid #dfe7df;border-radius:10px;padding:12px}
     .helper{color:#667;font-size:.95rem}
-    .hr{height:1px;background:#dfe7df;margin:14px 0}
     .contact-line{margin-top:6px;font-weight:600}
     .text-note{font-size:.9rem;color:#395;margin-top:2px}
     @media (max-width:600px){
       .hero h1{font-size:1.8rem}
-      .hero p{font-size:1rem}
       .hero a button{width:100%}
     }
   </style>
@@ -52,11 +49,10 @@
     <!-- HERO -->
     <div class="hero">
       <h1>Welcome to Free Snake Relocation</h1>
-      <p>Connecting you with experienced volunteers to safely remove snakes from your property, completely free.</p>
 
-      <!-- GPS / Address Finder (moved here, above review buttons) -->
+      <!-- GPS / Address Finder (in hero, above review buttons) -->
       <div class="finder-card" aria-labelledby="closest-title">
-        <h2 id="closest-title">Relocators Near You</h2>
+        <h2 id="closest-title">Find the Closest Relocator</h2>
         <p class="helper">Click Find to use your location, or type an address and click Search by address. We’ll show the three closest volunteers with distance.</p>
 
         <div class="finder-actions">
@@ -67,14 +63,9 @@
 
         <div id="closestNotice" class="helper" style="margin:6px 0 12px;"></div>
         <div id="closestResults" class="results-grid"></div>
-
-        <div class="hr"></div>
-        <div class="helper">
-          Tip: Share a GPS pin, where the snake is, and any access notes so the volunteer can plan safely.
-        </div>
       </div>
 
-      <!-- Review buttons come AFTER finder -->
+      <!-- Review buttons AFTER finder -->
       <a href="/reviews.html"><button>💬 Read Reviews</button></a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">
         <button>📝 Leave a Review</button>
@@ -185,7 +176,6 @@
       const city  = esc(r['City'] || '');
       const state = esc(r['State'] || '');
       const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi` : '';
-      const notes = esc(r['Notes'] || r['Description'] || '');
 
       const emailHref = email ? `href="mailto:${email}"` : '';
 
@@ -195,7 +185,6 @@
             <div>
               <strong>${name}</strong> ${miles ? `<span class="helper">• ${miles}</span>` : ''}
               <div class="helper">${city}${city && state ? ', ' : ''}${state}</div>
-              ${notes ? `<div class="helper">Notes: ${notes}</div>` : ''}
               ${phone ? `<div class="contact-line">Phone: ${phone}</div>
                          <div class="text-note">Prefer text first (many volunteers screen calls).</div>` : ''}
             </div>
