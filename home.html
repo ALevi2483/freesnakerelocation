@@ -34,9 +34,59 @@
     .helper{color:#667;font-size:.95rem}
     .contact-line{margin-top:6px;font-weight:600}
     .text-note{font-size:.9rem;color:#395;margin-top:2px}
+
     @media (max-width:600px){
       .hero h1{font-size:1.8rem}
       .hero a button{width:100%}
+    }
+
+    /* ===== Tribute Modal ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      overflow: auto; /* allow page to scroll if needed */
+    }
+    .modal-content {
+      background: #fff;
+      margin: 3% auto;           /* higher on the screen */
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 520px;
+      width: 92%;
+      max-height: 80vh;          /* never taller than viewport */
+      overflow-y: auto;          /* scroll inside if content is long */
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .modal-content h2{margin:0 0 12px}
+    .modal-content img{
+      max-width:100%;
+      height:auto;
+      border-radius:10px;
+      display:block;
+      margin:10px auto 14px;
+    }
+    .close {
+      position:absolute;
+      top:10px;
+      right:14px;
+      color:#333;
+      font-size:28px;
+      line-height:1;
+      font-weight:700;
+      cursor:pointer;
+      user-select:none;
+    }
+    .close:focus{outline:2px solid #225533;outline-offset:3px}
+
+    @media (max-width:600px){
+      .modal-content{margin:2% auto;padding:16px}
     }
   </style>
 </head>
@@ -49,7 +99,7 @@
     <!-- HERO -->
     <div class="hero">
 
-      <!-- GPS / Address Finder (in hero, above review buttons) -->
+      <!-- GPS / Address Finder -->
       <div class="finder-card" aria-labelledby="closest-title">
         <h2 id="closest-title">Find the Closest Relocator</h2>
         <p class="helper">Click Find to use your location, or type an address and click Search by address. We’ll show the three closest volunteers with distance.</p>
@@ -64,7 +114,7 @@
         <div id="closestResults" class="results-grid"></div>
       </div>
 
-      <!-- Review buttons AFTER finder -->
+      <!-- Review buttons -->
       <a href="/reviews.html"><button>💬 Read Reviews</button></a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">
         <button>📝 Leave a Review</button>
@@ -149,21 +199,18 @@
         console.error('Parse error:', text);
         return;
       }
-
       if (!Array.isArray(rows)) {
         if (rows.error) {
-          notice.textContent = 'Error: ' + rows.error + (rows.details ? ' – ' + rows.details : '');
+          notice.textContent = 'Error: ' + rows.error + (rows.details ? ' - ' + rows.details : '');
         } else {
           notice.textContent = 'No volunteers found near that location.';
         }
         return;
       }
-
       if (rows.length === 0) {
         notice.textContent = 'No volunteers found near that location.';
         return;
       }
-
       notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
       results.innerHTML = rows.map(renderCard).join('');
     }
@@ -175,9 +222,7 @@
       const city  = esc(r['City'] || '');
       const state = esc(r['State'] || '');
       const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi` : '';
-
       const emailHref = email ? `href="mailto:${email}"` : '';
-
       return `
         <div class="card">
           <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -194,70 +239,38 @@
         </div>
       `;
     }
-
     function clearUI(){ results.innerHTML=''; notice.textContent=''; }
     function showError(e){ notice.textContent='Could not load results. See console for details.'; console.error(e); }
     function esc(s){ return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[m])); }
   </script>
-  
+
   <!-- Jason Landers Tribute Modal -->
-<div id="jasonModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>In Memory of Jason Landers</h2>
-    <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/IMG_2261.jpeg" 
-         alt="Jason Landers" 
-         style="max-width:250px;border-radius:8px;margin:10px 0;">
-    <p>
-      This page is dedicated to the vision of <strong>Jason Landers</strong>, 
-      the founder of the Free Snake Relocation community. His knowledge, kindness, 
-      and passion for wildlife continue to guide our mission of safe relocation and education.
-    </p>
-    <p>We honor Jason’s legacy every day through this work.</p>
+  <div id="jasonModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="jasonTitle">
+    <div class="modal-content">
+      <button class="close" aria-label="Close tribute" title="Close">&times;</button>
+      <h2 id="jasonTitle">In Memory of Jason Landers</h2>
+      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/IMG_2261.jpeg" alt="Jason Landers" />
+      <p>This page is dedicated to the vision of <strong>Jason Landers</strong>, the founder of the Free Snake Relocation community. His knowledge, kindness, and passion for wildlife continue to guide our mission of safe relocation and education.</p>
+      <p>We honor Jason’s legacy every day through this work.</p>
+    </div>
   </div>
-</div>
 
-.modal-content {
-  background: #fff;
-  margin: 5% auto;     /* was 10%, now 5% to move it up */
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;    /* keep it from going off screen */
-  overflow-y: auto;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
+  <script>
+    // Show modal on first load
+    window.addEventListener('load', () => {
+      const modal = document.getElementById('jasonModal');
+      const closeBtn = modal.querySelector('.close');
 
-/* On small screens, push even higher */
-@media (max-width: 600px) {
-  .modal-content {
-    margin: 3% auto;   /* smaller margin-top on phones */
-    padding: 15px;
-    font-size: 0.95rem;
-  }
-}
+      modal.style.display = 'block';
 
-<script>
-// Show modal on first page load
-window.onload = function() {
-  var modal = document.getElementById("jasonModal");
-  var span = document.getElementsByClassName("close")[0];
-  
-  modal.style.display = "block";  // show automatically on load
-  
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-  
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-}
-</script>
-  
+      function closeModal() {
+        modal.style.display = 'none';
+      }
+      closeBtn.addEventListener('click', closeModal);
+      window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    });
+  </script>
+
 </body>
 </html>
