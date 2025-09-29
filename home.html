@@ -25,8 +25,7 @@
     /* Finder block */
     .finder-card{background:#fff;border:1px solid #dfe7df;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.05);text-align:left;margin:0 auto 16px;max-width:720px}
     .finder-card h2{margin-top:0}
-    .finder-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-    .finder-actions input{flex:1;min-width:240px;padding:10px;border:1px solid #dfe7df;border-radius:8px}
+    .finder-actions{display:flex;justify-content:center;margin-bottom:10px}
     .btn{appearance:none;display:inline-block;background:#e9efe9;border:1px solid #dfe7df;border-radius:8px;padding:10px 14px;cursor:pointer}
     .btn-primary{background:#225533;color:#fff;border-color:#225533}
     .results-grid{display:grid;gap:10px}
@@ -58,7 +57,7 @@
       border-radius: 12px;
       max-width: 420px;
       width: 92%;
-      max-height: 70vh;        /* shrink height */
+      max-height: 70vh;
       overflow-y: auto;
       text-align: center;
       font-size: 0.95rem;
@@ -70,7 +69,7 @@
       font-size: 1.25rem;
     }
     .modal-content img {
-      max-width: 80%;          /* smaller photo */
+      max-width: 80%;
       height: auto;
       border-radius: 10px;
       margin: 8px auto 12px;
@@ -88,14 +87,6 @@
       user-select: none;
     }
     .close:hover { color: #000; }
-    @media (max-width: 600px) {
-      .modal-content {
-        margin: 4% auto;
-        padding: 14px;
-        font-size: 0.9rem;
-        max-height: 75vh;
-      }
-    }
   </style>
 </head>
 <body>
@@ -107,10 +98,14 @@
     <!-- HERO -->
     <div class="hero">
 
-      <!-- GPS / Address Finder -->
+      <!-- GPS Finder Only -->
       <div class="finder-card" aria-labelledby="closest-title">
         <h2 id="closest-title">Find the Closest Relocator</h2>
-        <p class="helper">Click Find to use your location, or type an address and click Search by address. We’ll show the three closest volunteers with distance.</p>
+        <p class="helper">Click below to find the 3 volunteers closest to your GPS location.</p>
+
+        <div class="finder-actions">
+          <button id="btnGeoFind" class="btn btn-primary">📍 Find Volunteers Near Me</button>
+        </div>
 
         <div id="closestNotice" class="helper" style="margin:6px 0 12px;"></div>
         <div id="closestResults" class="results-grid"></div>
@@ -126,7 +121,7 @@
     <!-- Sections -->
     <div class="section">
       <h2>🐍 How It Works</h2>
-      <p>We connect people with volunteer snake relocators in their area. Use our tools to search by city/state or browse the interactive map.</p>
+      <p>We connect people with volunteer snake relocators in their area. Just use your GPS location to instantly find the three closest volunteers.</p>
     </div>
 
     <div class="section">
@@ -163,8 +158,6 @@
     const TOP_N = 3;
 
     const btnGeo  = document.getElementById('btnGeoFind');
-    const btnAddr = document.getElementById('btnAddrFind');
-    const addrEl  = document.getElementById('addrInput');
     const notice  = document.getElementById('closestNotice');
     const results = document.getElementById('closestResults');
 
@@ -179,38 +172,19 @@
           const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
           await renderResults(res);
         } catch (e) { showError(e); }
-      }, () => { notice.textContent = 'Location permission denied. You can search by address instead.'; }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
-    });
-
-    btnAddr?.addEventListener('click', async () => {
-      clearUI();
-      const a = (addrEl.value || '').trim();
-      if (!a) { notice.textContent = 'Please type an address, city, or ZIP.'; return; }
-      notice.textContent = 'Finding closest volunteers...';
-      try {
-        const res = await fetch(`${SCRIPT_URL}?address=${encodeURIComponent(a)}&limit=${TOP_N}`, { cache: 'no-store' });
-        await renderResults(res);
-      } catch (e) { showError(e); }
+      }, () => { notice.textContent = 'Location permission denied. Please enable GPS.'; }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
     });
 
     async function renderResults(res) {
       const text = await res.text();
       let rows;
       try { rows = JSON.parse(text); } catch (err) {
-        notice.textContent = 'Server returned invalid response. Check if API key is set for address search.';
+        notice.textContent = 'Server returned invalid response.';
         console.error('Parse error:', text);
         return;
       }
-      if (!Array.isArray(rows)) {
-        if (rows.error) {
-          notice.textContent = 'Error: ' + rows.error + (rows.details ? ' - ' + rows.details : '');
-        } else {
-          notice.textContent = 'No volunteers found near that location.';
-        }
-        return;
-      }
-      if (rows.length === 0) {
-        notice.textContent = 'No volunteers found near that location.';
+      if (!Array.isArray(rows) || rows.length === 0) {
+        notice.textContent = 'No volunteers found near your location.';
         return;
       }
       notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
