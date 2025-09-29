@@ -24,7 +24,8 @@
     footer{text-align:center;font-size:.9rem;color:#777;margin:40px 0 20px}
 
     /* Finder block */
-    .finder-card{background:#fff;border:1px solid #dfe7df;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+    .finder-card{background:#fff;border:1px solid #dfe7df;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.05);text-align:left;margin:0 auto 16px;max-width:720px}
+    .finder-card h2{margin-top:0}
     .finder-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
     .finder-actions input{flex:1;min-width:240px;padding:10px;border:1px solid #dfe7df;border-radius:8px}
     .btn{appearance:none;display:inline-block;background:#e9efe9;border:1px solid #dfe7df;border-radius:8px;padding:10px 14px;cursor:pointer}
@@ -34,8 +35,12 @@
     .helper{color:#667;font-size:.95rem}
     .hr{height:1px;background:#dfe7df;margin:14px 0}
     .contact-line{margin-top:6px;font-weight:600}
-    .text-note{font-size:.9rem;color:#395; margin-top:2px}
-    @media (max-width:600px){.hero h1{font-size:1.8rem}.hero p{font-size:1rem}.hero a button{width:100%}}
+    .text-note{font-size:.9rem;color:#395;margin-top:2px}
+    @media (max-width:600px){
+      .hero h1{font-size:1.8rem}
+      .hero p{font-size:1rem}
+      .hero a button{width:100%}
+    }
   </style>
 </head>
 <body>
@@ -48,14 +53,8 @@
     <div class="hero">
       <h1>Welcome to Free Snake Relocation</h1>
       <p>Connecting you with experienced volunteers to safely remove snakes from your property, completely free.</p>
-      <a href="/reviews.html"><button>💬 Read Reviews</button></a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">
-        <button>📝 Leave a Review</button>
-      </a>
-    </div>
 
-    <!-- GPS / Address Finder -->
-    <div class="section">
+      <!-- GPS / Address Finder (moved here, above review buttons) -->
       <div class="finder-card" aria-labelledby="closest-title">
         <h2 id="closest-title">Relocators Near You</h2>
         <p class="helper">Click Find to use your location, or type an address and click Search by address. We’ll show the three closest volunteers with distance.</p>
@@ -67,7 +66,6 @@
         </div>
 
         <div id="closestNotice" class="helper" style="margin:6px 0 12px;"></div>
-
         <div id="closestResults" class="results-grid"></div>
 
         <div class="hr"></div>
@@ -75,6 +73,12 @@
           Tip: Share a GPS pin, where the snake is, and any access notes so the volunteer can plan safely.
         </div>
       </div>
+
+      <!-- Review buttons come AFTER finder -->
+      <a href="/reviews.html"><button>💬 Read Reviews</button></a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">
+        <button>📝 Leave a Review</button>
+      </a>
     </div>
 
     <!-- Sections -->
