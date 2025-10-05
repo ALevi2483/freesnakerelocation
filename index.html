@@ -5,97 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Free Snake Relocation – Volunteer Directory and Snake Removal Help</title>
   <meta name="description" content="Explore the Free Snake Relocation directory to find safe, humane, volunteer-based snake removal services. Browse tools, maps, and educational content across the U.S." />
+
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      background-color: #226644;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-
-    nav {
-      background-color: #2e7d57;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .nav-links a {
-      color: white;
-      padding: 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .nav-links a:hover {
-      background-color: #1c5a40;
-    }
-
-    .hamburger {
-      display: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      color: white;
-      font-weight: bold;
-      border: 2px solid white;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-      margin: 0.5rem auto;
-    }
-
-    .hamburger:active {
-      transform: scale(1.05);
-    }
-
-    iframe {
-      width: 100%;
-      height: calc(100vh - 130px);
-      border: none;
-    }
-
+    body { margin: 0; font-family: Arial, sans-serif; }
+    header { background-color: #226644; color: #fff; padding: 1rem; text-align: center; font-size: 1.8rem; font-weight: bold; }
+    nav { background-color: #2e7d57; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .nav-links { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .nav-links a { color: #fff; padding: 1rem; text-decoration: none; font-weight: bold; }
+    .nav-links a:hover { background-color: #1c5a40; }
+    .hamburger { display: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem 1rem; color: #fff; font-weight: bold; border: 2px solid #fff; border-radius: 5px; box-shadow: 0 0 5px rgba(255,255,255,.3); margin: .5rem auto; }
+    .hamburger:active { transform: scale(1.05); }
+    iframe { width: 100%; height: calc(100vh - 130px); border: none; }
     @media (max-width: 768px) {
-      .nav-links {
-        flex-direction: column;
-        display: none;
-      }
-
-      .nav-links.show {
-        display: flex;
-      }
-
-      .hamburger {
-        display: block;
-      }
+      .nav-links { flex-direction: column; display: none; }
+      .nav-links.show { display: flex; }
+      .hamburger { display: block; }
     }
-
-    .hidden-h1 {
-      display: none;
-    }
+    .hidden-h1 { display: none; }
   </style>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
+  <!-- Google tag (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QH22J22EL6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-GB09EFLTCW');
+
+    // Base config for the shell page
+    gtag('config', 'G-QH22J22EL6');
+
+    // Helper: log a virtual page view for iframe navigation
+    function logPageView(path, title) {
+      if (typeof gtag !== 'function') return;
+      // Use a clean page_path per inner page so GA4 reports look like normal navigation
+      gtag('event', 'page_view', {
+        page_title: title || path,
+        page_location: window.location.origin + '/' + path,
+        page_path: '/' + path
+      });
+    }
   </script>
 </head>
 <body>
@@ -106,32 +54,36 @@
   <nav>
     <div class="hamburger" onclick="toggleMenu()">☰ Menu</div>
     <div class="nav-links" id="navLinks">
-      <a href="home.html" target="contentFrame" onclick="closeMenu()">Home</a>
-      <a href="volunteer.html" target="contentFrame" onclick="closeMenu()">Volunteer</a>
-      <a href="find.html" target="contentFrame" onclick="closeMenu()">Find a Relocator</a>
-      <a href="reviews.html" target="contentFrame" onclick="closeMenu()">Reviews</a>
-      <a href="education.html" target="contentFrame" onclick="closeMenu()">Snakes by State</a>
-      <a href="laws.html" target="contentFrame" onclick="closeMenu()">Relocation Laws By State</a>
-      <a href="faq.html" target="contentFrame" onclick="closeMenu()">FAQ</a>
-      <a href="resources.html" target="contentFrame" onclick="closeMenu()">Resources</a>
-      <a href="Contact.html" target="contentFrame" onclick="closeMenu()">Contact Us</a>
-      <a href="media.html" target="contentFrame" onclick="closeMenu()">Media</a>
+      <a href="home.html"       target="contentFrame" onclick="closeMenu(); logPageView('home.html','Home')">Home</a>
+      <a href="volunteer.html"  target="contentFrame" onclick="closeMenu(); logPageView('volunteer.html','Volunteer')">Volunteer</a>
+      <a href="find.html"       target="contentFrame" onclick="closeMenu(); logPageView('find.html','Find a Relocator')">Find a Relocator</a>
+      <a href="reviews.html"    target="contentFrame" onclick="closeMenu(); logPageView('reviews.html','Reviews')">Reviews</a>
+      <a href="education.html"  target="contentFrame" onclick="closeMenu(); logPageView('education.html','Snakes by State')">Snakes by State</a>
+      <a href="laws.html"       target="contentFrame" onclick="closeMenu(); logPageView('laws.html','Relocation Laws By State')">Relocation Laws By State</a>
+      <a href="faq.html"        target="contentFrame" onclick="closeMenu(); logPageView('faq.html','FAQ')">FAQ</a>
+      <a href="resources.html"  target="contentFrame" onclick="closeMenu(); logPageView('resources.html','Resources')">Resources</a>
+      <a href="Contact.html"    target="contentFrame" onclick="closeMenu(); logPageView('Contact.html','Contact Us')">Contact Us</a>
+      <a href="media.html"      target="contentFrame" onclick="closeMenu(); logPageView('media.html','Media')">Media</a>
     </div>
   </nav>
 
-  <iframe src="home.html" name="contentFrame"></iframe>
+  <!-- Default load -->
+  <iframe src="home.html" name="contentFrame" id="contentFrame"></iframe>
 
   <script>
     function toggleMenu() {
       document.getElementById('navLinks').classList.toggle('show');
     }
-
     function closeMenu() {
       const nav = document.getElementById('navLinks');
       if (window.innerWidth <= 768 && nav.classList.contains('show')) {
         nav.classList.remove('show');
       }
     }
+    // Fire a virtual page view for the default iframe load too
+    window.addEventListener('DOMContentLoaded', function () {
+      logPageView('home.html','Home');
+    });
   </script>
 </body>
 </html>
