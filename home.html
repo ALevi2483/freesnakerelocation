@@ -227,17 +227,6 @@
     function esc(s){ return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[m])); }
   </script>
 
-  <!-- Jason Landers Tribute Modal -->
-  <div id="jasonModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="jasonTitle">
-    <div class="modal-content">
-      <button class="close" aria-label="Close tribute" title="Close">&times;</button>
-      <h2 id="jasonTitle">In Memory of Jason Landers</h2>
-      <img src="https://raw.githubusercontent.com/ALevi2483/freesnakerelocation/main/IMG_2261.jpeg" alt="Jason Landers" />
-      <p>This page is dedicated to the vision of <strong>Jason Landers</strong>, the founder of the Free Snake Relocation community. His knowledge, kindness, and passion for wildlife continue to guide our mission of safe relocation and education.</p>
-      <p>We honor Jason’s legacy every day through this work.</p>
-    </div>
-  </div>
-
   <script>
     // Show modal on first load
     window.addEventListener('load', () => {
