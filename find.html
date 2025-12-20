@@ -23,12 +23,63 @@
     label { display:block; font-weight:600; margin: 14px 0 6px; }
     select { width: 100%; max-width: 420px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background:#fff; }
     .row { display:flex; gap:16px; flex-wrap:wrap; }
-    .results { margin-top: 16px; padding: 12px; background: var(--card); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+    .results-wrap { margin-top: 16px; }
+    .contact-note {
+      background: #f5faf5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+    .results {
+      padding: 12px;
+      background: var(--card);
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
     iframe { width: 100%; height: 760px; border: 0; border-radius: 8px; }
 
     .disclaimer-link { font-size: 0.95rem; margin: 10px 0; display: inline-block; color: #225533; cursor: pointer; text-decoration: underline; }
     .disclaimer-box { display: none; background-color: var(--warn-bg); border: 1px solid var(--warn-border); padding: 14px; margin: 8px 0 20px; border-radius: 6px; }
     small { color: #566; }
+
+    .result-card {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .result-card + .result-card { margin-top: 10px; }
+
+    .result-top {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    .result-name { font-weight: 800; color: var(--text); }
+    .result-phone a {
+      color: #225533;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .result-phone a:hover { text-decoration: underline; }
+
+    .result-sub {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .text-preferred {
+      margin-top: 6px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
 
     /* Map actions helper */
     .map-actions {
@@ -81,12 +132,18 @@
           <select id="citySelect"></select>
         </div>
       </div>
-      <div id="stateCityResults" class="results"></div>
+
+      <div class="results-wrap">
+        <!-- This is the new, always-visible note next to the results area -->
+        <div class="contact-note" id="contactNote" aria-live="polite">
+          Text preferred. Calls from unknown numbers may not be answered.
+        </div>
+
+        <div id="stateCityResults" class="results"></div>
+      </div>
     </section>
 
     <section style="margin-top:28px;">
-
-        <!-- New helper area linked to the same map ID -->
       <div class="map-actions" aria-live="polite">
         <span>Having trouble loading the map?</span>
         <a href="https://www.google.com/maps/d/viewer?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w"
@@ -94,16 +151,13 @@
           Open in Google Maps
         </a>
       </div>
-      
+
       <h2>View Relocators on the Map</h2>
-      <!-- Embedded My Maps -->
       <iframe
         src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w"
         allowfullscreen
         title="Free Snake Relocation Map">
       </iframe>
-
-    
     </section>
   </main>
 
@@ -111,14 +165,19 @@
     // 1) PASTE YOUR NEW APPS SCRIPT WEB-APP URL BELOW (must end with /exec)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLp84jiVVodnyS8rYAonccV9SX6UKs4wqGorKm7ROS5uVyTlGAf4OuZJ_IzTDqZTKYng/exec';
 
+    // Contact note text (edit once here if you want different wording)
+    const TEXT_PREFERRED_NOTE = 'Text preferred. Calls from unknown numbers may not be answered.';
+
     let rows = []; // full data cache
 
-    // Bootstrap
     init();
 
     async function init() {
       setLoading(true);
       clearSelects();
+
+      // Set the note text (so you can change it in one place)
+      document.getElementById('contactNote').textContent = TEXT_PREFERRED_NOTE;
 
       try {
         const res = await fetch(`${SCRIPT_URL}?mode=full`, { cache: 'no-store' });
@@ -129,13 +188,11 @@
         rows = (await res.json()) || [];
         const valid = rows.filter(r => r && r.State && r.City);
 
-        // Build State list
         const states = [...new Set(valid.map(r => String(r.State).trim()))].sort();
         const stateSelect = document.getElementById('stateSelect');
         stateSelect.innerHTML = `<option value="">--Select State--</option>` + states.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
         stateSelect.onchange = onStateChange;
 
-        // City select starts empty
         const citySelect = document.getElementById('citySelect');
         citySelect.innerHTML = `<option value="">--Select City--</option>`;
         citySelect.onchange = onCityChange;
@@ -153,11 +210,13 @@
     function onStateChange() {
       const state = document.getElementById('stateSelect').value;
       const citySelect = document.getElementById('citySelect');
+
       if (!state) {
         citySelect.innerHTML = `<option value="">--Select City--</option>`;
         document.getElementById('stateCityResults').innerHTML = `<em>Select a state, then a city.</em>`;
         return;
       }
+
       const cities = [...new Set(rows.filter(r => r.State === state).map(r => String(r.City).trim()))].sort();
       citySelect.innerHTML = `<option value="">--Select City--</option>` + cities.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
       document.getElementById('stateCityResults').innerHTML = `<em>Select a city.</em>`;
@@ -169,15 +228,41 @@
       if (!state || !city) return;
 
       const filtered = rows.filter(r => r.State === state && r.City === city);
+
       const html = filtered.length
-        ? filtered.map(r => {
-            const name = r['Full Name'] || 'Name N/A';
-            const phone = r['Phone'] || 'Phone N/A';
-            const dist = r['Distance'] ? `<br><small>${r['Distance']} mi away</small>` : '';
-            return `<div><strong>${escapeHtml(name)}</strong> — ${escapeHtml(phone)}${dist}</div>`;
-          }).join('<br><br>')
+        ? filtered.map(r => renderRelocator(r)).join('')
         : `<em>No relocators found for this city.</em>`;
+
       document.getElementById('stateCityResults').innerHTML = html;
+    }
+
+    function renderRelocator(r) {
+      const name = r['Full Name'] || 'Name N/A';
+      const phoneRaw = r['Phone'] || 'Phone N/A';
+
+      // Make phone tap-friendly on mobile without forcing calls.
+      // Clicking the number opens the SMS app when possible.
+      const phoneDigits = String(phoneRaw).replace(/[^\d+]/g, '');
+      const smsLink = phoneDigits && phoneRaw !== 'Phone N/A' ? `sms:${phoneDigits}` : null;
+
+      const distLine = r['Distance']
+        ? `<div class="result-sub">${escapeHtml(String(r['Distance']))} mi away</div>`
+        : '';
+
+      const phoneHtml = smsLink
+        ? `<span class="result-phone"><a href="${smsLink}">${escapeHtml(phoneRaw)}</a></span>`
+        : `<span class="result-phone">${escapeHtml(phoneRaw)}</span>`;
+
+      return `
+        <div class="result-card">
+          <div class="result-top">
+            <span class="result-name">${escapeHtml(name)}</span>
+            ${phoneHtml}
+          </div>
+          ${distLine}
+          <div class="text-preferred">${escapeHtml(TEXT_PREFERRED_NOTE)}</div>
+        </div>
+      `;
     }
 
     function toggleDisclaimer() {
