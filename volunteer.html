@@ -11,15 +11,125 @@
     .section h2 { color: #226644; margin-bottom: 0.5rem; }
     .section p, .section ul, .section ol { max-width: 800px; }
     .button-container { margin-top: 1rem; }
-    .button-container a { display: inline-block; margin-right: 10px; padding: 10px 15px; background-color: #226644; color: white; border-radius: 5px; text-decoration: none; font-weight: bold; }
-    .button-container a:hover { background-color: #2e7d57; }
+    .button-container button {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 10px 15px;
+      background-color: #226644;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .button-container button:hover { background-color: #2e7d57; }
     .faq details { margin-bottom: 1rem; }
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
-    .modal-content { background: #fff; padding: 20px; width: 90%; max-width: 800px; max-height: 85%; overflow-y: auto; border-radius: 8px; position: relative; }
-    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #000; cursor: pointer; }
-    .agree-btn { display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #226644; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; }
+
     .hidden-h1 { display: none; }
+
+    .volunteer-warning {
+      background: #fff8e8;
+      border: 1px solid #d6b24c;
+      border-radius: 8px;
+      padding: 14px 16px;
+      max-width: 900px;
+    }
+    .volunteer-warning strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #4d430f;
+    }
+    .volunteer-warning p {
+      margin: 0 0 10px;
+      color: #4d430f;
+    }
+    .volunteer-warning p:last-child {
+      margin-bottom: 0;
+    }
+    .volunteer-warning a {
+      color: #225533;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85%;
+      overflow-y: auto;
+      border-radius: 8px;
+      position: relative;
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+    }
+    .agree-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #226644;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .agree-btn:disabled {
+      background-color: #8aa596;
+      cursor: not-allowed;
+    }
+    .modal h2, .modal h3 {
+      color: #226644;
+    }
+    .agreement-box {
+      margin-top: 18px;
+      padding: 12px;
+      background: #f6faf7;
+      border: 1px solid #d9e5dc;
+      border-radius: 6px;
+    }
+    .agreement-box label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-weight: bold;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .agreement-box input[type="checkbox"] {
+      margin-top: 3px;
+      transform: scale(1.1);
+    }
+    .modal-note {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: #555;
+    }
   </style>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -29,13 +139,34 @@
 
     function openDisclaimer() {
       document.getElementById('disclaimerModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
+
     function closeDisclaimer() {
       document.getElementById('disclaimerModal').style.display = 'none';
+      document.body.style.overflow = '';
+      document.getElementById('volunteerAgreeCheckbox').checked = false;
+      document.getElementById('continueBtn').disabled = true;
     }
+
+    function toggleContinueButton() {
+      const checkbox = document.getElementById('volunteerAgreeCheckbox');
+      const button = document.getElementById('continueBtn');
+      button.disabled = !checkbox.checked;
+    }
+
     function agreeAndOpenForm() {
+      const checkbox = document.getElementById('volunteerAgreeCheckbox');
+      if (!checkbox.checked) return;
       closeDisclaimer();
-      window.open("https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header", '_blank');
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header", "_blank");
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('disclaimerModal');
+      if (event.target === modal) {
+        closeDisclaimer();
+      }
     }
   </script>
 </head>
@@ -49,19 +180,30 @@
     </div>
 
     <div class="section">
+      <h2>⚠️ Important Volunteer Notice</h2>
+      <div class="volunteer-warning">
+        <strong>Free Snake Relocation is an informational directory only.</strong>
+        <p>Volunteers listed through this website act independently. We do not employ, dispatch, supervise, train, screen, certify, insure, or control any volunteer.</p>
+        <p>You are solely responsible for your own actions, decisions, communications, safety practices, legal compliance, permits, equipment, transportation, and conduct.</p>
+        <p>Before submitting the form, read the full volunteer disclaimer and acknowledgment below. You can also review the <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">full site disclaimer here</a>.</p>
+      </div>
+    </div>
+
+    <div class="section">
       <h2>🦎 Who Can Volunteer?</h2>
       <ul>
         <li>Experienced snake handlers who understand local species.</li>
         <li>Wildlife professionals or herpetology enthusiasts.</li>
         <li>Individuals willing to comply with local wildlife laws.</li>
-        <li>Those with proper tools (hooks, tongs, containers).</li>
+        <li>Those with proper tools such as hooks, tongs, and containers.</li>
       </ul>
     </div>
- 
+
     <div class="section">
       <h2>📝 How to Join</h2>
+      <p>Before opening the volunteer form, you must read and acknowledge the volunteer disclaimer.</p>
       <div class="button-container">
-        <a href="#" onclick="openDisclaimer()">Fill Out the Form</a>
+        <button type="button" onclick="openDisclaimer()">Fill Out the Form</button>
       </div>
     </div>
 
@@ -73,42 +215,59 @@
       </details>
       <details>
         <summary>Can I charge for my services?</summary>
-        <p>No. All relocations must be free of charge. You may accept voluntary donations for travel costs.</p>
+        <p>No. All relocations must be free of charge. You may accept voluntary donations for travel costs if that is lawful in your area and consistent with your listing rules.</p>
       </details>
       <details>
         <summary>What if I am unavailable when someone calls?</summary>
-        <p>We encourage users to check the directory for another available relocator nearby.</p>
+        <p>Users may check the directory for another available relocator nearby. You are not required to respond to every request.</p>
       </details>
       <details>
         <summary>How can I improve my snake handling skills?</summary>
-        <p>We recommend reaching out to local herpetological societies, rescue groups, or other relocators.</p>
+        <p>We recommend reaching out to local herpetological societies, rescue groups, wildlife professionals, or experienced relocators in your area.</p>
       </details>
     </div>
   </div>
 
   <!-- Disclaimer Modal -->
-  <div class="modal" id="disclaimerModal">
+  <div class="modal" id="disclaimerModal" aria-hidden="true" role="dialog" aria-labelledby="volunteerDisclaimerTitle">
     <div class="modal-content">
       <span class="close-btn" onclick="closeDisclaimer()">&times;</span>
-      <h2>Free Snake Relocation Directory – Disclaimer</h2>
+      <h2 id="volunteerDisclaimerTitle">Volunteer Disclaimer and Acknowledgment</h2>
 
-      <h3>🏠 Section A – For Homeowners / Requesters</h3>
-      <p><strong>1. Informational Purpose Only:</strong> The Directory is an informational platform only. We do not assign, train, or certify any volunteers. All volunteers act independently.</p>
-      <p><strong>2. No Guarantees:</strong> We do not guarantee reliability, skill, or legal compliance of any listed individual.</p>
-      <p><strong>3. Voluntary Use and Assumption of Risk:</strong> If you contact a volunteer, you do so at your own risk. You must assess whether the person is appropriate for your situation.</p>
-      <p><strong>4. Property Access and Communication:</strong> Volunteers must receive your explicit permission before entering your property. All communication, expectations, and outcomes are between you and the volunteer.</p>
-      <p><strong>5. Legal Responsibility:</strong> We are not responsible for injuries, accidents, legal claims, or property damage related to snake relocations. Use of this platform is at your own discretion.</p>
-      <p><strong>6. Agreement:</strong> By using this site, you agree to hold harmless the Free Snake Relocation Directory and its administrators from any liability related to your use of this directory.</p>
+      <h3>1. Independent Volunteer Status</h3>
+      <p>You understand and agree that you act independently and are not an employee, agent, representative, contractor, partner, dispatcher, or supervised volunteer of Free Snake Relocation or its administrators.</p>
 
-      <h3>🐍 Section B – For Volunteers / Relocators</h3>
-      <p><strong>1. Independent Status:</strong> You act independently and are not affiliated, employed, or supervised by this Directory or its admins.</p>
-      <p><strong>2. No Vetting or Supervision:</strong> We do not verify your qualifications or capabilities. You assume full responsibility for all actions taken.</p>
-      <p><strong>3. Legal Compliance:</strong> You are solely responsible for following all relevant wildlife laws and obtaining any necessary permits.</p>
-      <p><strong>4. Risk Acceptance:</strong> Snake relocation involves inherent risks. You must take proper precautions and understand you are acting at your own risk.</p>
-      <p><strong>5. Admin Behavior:</strong> Admins will not assign or recommend specific volunteers. Any self-identification by volunteers is done at their own initiative.</p>
-      <p><strong>6. Agreement:</strong> By volunteering, you agree to hold harmless the Free Snake Relocation Directory, its administrators, and its users from any legal claims, injuries, or losses resulting from your activities.</p>
+      <h3>2. No Vetting, Certification, or Supervision</h3>
+      <p>You understand and agree that Free Snake Relocation does not verify, screen, train, certify, insure, supervise, monitor, or control your qualifications, conduct, decisions, methods, communications, or actions.</p>
 
-      <button class="agree-btn" onclick="agreeAndOpenForm()">I AGREE – Continue to Form</button>
+      <h3>3. Sole Responsibility</h3>
+      <p>You are solely responsible for your own actions, safety, judgment, equipment, transportation, communications, legal compliance, permits, animal handling practices, and interactions with property owners, occupants, bystanders, animals, and government agencies.</p>
+
+      <h3>4. No Guarantee of Listings or Referrals</h3>
+      <p>Listing on this website does not guarantee calls, referrals, opportunities, availability, response expectations, outcomes, or any continuing presence on the site. Free Snake Relocation may remove, edit, decline, or update listings at its discretion.</p>
+
+      <h3>5. Legal and Regulatory Compliance</h3>
+      <p>You are solely responsible for understanding and complying with all local, state, and federal laws, wildlife rules, permit requirements, transport rules, release restrictions, and property access requirements that apply to your activities.</p>
+
+      <h3>6. Assumption of Risk</h3>
+      <p>You understand that snake relocation and related travel, handling, capture, containment, and release activities involve obvious and inherent risks, including injury, death, property damage, animal injury, criminal or civil liability, and disputes with third parties. You voluntarily assume those risks.</p>
+
+      <h3>7. Release and Hold Harmless</h3>
+      <p>To the fullest extent allowed by law, you agree that Free Snake Relocation and its administrators are not responsible for claims, injuries, losses, damages, disputes, costs, or liabilities arising from or related to your listing, communications, travel, actions, omissions, services, or interactions with any third party.</p>
+
+      <h3>8. Accuracy of Your Information</h3>
+      <p>You are responsible for the accuracy of the information you provide for your listing and for keeping that information current. Free Snake Relocation does not guarantee that your listing will always be accurate, active, or displayed.</p>
+
+      <div class="agreement-box">
+        <label for="volunteerAgreeCheckbox">
+          <input type="checkbox" id="volunteerAgreeCheckbox" onchange="toggleContinueButton()">
+          <span>I have read and understand this volunteer disclaimer. I acknowledge that I act independently, at my own risk, and that Free Snake Relocation does not employ, dispatch, supervise, train, certify, insure, or control me.</span>
+        </label>
+      </div>
+
+      <p class="modal-note">You must check the box above before continuing to the volunteer form.</p>
+
+      <button class="agree-btn" id="continueBtn" onclick="agreeAndOpenForm()" disabled>Continue to Form</button>
     </div>
   </div>
 </body>
