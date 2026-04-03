@@ -34,70 +34,116 @@
     .contact-line{margin-top:6px;font-weight:600}
     .text-note{font-size:.9rem;color:#395;margin-top:2px}
 
+    /* Disclaimer box */
+    .disclaimer-box{
+      background:#fff8e8;
+      border:2px solid #d6b24c;
+      border-radius:12px;
+      padding:20px;
+      margin:0 0 28px;
+      box-shadow:0 2px 8px rgba(0,0,0,.05);
+    }
+    .disclaimer-box h2{
+      color:#7a5a00;
+      margin:0 0 10px;
+      font-size:1.35rem;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .disclaimer-box p{
+      margin:0 0 10px;
+      color:#4d430f;
+    }
+    .disclaimer-box p:last-child{
+      margin-bottom:0;
+    }
+
     @media (max-width:600px){
       .hero h1{font-size:1.8rem}
       .hero a button{width:100%}
     }
 
-    /* ===== Tribute Modal (fits on screen without scrolling) ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      overflow: auto;
+    /* Disclaimer modal */
+    .modal{
+      display:none;
+      position:fixed;
+      z-index:9999;
+      inset:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,.72);
+      overflow:auto;
     }
-    .modal-content {
-      background: #fff;
-      margin: 6% auto;
-      padding: 16px 16px 18px;
-      border-radius: 12px;
-      max-width: 380px;   /* narrower card */
-      width: 92%;
-      max-height: 90vh;   /* fit on screen */
-      text-align: center;
-      font-size: 0.95rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      position: relative;
-      overflow-y: auto;   /* only if tiny screens */
+    .modal-content{
+      background:#fff;
+      margin:5% auto;
+      padding:22px;
+      border-radius:12px;
+      max-width:680px;
+      width:92%;
+      max-height:90vh;
+      box-shadow:0 10px 30px rgba(0,0,0,.28);
+      position:relative;
+      overflow-y:auto;
+      text-align:left;
     }
-    .modal-content h2 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;  /* slightly smaller title */
-      line-height: 1.3;
+    .modal-content h2{
+      margin:0 0 12px;
+      color:#225533;
+      font-size:1.45rem;
+      line-height:1.3;
     }
-    .modal-content img {
-      width: 70%;
-      height: auto;
-      max-height: 180px;  /* key change: smaller image */
-      border-radius: 8px;
-      margin: 8px auto 12px;
-      display: block;
-      object-fit: cover;
+    .modal-content p{
+      margin:0 0 12px;
+      color:#333;
+      font-size:1rem;
+      line-height:1.6;
     }
-    .modal-content p {
-      margin: 8px 0;
-      font-size: 0.95rem;
-      line-height: 1.5;
+    .modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-top:18px;
+      flex-wrap:wrap;
     }
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      color: #333;
-      font-size: 24px;
-      line-height: 1;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
+    .modal-actions .btn{
+      font-size:1rem;
+      padding:12px 16px;
+      border-radius:8px;
     }
-    .close:hover { color: #000; }
+    .modal-actions .btn-primary{
+      background:#225533;
+      color:#fff;
+      border:1px solid #225533;
+    }
+    .modal-actions .btn-secondary{
+      background:#f3f3f3;
+      color:#333;
+      border:1px solid #ccc;
+    }
+    .modal-small{
+      font-size:.92rem;
+      color:#666;
+      margin-top:6px;
+    }
   </style>
 </head>
 <body>
+
+  <div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle">
+    <div class="modal-content">
+      <h2 id="disclaimerTitle">Important Disclaimer</h2>
+      <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
+      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact.</p>
+      <p>By using this website, you acknowledge that you use it at your own risk. If you need immediate help, guaranteed service, emergency assistance, or a licensed pest control provider, do not rely solely on this website.</p>
+      <p class="modal-small">Please also read our <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">full disclaimer</a>.</p>
+      <div class="modal-actions">
+        <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Read Full Disclaimer</a>
+        <button id="acceptDisclaimer" class="btn btn-primary" type="button">I Understand</button>
+      </div>
+    </div>
+  </div>
 
   <div class="banner">Free Snake Relocation</div>
 
@@ -120,9 +166,17 @@
 
       <!-- Review buttons -->
       <a href="/reviews.html"><button>💬 Read Reviews</button></a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank" rel="noopener noreferrer">
         <button>📝 Leave a Review</button>
       </a>
+    </div>
+
+    <!-- Visible disclaimer -->
+    <div class="disclaimer-box">
+      <h2>⚠️ Important Disclaimer</h2>
+      <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
+      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact. Use of this website is at your own risk.</p>
+      <p><a href="/disclaimer.html">Read the full disclaimer here</a>.</p>
     </div>
 
     <!-- Sections -->
@@ -148,7 +202,7 @@
       </blockquote>
       <p>
         <a href="/reviews.html">Read more reviews</a> ·
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank">Leave a review</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform" target="_blank" rel="noopener noreferrer">Leave a review</a>
       </p>
     </div>
 
@@ -171,29 +225,45 @@
     btnGeo?.addEventListener('click', () => {
       clearUI();
       notice.textContent = 'Getting your location...';
-      if (!('geolocation' in navigator)) { notice.textContent = 'Geolocation not supported by this browser.'; return; }
+      if (!('geolocation' in navigator)) {
+        notice.textContent = 'Geolocation not supported by this browser.';
+        return;
+      }
+
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const { latitude, longitude } = pos.coords;
         notice.textContent = 'Finding closest volunteers...';
         try {
           const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
           await renderResults(res);
-        } catch (e) { showError(e); }
-      }, () => { notice.textContent = 'Location permission denied. Please enable GPS.'; }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
+        } catch (e) {
+          showError(e);
+        }
+      }, () => {
+        notice.textContent = 'Location permission denied. Please enable GPS.';
+      }, {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 0
+      });
     });
 
     async function renderResults(res) {
       const text = await res.text();
       let rows;
-      try { rows = JSON.parse(text); } catch (err) {
+      try {
+        rows = JSON.parse(text);
+      } catch (err) {
         notice.textContent = 'Server returned invalid response.';
         console.error('Parse error:', text);
         return;
       }
+
       if (!Array.isArray(rows) || rows.length === 0) {
         notice.textContent = 'No volunteers found near your location.';
         return;
       }
+
       notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
       results.innerHTML = rows.map(renderCard).join('');
     }
@@ -206,6 +276,7 @@
       const state = esc(r['State'] || '');
       const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi` : '';
       const emailHref = email ? `href="mailto:${email}"` : '';
+
       return `
         <div class="card">
           <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -213,7 +284,7 @@
               <strong>${name}</strong> ${miles ? `<span class="helper">• ${miles}</span>` : ''}
               <div class="helper">${city}${city && state ? ', ' : ''}${state}</div>
               ${phone ? `<div class="contact-line">Phone: ${phone}</div>
-                         <div class="text-note">Prefer text first (many volunteers screen calls).</div>` : ''}
+              <div class="text-note">Prefer text first (many volunteers screen calls).</div>` : ''}
             </div>
             <div style="display:flex;gap:8px;align-items:center">
               ${emailHref ? `<a class="btn" ${emailHref}>Email</a>` : ''}
@@ -222,25 +293,55 @@
         </div>
       `;
     }
-    function clearUI(){ results.innerHTML=''; notice.textContent=''; }
-    function showError(e){ notice.textContent='Could not load results. See console for details.'; console.error(e); }
-    function esc(s){ return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[m])); }
+
+    function clearUI() {
+      results.innerHTML = '';
+      notice.textContent = '';
+    }
+
+    function showError(e) {
+      notice.textContent = 'Could not load results. See console for details.';
+      console.error(e);
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, m => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        '\'':'&#39;'
+      }[m]));
+    }
   </script>
 
+  <!-- Disclaimer modal logic -->
   <script>
-    // Show modal on first load
     window.addEventListener('load', () => {
-      const modal = document.getElementById('jasonModal');
-      const closeBtn = modal.querySelector('.close');
+      const modal = document.getElementById('disclaimerModal');
+      const acceptBtn = document.getElementById('acceptDisclaimer');
+      const storageKey = 'fsr_disclaimer_ack_v1';
+
+      if (!modal || !acceptBtn) return;
+
+      const alreadyAccepted = localStorage.getItem(storageKey);
+
+      if (alreadyAccepted === 'yes') {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        return;
+      }
 
       modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
 
-      function closeModal() {
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem(storageKey, 'yes');
         modal.style.display = 'none';
-      }
-      closeBtn.addEventListener('click', closeModal);
-      window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
     });
   </script>
 
