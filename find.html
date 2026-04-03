@@ -43,8 +43,24 @@
 
     iframe { width: 100%; height: 760px; border: 0; border-radius: 8px; }
 
-    .disclaimer-link { font-size: 0.95rem; margin: 10px 0; display: inline-block; color: #225533; cursor: pointer; text-decoration: underline; }
-    .disclaimer-box { display: none; background-color: var(--warn-bg); border: 1px solid var(--warn-border); padding: 14px; margin: 8px 0 20px; border-radius: 6px; }
+    .disclaimer-banner {
+      background-color: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      padding: 14px;
+      margin: 14px 0 22px;
+      border-radius: 8px;
+      color: #4f4500;
+    }
+    .disclaimer-banner strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .disclaimer-banner a {
+      color: var(--brand-dark);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
     small { color: #566; }
 
     .result-card {
@@ -81,6 +97,25 @@
       color: var(--muted);
     }
 
+    .results-warning {
+      background: #fff8e8;
+      border: 1px solid #d6b24c;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      color: #4d430f;
+      font-size: 0.95rem;
+    }
+    .results-warning strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .results-warning a {
+      color: var(--brand-dark);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
     /* Map actions helper */
     .map-actions {
       display: flex;
@@ -104,6 +139,72 @@
       background: #f5faf5;
     }
     .map-actions a:hover { text-decoration: underline; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.72);
+      overflow: auto;
+    }
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 22px;
+      border-radius: 12px;
+      max-width: 680px;
+      width: 92%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+    }
+    .modal-content h2 {
+      margin: 0 0 12px;
+      color: var(--brand);
+      font-size: 1.45rem;
+      line-height: 1.3;
+    }
+    .modal-content p {
+      margin: 0 0 12px;
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .modal-btn {
+      appearance: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .modal-btn-secondary {
+      background: #f3f3f3;
+      color: #333;
+      border-color: #ccc;
+    }
+    .modal-btn-primary {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+    .modal-small {
+      font-size: 0.92rem;
+      color: #666;
+      margin-top: 6px;
+    }
+
     @media (max-width:600px){
       .map-actions { flex-direction: column; align-items: stretch; }
       .map-actions a { text-align: center; }
@@ -111,13 +212,30 @@
   </style>
 </head>
 <body>
+  <div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle">
+    <div class="modal-content">
+      <h2 id="disclaimerTitle">Important Disclaimer</h2>
+      <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
+      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact.</p>
+      <p>By using this website, you acknowledge that you use it at your own risk. If you need immediate help, guaranteed service, emergency assistance, or a licensed pest control provider, do not rely solely on this website.</p>
+      <p class="modal-small">Please also read our <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">full disclaimer</a>.</p>
+      <div class="modal-actions">
+        <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer" class="modal-btn modal-btn-secondary">Read Full Disclaimer</a>
+        <button id="acceptDisclaimer" class="modal-btn modal-btn-primary" type="button">I Understand</button>
+      </div>
+    </div>
+  </div>
+
   <main>
     <h1>Find a Snake Relocator</h1>
 
-    <a class="disclaimer-link" onclick="toggleDisclaimer()">📜 Read Disclaimer</a>
-    <div id="disclaimerBox" class="disclaimer-box">
-      <p><strong>DISCLAIMER:</strong> This directory is provided as a public service to help connect individuals with local snake relocation volunteers. FreeSnakeRelocation.com does not verify the identity, background, or certifications of any volunteers listed. All volunteers operate independently, and it is your responsibility to determine whether someone is qualified or trustworthy. If you do not feel comfortable using this service, please do not proceed and instead contact local animal control or wildlife authorities.</p>
-      <button onclick="toggleDisclaimer()">Close</button>
+    <div class="disclaimer-banner">
+      <strong>Important Disclaimer</strong>
+      This directory is an informational platform only. Individuals listed on this page act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual. We do not guarantee availability, response time, qualifications, actions, outcomes, or safety.
+      <br><br>
+      Any contact, communication, or service is solely between you and the individual you choose to contact, at your own risk.
+      <br><br>
+      <a href="/disclaimer.html">Read the full disclaimer here</a>.
     </div>
 
     <section>
@@ -134,7 +252,11 @@
       </div>
 
       <div class="results-wrap">
-        <!-- This is the new, always-visible note next to the results area -->
+        <div class="results-warning">
+          <strong>Before contacting a volunteer</strong>
+          Use your own judgment before contacting anyone listed here. Listing on this site does not mean we verified, endorsed, trained, certified, or guarantee that person. If you need immediate help or guaranteed service, contact local animal control, wildlife authorities, emergency services, or a licensed pest control provider as appropriate.
+        </div>
+
         <div class="contact-note" id="contactNote" aria-live="polite">
           Text preferred. Calls from unknown numbers may not be answered.
         </div>
@@ -165,7 +287,7 @@
     // 1) PASTE YOUR NEW APPS SCRIPT WEB-APP URL BELOW (must end with /exec)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLp84jiVVodnyS8rYAonccV9SX6UKs4wqGorKm7ROS5uVyTlGAf4OuZJ_IzTDqZTKYng/exec';
 
-    // Contact note text (edit once here if you want different wording)
+    // Contact note text
     const TEXT_PREFERRED_NOTE = 'Text preferred. Calls from unknown numbers may not be answered.';
 
     let rows = []; // full data cache
@@ -176,7 +298,6 @@
       setLoading(true);
       clearSelects();
 
-      // Set the note text (so you can change it in one place)
       document.getElementById('contactNote').textContent = TEXT_PREFERRED_NOTE;
 
       try {
@@ -240,8 +361,6 @@
       const name = r['Full Name'] || 'Name N/A';
       const phoneRaw = r['Phone'] || 'Phone N/A';
 
-      // Make phone tap-friendly on mobile without forcing calls.
-      // Clicking the number opens the SMS app when possible.
       const phoneDigits = String(phoneRaw).replace(/[^\d+]/g, '');
       const smsLink = phoneDigits && phoneRaw !== 'Phone N/A' ? `sms:${phoneDigits}` : null;
 
@@ -265,12 +384,6 @@
       `;
     }
 
-    function toggleDisclaimer() {
-      const box = document.getElementById('disclaimerBox');
-      const isHidden = getComputedStyle(box).display === 'none';
-      box.style.display = isHidden ? 'block' : 'none';
-    }
-
     function clearSelects() {
       document.getElementById('stateSelect').innerHTML = `<option value="">--Select State--</option>`;
       document.getElementById('citySelect').innerHTML = `<option value="">--Select City--</option>`;
@@ -284,6 +397,35 @@
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
     }
+  </script>
+
+  <script>
+    window.addEventListener('load', () => {
+      const modal = document.getElementById('disclaimerModal');
+      const acceptBtn = document.getElementById('acceptDisclaimer');
+      const storageKey = 'fsr_disclaimer_ack_v2';
+
+      if (!modal || !acceptBtn) return;
+
+      const alreadyAccepted = localStorage.getItem(storageKey);
+
+      if (alreadyAccepted === 'yes') {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        return;
+      }
+
+      modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem(storageKey, 'yes');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
+    });
   </script>
 </body>
 </html>
