@@ -116,7 +116,6 @@
       text-decoration: underline;
     }
 
-    /* Map actions helper */
     .map-actions {
       display: flex;
       gap: 10px;
@@ -140,7 +139,6 @@
     }
     .map-actions a:hover { text-decoration: underline; }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -284,13 +282,11 @@
   </main>
 
   <script>
-    // 1) PASTE YOUR NEW APPS SCRIPT WEB-APP URL BELOW (must end with /exec)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLp84jiVVodnyS8rYAonccV9SX6UKs4wqGorKm7ROS5uVyTlGAf4OuZJ_IzTDqZTKYng/exec';
 
-    // Contact note text
     const TEXT_PREFERRED_NOTE = 'Text preferred. Calls from unknown numbers may not be answered.';
 
-    let rows = []; // full data cache
+    let rows = [];
 
     init();
 
@@ -307,9 +303,9 @@
         if (!ct.includes('application/json')) throw new Error('Response was not JSON (check access/deploy URL)');
 
         rows = (await res.json()) || [];
-        const valid = rows.filter(r => r && r.State && r.City);
+        const valid = rows.filter(r => r && normalizeState(r.State) && normalizeCity(r.City));
 
-        const states = [...new Set(valid.map(r => String(r.State).trim()))].sort();
+        const states = [...new Set(valid.map(r => normalizeState(r.State)))].sort();
         const stateSelect = document.getElementById('stateSelect');
         stateSelect.innerHTML = `<option value="">--Select State--</option>` + states.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
         stateSelect.onchange = onStateChange;
@@ -329,7 +325,7 @@
     }
 
     function onStateChange() {
-      const state = document.getElementById('stateSelect').value;
+      const state = normalizeState(document.getElementById('stateSelect').value);
       const citySelect = document.getElementById('citySelect');
 
       if (!state) {
@@ -338,17 +334,25 @@
         return;
       }
 
-      const cities = [...new Set(rows.filter(r => r.State === state).map(r => String(r.City).trim()))].sort();
+      const cities = [...new Set(rows
+        .filter(r => normalizeState(r.State) === state)
+        .map(r => normalizeCity(r.City))
+        .filter(Boolean)
+      )].sort();
+
       citySelect.innerHTML = `<option value="">--Select City--</option>` + cities.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
       document.getElementById('stateCityResults').innerHTML = `<em>Select a city.</em>`;
     }
 
     function onCityChange() {
-      const state = document.getElementById('stateSelect').value;
-      const city = document.getElementById('citySelect').value;
+      const state = normalizeState(document.getElementById('stateSelect').value);
+      const city = normalizeCity(document.getElementById('citySelect').value);
       if (!state || !city) return;
 
-      const filtered = rows.filter(r => r.State === state && r.City === city);
+      const filtered = rows.filter(r =>
+        normalizeState(r.State) === state &&
+        normalizeCity(r.City) === city
+      );
 
       const html = filtered.length
         ? filtered.map(r => renderRelocator(r)).join('')
@@ -382,6 +386,20 @@
           <div class="text-preferred">${escapeHtml(TEXT_PREFERRED_NOTE)}</div>
         </div>
       `;
+    }
+
+    function normalizeState(value) {
+      return String(value || '')
+        .replace(/\u00A0/g, ' ')
+        .trim()
+        .toUpperCase();
+    }
+
+    function normalizeCity(value) {
+      return String(value || '')
+        .replace(/\u00A0/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
     }
 
     function clearSelects() {
