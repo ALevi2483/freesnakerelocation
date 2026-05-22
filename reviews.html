@@ -17,46 +17,15 @@
       --gold: #f5b301;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       background: var(--bg);
       color: var(--text);
       font: 16px/1.5 Arial, sans-serif;
-    }
-
-    header {
-      background: var(--brand);
-      color: white;
-      text-align: center;
-      padding: 24px 12px;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    nav {
-      background: #2f7b57;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 10px;
-    }
-
-    nav a {
-      color: white;
-      font-weight: 700;
-      text-decoration: none;
-      padding: 10px 14px;
-      border-radius: 6px;
-    }
-
-    nav a:hover {
-      background: rgba(255,255,255,0.14);
     }
 
     main {
@@ -72,24 +41,26 @@
 
     .hero h2 {
       color: var(--brand);
-      font-size: 2rem;
-      margin: 0 0 8px;
+      font-size: 2.2rem;
+      margin: 0 0 10px;
     }
 
     .hero p {
       color: var(--muted);
       margin: 0 auto 18px;
-      max-width: 720px;
+      max-width: 760px;
+      font-size: 1.05rem;
     }
 
     .leave-review-btn {
       display: inline-block;
       background: var(--brand);
       color: white;
-      padding: 12px 18px;
+      padding: 12px 20px;
       border-radius: 8px;
       font-weight: 700;
       text-decoration: none;
+      transition: background .2s ease;
     }
 
     .leave-review-btn:hover {
@@ -99,38 +70,40 @@
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 22px 0;
+      gap: 14px;
+      margin: 28px 0;
     }
 
     .stat-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
+      border-radius: 12px;
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 5px rgba(0,0,0,0.06);
     }
 
     .stat-number {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--brand);
     }
 
     .stat-label {
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: .95rem;
+      margin-top: 4px;
     }
 
     .controls {
       display: grid;
       grid-template-columns: 1fr 220px 220px;
       gap: 12px;
-      margin: 20px 0;
+      margin: 24px 0;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 12px;
       border: 1px solid var(--border);
@@ -142,19 +115,19 @@
     .reviews-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 18px;
       margin-top: 18px;
     }
 
     .review-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 18px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       display: flex;
       flex-direction: column;
-      min-height: 260px;
+      min-height: 280px;
     }
 
     .review-top {
@@ -167,20 +140,21 @@
 
     .stars {
       color: var(--gold);
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       letter-spacing: 1px;
       white-space: nowrap;
     }
 
     .date {
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: .85rem;
       text-align: right;
       white-space: nowrap;
     }
 
     .comment {
       font-size: 1rem;
+      line-height: 1.7;
       margin: 0 0 16px;
       flex: 1;
     }
@@ -194,15 +168,19 @@
     .reviewer strong {
       display: block;
       color: var(--text);
+      font-size: 1rem;
     }
 
     .reviewer span {
       display: block;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: .92rem;
+      margin-top: 2px;
     }
 
-    .empty, .loading, .error {
+    .loading,
+    .empty,
+    .error {
       background: white;
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -213,12 +191,12 @@
 
     footer {
       text-align: center;
-      padding: 24px 12px;
+      padding: 28px 12px;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: .92rem;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 950px) {
       .reviews-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -232,46 +210,34 @@
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 650px) {
       .reviews-grid {
         grid-template-columns: 1fr;
       }
 
-      header h1 {
-        font-size: 1.6rem;
-      }
-
       .hero h2 {
-        font-size: 1.6rem;
+        font-size: 1.7rem;
       }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>Free Snake Relocation</h1>
-  </header>
-
-  <nav>
-    <a href="/">Home</a>
-    <a href="/volunteer.html">Volunteer</a>
-    <a href="/find.html">Find a Relocator</a>
-    <a href="/snake-id.html">Snake ID by State</a>
-    <a href="/relocation-laws.html">Relocation Laws By State</a>
-    <a href="/faq.html">FAQ</a>
-    <a href="/guides.html">Guides & Resources</a>
-    <a href="/reviews.html">Reviews</a>
-    <a href="/contact.html">Contact Us</a>
-  </nav>
 
   <main>
+
     <section class="hero">
       <h2>Relocation Stories</h2>
-      <p>Real stories from people who used Free Snake Relocation to find a volunteer who helped safely relocate a snake.</p>
 
-      <!-- Replace this with your Google Form public review link -->
-      <a class="leave-review-btn" href="https://docs.google.com/spreadsheets/d/1CQt-kDc7E9dPNbOGQaIOHIayTHD7xmU4X-h4EDlwaSA/edit?usp=sharing" target="_blank" rel="noopener">
+      <p>
+        Real stories from people who used Free Snake Relocation to connect with volunteers
+        who safely relocated snakes across the United States.
+      </p>
+
+      <a class="leave-review-btn"
+         href="https://docs.google.com/forms/d/e/1FAIpQLSfOs7QDb7rV7ckkaOIEPRNO0dYtNRorzYTw4sYi-sXTKDe6OA/viewform?usp=header"
+         target="_blank"
+         rel="noopener">
         Leave a Review
       </a>
     </section>
@@ -281,10 +247,12 @@
         <div class="stat-number" id="totalReviews">0</div>
         <div class="stat-label">Total Reviews</div>
       </div>
+
       <div class="stat-card">
         <div class="stat-number" id="avgRating">0.0</div>
         <div class="stat-label">Average Rating</div>
       </div>
+
       <div class="stat-card">
         <div class="stat-number" id="fiveStarReviews">0</div>
         <div class="stat-label">Five-Star Reviews</div>
@@ -293,9 +261,11 @@
 
     <section class="controls">
       <input id="searchInput" type="search" placeholder="Search reviews..." />
+
       <select id="stateFilter">
         <option value="">All States</option>
       </select>
+
       <select id="sortSelect">
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
@@ -303,8 +273,12 @@
       </select>
     </section>
 
-    <div id="reviewsStatus" class="loading">Loading reviews...</div>
+    <div id="reviewsStatus" class="loading">
+      Loading reviews...
+    </div>
+
     <section id="reviewsGrid" class="reviews-grid"></section>
+
   </main>
 
   <footer>
@@ -331,10 +305,16 @@
     async function loadReviews() {
       try {
         const response = await fetch(SHEET_URL);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
 
         const text = await response.text();
-        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+        const json = JSON.parse(
+          text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1)
+        );
 
         reviews = json.table.rows.map(row => {
           const cells = row.c || [];
@@ -357,16 +337,21 @@
 
       } catch (error) {
         console.error(error);
+
         reviewsStatus.className = 'error';
+
         reviewsStatus.innerHTML = `
-          Reviews could not load. Make sure the Google Sheet is shared as
-          <strong>Anyone with the link can view</strong>.
+          Reviews could not load.<br><br>
+          Make sure the Google Sheet is shared as:<br>
+          <strong>Anyone with the link can view</strong>
         `;
       }
     }
 
     function getCell(cells, index) {
-      return cells[index] && cells[index].v !== null && cells[index].v !== undefined
+      return cells[index] &&
+             cells[index].v !== null &&
+             cells[index].v !== undefined
         ? String(cells[index].v).trim()
         : '';
     }
@@ -378,20 +363,32 @@
 
     function parseDate(value) {
       const date = new Date(value);
-      return isNaN(date) ? new Date(0) : date;
+      return isNaN(date)
+        ? new Date(0)
+        : date;
     }
 
     function setupFilters() {
-      const states = [...new Set(reviews.map(r => extractState(r.location)).filter(Boolean))].sort();
+      const states = [
+        ...new Set(
+          reviews.map(r => extractState(r.location)).filter(Boolean)
+        )
+      ].sort();
 
       stateFilter.innerHTML =
         `<option value="">All States</option>` +
-        states.map(state => `<option value="${escapeHtml(state)}">${escapeHtml(state)}</option>`).join('');
+        states.map(state =>
+          `<option value="${escapeHtml(state)}">${escapeHtml(state)}</option>`
+        ).join('');
     }
 
     function updateStats() {
       const total = reviews.length;
-      const avg = total ? reviews.reduce((sum, r) => sum + r.rating, 0) / total : 0;
+
+      const avg = total
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / total
+        : 0;
+
       const fiveStars = reviews.filter(r => r.rating === 5).length;
 
       document.getElementById('totalReviews').textContent = total;
@@ -405,16 +402,27 @@
       const sortBy = sortSelect.value;
 
       let filtered = reviews.filter(review => {
-        const searchable = `${review.name} ${review.location} ${review.ratingRaw} ${review.comments}`.toLowerCase();
+        const searchable =
+          `${review.name} ${review.location} ${review.ratingRaw} ${review.comments}`
+          .toLowerCase();
+
         const state = extractState(review.location);
 
-        return (!searchTerm || searchable.includes(searchTerm)) &&
-               (!selectedState || state === selectedState);
+        return (
+          (!searchTerm || searchable.includes(searchTerm)) &&
+          (!selectedState || state === selectedState)
+        );
       });
 
       filtered.sort((a, b) => {
-        if (sortBy === 'oldest') return a.date - b.date;
-        if (sortBy === 'highest') return b.rating - a.rating;
+        if (sortBy === 'oldest') {
+          return a.date - b.date;
+        }
+
+        if (sortBy === 'highest') {
+          return b.rating - a.rating;
+        }
+
         return b.date - a.date;
       });
 
@@ -422,30 +430,46 @@
 
       if (!filtered.length) {
         reviewsStatus.className = 'empty';
-        reviewsStatus.textContent = 'No reviews found.';
         reviewsStatus.style.display = 'block';
+        reviewsStatus.textContent = 'No reviews found.';
         return;
       }
 
       reviewsStatus.style.display = 'none';
 
-      reviewsGrid.innerHTML = filtered.map(renderReviewCard).join('');
+      reviewsGrid.innerHTML = filtered
+        .map(renderReviewCard)
+        .join('');
     }
 
     function renderReviewCard(review) {
       return `
         <article class="review-card">
+
           <div class="review-top">
-            <div class="stars" aria-label="${review.rating} out of 5 stars">${renderStars(review.rating)}</div>
-            <div class="date">${formatDate(review.date)}</div>
+            <div class="stars">
+              ${renderStars(review.rating)}
+            </div>
+
+            <div class="date">
+              ${formatDate(review.date)}
+            </div>
           </div>
 
-          <p class="comment">“${escapeHtml(review.comments)}”</p>
+          <p class="comment">
+            “${escapeHtml(review.comments)}”
+          </p>
 
           <div class="reviewer">
-            <strong>${escapeHtml(review.name)}</strong>
-            <span>${escapeHtml(review.location || 'Location not provided')}</span>
+            <strong>
+              ${escapeHtml(review.name)}
+            </strong>
+
+            <span>
+              ${escapeHtml(review.location || 'Location not provided')}
+            </span>
           </div>
+
         </article>
       `;
     }
@@ -455,7 +479,10 @@
     }
 
     function formatDate(date) {
-      if (!date || date.getTime() === 0) return '';
+      if (!date || date.getTime() === 0) {
+        return '';
+      }
+
       return date.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'short',
@@ -464,10 +491,15 @@
     }
 
     function extractState(location) {
-      if (!location) return '';
+      if (!location) {
+        return '';
+      }
 
       const parts = String(location).split(',');
-      if (parts.length < 2) return '';
+
+      if (parts.length < 2) {
+        return '';
+      }
 
       return parts[parts.length - 1]
         .trim()
@@ -489,5 +521,6 @@
     stateFilter.addEventListener('change', renderReviews);
     sortSelect.addEventListener('change', renderReviews);
   </script>
+
 </body>
 </html>
