@@ -70,13 +70,20 @@
 
     .hero {
       background:
-        linear-gradient(rgba(12, 26, 15, .72), rgba(12, 26, 15, .72)),
+        linear-gradient(rgba(12, 26, 15, .68), rgba(12, 26, 15, .68)),
         url("images/landers%20hook.jpg");
       background-size: cover;
-      background-position: center 35%;
+      background-position: center top;
       color: white;
       text-align: center;
-      padding: 78px 20px;
+      padding: 110px 20px;
+    }
+
+    @media (min-width: 1000px) {
+      .hero {
+        background-position: center 20%;
+        padding: 140px 20px;
+      }
     }
 
     .hero-inner {
@@ -126,6 +133,8 @@
       border-radius: 10px;
       font-weight: bold;
       margin: 6px;
+      border: none;
+      cursor: pointer;
     }
 
     .btn:hover {
@@ -246,6 +255,18 @@
       margin-top: 14px;
     }
 
+    .template-box {
+      background: #fbf8ef;
+      border: 1px dashed var(--gold);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 18px;
+      white-space: pre-wrap;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: .95rem;
+      color: #222;
+    }
+
     footer {
       background: #172517;
       color: white;
@@ -267,6 +288,7 @@
 
       .hero {
         padding: 58px 18px;
+        background-position: center top;
       }
 
       .card {
@@ -299,7 +321,6 @@
       <a href="education.html">Resources</a>
       <a href="reviews.html">Reviews</a>
       <a href="Contact.html">Contact Us</a>
-      <a href="media.html">Media</a>
       <a href="legacy.html">Legacy</a>
     </nav>
   </header>
@@ -443,16 +464,36 @@
 
       <h3>Email Nomination Template</h3>
       <p>
-        Click the button below and your email app should open with a nomination template already filled in. Complete each section before sending.
+        Click the button below and your email app should open with a nomination template. Complete each section before sending.
       </p>
 
-      <a class="btn" href="mailto:freesnakerelocation@gmail.com?subject=Jason%20Landers%20Legacy%20Program%20Nomination&body=Jason%20Landers%20Legacy%20Program%20Nomination%0D%0A%0D%0ANOMINEE%20INFORMATION%0D%0AVolunteer%20Full%20Name%3A%20%0D%0ACity%20and%20State%3A%20%0D%0AEmail%20or%20Phone%20Number%20%28if%20known%29%3A%20%0D%0A%0D%0AAWARD%20CATEGORY%0D%0APlease%20select%20one%3A%0D%0A%5B%20%5D%20Jason%20Landers%20Legacy%20Award%20%28annual%20plaque%20recipient%29%0D%0A%5B%20%5D%20Distinguished%20Volunteer%20Patch%0D%0A%5B%20%5D%20No%20preference%20-%20admin%20team%20may%20determine%20best%20fit%0D%0A%0D%0AWHY%20ARE%20YOU%20NOMINATING%20THIS%20VOLUNTEER%3F%0D%0A%0D%0A%0D%0AEXAMPLES%20OF%20THEIR%20IMPACT%0D%0APlease%20include%20examples%20of%20relocations%2C%20public%20education%2C%20conservation%20work%2C%20community%20support%2C%20mentorship%2C%20or%20other%20service.%0D%0A%0D%0A%0D%0AHOW%20DOES%20THIS%20VOLUNTEER%20CARRY%20FORWARD%20JASON%20LANDERS%27%20LEGACY%3F%0D%0A%0D%0A%0D%0AYOUR%20INFORMATION%0D%0AYour%20Name%3A%20%0D%0AYour%20Email%20or%20Phone%20Number%3A%20%0D%0ARelationship%20to%20Nominee%20%28if%20any%29%3A%20%0D%0A%0D%0AOPTIONAL%20PHOTOS%20OR%20LINKS%0D%0AIf%20you%20have%20photos%2C%20screenshots%2C%20posts%2C%20or%20links%20that%20support%20this%20nomination%2C%20please%20attach%20them%20to%20this%20email.%0D%0A%0D%0ANominations%20are%20due%20by%2001%20September.">
+      <a class="btn" href="mailto:freesnakerelocation@gmail.com?subject=Jason%20Landers%20Legacy%20Program%20Nomination&body=Please%20complete%20the%20nomination%20template%20below.%0D%0A%0D%0ANominee%20Name%3A%20%0D%0ACity%20and%20State%3A%20%0D%0AAward%20Category%3A%20%0D%0AWhy%20are%20you%20nominating%20this%20volunteer%3F%20%0D%0AExamples%20of%20impact%3A%20%0D%0AHow%20do%20they%20carry%20Jason%27s%20legacy%20forward%3F%20%0D%0AYour%20Name%3A%20%0D%0AYour%20Contact%20Info%3A%20%0D%0A%0D%0ANominations%20are%20due%20by%2001%20September.">
         Submit Nomination by Email
       </a>
 
       <p class="note">
-        If the button does not open your email app, email your nomination directly to <strong>freesnakerelocation@gmail.com</strong> using the sections listed above.
+        If the button does not open your email app, email your nomination directly to <strong>freesnakerelocation@gmail.com</strong> and include the information below.
       </p>
+
+      <div class="template-box">Jason Landers Legacy Program Nomination
+
+Nominee Name:
+City and State:
+Award Category:
+
+Why are you nominating this volunteer?
+
+Examples of impact:
+
+How do they carry Jason’s legacy forward?
+
+Your Name:
+Your Contact Information:
+
+Optional Photos or Links:
+Attach photos, screenshots, posts, or links that support this nomination.
+
+Nominations are due by 01 September.</div>
     </section>
 
     <section class="card">
