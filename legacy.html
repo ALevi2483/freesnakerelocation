@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jason Landers Legacy Program | Free Snake Relocation Directory</title>
+  <meta name="description" content="Learn about Jason Landers, founder of the Free Snake Relocation Directory, and the Jason Landers Legacy Program honoring volunteers who continue his mission." />
+  <style>
+    :root {
+      --bg: #f7f3ea;
+      --panel: #ffffff;
+      --ink: #1f1f1f;
+      --muted: #5d5d5d;
+      --green: #2f4f2f;
+      --green-dark: #1f341f;
+      --gold: #b8860b;
+      --gold-soft: #f2dfad;
+      --border: #ded4bd;
+      --shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .topbar {
+      background: var(--green-dark);
+      color: #fff;
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .topbar a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(22, 38, 22, 0.88), rgba(22, 38, 22, 0.88)), url('images/snake-background.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      padding: 72px 20px;
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 14px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      max-width: 820px;
+      margin: 0 auto 28px;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #111;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.65);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 44px 20px 70px;
+    }
+
+    section {
+      margin-bottom: 34px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      align-items: start;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      color: var(--green-dark);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.15;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .highlight {
+      border-left: 6px solid var(--gold);
+      padding: 18px 20px;
+      background: #fff8e6;
+      border-radius: 12px;
+      margin-top: 18px;
+    }
+
+    .award-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .award-box {
+      background: #fbfaf6;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .award-box strong {
+      color: var(--green-dark);
+    }
+
+    ul, ol {
+      margin-top: 10px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .date-banner {
+      background: var(--green-dark);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .date-banner h2 {
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .date-pill {
+      background: var(--gold);
+      color: #111;
+      font-weight: 900;
+      padding: 16px 22px;
+      border-radius: 14px;
+      text-align: center;
+      min-width: 190px;
+      font-size: 1.15rem;
+    }
+
+    .nomination-form {
+      background: #f9f6ef;
+      border: 1px dashed var(--gold);
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .form-note {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .footer {
+      background: #172417;
+      color: #fff;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 760px) {
+      .grid,
+      .award-list,
+      .date-banner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 52px 18px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .date-pill {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    Free Snake Relocation Directory | Honoring the founder. Carrying the mission forward.
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow">Jason Landers Legacy Program</span>
+      <h1>Honoring Jason Landers</h1>
+      <p>
+        Jason Landers founded the Free Snake Relocation Directory with a mission rooted in compassion, education, conservation, and humane relocation. This program exists to keep his story alive and recognize the volunteers who continue that mission.
+      </p>
+      <div class="button-row">
+        <a class="btn btn-primary" href="#nominate">Nominate a Volunteer</a>
+        <a class="btn btn-secondary" href="#program">Learn About the Program</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid">
+      <div class="card">
+        <h2>Where It Started</h2>
+        <p>
+          Before the website, before the nationwide volunteer network, and before thousands of people knew where to turn for help with a snake, there was an idea started by Jason Landers.
+        </p>
+        <p>
+          Jason cared deeply about snakes, education, and helping people handle snake encounters in a safer and more humane way. His work helped create the foundation for what has become the Free Snake Relocation Directory.
+        </p>
+        <p>
+          Today, the directory connects people with volunteer snake relocators across the United States and parts of Canada. Many people use the website and Facebook group, but not everyone knows the story of the person who started it.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Why This Matters</h2>
+        <p>
+          The Jason Landers Legacy Program helps preserve the history of this community and keeps Jason’s name connected to the mission he helped build.
+        </p>
+        <p>
+          This is not just about giving out plaques or patches. It is about recognizing volunteers who represent the standard Jason would be proud of.
+        </p>
+        <div class="highlight">
+          <strong>One person started the mission. Thousands now help carry it forward.</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="program" class="card">
+      <h2>The Jason Landers Legacy Program</h2>
+      <p>
+        Each year, the Free Snake Relocation Directory will recognize volunteers who demonstrate exceptional commitment to snake conservation, public education, and humane relocation.
+      </p>
+
+      <div class="award-list">
+        <div class="award-box">
+          <h3>Jason Landers Legacy Award</h3>
+          <p>
+            The highest annual recognition in the program. This award is presented to one volunteer who best represents the compassion, dedication, education, conservation, and humane relocation values that Jason Landers built this community upon.
+          </p>
+          <ul>
+            <li>One recipient selected annually</li>
+            <li>Recipient receives a custom plaque</li>
+            <li>Recipient receives the gold Legacy Award Recipient patch</li>
+            <li>Recipient is recognized publicly by the directory</li>
+          </ul>
+        </div>
+
+        <div class="award-box">
+          <h3>Distinguished Volunteer Patch</h3>
+          <p>
+            A limited recognition for volunteers who go above and beyond in service to the mission. These patches are intended to recognize meaningful impact without reducing the significance of the annual Legacy Award.
+          </p>
+          <ul>
+            <li>Limited number awarded each year</li>
+            <li>Recognizes outstanding service and impact</li>
+            <li>Focused on volunteers who represent the mission well</li>
+            <li>Not a participation award</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="date-banner">
+      <div>
+        <h2>Nomination Deadline</h2>
+        <p>
+          Nominations for this year’s Jason Landers Legacy Program are due by 01 September.
+        </p>
+      </div>
+      <div class="date-pill">01 September</div>
+    </section>
+
+    <section id="nominate" class="card">
+      <h2>Nomination Information</h2>
+      <p>
+        Volunteers, community members, and administrators may nominate a volunteer who has made a meaningful impact through snake relocation, public education, conservation, community support, or service to the Free Snake Relocation mission.
+      </p>
+
+      <h3>Who Should Be Nominated?</h3>
+      <ul>
+        <li>A volunteer who consistently helps people with professionalism and compassion.</li>
+        <li>A volunteer who promotes public education and responsible snake coexistence.</li>
+        <li>A volunteer who supports humane relocation and conservation.</li>
+        <li>A volunteer who represents the directory and community in a positive way.</li>
+        <li>A volunteer whose actions help carry Jason’s mission forward.</li>
+      </ul>
+
+      <h3>How Recipients Are Selected</h3>
+      <p>
+        Nominations will be reviewed privately by the Free Snake Relocation Directory administration team. Recipients will be selected based on overall impact, consistency, professionalism, education, conservation values, and service to the mission.
+      </p>
+      <p>
+        This will not be a public voting contest. The goal is to keep the process respectful, fair, and focused on meaningful service rather than popularity.
+      </p>
+
+      <div class="nomination-form">
+        <h3>Suggested Nomination Details</h3>
+        <p>Please include the following information when submitting a nomination:</p>
+        <ul>
+          <li>Name of the volunteer being nominated</li>
+          <li>City and state where they serve</li>
+          <li>Why you are nominating them</li>
+          <li>Examples of their impact, service, education, or relocation work</li>
+          <li>Your name and contact information</li>
+        </ul>
+        <p class="form-note">
+          Replace this section with your Google Form link, email address, or embedded nomination form when ready.
+        </p>
+        <p>
+          <a class="btn btn-primary" href="mailto:freesnakerelocation@gmail.com?subject=Jason%20Landers%20Legacy%20Program%20Nomination">Submit a Nomination by Email</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Carrying the Mission Forward</h2>
+      <p>
+        The Free Snake Relocation Directory exists because people care enough to answer calls, educate the public, and help snakes and people safely coexist.
+      </p>
+      <p>
+        The Jason Landers Legacy Program is one way to make sure the history of this community is not forgotten and that the people continuing the mission are recognized with the respect they deserve.
+      </p>
+      <div class="highlight">
+        <strong>Honoring the legacy. Carrying the mission.</strong>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Free Snake Relocation Directory | In honor of Jason Landers</p>
+  </footer>
+</body>
+</html>
