@@ -18,7 +18,9 @@
       --shadow: 0 10px 28px rgba(0,0,0,.12);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -69,18 +71,12 @@
     }
 
     .hero {
-  background:
-    linear-gradient(rgba(12, 26, 15, .88), rgba(12, 26, 15, .88)),
-    #11351f;
-  color: white;
-  text-align: center;
-  padding: 90px 20px;
-}
-    @media (min-width: 1000px) {
-      .hero {
-        background-position: center 20%;
-        padding: 140px 20px;
-      }
+      background:
+        linear-gradient(rgba(12, 26, 15, .88), rgba(12, 26, 15, .88)),
+        #11351f;
+      color: white;
+      text-align: center;
+      padding: 90px 20px;
     }
 
     .hero-inner {
@@ -118,7 +114,6 @@
       max-width: 820px;
       margin: 0 auto 26px;
       font-size: 1.15rem;
-      text-shadow: 0 2px 8px rgba(0,0,0,.35);
     }
 
     .btn {
@@ -132,6 +127,7 @@
       margin: 6px;
       border: none;
       cursor: pointer;
+      font-size: 1rem;
     }
 
     .btn:hover {
@@ -276,6 +272,7 @@
     }
 
     @media (max-width: 800px) {
+
       .grid,
       .award-list,
       .photo-grid,
@@ -285,7 +282,6 @@
 
       .hero {
         padding: 58px 18px;
-        background-position: center top;
       }
 
       .card {
@@ -308,6 +304,7 @@
 
   <header class="site-header">
     <div class="site-title">Free Snake Relocation</div>
+
     <nav>
       <a href="index.html">Home</a>
       <a href="volunteer.html">Volunteer</a>
@@ -325,10 +322,13 @@
   <section class="hero">
     <div class="hero-inner">
       <div class="eyebrow">Jason Landers Legacy Program</div>
+
       <h1>Honoring Jason Landers</h1>
+
       <p>
         Jason Landers founded the Free Snake Relocation Directory with a mission rooted in compassion, education, conservation, and humane relocation.
       </p>
+
       <a class="btn" href="#nominate">Submit a Nomination</a>
       <a class="btn" href="#program">Learn About the Program</a>
     </div>
@@ -337,17 +337,22 @@
   <main>
 
     <section class="grid">
+
       <div class="card">
         <h2>Where It Started</h2>
+
         <p>
           Before the website, before the nationwide volunteer network, and before thousands of people knew where to turn for help with a snake, there was an idea started by Jason Landers.
         </p>
+
         <p>
           Jason Landers, who has since passed away, created the foundation for what would eventually become the Free Snake Relocation Directory community seen today.
         </p>
+
         <p>
           Jason cared deeply about snakes, education, and helping people handle snake encounters in a safer and more humane way.
         </p>
+
         <p>
           Today, the directory connects people with volunteer snake relocators across the United States and parts of Canada. Many people use the website and Facebook group, but not everyone knows the story of the person who started it.
         </p>
@@ -355,25 +360,32 @@
 
       <div class="card">
         <h2>Why This Program Matters</h2>
+
         <p>
           The Jason Landers Legacy Program helps preserve the history of this community and keeps Jason’s name connected to the mission he helped build.
         </p>
+
         <p>
           This is not just about giving out plaques or patches. It is about recognizing volunteers who represent the standard Jason would be proud of.
         </p>
+
         <div class="highlight">
           One person started the mission. Thousands now help carry it forward.
         </div>
       </div>
+
     </section>
 
     <section class="card">
+
       <h2>Remembering Jason</h2>
+
       <p>
         These photos help show Jason as more than just the founder of a directory. He was a real person with a passion for snakes, education, and the community that continues today.
       </p>
 
       <div class="photo-grid">
+
         <div class="photo-card">
           <img src="images/landers%20hook.jpg" alt="Jason Landers holding a snake hook outdoors">
           <p>Jason in the field</p>
@@ -388,21 +400,28 @@
           <img src="images/landers%20dog.jpg" alt="Jason Landers with his dog">
           <p>Remembering the person behind the mission</p>
         </div>
+
       </div>
+
     </section>
 
     <section id="program" class="card">
+
       <h2>The Jason Landers Legacy Program</h2>
+
       <p>
         Each year, the Free Snake Relocation Directory will recognize volunteers who demonstrate exceptional commitment to snake conservation, public education, and humane relocation.
       </p>
 
       <div class="award-list">
+
         <div class="award-box">
           <h3>Jason Landers Legacy Award</h3>
+
           <p>
             The highest annual recognition in the program. This award is presented to one volunteer who best represents the compassion, dedication, education, conservation, and humane relocation values that Jason Landers built this community upon.
           </p>
+
           <ul>
             <li>One recipient selected annually</li>
             <li>Recipient receives a custom plaque</li>
@@ -413,9 +432,11 @@
 
         <div class="award-box">
           <h3>Distinguished Volunteer Patch</h3>
+
           <p>
             A limited recognition for volunteers who go above and beyond in service to the mission.
           </p>
+
           <ul>
             <li>Limited number awarded each year</li>
             <li>Recognizes outstanding service and impact</li>
@@ -423,26 +444,37 @@
             <li>Not a participation award</li>
           </ul>
         </div>
+
       </div>
+
     </section>
 
     <section class="deadline">
+
       <div>
         <h2>Nomination Deadline</h2>
+
         <p>
           Nominations for this year’s Jason Landers Legacy Program are due by 01 September.
         </p>
       </div>
-      <div class="date-box">01 September</div>
+
+      <div class="date-box">
+        01 September
+      </div>
+
     </section>
 
     <section id="nominate" class="card">
+
       <h2>Submit a Nomination</h2>
+
       <p>
         Volunteers, community members, and administrators may nominate a volunteer who has made a meaningful impact through snake relocation, public education, conservation, community support, or service to the Free Snake Relocation mission.
       </p>
 
       <h3>Who Should Be Nominated?</h3>
+
       <ul>
         <li>A volunteer who helps people with professionalism and compassion.</li>
         <li>A volunteer who promotes public education and responsible snake coexistence.</li>
@@ -452,21 +484,24 @@
       </ul>
 
       <h3>How Recipients Are Selected</h3>
+
       <p>
-        Nominations will be reviewed privately by the Free Snake Relocation Directory administration team. Recipients will be selected based on overall impact, consistency, professionalism, education, conservation values, and service to the mission.
+        Nominations will be reviewed privately by the Free Snake Relocation Directory administration team.
       </p>
+
       <p>
         This will not be a public voting contest. The goal is to keep the process respectful, fair, and focused on meaningful service rather than popularity.
       </p>
 
       <h3>Email Nomination Template</h3>
+
       <p>
-        Click the button below and your email app should open with a nomination template. Complete each section before sending.
+        Click the button below and your email app should open with a nomination template.
       </p>
 
-      <a class="btn" href="mailto:freesnakerelocation@gmail.com?subject=Jason%20Landers%20Legacy%20Program%20Nomination&body=Please%20complete%20the%20nomination%20template%20below.%0D%0A%0D%0ANominee%20Name%3A%20%0D%0ACity%20and%20State%3A%20%0D%0AAward%20Category%3A%20%0D%0AWhy%20are%20you%20nominating%20this%20volunteer%3F%20%0D%0AExamples%20of%20impact%3A%20%0D%0AHow%20do%20they%20carry%20Jason%27s%20legacy%20forward%3F%20%0D%0AYour%20Name%3A%20%0D%0AYour%20Contact%20Info%3A%20%0D%0A%0D%0ANominations%20are%20due%20by%2001%20September.">
+      <button class="btn" onclick="openNominationEmail()">
         Submit Nomination by Email
-      </a>
+      </button>
 
       <p class="note">
         If the button does not open your email app, email your nomination directly to <strong>freesnakerelocation@gmail.com</strong> and include the information below.
@@ -482,7 +517,7 @@ Why are you nominating this volunteer?
 
 Examples of impact:
 
-How do they carry Jason’s legacy forward?
+How do they carry Jason's legacy forward?
 
 Your Name:
 Your Contact Information:
@@ -491,26 +526,66 @@ Optional Photos or Links:
 Attach photos, screenshots, posts, or links that support this nomination.
 
 Nominations are due by 01 September.</div>
+
     </section>
 
     <section class="card">
+
       <h2>Carrying the Mission Forward</h2>
+
       <p>
         The Free Snake Relocation Directory exists because people care enough to answer calls, educate the public, and help snakes and people safely coexist.
       </p>
+
       <p>
         The Jason Landers Legacy Program is one way to make sure the history of this community is not forgotten and that the people continuing the mission are recognized with the respect they deserve.
       </p>
+
       <div class="highlight">
         Honoring the legacy. Carrying the mission.
       </div>
+
     </section>
 
   </main>
 
   <footer>
-    <p>Free Snake Relocation Directory | In honor of Jason Landers</p>
+    <p>
+      Free Snake Relocation Directory | In honor of Jason Landers
+    </p>
   </footer>
+
+  <script>
+    function openNominationEmail() {
+
+      const email = "freesnakerelocation@gmail.com";
+
+      const subject = "Jason Landers Legacy Program Nomination";
+
+      const body =
+`Please complete the nomination template below.
+
+Nominee Name:
+City and State:
+Award Category:
+
+Why are you nominating this volunteer?
+
+Examples of impact:
+
+How do they carry Jason's legacy forward?
+
+Your Name:
+Your Contact Information:
+
+Nominations are due by 01 September.`;
+
+      window.location.href =
+        "mailto:" + email +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    }
+  </script>
 
 </body>
 </html>
