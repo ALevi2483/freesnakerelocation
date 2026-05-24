@@ -15,43 +15,147 @@
       --brandAccent: #16a34a;
       --card: #f8fafc;
       --border: #e5e7eb;
+      --warnBg: #fff7ed;
+      --warnBorder: #fed7aa;
+      --warnText: #9a3412;
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
-    a { color: var(--brandAccent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    * {
+      box-sizing: border-box;
+    }
 
-    h1 { font-size: 1.875rem; margin: 18px 0 8px; }
-    p.lead { color: var(--muted); margin: 0 0 16px; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+    }
 
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 900px) { .row { grid-template-columns: 360px 1fr; } }
+    a {
+      color: var(--brandAccent);
+      text-decoration: none;
+    }
 
-    label { font-weight: 600; display: block; margin-bottom: 6px; }
-    select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; font-size: 1rem; }
+    a:hover {
+      text-decoration: underline;
+    }
 
-    .state-meta { color: var(--muted); font-size: .95rem; margin: 8px 0 14px; }
-    .law-body { line-height: 1.55; }
-    .law-body h3 { margin: 18px 0 8px; font-size: 1.125rem; }
-    .law-body ul { margin: 0 0 12px 18px; }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
 
-    .alert { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 10px 12px; border-radius: 10px; font-size: .975rem; }
-    .muted { color: var(--muted); }
+    h1 {
+      font-size: 1.875rem;
+      margin: 18px 0 8px;
+    }
 
-    footer { margin-top: 32px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .95rem; }
-    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #f3f4f6; border: 1px solid #e5e7eb; padding: 1px 6px; border-radius: 6px; }
-    .pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: .85rem; background: #fff; margin-right: 6px; }
+    p.lead {
+      color: var(--muted);
+      margin: 0 0 16px;
+      line-height: 1.55;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .row {
+        grid-template-columns: 360px 1fr;
+      }
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      font-size: 1rem;
+    }
+
+    .state-meta {
+      color: var(--muted);
+      font-size: .95rem;
+      margin: 8px 0 14px;
+    }
+
+    .law-body {
+      line-height: 1.55;
+    }
+
+    .law-body h3 {
+      margin: 18px 0 8px;
+      font-size: 1.125rem;
+    }
+
+    .law-body ul {
+      margin: 0 0 12px 18px;
+      padding-left: 12px;
+    }
+
+    .alert {
+      background: var(--warnBg);
+      border: 1px solid var(--warnBorder);
+      color: var(--warnText);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: .975rem;
+      line-height: 1.45;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 32px;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: .85rem;
+      background: #fff;
+      margin: 4px 6px 4px 0;
+      color: var(--muted);
+    }
   </style>
 </head>
+
 <body>
   <!-- Keep your existing site header/menu include here -->
 
   <main class="container">
     <h1>Relocation Laws by State</h1>
-    <p class="lead">Select your state to view a plain language summary, relocation rules, and protected snakes. Always verify with your state wildlife agency before attempting relocation.</p>
+
+    <p class="lead">
+      Select your state to view a plain language summary, relocation rules, and protected snakes. This page is not legal advice. Wildlife rules change, and local ordinances may also apply. Always verify with your state wildlife agency before handling, relocating, transporting, releasing, or possessing any snake.
+    </p>
 
     <div class="row">
       <section class="card" aria-labelledby="pick-state">
@@ -59,9 +163,10 @@
         <select id="stateSelect">
           <option value="">Select a state</option>
         </select>
+
         <div style="margin-top:12px">
           <div class="alert">
-            Reminder: Regulations and protected lists change. This page is an educational starting point. Check the official links below for current rules.
+            Reminder: Regulations and protected lists change. This page is an educational starting point only. Always confirm current rules with the official state wildlife agency before handling or relocating any snake.
           </div>
         </div>
       </section>
@@ -71,1280 +176,1314 @@
       </section>
     </div>
 
-  <!-- Add this just before </main> -->
-  <footer>
-    <span>Last updated: <span id="lastUpdated"></span></span>
-  </footer>
-</main>
-
+    <footer>
+      <span>Content reviewed: May 2026</span><br />
+      <span>This page is a plain language resource and is not legal advice. Always verify with the official agency links listed for your state.</span>
+    </footer>
+  </main>
 
   <script>
-    // ========================= DATA MODEL =========================
-    // For states you have not filled yet, users will see a friendly placeholder.
-    // Fill "summary", "relocation", "protectedSnakes", and "links" as you research.
-
     const LAWS = {
-      // Example smaller states left with placeholders. Fill these over time.
       "AL": {
-  title: "Alabama",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Alabama Department of Conservation and Natural Resources (ADCNR).",
-    "A hunting license is required to collect or possess most native reptiles, including snakes.",
-    "Endangered, threatened, and species of special concern are strictly protected and cannot be collected, possessed, or relocated without permits."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently encouraged to move away. Relocating them off your property without permission is discouraged.",
-    "Across properties/public land: transporting or releasing snakes elsewhere without ADCNR authorization is unlawful.",
-    "Venomous snakes: Alabama has six venomous snake species (Copperhead, Cottonmouth, Timber Rattlesnake, Eastern Diamondback Rattlesnake, Pygmy Rattlesnake, Eastern Coral Snake). Removal or relocation should only be attempted by licensed professionals.",
-    "For safe removal, ADCNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Indigo Snake (Drymarchon couperi) — federally and state endangered, reintroduction ongoing.",
-    "Eastern Coral Snake (Micrurus fulvius) — protected, rare in Alabama.",
-    "Southern Hognose Snake (Heterodon simus) — state species of highest conservation concern.",
-    "Rainbow Snake (Farancia erytrogramma) — possibly extirpated, protected.",
-    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — considered a species of conservation concern."
-  ],
-  links: [
-    { label: "ADCNR – Nongame Wildlife Program", url: "https://www.outdooralabama.com/wildlife/nongame-wildlife-program" },
-    { label: "ADCNR – Protected Species List", url: "https://www.outdooralabama.com/protected-wildlife" }
-  ],
-  notes: "Alabama has a high diversity of snakes, including several species of conservation concern. Relocation without proper permits is restricted, and federally protected species such as the Eastern Indigo Snake are strictly off-limits."
-},
+        title: "Alabama",
+        summary: [
+          "All native reptiles and amphibians are regulated by the Alabama Department of Conservation and Natural Resources.",
+          "A hunting license is required to collect or possess most native reptiles, including snakes.",
+          "Endangered, threatened, and species of special concern are strictly protected and cannot be collected, possessed, or relocated without permits."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently encouraged to move away.",
+          "Across properties or public land: transporting or releasing snakes elsewhere without authorization may be unlawful.",
+          "Venomous snakes: Alabama has six venomous snake species. Removal or relocation should only be attempted by qualified professionals.",
+          "For safe removal, contact a licensed nuisance wildlife control operator or ADCNR."
+        ],
+        protectedSnakes: [
+          "Eastern Indigo Snake - federally and state protected.",
+          "Eastern Coral Snake - rare and protected.",
+          "Southern Hognose Snake - species of conservation concern.",
+          "Rainbow Snake - rare and protected.",
+          "Eastern Diamondback Rattlesnake - species of conservation concern."
+        ],
+        links: [
+          { label: "ADCNR - Nongame Wildlife Program", url: "https://www.outdooralabama.com/wildlife/nongame-wildlife-program" },
+          { label: "ADCNR - Protected Wildlife", url: "https://www.outdooralabama.com/protected-wildlife" }
+        ],
+        notes: "Federally protected species such as the Eastern Indigo Snake are strictly off limits."
+      },
 
       "AK": {
-  title: "Alaska",
-  summary: [
-    "Alaska has no native land snakes. The climate is too cold to support wild snake populations.",
-    "All reptiles and amphibians in Alaska are regulated by the Alaska Department of Fish and Game (ADF&G).",
-    "Non-native snakes may not be released into the wild under any circumstance."
-  ],
-  relocation: [
-    "On your property: since there are no native snakes, any snake encountered would be a released or escaped pet. It should not be released outdoors.",
-    "Across properties/public land: unlawful to introduce or relocate non-native snakes into Alaska’s environment.",
-    "Venomous snakes: none are native to Alaska. Venomous snakes may only be in the state under strict captivity and permit rules.",
-    "For assistance with escaped pets, contact local animal control or ADF&G."
-  ],
-  protectedSnakes: [
-    "There are no native snakes in Alaska, therefore no protected snake species.",
-    "All non-native species are regulated to prevent environmental introduction."
-  ],
-  links: [
-    { label: "Alaska Department of Fish and Game – Nonnative Species", url: "https://www.adfg.alaska.gov/index.cfm?adfg=invasive.main" },
-    { label: "ADF&G Wildlife Regulations", url: "https://www.adfg.alaska.gov/index.cfm?adfg=wildliferegulations.main" }
-  ],
-  notes: "Alaska is one of only two U.S. states (with Hawaii) without native snakes. Any snake found outdoors is almost certainly a released or escaped pet, which should not be released into the environment."
-},
+        title: "Alaska",
+        summary: [
+          "Alaska has no native land snakes.",
+          "All reptiles and amphibians in Alaska are regulated by the Alaska Department of Fish and Game.",
+          "Non-native snakes may not be released into the wild under any circumstance."
+        ],
+        relocation: [
+          "Any snake found outdoors is likely an escaped or released pet.",
+          "Do not release any snake outdoors in Alaska.",
+          "Contact local animal control or Alaska Department of Fish and Game for guidance."
+        ],
+        protectedSnakes: [
+          "There are no native protected snake species in Alaska."
+        ],
+        links: [
+          { label: "Alaska Department of Fish and Game - Nonnative Species", url: "https://www.adfg.alaska.gov/index.cfm?adfg=invasive.main" },
+          { label: "ADF&G Wildlife Regulations", url: "https://www.adfg.alaska.gov/index.cfm?adfg=wildliferegulations.main" }
+        ],
+        notes: "Alaska has no native land snakes."
+      },
 
       "AZ": {
-  title: "Arizona",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Arizona Game and Fish Department (AZGFD).",
-    "A valid Arizona hunting license is required to collect, possess, or transport most native snakes.",
-    "Certain species are listed as protected, and federally listed threatened/endangered species cannot be taken or possessed under any circumstance."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved a short distance if safe.",
-    "Across properties/public land: it is unlawful to transport, relocate, or release wildlife elsewhere without AZGFD authorization.",
-    "Venomous snakes: Arizona is home to 13 rattlesnake species as well as the Sonoran Coral Snake. Rattlesnakes are heavily regulated; killing or relocating them without proper permits or outside of legal hunting allowances is unlawful.",
-    "For safe removal, AZGFD recommends contacting licensed wildlife control or snake relocation specialists."
-  ],
-  protectedSnakes: [
-    "Mexican Gartersnake (Thamnophis eques megalops) — federally threatened, state protected.",
-    "Narrow-headed Gartersnake (Thamnophis rufipunctatus) — federally threatened, state protected.",
-    "Desert Massasauga (Sistrurus tergeminus edwardsii) — species of special concern.",
-    "Twin-spotted Rattlesnake (Crotalus pricei) — state protected.",
-    "Arizona Ridge-nosed Rattlesnake (Crotalus willardi willardi) — federally threatened and Arizona’s state reptile."
-  ],
-  links: [
-    { label: "AZGFD – Reptiles", url: "https://www.azgfd.com/wildlife/nongamemanagement/amphibians-reptiles/" },
-    { label: "AZGFD – Rules & Regulations", url: "https://www.azgfd.com/hunting/regulations/" }
-  ],
-  notes: "Arizona has more rattlesnake species than any other U.S. state. Most snakes are protected from indiscriminate killing or relocation. Federally listed gartersnakes and the Arizona Ridge-nosed Rattlesnake are among the most strictly protected."
-},
+        title: "Arizona",
+        summary: [
+          "All native reptiles and amphibians are regulated by the Arizona Game and Fish Department.",
+          "A valid Arizona hunting license is required to collect, possess, or transport most native snakes.",
+          "Protected, threatened, and endangered species cannot be taken, possessed, or relocated without authorization."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only if safe and lawful.",
+          "Across properties or public land: transporting, relocating, or releasing wildlife without authorization may be unlawful.",
+          "Venomous snakes: Arizona has many rattlesnake species and the Sonoran Coral Snake. Handling should be left to qualified individuals.",
+          "Contact Arizona Game and Fish or a qualified snake removal professional for safe removal."
+        ],
+        protectedSnakes: [
+          "Mexican Gartersnake - federally threatened.",
+          "Narrow-headed Gartersnake - federally threatened.",
+          "Arizona Ridge-nosed Rattlesnake - federally threatened and state protected.",
+          "Twin-spotted Rattlesnake - protected.",
+          "Desert Massasauga - species of concern."
+        ],
+        links: [
+          { label: "AZGFD - Reptiles and Amphibians", url: "https://www.azgfd.com/wildlife-conservation/living-with-wildlife/reptiles/" },
+          { label: "AZGFD - Hunting Regulations", url: "https://www.azgfd.com/hunting/regulations/" }
+        ],
+        notes: "Arizona has more rattlesnake species than any other U.S. state."
+      },
 
       "AR": {
-  title: "Arkansas",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Arkansas Game and Fish Commission (AGFC).",
-    "A hunting license is required to collect or possess most native snakes, and seasons/bag limits may apply to certain nongame species.",
-    "Endangered, threatened, and certain nongame species are fully protected and cannot be taken or possessed."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved a short distance if safe.",
-    "Across properties/public land: transporting or releasing snakes elsewhere without AGFC authorization is unlawful.",
-    "Venomous snakes: Arkansas has six native venomous species (Copperhead, Cottonmouth, Timber Rattlesnake, Western Diamondback Rattlesnake, Pygmy Rattlesnake, Texas Coral Snake). Relocating or killing them is regulated and often discouraged except in cases of immediate safety.",
-    "For safe removal, AGFC recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Hognose Snake (Heterodon platirhinos) — nongame species, collection restricted.",
-    "Western Mudsnake (Farancia abacura reinwardtii) — species of concern.",
-    "Speckled Kingsnake (Lampropeltis holbrooki) — protected from commercial collection.",
-    "Louisiana Pine Snake (Pituophis ruthveni) — federally threatened (very rare in Arkansas).",
-    "Other species may be regulated under AGFC nongame regulations."
-  ],
-  links: [
-    { label: "Arkansas Game and Fish Commission – Nongame Species", url: "https://www.agfc.com/en/wildlife-management/nongame-wildlife/" },
-    { label: "Arkansas Game and Fish Commission – Wildlife Code", url: "https://www.agfc.com/en/resources/regulations/code/" }
-  ],
-  notes: "Arkansas law requires a hunting license for collecting most reptiles. Venomous snakes should not be relocated by the public for safety reasons. Federally listed species such as the Louisiana Pine Snake are strictly protected."
-},
+        title: "Arkansas",
+        summary: [
+          "All native reptiles and amphibians are regulated by the Arkansas Game and Fish Commission.",
+          "A hunting license is generally required to collect or possess native snakes.",
+          "Protected species cannot be taken, possessed, transported, or relocated without authorization."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully moved a short distance if safe.",
+          "Across properties or public land: transport or release without authorization may be unlawful.",
+          "Venomous snakes should not be handled by the public.",
+          "Contact AGFC or a licensed nuisance wildlife control operator for safe removal."
+        ],
+        protectedSnakes: [
+          "Louisiana Pine Snake - federally threatened.",
+          "Western Mudsnake - species of concern.",
+          "Eastern Hognose Snake - regulated nongame species.",
+          "Speckled Kingsnake - protected from commercial collection."
+        ],
+        links: [
+          { label: "Arkansas Game and Fish - Nongame Wildlife", url: "https://www.agfc.com/en/wildlife-management/nongame-wildlife/" },
+          { label: "Arkansas Game and Fish - Wildlife Code", url: "https://www.agfc.com/en/resources/regulations/code/" }
+        ],
+        notes: "Do not relocate snakes across properties without checking AGFC rules."
+      },
 
       "CA": {
-  title: "California",
-  summary: [
-    "All native reptiles and amphibians are regulated by the California Department of Fish and Wildlife (CDFW).",
-    "It is illegal to collect, possess, or sell most native snakes without a sport fishing license or special permit.",
-    "Endangered, threatened, and fully protected species are strictly prohibited from take or possession."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved if safe.",
-    "Across properties/public land: relocating or transporting snakes without CDFW authorization is unlawful.",
-    "Venomous snakes: California has multiple rattlesnake species. Rattlesnakes are the only legally huntable venomous snakes with restrictions, but killing or relocation outside of legal limits is unlawful.",
-    "For safe removal, CDFW recommends licensed wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Giant Gartersnake (Thamnophis gigas) — federally and state threatened.",
-    "San Francisco Gartersnake (Thamnophis sirtalis tetrataenia) — federally and state endangered.",
-    "Alameda Striped Racer (Masticophis lateralis euryxanthus) — state species of special concern.",
-    "California Mountain Kingsnake (Lampropeltis zonata) — protected from commercial take.",
-    "Other rattlesnake species are regulated but not state or federally listed."
-  ],
-  links: [
-    { label: "CDFW – Reptiles & Amphibians", url: "https://wildlife.ca.gov/Conservation/SSC/Reptiles" },
-    { label: "California Endangered Species Act (CESA)", url: "https://wildlife.ca.gov/Conservation/CESA" }
-  ],
-  notes: "California protects several gartersnake subspecies and other rare snakes. Rattlesnakes are the only venomous snakes in the state; they are regulated and may only be taken under specific conditions."
-},
+        title: "California",
+        summary: [
+          "All native reptiles and amphibians are regulated by the California Department of Fish and Wildlife.",
+          "A sport fishing license is required to take many native reptiles, and special rules apply.",
+          "Threatened, endangered, fully protected, and special status species cannot be taken or relocated without authorization."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only if safe and lawful.",
+          "Across properties or public land: relocation or release without authorization may be unlawful.",
+          "Rattlesnakes are regulated, and handling should be left to qualified individuals.",
+          "Contact CDFW or a permitted wildlife control professional for guidance."
+        ],
+        protectedSnakes: [
+          "San Francisco Gartersnake - federally and state endangered.",
+          "Giant Gartersnake - federally and state threatened.",
+          "Alameda Striped Racer - special concern.",
+          "California Mountain Kingsnake - regulated.",
+          "Other native snakes may be regulated by season, bag limit, or protected status."
+        ],
+        links: [
+          { label: "CDFW - Reptiles and Amphibians", url: "https://wildlife.ca.gov/Conservation/SSC/Reptiles" },
+          { label: "California Endangered Species Act", url: "https://wildlife.ca.gov/Conservation/CESA" }
+        ],
+        notes: "California has multiple state and federally protected snake species."
+      },
 
       "CO": {
-  title: "Colorado",
-  summary: [
-    "All native reptiles and amphibians are regulated by Colorado Parks & Wildlife (CPW).",
-    "It is unlawful to collect, possess, or sell most native snakes without a valid small-game license or scientific permit.",
-    "Threatened and endangered species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without CPW authorization is unlawful.",
-    "Venomous snakes: Colorado has three rattlesnake species — prairie rattlesnake, midget faded rattlesnake, and western massasauga. These are regulated wildlife and may not be killed, captured, or relocated without a license except in immediate defense of life.",
-    "For safe removal, CPW recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Western Massasauga (Sistrurus catenatus tergeminus) — state threatened; federally threatened.",
-    "Midget Faded Rattlesnake (Crotalus oreganus concolor) — species of concern.",
-    "Black-necked Garter Snake (Thamnophis cyrtopsis) — state species of concern (southwestern CO).",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "Colorado Parks & Wildlife – Reptiles", url: "https://cpw.state.co.us/learn/Pages/SpeciesProfiles.aspx" },
-    { label: "CPW – Threatened & Endangered Species", url: "https://cpw.state.co.us/learn/Pages/SOC-Threatened-Endangered.aspx" }
-  ],
-  notes: "The western massasauga is federally threatened and fully protected. Other rattlesnakes are regulated but may only be taken under strict limits. Unauthorized relocation or killing is illegal."
-},
+        title: "Colorado",
+        summary: [
+          "All native reptiles and amphibians are regulated by Colorado Parks and Wildlife.",
+          "Collection, possession, or transport may require a small game license or other authorization.",
+          "Threatened and endangered species are fully protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only when safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Rattlesnakes are regulated wildlife and should not be handled by the public.",
+          "Contact CPW or a qualified wildlife professional for removal."
+        ],
+        protectedSnakes: [
+          "Western Massasauga - federally threatened and state protected.",
+          "Midget Faded Rattlesnake - species of concern.",
+          "Smooth Greensnake - species of concern.",
+          "Black-necked Gartersnake - species of concern."
+        ],
+        links: [
+          { label: "Colorado Parks and Wildlife - Species Profiles", url: "https://cpw.state.co.us/learn/Pages/SpeciesProfiles.aspx" },
+          { label: "CPW - Threatened and Endangered Species", url: "https://cpw.state.co.us/learn/Pages/SOC-Threatened-Endangered.aspx" }
+        ],
+        notes: "Western Massasauga is federally protected."
+      },
 
       "CT": {
-  title: "Connecticut",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Connecticut Department of Energy & Environmental Protection (DEEP).",
-    "It is illegal to kill, capture, or possess native snakes without authorization.",
-    "Threatened and endangered species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without DEEP authorization is unlawful.",
-    "Venomous snakes: Connecticut has two venomous species — the Timber Rattlesnake and Northern Copperhead. Both are state protected; killing or relocating them without permits is illegal.",
-    "For removals, DEEP recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered; venomous.",
-    "Northern Copperhead (Agkistrodon contortrix mokasen) — state species of special concern; venomous.",
-    "Eastern Ribbonsnake (Thamnophis sauritus) — species of concern.",
-    "Eastern Hog-nosed Snake (Heterodon platirhinos) — species of concern.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern."
-  ],
-  links: [
-    { label: "CT DEEP – Snakes of Connecticut", url: "https://portal.ct.gov/DEEP/Wildlife/Fact-Sheets/Snakes-of-Connecticut" },
-    { label: "CT DEEP – Endangered, Threatened & Special Concern Species", url: "https://portal.ct.gov/DEEP/Wildlife/Endangered-Species" }
-  ],
-  notes: "Connecticut has two venomous snakes: timber rattlesnake (endangered) and copperhead (special concern). Relocation or killing of native snakes without authorization is illegal."
-},
+        title: "Connecticut",
+        summary: [
+          "Native reptiles and amphibians are regulated by Connecticut DEEP.",
+          "It is illegal to kill, capture, or possess protected native snakes without authorization.",
+          "Threatened, endangered, and special concern species are protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully moved if safe.",
+          "Across properties or public land: relocation without DEEP authorization may be unlawful.",
+          "Venomous snakes: Timber Rattlesnake and Northern Copperhead occur in Connecticut and are protected.",
+          "Contact DEEP or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered.",
+          "Northern Copperhead - special concern.",
+          "Eastern Ribbonsnake - special concern.",
+          "Eastern Hog-nosed Snake - special concern.",
+          "Smooth Greensnake - special concern."
+        ],
+        links: [
+          { label: "CT DEEP - Snakes of Connecticut", url: "https://portal.ct.gov/DEEP/Wildlife/Fact-Sheets/Snakes-of-Connecticut" },
+          { label: "CT DEEP - Endangered Species", url: "https://portal.ct.gov/DEEP/Wildlife/Endangered-Species" }
+        ],
+        notes: "Connecticut has two venomous species, and both are protected."
+      },
 
-    "DE": {
-  title: "Delaware",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Delaware Division of Fish & Wildlife (DNREC).",
-    "It is illegal to kill, capture, or possess threatened or endangered snakes.",
-    "All native snakes are protected from commercial collection and sale."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without DNREC authorization is unlawful.",
-    "Venomous snakes: Delaware has no confirmed breeding populations of venomous snakes today. Historically, the timber rattlesnake may have occurred but is now considered extirpated.",
-    "For removals, DNREC recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — considered extirpated; fully protected if encountered.",
-    "Corn Snake (Pantherophis guttatus) — state species of concern.",
-    "Eastern Kingsnake (Lampropeltis getula) — state species of concern.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "All native snakes fall under nongame wildlife protections."
-  ],
-  links: [
-    { label: "DNREC – Reptiles & Amphibians", url: "https://dnrec.alpha.delaware.gov/fish-wildlife/conservation/reptiles-amphibians/" },
-    { label: "Delaware Endangered Species Program", url: "https://dnrec.alpha.delaware.gov/fish-wildlife/conservation/endangered-species/" }
-  ],
-  notes: "Delaware currently has no established venomous snake populations. Timber rattlesnake is considered extirpated but is still protected. All native snakes are regulated as nongame wildlife."
-},
+      "DE": {
+        title: "Delaware",
+        summary: [
+          "Native reptiles and amphibians are regulated by Delaware DNREC.",
+          "Threatened and endangered species are protected from take, possession, and transport without authorization.",
+          "Native snakes are protected from unauthorized commercial collection and sale."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently moved if safe.",
+          "Across properties or public land: relocating or transporting snakes without authorization may be unlawful.",
+          "Delaware has no confirmed established venomous snake populations today.",
+          "Contact DNREC or a licensed wildlife control professional for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - considered extirpated but protected if encountered.",
+          "Corn Snake - species of concern.",
+          "Eastern Kingsnake - species of concern.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "DNREC - Reptiles and Amphibians", url: "https://dnrec.alpha.delaware.gov/fish-wildlife/conservation/reptiles-amphibians/" },
+          { label: "DNREC - Endangered Species", url: "https://dnrec.alpha.delaware.gov/fish-wildlife/conservation/endangered-species/" }
+        ],
+        notes: "Delaware currently has no established venomous snake populations."
+      },
 
-"FL": {
-  title: "Florida",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Florida Fish and Wildlife Conservation Commission (FWC).",
-    "A hunting license is required to collect most native snakes, and bag limits apply to certain species.",
-    "Endangered, threatened, and species of special concern are fully protected from collection or relocation."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently encouraged to leave. Unpermitted relocation off your property is not allowed.",
-    "Across properties/public land: transporting, relocating, or releasing snakes without FWC authorization is unlawful.",
-    "Venomous snakes: Florida is home to six native venomous species (Eastern Diamondback Rattlesnake, Timber Rattlesnake, Dusky Pygmy Rattlesnake, Cottonmouth, Copperhead, and Eastern Coral Snake). Handling or relocating venomous snakes without a Venomous Reptile Permit is illegal.",
-    "For safe removal, FWC recommends licensed nuisance wildlife trappers or permit-holders."
-  ],
-  protectedSnakes: [
-    "Eastern Indigo Snake (Drymarchon couperi) — federally threatened, state protected.",
-    "Short-tailed Snake (Lampropeltis extenuata) — state threatened, found only in Florida.",
-    "Rim Rock Crowned Snake (Tantilla oolitica) — state threatened, rare in south Florida.",
-    "Florida Pine Snake (Pituophis melanoleucus mugitus) — species of greatest conservation need.",
-    "All federally and state-listed species are strictly protected."
-  ],
-  invasiveSnakes: [
-    "Burmese Python (Python bivittatus) — invasive, established in south Florida; must not be released and is subject to removal.",
-    "Northern African Python (Python sebae) — invasive, found in Miami-Dade County.",
-    "Boa Constrictor (Boa constrictor) — invasive, localized populations.",
-    "Green Anaconda (Eunectes murinus) — prohibited species, may not be possessed or released.",
-    "Reticulated Python (Malayopython reticulatus) — prohibited species, illegal to import, breed, or release."
-  ],
-  links: [
-    { label: "FWC – Reptiles and Amphibians", url: "https://myfwc.com/wildlifehabitats/wildlife/reptiles/" },
-    { label: "FWC – Imperiled Species Management", url: "https://myfwc.com/wildlifehabitats/wildlife/imperiled/" },
-    { label: "FWC – Invasive Species", url: "https://myfwc.com/wildlifehabitats/nonnatives/" }
-  ],
-  notes: "Florida has one of the highest diversities of snake species in the U.S. Native snakes are strictly protected according to status. Invasive snakes such as Burmese Pythons are subject to removal and cannot be possessed or released. FWC actively encourages reporting and removal of invasive snakes."
-},
+      "FL": {
+        title: "Florida",
+        summary: [
+          "All native reptiles and amphibians are regulated by the Florida Fish and Wildlife Conservation Commission.",
+          "Native snakes may be subject to seasons, bag limits, license requirements, and protected status rules.",
+          "State threatened and federally listed species are protected from take, possession, transport, or relocation without authorization.",
+          "Venomous reptile possession, transport, and exhibition require FWC authorization."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or encouraged to leave if safe.",
+          "Across properties or public land: transporting, relocating, or releasing native snakes without authorization may be unlawful.",
+          "Venomous snakes: Florida has six native venomous species. Handling or relocating venomous reptiles requires proper authorization.",
+          "For safe removal, contact FWC or a qualified nuisance wildlife or venomous reptile permit holder."
+        ],
+        protectedSnakes: [
+          "Eastern Indigo Snake - federally threatened and state protected.",
+          "Florida Pine Snake - state threatened.",
+          "Short-tailed Snake - state threatened.",
+          "Rim Rock Crowned Snake - state threatened.",
+          "Other state and federally listed snakes are strictly protected."
+        ],
+        invasiveSnakes: [
+          "Burmese Python - invasive and established in parts of south Florida.",
+          "Northern African Python - invasive population documented in south Florida.",
+          "Boa Constrictor - localized invasive populations.",
+          "Green Anaconda - prohibited species.",
+          "Reticulated Python - prohibited species."
+        ],
+        links: [
+          { label: "FWC - Reptiles", url: "https://myfwc.com/wildlifehabitats/wildlife/reptiles/" },
+          { label: "FWC - Imperiled Species", url: "https://myfwc.com/wildlifehabitats/wildlife/imperiled/" },
+          { label: "FWC - Venomous Reptile Permits", url: "https://myfwc.com/license/captive-wildlife/venomous/" },
+          { label: "FWC - Nonnative Species", url: "https://myfwc.com/wildlifehabitats/nonnatives/" }
+        ],
+        notes: "Florida has both protected native snakes and regulated invasive snakes. Rules differ sharply between native and invasive species."
+      },
 
       "GA": {
-  title: "Georgia",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Georgia Department of Natural Resources (DNR).",
-    "It is illegal to kill, capture, or possess state-listed protected species.",
-    "Commercial collection and sale of native snakes are prohibited without permits."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently guided away.",
-    "Across properties/public land: relocating or transporting native snakes without Georgia DNR authorization may be unlawful.",
-    "Venomous snakes: Georgia has six — copperhead, cottonmouth, timber rattlesnake, eastern diamondback rattlesnake, pigmy rattlesnake, and eastern coral snake. Some are protected; killing or relocating them without authorization is illegal except in defense of human life.",
-    "For safe removal, Georgia DNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Indigo Snake (Drymarchon couperi) — federally and state protected (threatened).",
-    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — species of concern; heavily monitored.",
-    "Eastern Coral Snake (Micrurus fulvius) — rare; protected.",
-    "Southern Hognose Snake (Heterodon simus) — state protected.",
-    "Rainbow Snake (Farancia erytrogramma) — state protected.",
-    "Striped Crayfish Snake (Liodytes alleni) — state protected."
-  ],
-  links: [
-    { label: "Georgia DNR – Snakes of Georgia", url: "https://georgiawildlife.com/snakes" },
-    { label: "Georgia Protected Species", url: "https://georgiawildlife.com/conservation/species" }
-  ],
-  notes: "The Eastern Indigo Snake is federally protected. Several other snakes, including southern hognose and rainbow snake, are state protected. Unauthorized killing or relocation is unlawful."
-},
+        title: "Georgia",
+        summary: [
+          "Native reptiles and amphibians are regulated by Georgia DNR.",
+          "It is illegal to kill, capture, or possess protected species without authorization.",
+          "Commercial collection and sale of native snakes are prohibited without permits."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently guided away.",
+          "Across properties or public land: relocation without Georgia DNR authorization may be unlawful.",
+          "Venomous snakes occur statewide or regionally. Handling should be left to qualified individuals.",
+          "Contact Georgia DNR or a licensed nuisance wildlife control operator for safe removal."
+        ],
+        protectedSnakes: [
+          "Eastern Indigo Snake - federally threatened and state protected.",
+          "Southern Hognose Snake - state protected.",
+          "Rainbow Snake - state protected.",
+          "Eastern Coral Snake - rare and protected.",
+          "Eastern Diamondback Rattlesnake - species of concern."
+        ],
+        links: [
+          { label: "Georgia DNR - Snakes of Georgia", url: "https://georgiawildlife.com/snakes" },
+          { label: "Georgia Protected Species", url: "https://georgiawildlife.com/conservation/species" }
+        ],
+        notes: "Eastern Indigo Snake is federally protected."
+      },
 
       "HI": {
-  title: "Hawai‘i",
-  summary: [
-    "All snakes are illegal in Hawai‘i. The state has no native snake species.",
-    "It is unlawful to possess, transport, or release snakes in Hawai‘i.",
-    "Snakes are considered invasive and pose a severe threat to native wildlife and ecosystems."
-  ],
-  relocation: [
-    "No relocation rules apply, as snakes are prohibited entirely.",
-    "If a snake is seen or captured, residents are required to immediately report it to the Hawai‘i Department of Agriculture (HDOA) or local authorities.",
-    "The state operates a snake amnesty program allowing illegal pets to be surrendered with no penalty."
-  ],
-  protectedSnakes: [
-    "None — Hawai‘i has no native snake species.",
-    "Introduced snakes (e.g., boa constrictors, ball pythons, brown tree snakes) are strictly prohibited."
-  ],
-  links: [
-    { label: "Hawai‘i Department of Agriculture – Snake Prohibition", url: "https://hdoa.hawaii.gov/pi/pest/snakes-are-illegal-in-hawaii/" },
-    { label: "DLNR – Invasive Species", url: "https://dlnr.hawaii.gov/hisc/info/invasive-species-profiles/snakes/" }
-  ],
-  notes: "Snakes are completely banned in Hawai‘i. Any sightings must be reported. The state maintains an amnesty program for illegal snake possession."
-},
+        title: "Hawaii",
+        summary: [
+          "Hawaii has no native land snakes.",
+          "Snakes are illegal to possess, transport, or release in Hawaii.",
+          "Snakes are considered a major invasive threat to native wildlife and ecosystems."
+        ],
+        relocation: [
+          "Do not relocate or release snakes in Hawaii.",
+          "Report any snake sighting to the Hawaii Department of Agriculture or local authorities.",
+          "Hawaii has a snake amnesty program for illegal snake possession."
+        ],
+        protectedSnakes: [
+          "None. Hawaii has no native snake species."
+        ],
+        links: [
+          { label: "Hawaii Department of Agriculture - Snakes Are Illegal", url: "https://hdoa.hawaii.gov/pi/pest/snakes-are-illegal-in-hawaii/" },
+          { label: "DLNR - Invasive Species Profiles", url: "https://dlnr.hawaii.gov/hisc/info/invasive-species-profiles/snakes/" }
+        ],
+        notes: "Snakes are prohibited in Hawaii."
+      },
 
       "ID": {
-  title: "Idaho",
-  summary: [
-    "All native reptiles and amphibians are regulated by Idaho Fish & Game (IDFG).",
-    "Collection, possession, or sale of native snakes is prohibited without authorization.",
-    "Threatened and endangered species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without IDFG authorization is unlawful.",
-    "Venomous snakes: Idaho has several rattlesnake species, including the Western Rattlesnake (Crotalus oreganus). They are regulated and may not be killed or relocated except in immediate defense of human life.",
-    "For safe removals, IDFG recommends contacting a licensed wildlife control professional."
-  ],
-  protectedSnakes: [
-    "Western Rattlesnake (Crotalus oreganus) — venomous; regulated.",
-    "Groundsnake (Sonora semiannulata) — species of concern.",
-    "Long-nosed Snake (Rhinocheilus lecontei) — species of concern.",
-    "Rubber Boa (Charina bottae) — regulated.",
-    "All other native snakes are classified as nongame and protected under state law."
-  ],
-  links: [
-    { label: "Idaho Fish & Game – Reptiles & Amphibians", url: "https://idfg.idaho.gov/species" },
-    { label: "Idaho Admin Code – Wildlife Regulations", url: "https://adminrules.idaho.gov/rules/current/13/" }
-  ],
-  notes: "Western rattlesnake is Idaho’s primary venomous species and is regulated. Relocation or killing of native snakes without permits is unlawful except in defense of human life."
-},
+        title: "Idaho",
+        summary: [
+          "Native reptiles and amphibians are regulated by Idaho Fish and Game.",
+          "Collection, possession, or sale of native snakes may require authorization.",
+          "Threatened, endangered, and protected species cannot be taken without permits."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully moved if safe.",
+          "Across properties or public land: relocation or transport without authorization may be unlawful.",
+          "Rattlesnakes occur in Idaho and should not be handled by the public.",
+          "Contact IDFG or a licensed wildlife control professional for removal."
+        ],
+        protectedSnakes: [
+          "Western Rattlesnake - regulated.",
+          "Groundsnake - species of concern.",
+          "Long-nosed Snake - species of concern.",
+          "Rubber Boa - regulated."
+        ],
+        links: [
+          { label: "Idaho Fish and Game - Species", url: "https://idfg.idaho.gov/species" },
+          { label: "Idaho Admin Rules - Fish and Game", url: "https://adminrules.idaho.gov/rules/current/13/" }
+        ],
+        notes: "Native snakes are regulated wildlife."
+      },
 
       "IL": {
-  title: "Illinois",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Illinois Department of Natural Resources (IDNR).",
-    "It is illegal to kill, collect, or possess native snakes without authorization.",
-    "Endangered and threatened species are fully protected under the Illinois Endangered Species Protection Act."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without IDNR authorization is unlawful.",
-    "Venomous snakes: Illinois has four venomous species — timber rattlesnake, eastern massasauga rattlesnake, copperhead, and cottonmouth. All are state protected, and killing or relocating them is illegal without permits except in immediate defense of human life.",
-    "For removals, IDNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state threatened.",
-    "Eastern Massasauga (Sistrurus catenatus) — federally threatened; state endangered.",
-    "Copperbelly Water Snake (Nerodia erythrogaster neglecta) — federally threatened; state threatened.",
-    "Kirtland’s Snake (Clonophis kirtlandii) — state threatened.",
-    "Great Plains Rat Snake (Pantherophis emoryi) — state threatened.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern."
-  ],
-  links: [
-    { label: "Illinois DNR – Reptiles & Amphibians", url: "https://www2.illinois.gov/dnr/conservation/wildlife/Pages/Reptiles.aspx" },
-    { label: "Illinois Endangered Species Protection Act", url: "https://www2.illinois.gov/dnr/espb/Pages/default.aspx" }
-  ],
-  notes: "Timber rattlesnake, massasauga, copperbelly water snake, Kirtland’s snake, and great plains rat snake are all protected in Illinois. Relocation or killing of native snakes without permits is illegal."
-},
+        title: "Illinois",
+        summary: [
+          "Native reptiles and amphibians are regulated by Illinois DNR.",
+          "It is illegal to kill, collect, possess, or transport protected species without authorization.",
+          "Endangered and threatened species are fully protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only when safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Illinois has four venomous species, and listed species are protected.",
+          "Contact IDNR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state threatened.",
+          "Eastern Massasauga - federally threatened and state endangered.",
+          "Copperbelly Water Snake - federally threatened and state threatened.",
+          "Kirtland's Snake - state threatened.",
+          "Great Plains Rat Snake - state threatened."
+        ],
+        links: [
+          { label: "Illinois DNR - Reptiles", url: "https://dnr.illinois.gov/education/wildaboutpages/wildaboutsnakes.html" },
+          { label: "Illinois Endangered Species Protection Board", url: "https://dnr.illinois.gov/espb.html" }
+        ],
+        notes: "Eastern Massasauga and Copperbelly Water Snake are federally protected."
+      },
 
       "IN": {
-  title: "Indiana",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Indiana Department of Natural Resources (DNR).",
-    "It is illegal to kill, collect, or possess native snakes without proper authorization.",
-    "Threatened and endangered species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without Indiana DNR authorization is unlawful.",
-    "Venomous snakes: Indiana has four native venomous species — timber rattlesnake, eastern massasauga rattlesnake, copperhead, and western cottonmouth (rare). These species are protected; killing or relocating them without permits is illegal except in immediate defense of human life.",
-    "For removals, Indiana DNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Massasauga Rattlesnake (Sistrurus catenatus) — federally threatened; state endangered.",
-    "Timber Rattlesnake (Crotalus horridus) — state endangered.",
-    "Copperbelly Water Snake (Nerodia erythrogaster neglecta) — federally threatened; state endangered.",
-    "Kirtland’s Snake (Clonophis kirtlandii) — state endangered.",
-    "Plains Garter Snake (Thamnophis radix) — state species of concern."
-  ],
-  links: [
-    { label: "Indiana DNR – Reptiles & Amphibians", url: "https://www.in.gov/dnr/kids/learn-about-nature/animals/reptiles/" },
-    { label: "Indiana DNR – Endangered Species", url: "https://www.in.gov/dnr/nature-preserves/endangered-plants-and-animals/" }
-  ],
-  notes: "The eastern massasauga and copperbelly water snake are federally protected. Timber rattlesnake and Kirtland’s snake are state endangered. Relocation or killing without authorization is illegal."
-},
+        title: "Indiana",
+        summary: [
+          "Native reptiles and amphibians are regulated by Indiana DNR.",
+          "It is illegal to kill, collect, possess, or transport protected snakes without authorization.",
+          "Threatened and endangered species are fully protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Indiana has four native venomous species. Listed species are protected.",
+          "Contact Indiana DNR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Massasauga - federally threatened and state endangered.",
+          "Timber Rattlesnake - state endangered.",
+          "Copperbelly Water Snake - federally threatened and state endangered.",
+          "Kirtland's Snake - state endangered.",
+          "Plains Garter Snake - species of concern."
+        ],
+        links: [
+          { label: "Indiana DNR - Reptiles", url: "https://www.in.gov/dnr/kids/learn-about-nature/animals/reptiles/" },
+          { label: "Indiana DNR - Endangered Species", url: "https://www.in.gov/dnr/nature-preserves/endangered-plants-and-animals/" }
+        ],
+        notes: "Eastern Massasauga and Copperbelly Water Snake are federally protected."
+      },
 
       "IA": {
-  title: "Iowa",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Iowa Department of Natural Resources (DNR).",
-    "It is illegal to kill, collect, or possess threatened or endangered snakes without authorization.",
-    "Most nongame snakes are protected from commercial collection and sale."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without DNR authorization is considered unlawful take.",
-    "Venomous snakes: Iowa has four — timber rattlesnake, prairie rattlesnake, massasauga, and copperhead. These species are regulated; killing or relocating them without authorization is illegal except in immediate defense of life.",
-    "For removals, the Iowa DNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state threatened; protected.",
-    "Eastern Massasauga (Sistrurus catenatus) — state endangered; federally threatened.",
-    "Prairie Rattlesnake (Crotalus viridis) — state endangered (rare in Iowa).",
-    "Smooth Greensnake (Opheodrys vernalis) — state species of concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "Iowa DNR – Reptiles & Amphibians", url: "https://www.iowadnr.gov/Conservation/Iowas-Wildlife/Amphibians-Reptiles" },
-    { label: "Iowa DNR – Threatened & Endangered Species", url: "https://www.iowadnr.gov/Conservation/Iowas-Wildlife/Threatened-Endangered" }
-  ],
-  notes: "The massasauga is federally threatened and fully protected. Timber and prairie rattlesnakes are state protected. Unauthorized killing or relocation is illegal."
-},
+        title: "Iowa",
+        summary: [
+          "Native reptiles and amphibians are regulated by Iowa DNR.",
+          "Protected species cannot be killed, collected, possessed, or transported without authorization.",
+          "Commercial collection and sale of native snakes may be restricted."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully moved if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Iowa has venomous species including timber rattlesnake, prairie rattlesnake, massasauga, and copperhead.",
+          "Contact Iowa DNR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state threatened.",
+          "Eastern Massasauga - federally threatened and state endangered.",
+          "Prairie Rattlesnake - state endangered.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "Iowa DNR - Amphibians and Reptiles", url: "https://www.iowadnr.gov/Conservation/Iowas-Wildlife/Amphibians-Reptiles" },
+          { label: "Iowa DNR - Threatened and Endangered", url: "https://www.iowadnr.gov/Conservation/Iowas-Wildlife/Threatened-Endangered" }
+        ],
+        notes: "Eastern Massasauga is federally protected."
+      },
 
       "KS": {
-  title: "Kansas",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Kansas Department of Wildlife & Parks (KDWP).",
-    "Collection, possession, or sale of native snakes requires a hunting license, and some species are fully protected.",
-    "Threatened and endangered species are strictly protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without KDWP authorization may be unlawful.",
-    "Venomous snakes: Kansas has several species including copperhead, cottonmouth, timber rattlesnake, prairie rattlesnake, massasauga, and western diamondback rattlesnake. These species are regulated; killing or relocating them without authorization is illegal except in immediate defense of human life.",
-    "For removals, KDWP recommends licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Massasauga (Sistrurus catenatus) — state threatened; federally threatened.",
-    "Timber Rattlesnake (Crotalus horridus) — state species in need of conservation; regulated.",
-    "Western Rattlesnake (Crotalus viridis) — regulated.",
-    "Smooth Greensnake (Opheodrys vernalis) — state species in need of conservation.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "KDWP – Reptiles & Amphibians", url: "https://ksoutdoors.com/Services/Reptiles-and-Amphibians" },
-    { label: "Kansas Threatened & Endangered Species", url: "https://ksoutdoors.com/Services/Threatened-and-Endangered-Wildlife" }
-  ],
-  notes: "The massasauga is federally protected. Timber rattlesnake and smooth greensnake are state conservation priority species. Relocation or killing without authorization is unlawful."
-},
+        title: "Kansas",
+        summary: [
+          "Native reptiles and amphibians are regulated by Kansas Department of Wildlife and Parks.",
+          "Collection, possession, or sale of native snakes may require a license or permit.",
+          "Threatened and endangered species are fully protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Kansas has several venomous snake species. Handling should be left to qualified individuals.",
+          "Contact KDWP or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Massasauga - federally threatened and state protected.",
+          "Timber Rattlesnake - species in need of conservation.",
+          "Smooth Greensnake - species in need of conservation.",
+          "Other native snakes are regulated."
+        ],
+        links: [
+          { label: "KDWP - Reptiles and Amphibians", url: "https://ksoutdoors.com/Services/Reptiles-and-Amphibians" },
+          { label: "Kansas Threatened and Endangered Wildlife", url: "https://ksoutdoors.com/Services/Threatened-and-Endangered-Wildlife" }
+        ],
+        notes: "Eastern Massasauga is federally protected."
+      },
 
       "KY": {
-  title: "Kentucky",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Kentucky Department of Fish & Wildlife Resources (KDFWR).",
-    "It is unlawful to kill, collect, or possess state-listed endangered or threatened snakes without authorization.",
-    "Some nongame snakes may be taken with limits, but commercial collection and sale are prohibited."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocation or transport of native snakes without KDFWR authorization is unlawful.",
-    "Venomous snakes: Kentucky has four — copperhead, cottonmouth, timber rattlesnake, and pygmy rattlesnake. These species are regulated, and killing or relocating them without authorization is illegal except in immediate defense of life.",
-    "For safe removal, KDFWR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Copperbelly Water Snake (Nerodia erythrogaster neglecta) — federally threatened; state endangered.",
-    "Timber Rattlesnake (Crotalus horridus) — state species of concern; regulated.",
-    "Eastern Massasauga (Sistrurus catenatus) — state endangered; federally threatened (historically in KY, now very rare).",
-    "Northern Pine Snake (Pituophis melanoleucus melanoleucus) — state threatened.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "KDFWR – Snakes of Kentucky", url: "https://fw.ky.gov/Wildlife/Pages/Reptiles.aspx" },
-    { label: "KDFWR – Threatened & Endangered Species", url: "https://fw.ky.gov/Wildlife/Pages/Endangered.aspx" }
-  ],
-  notes: "Copperbelly water snake and massasauga are federally protected. Timber rattlesnake and northern pine snake are state protected. Unauthorized killing or relocation of snakes is illegal."
-},
+        title: "Kentucky",
+        summary: [
+          "Native reptiles and amphibians are regulated by Kentucky Department of Fish and Wildlife Resources.",
+          "Protected species cannot be killed, collected, possessed, or relocated without authorization.",
+          "Commercial collection and sale of native snakes may be restricted."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Kentucky has four venomous species. Handling should be left to qualified individuals.",
+          "Contact KDFWR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Copperbelly Water Snake - federally threatened and state endangered.",
+          "Eastern Massasauga - federally threatened and state endangered or rare.",
+          "Northern Pine Snake - state threatened.",
+          "Timber Rattlesnake - species of concern."
+        ],
+        links: [
+          { label: "KDFWR - Reptiles", url: "https://fw.ky.gov/Wildlife/Pages/Reptiles.aspx" },
+          { label: "KDFWR - Endangered Species", url: "https://fw.ky.gov/Wildlife/Pages/Endangered.aspx" }
+        ],
+        notes: "Copperbelly Water Snake is federally protected."
+      },
 
       "LA": {
-  title: "Louisiana",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Louisiana Department of Wildlife & Fisheries (LDWF).",
-    "It is illegal to kill, collect, or possess state-listed threatened or endangered snakes without authorization.",
-    "Most native snakes are considered nongame wildlife and are protected from commercial collection or sale."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without LDWF authorization is unlawful.",
-    "Venomous snakes: Louisiana has multiple venomous species including copperhead, cottonmouth, timber rattlesnake, canebrake rattlesnake (timber subspecies), eastern diamondback rattlesnake, pygmy rattlesnake, and coral snake. All are regulated and may not be killed or relocated without authorization except in immediate defense of life.",
-    "For safe removal, LDWF recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Louisiana Pinesnake (Pituophis ruthveni) — federally threatened; state protected.",
-    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — rare; state species of concern.",
-    "Timber/Canebrake Rattlesnake (Crotalus horridus) — regulated; species of concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "LDWF – Reptiles & Amphibians", url: "https://www.wlf.louisiana.gov/page/reptiles-and-amphibians" },
-    { label: "LDWF – Threatened & Endangered Species", url: "https://www.wlf.louisiana.gov/page/endangered-species" }
-  ],
-  notes: "The Louisiana Pinesnake is federally threatened and fully protected. Several venomous species occur in the state and are regulated. Unauthorized relocation or killing of native snakes is illegal."
-},
+        title: "Louisiana",
+        summary: [
+          "Native reptiles and amphibians are regulated by Louisiana Department of Wildlife and Fisheries.",
+          "Protected species cannot be killed, collected, possessed, or transported without authorization.",
+          "Most native snakes are regulated as nongame wildlife."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Louisiana has multiple venomous species. Handling should be left to qualified individuals.",
+          "Contact LDWF or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Louisiana Pinesnake - federally threatened and state protected.",
+          "Eastern Diamondback Rattlesnake - rare and species of concern.",
+          "Timber or Canebrake Rattlesnake - regulated."
+        ],
+        links: [
+          { label: "LDWF - Reptiles and Amphibians", url: "https://www.wlf.louisiana.gov/page/reptiles-and-amphibians" },
+          { label: "LDWF - Endangered Species", url: "https://www.wlf.louisiana.gov/page/endangered-species" }
+        ],
+        notes: "Louisiana Pinesnake is federally threatened."
+      },
 
       "ME": {
-  title: "Maine",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Maine Department of Inland Fisheries & Wildlife (MDIFW).",
-    "It is illegal to kill, collect, or possess native snakes without a permit.",
-    "Endangered and threatened species receive full protection under Maine law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without MDIFW authorization is unlawful.",
-    "Venomous snakes: Maine has no native venomous snake species.",
-    "For removal concerns, MDIFW recommends contacting licensed wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Northern Black Racer (Coluber constrictor constrictor) — state endangered.",
-    "Ribbon Snake (Thamnophis sauritus) — state species of special concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "Maine IFW – Reptiles & Amphibians", url: "https://www.maine.gov/ifw/fish-wildlife/wildlife/species-information/reptiles-amphibians/index.html" },
-    { label: "Maine Endangered Species Program", url: "https://www.maine.gov/ifw/fish-wildlife/wildlife/endangered-threatened/index.html" }
-  ],
-  notes: "Maine has no venomous snakes. The northern black racer is state endangered, and all native snakes are protected under MDIFW regulations."
-},
+        title: "Maine",
+        summary: [
+          "Native reptiles and amphibians are regulated by Maine Department of Inland Fisheries and Wildlife.",
+          "Protected species cannot be killed, collected, possessed, or transported without authorization.",
+          "Maine has no native venomous snakes."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Contact MDIFW or a licensed wildlife control operator for removal concerns."
+        ],
+        protectedSnakes: [
+          "Northern Black Racer - state endangered.",
+          "Ribbon Snake - species of special concern.",
+          "Other native snakes are regulated."
+        ],
+        links: [
+          { label: "Maine IFW - Reptiles and Amphibians", url: "https://www.maine.gov/ifw/fish-wildlife/wildlife/species-information/reptiles-amphibians/index.html" },
+          { label: "Maine Endangered Species Program", url: "https://www.maine.gov/ifw/fish-wildlife/wildlife/endangered-threatened/index.html" }
+        ],
+        notes: "Maine has no native venomous snakes."
+      },
 
       "MD": {
-  title: "Maryland",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Maryland Department of Natural Resources (DNR).",
-    "It is illegal to kill, collect, or possess state-listed threatened or endangered snakes without a permit.",
-    "All native snakes are protected from commercial collection or sale."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully guided away.",
-    "Across properties/public land: relocating or transporting native snakes without DNR authorization is unlawful.",
-    "Venomous snakes: Maryland has two — the Timber Rattlesnake and Eastern Copperhead. Both are regulated; the Timber Rattlesnake is state endangered in parts of Maryland and fully protected.",
-    "For removal, DNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered in parts of Maryland.",
-    "Eastern Copperhead (Agkistrodon contortrix) — venomous; regulated.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "Common Kingsnake (Lampropeltis getula) — species of concern.",
-    "Queen Snake (Regina septemvittata) — species of concern."
-  ],
-  links: [
-    { label: "Maryland DNR – Reptiles & Amphibians", url: "https://dnr.maryland.gov/wildlife/Pages/plants_wildlife/herps.aspx" },
-    { label: "Maryland Endangered Species List", url: "https://dnr.maryland.gov/wildlife/Pages/plants_wildlife/espaa.aspx" }
-  ],
-  notes: "The Timber Rattlesnake is state endangered in Maryland and fully protected. All native snakes are regulated; relocation or killing without authorization is unlawful."
-},
+        title: "Maryland",
+        summary: [
+          "Native reptiles and amphibians are regulated by Maryland DNR.",
+          "State-listed threatened and endangered snakes cannot be killed, collected, possessed, or relocated without authorization.",
+          "Native snakes are protected from unauthorized commercial collection and sale."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully guided away.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Maryland has two venomous species: Timber Rattlesnake and Eastern Copperhead.",
+          "Contact Maryland DNR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered in parts of Maryland.",
+          "Eastern Copperhead - regulated.",
+          "Smooth Greensnake - species of concern.",
+          "Common Kingsnake - species of concern.",
+          "Queen Snake - species of concern."
+        ],
+        links: [
+          { label: "Maryland DNR - Reptiles and Amphibians", url: "https://dnr.maryland.gov/wildlife/Pages/plants_wildlife/herps.aspx" },
+          { label: "Maryland Endangered Species List", url: "https://dnr.maryland.gov/wildlife/Pages/plants_wildlife/espaa.aspx" }
+        ],
+        notes: "Timber Rattlesnake is protected in Maryland."
+      },
 
       "MA": {
-  title: "Massachusetts",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Massachusetts Division of Fisheries & Wildlife (MassWildlife).",
-    "It is illegal to kill, collect, possess, or sell native snakes without a permit.",
-    "Endangered, threatened, and special concern species are fully protected under the Massachusetts Endangered Species Act (MESA)."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without MassWildlife authorization is unlawful.",
-    "Venomous snakes: Massachusetts has two — the Timber Rattlesnake and Northern Copperhead. Both are state endangered and fully protected; killing or relocating them is illegal.",
-    "For safe removals, residents should contact licensed wildlife control operators or MassWildlife for guidance."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered; venomous.",
-    "Northern Copperhead (Agkistrodon contortrix) — state endangered; venomous.",
-    "Eastern Ribbonsnake (Thamnophis sauritus) — species of special concern.",
-    "Black Ratsnake (Pantherophis alleghaniensis) — species of special concern.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of special concern."
-  ],
-  links: [
-    { label: "MassWildlife – Snakes of Massachusetts", url: "https://www.mass.gov/info-details/snakes-of-massachusetts" },
-    { label: "Massachusetts Endangered Species Act (MESA)", url: "https://www.mass.gov/service-details/massachusetts-endangered-species-act-mesa" }
-  ],
-  notes: "Timber rattlesnake and northern copperhead are state endangered and fully protected. Relocating or killing native snakes without permits is illegal under MESA."
-},
+        title: "Massachusetts",
+        summary: [
+          "Native reptiles and amphibians are regulated by MassWildlife.",
+          "It is illegal to kill, collect, possess, or sell native snakes without authorization.",
+          "Endangered, threatened, and special concern species are protected under state law."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Timber Rattlesnake and Northern Copperhead are state endangered and fully protected.",
+          "Contact MassWildlife or a licensed wildlife control operator for guidance."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered.",
+          "Northern Copperhead - state endangered.",
+          "Eastern Ribbonsnake - special concern.",
+          "Black Ratsnake - special concern.",
+          "Smooth Greensnake - special concern."
+        ],
+        links: [
+          { label: "MassWildlife - Snakes of Massachusetts", url: "https://www.mass.gov/info-details/snakes-of-massachusetts" },
+          { label: "Massachusetts Endangered Species Act", url: "https://www.mass.gov/service-details/massachusetts-endangered-species-act-mesa" }
+        ],
+        notes: "Massachusetts venomous snakes are fully protected."
+      },
 
       "MI": {
-  title: "Michigan",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Michigan Department of Natural Resources (DNR).",
-    "It is illegal to kill, collect, or possess state-listed threatened or endangered snakes without a permit.",
-    "Non-listed nongame species are still regulated wildlife and subject to state rules."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without DNR authorization may be unlawful.",
-    "Venomous snakes: the Eastern Massasauga Rattlesnake is Michigan’s only venomous species. It is federally threatened and state-listed as threatened — killing, capturing, or relocating it without permits is illegal.",
-    "For safe removal, Michigan DNR recommends contacting licensed wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Massasauga Rattlesnake (Sistrurus catenatus) — federally threatened; state threatened; Michigan’s only venomous species.",
-    "Copper-bellied Watersnake (Nerodia erythrogaster neglecta) — federally threatened; state endangered.",
-    "Queen Snake (Regina septemvittata) — state threatened.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of special concern.",
-    "Butler’s Garter Snake (Thamnophis butleri) — species of special concern."
-  ],
-  links: [
-    { label: "Michigan DNR – Reptiles & Amphibians", url: "https://www.michigan.gov/dnr/education/michigan-species/reptiles" },
-    { label: "USFWS – Eastern Massasauga", url: "https://www.fws.gov/species/eastern-massasauga-rattlesnake-sistrurus-catenatus" },
-    { label: "Michigan DNR – Threatened & Endangered Species", url: "https://www.michigan.gov/dnr/education/michigan-species/threatened-and-endangered" }
-  ],
-  notes: "The Eastern Massasauga is Michigan’s only venomous snake and is federally protected. Relocating or killing protected snakes without authorization is illegal."
-},
+        title: "Michigan",
+        summary: [
+          "Native reptiles and amphibians are regulated by Michigan DNR.",
+          "Protected species cannot be killed, collected, possessed, or transported without authorization.",
+          "Non-listed nongame species are still regulated wildlife."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Eastern Massasauga is Michigan's only venomous species and is federally threatened.",
+          "Contact Michigan DNR or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Massasauga - federally threatened and state threatened.",
+          "Copper-bellied Watersnake - federally threatened and state endangered.",
+          "Queen Snake - state threatened.",
+          "Smooth Greensnake - species of special concern.",
+          "Butler's Garter Snake - species of special concern."
+        ],
+        links: [
+          { label: "Michigan DNR - Reptiles", url: "https://www.michigan.gov/dnr/education/michigan-species/reptiles" },
+          { label: "USFWS - Eastern Massasauga", url: "https://www.fws.gov/species/eastern-massasauga-rattlesnake-sistrurus-catenatus" },
+          { label: "Michigan DNR - Threatened and Endangered", url: "https://www.michigan.gov/dnr/education/michigan-species/threatened-and-endangered" }
+        ],
+        notes: "Eastern Massasauga is federally protected."
+      },
 
       "MN": {
-  title: "Minnesota",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Minnesota Department of Natural Resources (DNR).",
-    "It is illegal to kill, collect, or possess most native snakes without a permit.",
-    "Endangered and threatened species receive full legal protection under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting snakes without DNR authorization is considered unlawful.",
-    "Venomous snakes: the Timber Rattlesnake is Minnesota’s only venomous species. It is state threatened and fully protected; killing or relocating it without a permit is illegal.",
-    "For safe removals, DNR recommends contacting a licensed nuisance wildlife control operator."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state threatened; only venomous snake in Minnesota.",
-    "Eastern Hognose Snake (Heterodon platirhinos) — species of concern.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "Plains Hog-nosed Snake (Heterodon nasicus) — species of concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "Minnesota DNR – Snakes", url: "https://www.dnr.state.mn.us/reptiles_amphibians/snakes/index.html" },
-    { label: "Minnesota DNR – Endangered, Threatened, and Special Concern Species", url: "https://www.dnr.state.mn.us/ets/index.html" }
-  ],
-  notes: "The Timber Rattlesnake is Minnesota’s only venomous snake and is fully protected. All snakes are regulated as nongame wildlife; relocation or killing without authorization is illegal."
-},
+        title: "Minnesota",
+        summary: [
+          "Native reptiles and amphibians are regulated by Minnesota DNR.",
+          "Protected species cannot be killed, collected, possessed, or transported without authorization.",
+          "Minnesota's only native venomous snake is the Timber Rattlesnake."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Timber Rattlesnake is state threatened and protected.",
+          "Contact Minnesota DNR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state threatened.",
+          "Eastern Hognose Snake - species of concern.",
+          "Smooth Greensnake - species of concern.",
+          "Plains Hog-nosed Snake - species of concern."
+        ],
+        links: [
+          { label: "Minnesota DNR - Snakes", url: "https://www.dnr.state.mn.us/reptiles_amphibians/snakes/index.html" },
+          { label: "Minnesota DNR - Endangered, Threatened, and Special Concern Species", url: "https://www.dnr.state.mn.us/ets/index.html" }
+        ],
+        notes: "Timber Rattlesnake is Minnesota's only venomous snake."
+      },
 
       "MS": {
-  title: "Mississippi",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Mississippi Department of Wildlife, Fisheries & Parks (MDWFP).",
-    "It is illegal to collect, possess, or sell native snakes without proper authorization.",
-    "Endangered and threatened species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully guided away.",
-    "Across properties/public land: relocation or transport of native snakes without MDWFP authorization is considered unlawful.",
-    "Venomous snakes: Mississippi has several venomous species — copperhead, cottonmouth, timber rattlesnake, pygmy rattlesnake, eastern diamondback rattlesnake, and coral snake. These species are regulated and may not be killed, captured, or relocated except under very limited circumstances (e.g., direct threat to human life).",
-    "For safe removal, MDWFP recommends licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — state species of concern.",
-    "Southern Hognose Snake (Heterodon simus) — state species of concern.",
-    "Timber Rattlesnake (Crotalus horridus) — regulated.",
-    "Eastern Coral Snake (Micrurus fulvius) — rare in Mississippi; protected.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "MDWFP – Wildlife Regulations", url: "https://www.mdwfp.com/wildlife-hunting/" },
-    { label: "MDWFP – Reptiles & Amphibians", url: "https://www.mdwfp.com/wildlife-hunting/reptiles-amphibians/" }
-  ],
-  notes: "Multiple venomous snake species occur in Mississippi. Eastern diamondback and southern hognose are species of concern. Unauthorized relocation or killing is illegal."
-},
+        title: "Mississippi",
+        summary: [
+          "Native reptiles and amphibians are regulated by Mississippi Department of Wildlife, Fisheries and Parks.",
+          "Protected species cannot be collected, possessed, transported, or sold without authorization.",
+          "Native snakes are regulated wildlife."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully guided away.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Mississippi has several venomous snake species. Handling should be left to qualified individuals.",
+          "Contact MDWFP or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Diamondback Rattlesnake - species of concern.",
+          "Southern Hognose Snake - species of concern.",
+          "Timber Rattlesnake - regulated.",
+          "Eastern Coral Snake - rare and protected."
+        ],
+        links: [
+          { label: "MDWFP - Wildlife and Hunting", url: "https://www.mdwfp.com/wildlife-hunting/" },
+          { label: "MDWFP - Reptiles and Amphibians", url: "https://www.mdwfp.com/wildlife-hunting/reptiles-amphibians/" }
+        ],
+        notes: "Do not handle venomous snakes without proper training and authorization."
+      },
 
       "MO": {
-  title: "Missouri",
-  summary: [
-    "All native snakes are regulated by the Missouri Department of Conservation (MDC).",
-    "It is unlawful to kill, collect, or possess most native snakes without a permit or hunting license.",
-    "Endangered and threatened species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently guided away without harm.",
-    "Across properties/public land: relocation or transport of snakes without MDC authorization is considered unlawful take.",
-    "Venomous snakes: Missouri has five venomous species — copperhead, cottonmouth, timber rattlesnake, eastern massasauga, and western pygmy rattlesnake. They are regulated and may not be killed or relocated except under very limited circumstances (e.g., direct threat to human life).",
-    "For safe removals, MDC recommends licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Massasauga Rattlesnake (Sistrurus catenatus) — state endangered; federally threatened.",
-    "Western Pygmy Rattlesnake (Sistrurus miliarius streckeri) — state species of conservation concern.",
-    "Timber Rattlesnake (Crotalus horridus) — state species of conservation concern; regulated.",
-    "All other native snakes are regulated as nongame wildlife and protected from unauthorized take."
-  ],
-  links: [
-    { label: "MDC – Snakes of Missouri", url: "https://mdc.mo.gov/wildlife/wildlife-facts/snakes" },
-    { label: "MDC – Wildlife Code of Missouri", url: "https://mdc.mo.gov/regulations/wildlife-code-missouri" }
-  ],
-  notes: "Missouri law prohibits killing or relocating most snakes. Eastern Massasauga is federally protected. MDC emphasizes coexistence and rodent control benefits."
-},
+        title: "Missouri",
+        summary: [
+          "Native snakes are regulated by the Missouri Department of Conservation.",
+          "Many native snakes cannot be killed, collected, possessed, or transported without authorization.",
+          "Endangered species are fully protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently guided away.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Missouri has five venomous snake species. Handling should be left to qualified individuals.",
+          "Contact MDC or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Massasauga - federally threatened and state endangered.",
+          "Western Pygmy Rattlesnake - species of conservation concern.",
+          "Timber Rattlesnake - species of conservation concern.",
+          "Other native snakes are regulated."
+        ],
+        links: [
+          { label: "MDC - Snakes", url: "https://mdc.mo.gov/wildlife/wildlife-facts/snakes" },
+          { label: "MDC - Wildlife Code", url: "https://mdc.mo.gov/regulations/wildlife-code-missouri" }
+        ],
+        notes: "Eastern Massasauga is federally protected."
+      },
 
       "MT": {
-  title: "Montana",
-  summary: [
-    "All native reptiles and amphibians are regulated by Montana Fish, Wildlife & Parks (FWP).",
-    "Collection, possession, or sale of native snakes is unlawful without proper authorization.",
-    "Endangered or species of concern are fully protected."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without FWP authorization is unlawful.",
-    "Venomous snakes: Montana’s only venomous snake is the Prairie Rattlesnake (Crotalus viridis). It is regulated and may not be killed, captured, or relocated except in immediate defense of human life.",
-    "For removal, FWP recommends contacting a licensed wildlife control professional."
-  ],
-  protectedSnakes: [
-    "Prairie Rattlesnake (Crotalus viridis) — only venomous species in Montana; regulated.",
-    "Western Hog-nosed Snake (Heterodon nasicus) — species of concern.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "Montana FWP – Reptiles & Amphibians", url: "https://fwp.mt.gov/conservation/species/amphibians-reptiles" },
-    { label: "Montana Code Annotated – Wildlife Regulations", url: "https://leg.mt.gov/bills/mca/title_0870/chapter_0050/parts_index.html" }
-  ],
-  notes: "The Prairie Rattlesnake is Montana’s only venomous species. Most other native snakes are considered beneficial and protected as nongame wildlife."
-},
+        title: "Montana",
+        summary: [
+          "Native reptiles and amphibians are regulated by Montana Fish, Wildlife and Parks.",
+          "Collection, possession, or sale of native snakes may require authorization.",
+          "Species of concern and listed species receive additional protection."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Prairie Rattlesnake is Montana's only venomous snake.",
+          "Contact FWP or a licensed wildlife control professional for removal."
+        ],
+        protectedSnakes: [
+          "Prairie Rattlesnake - regulated.",
+          "Western Hog-nosed Snake - species of concern.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "Montana FWP - Amphibians and Reptiles", url: "https://fwp.mt.gov/conservation/species/amphibians-reptiles" },
+          { label: "Montana Code Annotated - Wildlife", url: "https://leg.mt.gov/bills/mca/title_0870/chapter_0050/parts_index.html" }
+        ],
+        notes: "Prairie Rattlesnake is Montana's only venomous snake."
+      },
 
       "NE": {
-  title: "Nebraska",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Nebraska Game & Parks Commission (NGPC).",
-    "It is illegal to collect, possess, or sell native snakes without a proper permit or license.",
-    "Endangered and threatened species are fully protected under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocating or transporting native snakes without NGPC authorization is unlawful.",
-    "Venomous snakes: Nebraska is home to species such as the Timber Rattlesnake, Prairie Rattlesnake, and Copperhead. These are regulated wildlife and may not be killed or relocated except under narrow exceptions (e.g., defense of human life).",
-    "For removals, NGPC recommends contacting a licensed nuisance wildlife control operator."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered.",
-    "Copperhead (Agkistrodon contortrix) — state endangered (rare in Nebraska).",
-    "Prairie Kingsnake (Lampropeltis calligaster) — state threatened.",
-    "Smooth Greensnake (Opheodrys vernalis) — state species of concern.",
-    "All other native snakes are regulated as nongame wildlife."
-  ],
-  links: [
-    { label: "Nebraska Game & Parks – Reptiles & Amphibians", url: "https://outdoornebraska.gov/wildlife/amphibians-reptiles/" },
-    { label: "Nebraska Game & Parks – Threatened & Endangered Species", url: "https://outdoornebraska.gov/conservation/threatened-endangered-species/" }
-  ],
-  notes: "Nebraska protects multiple snake species, including the timber rattlesnake and copperhead. Relocation across properties without NGPC authorization is illegal."
-},
+        title: "Nebraska",
+        summary: [
+          "Native reptiles and amphibians are regulated by Nebraska Game and Parks Commission.",
+          "Protected species cannot be killed, collected, possessed, or transported without authorization.",
+          "Native snakes are regulated wildlife."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully moved if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Nebraska has venomous species including prairie rattlesnake, timber rattlesnake, and copperhead.",
+          "Contact NGPC or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered.",
+          "Copperhead - state endangered in Nebraska.",
+          "Prairie Kingsnake - state threatened.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "Nebraska Game and Parks - Amphibians and Reptiles", url: "https://outdoornebraska.gov/wildlife/amphibians-reptiles/" },
+          { label: "Nebraska Threatened and Endangered Species", url: "https://outdoornebraska.gov/conservation/threatened-endangered-species/" }
+        ],
+        notes: "Several Nebraska snakes are state protected."
+      },
 
       "NV": {
-  title: "Nevada",
-  summary: [
-    "All native reptiles and amphibians are regulated by the Nevada Department of Wildlife (NDOW).",
-    "It is unlawful to collect, possess, or sell native snakes without a license or permit.",
-    "Commercial collection is prohibited, and some species are fully protected."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully guided away.",
-    "Across properties/public land: relocating or transporting snakes without NDOW authorization is considered unlawful take.",
-    "Venomous snakes: Nevada has multiple rattlesnake species. They are regulated wildlife and may not be killed, captured, or relocated without proper licensing, except in immediate defense of human life.",
-    "NDOW advises contacting licensed nuisance wildlife control operators for safe removals."
-  ],
-  protectedSnakes: [
-    "Desert Striped Whipsnake (Masticophis taeniatus ssp.) — species of conservation concern.",
-    "Groundsnake (Sonora semiannulata) — protected nongame species.",
-    "Long-nosed Snake (Rhinocheilus lecontei) — species of concern.",
-    "Several rattlesnake species (Crotalus spp.) — regulated; may not be taken without license."
-  ],
-  links: [
-    { label: "NDOW – Reptiles & Amphibians", url: "https://www.ndow.org/species/reptiles-amphibians/" },
-    { label: "Nevada Administrative Code – Wildlife", url: "https://www.leg.state.nv.us/nac/NAC-503.html" }
-  ],
-  notes: "Multiple rattlesnake species occur in Nevada. All are regulated wildlife. Collection, relocation, or killing without authorization is unlawful except for immediate defense."
-},
+        title: "Nevada",
+        summary: [
+          "Native reptiles and amphibians are regulated by Nevada Department of Wildlife.",
+          "Collection, possession, or sale of native snakes may require a license or permit.",
+          "Commercial collection is restricted or prohibited for many species."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or carefully guided away.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Nevada has multiple rattlesnake species. Handling should be left to qualified individuals.",
+          "Contact NDOW or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Groundsnake - protected nongame species.",
+          "Long-nosed Snake - species of concern.",
+          "Desert Striped Whipsnake - species of conservation concern.",
+          "Rattlesnake species - regulated."
+        ],
+        links: [
+          { label: "NDOW - Reptiles and Amphibians", url: "https://www.ndow.org/species/reptiles-amphibians/" },
+          { label: "Nevada Administrative Code - Wildlife", url: "https://www.leg.state.nv.us/nac/NAC-503.html" }
+        ],
+        notes: "Native snakes are regulated wildlife."
+      },
 
       "NH": {
-  title: "New Hampshire",
-  summary: [
-    "All native reptiles and amphibians are protected under New Hampshire Fish & Game regulations.",
-    "It is illegal to kill, collect, possess, or sell native snakes without a permit.",
-    "Endangered and threatened species receive full protection under state law."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocating snakes without NH Fish & Game authorization is unlawful.",
-    "Venomous snakes: the Timber Rattlesnake is New Hampshire’s only venomous species and is state endangered; it is fully protected and may not be killed, captured, or relocated.",
-    "For removal concerns, NH Fish & Game recommends contacting a licensed wildlife control operator."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered; only venomous snake in NH.",
-    "Northern Black Racer (Coluber constrictor constrictor) — state threatened.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "All other native snakes are protected under state law."
-  ],
-  links: [
-    { label: "NH Fish & Game – Reptiles & Amphibians", url: "https://www.wildlife.state.nh.us/nongame/reptiles.html" },
-    { label: "NH Fish & Game – Endangered & Threatened Species", url: "https://www.wildlife.state.nh.us/nongame/endangered-species.html" }
-  ],
-  notes: "The Timber Rattlesnake is critically endangered in NH and fully protected. All snakes are covered under wildlife laws; relocation without authorization is illegal."
-},
+        title: "New Hampshire",
+        summary: [
+          "Native reptiles and amphibians are protected under New Hampshire Fish and Game regulations.",
+          "It is illegal to kill, collect, possess, or sell native snakes without authorization.",
+          "Threatened and endangered species receive full protection."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Timber Rattlesnake is New Hampshire's only venomous snake and is state endangered.",
+          "Contact NH Fish and Game or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered.",
+          "Northern Black Racer - state threatened.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "NH Fish and Game - Reptiles", url: "https://www.wildlife.state.nh.us/nongame/reptiles.html" },
+          { label: "NH Fish and Game - Endangered Species", url: "https://www.wildlife.state.nh.us/nongame/endangered-species.html" }
+        ],
+        notes: "Timber Rattlesnake is fully protected in New Hampshire."
+      },
 
       "NJ": {
-  title: "New Jersey",
-  summary: [
-    "All native reptiles and amphibians are protected under New Jersey law (NJ Division of Fish & Wildlife).",
-    "It is illegal to kill, collect, harass, or possess native snakes without a scientific or educational permit.",
-    "Commercial collection and trade of native snakes are prohibited."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently guided away within your property.",
-    "Across properties/public land: relocating snakes is considered unlawful take/transport without authorization from NJ Fish & Wildlife.",
-    "Venomous snakes: New Jersey’s only venomous species is the Timber Rattlesnake, which is state endangered and fully protected.",
-    "For removal, residents should contact a licensed wildlife control operator or NJ Fish & Wildlife for guidance."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered; fully protected.",
-    "Northern Pinesnake (Pituophis melanoleucus melanoleucus) — state threatened.",
-    "Corn Snake (Pantherophis guttatus) — state endangered (rare in NJ).",
-    "Eastern Kingsnake (Lampropeltis getula) — species of special concern.",
-    "All native snakes are legally protected to some degree."
-  ],
-  links: [
-    { label: "NJ Fish & Wildlife – Endangered & Nongame Species Program", url: "https://dep.nj.gov/njfw/wildlife/endangered-and-nongame-species/" },
-    { label: "NJ Division of Fish & Wildlife – Reptiles", url: "https://dep.nj.gov/njfw/wildlife/reptiles/" }
-  ],
-  notes: "Timber rattlesnake is fully protected as state endangered. Northern pinesnake is state threatened. Relocating snakes without a permit is illegal."
-},
+        title: "New Jersey",
+        summary: [
+          "Native reptiles and amphibians are protected under New Jersey law.",
+          "It is illegal to kill, collect, harass, or possess native snakes without authorization.",
+          "Commercial collection and trade of native snakes are prohibited."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently guided away if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Timber Rattlesnake is New Jersey's only native venomous snake and is state endangered.",
+          "Contact NJ Fish and Wildlife or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered.",
+          "Northern Pinesnake - state threatened.",
+          "Corn Snake - state endangered.",
+          "Eastern Kingsnake - special concern."
+        ],
+        links: [
+          { label: "NJ Fish and Wildlife - Endangered and Nongame Species", url: "https://dep.nj.gov/njfw/wildlife/endangered-and-nongame-species/" },
+          { label: "NJ Fish and Wildlife - Reptiles", url: "https://dep.nj.gov/njfw/wildlife/reptiles/" }
+        ],
+        notes: "Native snakes are legally protected in New Jersey."
+      },
 
       "NM": {
-  title: "New Mexico",
-  summary: [
-    "All native reptiles and amphibians are regulated by the New Mexico Department of Game & Fish (NMDGF).",
-    "It is unlawful to collect, possess, or sell native snakes without a valid hunting license or scientific/educational permit.",
-    "Endangered, threatened, or species of greatest conservation need are strictly protected and may not be taken."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or guided away within your property.",
-    "Across properties/public land: relocation of snakes is considered transport/take and requires permission or permits.",
-    "Venomous snakes: several rattlesnake species are native to NM. They are regulated as wildlife; killing or collecting them without a license is prohibited except in immediate defense of human life.",
-    "For safe removal, NMDGF recommends licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "New Mexico Ridge-nosed Rattlesnake (Crotalus willardi obscurus) — federally and state endangered.",
-    "Mexican Gartersnake (Thamnophis eques) — federally threatened.",
-    "Narrow-headed Gartersnake (Thamnophis rufipunctatus) — federally threatened.",
-    "Other rattlesnake species are regulated as nongame wildlife but not listed as endangered."
-  ],
-  links: [
-    { label: "NMDGF – Reptiles & Amphibians", url: "https://www.wildlife.state.nm.us/conservation/reptiles-amphibians/" },
-    { label: "NMDGF – Endangered Species", url: "https://www.wildlife.state.nm.us/conservation/threatened-and-endangered-species/" }
-  ],
-  notes: "The New Mexico Ridge-nosed Rattlesnake is fully protected. Most other rattlesnakes are regulated but not listed as endangered. Relocation without a license or permit is generally prohibited."
-},
+        title: "New Mexico",
+        summary: [
+          "Native reptiles and amphibians are regulated by New Mexico Department of Game and Fish.",
+          "Collection, possession, or sale of native snakes may require a license or permit.",
+          "Threatened and endangered species are strictly protected."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or guided away if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "New Mexico has several rattlesnake species. Handling should be left to qualified individuals.",
+          "Contact NMDGF or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "New Mexico Ridge-nosed Rattlesnake - federally and state endangered.",
+          "Mexican Gartersnake - federally threatened.",
+          "Narrow-headed Gartersnake - federally threatened."
+        ],
+        links: [
+          { label: "NMDGF - Reptiles and Amphibians", url: "https://www.wildlife.state.nm.us/conservation/reptiles-amphibians/" },
+          { label: "NMDGF - Threatened and Endangered Species", url: "https://www.wildlife.state.nm.us/conservation/threatened-and-endangered-species/" }
+        ],
+        notes: "New Mexico Ridge-nosed Rattlesnake is fully protected."
+      },
 
       "NY": {
-  title: "New York",
-  summary: [
-    "All native reptiles and amphibians are regulated by the New York Department of Environmental Conservation (DEC).",
-    "It is illegal to kill, collect, or possess endangered, threatened, or species of special concern without a permit.",
-    "Commercial collection and sale of native snakes are prohibited."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or gently moved within your property.",
-    "Across properties/public land: relocation of native snakes is unlawful without DEC authorization.",
-    "Venomous snakes: Timber Rattlesnake and Eastern Massasauga Rattlesnake are protected species and cannot be killed, captured, or relocated without permits.",
-    "For removal, DEC recommends contacting a licensed wildlife rehabilitator or permitted nuisance wildlife control operator."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state threatened.",
-    "Eastern Massasauga Rattlesnake (Sistrurus catenatus) — state endangered; federally threatened.",
-    "Queen Snake (Regina septemvittata) — species of special concern.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of special concern.",
-    "Eastern Hognose Snake (Heterodon platirhinos) — species of special concern."
-  ],
-  links: [
-    { label: "NYS DEC – Reptiles & Amphibians", url: "https://www.dec.ny.gov/animals/277.html" },
-    { label: "NYS DEC – Endangered/Threatened Species", url: "https://www.dec.ny.gov/animals/7494.html" }
-  ],
-  notes: "Timber rattlesnake and massasauga are fully protected. Several non-venomous snakes are listed as species of special concern. Relocation without permits is illegal."
-},
+        title: "New York",
+        summary: [
+          "Native reptiles and amphibians are regulated by New York DEC.",
+          "It is illegal to kill, collect, possess, or transport protected species without authorization.",
+          "Commercial collection and sale of native snakes are restricted."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently moved if safe and lawful.",
+          "Across properties or public land: relocation without DEC authorization may be unlawful.",
+          "Timber Rattlesnake and Eastern Massasauga are protected.",
+          "Contact DEC or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state threatened.",
+          "Eastern Massasauga - federally threatened and state endangered.",
+          "Queen Snake - species of special concern.",
+          "Smooth Greensnake - species of special concern.",
+          "Eastern Hognose Snake - species of special concern."
+        ],
+        links: [
+          { label: "NYS DEC - Reptiles and Amphibians", url: "https://dec.ny.gov/nature/animals-fish-plants/reptiles-amphibians" },
+          { label: "NYS DEC - Endangered Species", url: "https://dec.ny.gov/nature/animals-fish-plants/biodiversity-species-conservation/endangered-species" }
+        ],
+        notes: "Timber Rattlesnake and Eastern Massasauga are protected."
+      },
 
       "NC": {
-  title: "North Carolina",
-  summary: [
-    "All native reptiles and amphibians are regulated by the NC Wildlife Resources Commission.",
-    "It is illegal to kill, collect, or possess state-listed threatened or endangered snakes.",
-    "Commercial collection and trade of native snakes is prohibited without authorization.",
-    "Exotic/venomous snakes in captivity are regulated under NC law and require registration with local authorities."
-  ],
-  relocation: [
-    "On your property: you may leave a snake alone or gently guide it away without harming it.",
-    "Across properties/public land: relocation is restricted and may violate take/transport laws.",
-    "Venomous snakes: copperhead, cottonmouth, timber rattlesnake, eastern diamondback rattlesnake, pigmy rattlesnake, and eastern coral snake are all protected and cannot be killed or relocated without authorization.",
-    "For safe removal, NCWRC recommends licensed wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — state endangered.",
-    "Pigmy Rattlesnake (Sistrurus miliarius) — species of concern.",
-    "Eastern Coral Snake (Micrurus fulvius) — federally endangered; extremely rare.",
-    "Timber Rattlesnake (Crotalus horridus) — protected species.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "Southern Hognose Snake (Heterodon simus) — state threatened."
-  ],
-  links: [
-    { label: "NCWRC – Snakes", url: "https://www.ncwildlife.org/Conserving/Profiles/Reptiles/Snakes" },
-    { label: "NCWRC – Venomous Snakes", url: "https://www.ncwildlife.org/Learning/Species/Reptiles/venomous-snakes" },
-    { label: "NC General Statutes", url: "https://www.ncleg.gov/Laws/GeneralStatutes" }
-  ],
-  notes: "North Carolina has six venomous species. Killing or relocating snakes without authorization is illegal."
-},
+        title: "North Carolina",
+        summary: [
+          "Native reptiles and amphibians are regulated by the North Carolina Wildlife Resources Commission.",
+          "State-listed snakes cannot be harmed, harassed, collected, possessed, transported, or relocated without authorization.",
+          "Commercial collection and trade of native snakes is prohibited without authorization.",
+          "Exotic or venomous snakes in captivity may also be regulated under state and local law."
+        ],
+        relocation: [
+          "On your property: you may leave a snake alone or gently guide it away if safe and lawful.",
+          "Across properties or public land: relocation is restricted and may violate take or transport laws.",
+          "Venomous snakes: North Carolina has six native venomous species. Protected or listed species cannot be killed, collected, or relocated without authorization.",
+          "For safe removal, contact NCWRC or a licensed wildlife control operator."
+        ],
+        protectedSnakes: [
+          "Eastern Diamondback Rattlesnake - state endangered.",
+          "Eastern Coral Snake - state endangered and extremely rare.",
+          "Southern Hognose Snake - state threatened.",
+          "Timber Rattlesnake - protected species.",
+          "Pigmy Rattlesnake - species of concern.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "NCWRC - Snakes", url: "https://www.ncwildlife.org/Conserving/Profiles/Reptiles/Snakes" },
+          { label: "NCWRC - Eastern Coral Snake", url: "https://www.ncwildlife.org/species/eastern-coral-snake" },
+          { label: "NCWRC - Protected Wildlife Species", url: "https://www.ncwildlife.org/Conserving/Species" }
+        ],
+        notes: "Correction made: Eastern Coral Snake is state endangered, not federally endangered."
+      },
 
       "ND": {
-  title: "North Dakota",
-  summary: [
-    "All native reptiles and amphibians are classified as nongame wildlife under NDGF regulations.",
-    "It is illegal to collect, possess, or sell native snakes without a NDGF permit.",
-    "Commercial collection and trade are prohibited."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or carefully moved within your property.",
-    "Across properties/public land: relocation or transport of native snakes requires a NDGF permit.",
-    "Venomous snakes: Prairie Rattlesnake is the only venomous species in the state and is regulated. It may only be killed if posing an immediate threat to human life. Permits are otherwise required for handling.",
-    "For removals, NDGF recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Prairie Rattlesnake (Crotalus viridis) — regulated; only venomous snake in ND.",
-    "Other native species include Plains Garter Snake, Common Garter Snake, Red-bellied Snake, Smooth Greensnake, Yellow-bellied Racer, and Bullsnake.",
-    "Several species are listed as Species of Conservation Priority (SCP) by NDGF."
-  ],
-  links: [
-    { label: "NDGF – Reptiles & Amphibians", url: "https://gf.nd.gov/wildlife/reptiles-amphibians" },
-    { label: "ND Century Code – Wildlife Laws", url: "https://ndlegis.gov/cencode/t20-1c02.pdf" },
-    { label: "NDGF – Species of Conservation Priority", url: "https://gf.nd.gov/conservation/swg" }
-  ],
-  notes: "Prairie Rattlesnake is the only venomous species in ND. All native reptiles/amphibians are protected as nongame wildlife."
-},
+        title: "North Dakota",
+        summary: [
+          "Native reptiles and amphibians are regulated by North Dakota Game and Fish Department.",
+          "Collection, possession, sale, or transport of native snakes may require authorization.",
+          "Native snakes are generally regulated as nongame wildlife."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only if safe and lawful.",
+          "Across properties or public land: relocation or transport may require authorization.",
+          "Prairie Rattlesnake is North Dakota's only venomous snake.",
+          "Contact NDGF or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Prairie Rattlesnake - regulated.",
+          "Other native snakes may be species of conservation priority."
+        ],
+        links: [
+          { label: "NDGF - Reptiles and Amphibians", url: "https://gf.nd.gov/wildlife/reptiles-amphibians" },
+          { label: "NDGF - State Wildlife Grant Program", url: "https://gf.nd.gov/conservation/swg" }
+        ],
+        notes: "Prairie Rattlesnake is the only venomous snake in North Dakota."
+      },
 
       "OH": {
-  title: "Ohio",
-  summary: [
-    "All native snakes are regulated by the Ohio Department of Natural Resources (ODNR).",
-    "It is illegal to collect, harm, or possess state or federally listed endangered or threatened species.",
-    "Some nongame snakes may be taken with a hunting license, but commercial collection and sale are prohibited.",
-    "Exotic snakes are regulated under the Ohio Dangerous Wild Animals Act."
-  ],
-  relocation: [
-    "On your property: you may allow non-venomous snakes to remain or carefully move them within your property.",
-    "Across properties/public land: relocating snakes requires permission and may violate transport laws.",
-    "Venomous snakes: Ohio’s copperhead, timber rattlesnake, and eastern massasauga are all regulated. Timber rattlesnake and massasauga are state endangered and may not be killed, collected, or relocated without permit.",
-    "For removals, ODNR recommends contacting licensed nuisance wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — state endangered.",
-    "Eastern Massasauga Rattlesnake (Sistrurus catenatus) — federally threatened; state endangered.",
-    "Copper-bellied Watersnake (Nerodia erythrogaster neglecta) — federally threatened; state endangered.",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern.",
-    "Plains Garter Snake (Thamnophis radix) — state endangered."
-  ],
-  links: [
-    { label: "ODNR – Reptiles & Amphibians", url: "https://ohiodnr.gov/discover-and-learn/animals/reptiles" },
-    { label: "ODNR – Endangered & Threatened Species", url: "https://ohiodnr.gov/discover-and-learn/animals/endangered-wildlife" },
-    { label: "Ohio Dangerous Wild Animals Act", url: "https://agri.ohio.gov/divisions/animal-health/dangerous-wild-animals" }
-  ],
-  notes: "Timber rattlesnake, eastern massasauga, and copper-bellied watersnake are fully protected. Relocating native snakes without authorization may violate ODNR laws."
-},
+        title: "Ohio",
+        summary: [
+          "Native snakes are regulated by Ohio DNR.",
+          "State or federally listed species cannot be harmed, collected, possessed, transported, or relocated without authorization.",
+          "Some nongame snakes may be regulated by license, rule, or permit."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Timber Rattlesnake and Eastern Massasauga are state endangered and protected.",
+          "Contact ODNR or a licensed nuisance wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state endangered.",
+          "Eastern Massasauga - federally threatened and state endangered.",
+          "Copper-bellied Watersnake - federally threatened and state endangered.",
+          "Smooth Greensnake - species of concern.",
+          "Plains Garter Snake - state endangered."
+        ],
+        links: [
+          { label: "ODNR - Reptiles", url: "https://ohiodnr.gov/discover-and-learn/animals/reptiles" },
+          { label: "ODNR - Endangered Wildlife", url: "https://ohiodnr.gov/discover-and-learn/animals/endangered-wildlife" },
+          { label: "Ohio Dangerous Wild Animals Act", url: "https://agri.ohio.gov/divisions/animal-health/dangerous-wild-animals" }
+        ],
+        notes: "Eastern Massasauga and Copper-bellied Watersnake are federally protected."
+      },
 
       "OK": {
-  title: "Oklahoma",
-  summary: [
-    "All native snakes are considered wildlife and are regulated by the Oklahoma Department of Wildlife Conservation (ODWC).",
-    "Some nongame species may be taken with a valid hunting/fishing license, but state-protected species may not be collected, possessed, or sold.",
-    "Commercial collection requires special licensing."
-  ],
-  relocation: [
-    "On your property: you may leave non-venomous snakes alone or move them within your property.",
-    "Across properties/public land: relocating snakes requires landowner permission and may require a hunting/fishing license.",
-    "Venomous snakes: copperhead, cottonmouth, timber rattlesnake, western diamondback rattlesnake, prairie rattlesnake, and pygmy rattlesnake are all regulated. They may not be killed, captured, or relocated except under ODWC hunting rules.",
-    "For removal, ODWC recommends licensed wildlife control operators."
-  ],
-  protectedSnakes: [
-    "Western Diamondback Rattlesnake (Crotalus atrox) — regulated.",
-    "Timber Rattlesnake (Crotalus horridus) — regulated, check seasonal rules.",
-    "Prairie Rattlesnake (Crotalus viridis) — regulated.",
-    "Massasauga (Sistrurus catenatus) — protected, no collection.",
-    "Smooth Greensnake (Opheodrys vernalis) — rare, protected."
-  ],
-  links: [
-    { label: "ODWC – Reptiles", url: "https://www.wildlifedepartment.com/wildlife/reptiles" },
-    { label: "ODWC – Regulations", url: "https://www.wildlifedepartment.com/law" },
-    { label: "ODWC – Nongame Wildlife", url: "https://www.wildlifedepartment.com/wildlife/nongame-wildlife" }
-  ],
-  notes: "Venomous snake harvest is tightly regulated. Massasauga and Smooth Greensnake are protected. Always check ODWC rules before handling snakes."
-},
+        title: "Oklahoma",
+        summary: [
+          "Native snakes are regulated by Oklahoma Department of Wildlife Conservation.",
+          "Some nongame species may be taken under license, but protected species cannot be taken without authorization.",
+          "Commercial collection may require special licensing."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved only if safe and lawful.",
+          "Across properties or public land: relocation may require landowner permission and proper licensing.",
+          "Oklahoma has multiple venomous snake species. Handling should be left to qualified individuals.",
+          "Contact ODWC or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Massasauga - protected or restricted.",
+          "Smooth Greensnake - rare and protected.",
+          "Timber Rattlesnake - regulated.",
+          "Western Diamondback Rattlesnake - regulated.",
+          "Prairie Rattlesnake - regulated."
+        ],
+        links: [
+          { label: "ODWC - Reptiles", url: "https://www.wildlifedepartment.com/wildlife/reptiles" },
+          { label: "ODWC - Law and Regulations", url: "https://www.wildlifedepartment.com/law" },
+          { label: "ODWC - Nongame Wildlife", url: "https://www.wildlifedepartment.com/wildlife/nongame-wildlife" }
+        ],
+        notes: "Check ODWC before handling or relocating snakes."
+      },
 
       "OR": {
-  title: "Oregon",
-  summary: [
-    "All native reptiles and amphibians are regulated as nongame wildlife under ODFW.",
-    "Collection, possession, or transport requires a valid license or specific authorization.",
-    "Commercial collection or trade in native snakes is prohibited."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or guided away without harm.",
-    "Across properties/public land: relocating wild snakes is unlawful without ODFW authorization.",
-    "Venomous snakes: Western Rattlesnake is the only native venomous species. It is regulated and may not be killed or captured without permit.",
-    "For removal, contact ODFW or a licensed wildlife control professional."
-  ],
-  protectedSnakes: [
-    "Western Rattlesnake (Crotalus oreganus) — venomous; regulated.",
-    "Common Garter Snake (Thamnophis sirtalis).",
-    "Northwestern Garter Snake (Thamnophis ordinoides).",
-    "Ring-necked Snake (Diadophis punctatus).",
-    "Rubber Boa (Charina bottae).",
-    "Western Groundsnake (Sonora semiannulata)."
-  ],
-  links: [
-    { label: "ODFW – Reptiles", url: "https://myodfw.com/wildlife-viewing/species/reptiles" },
-    { label: "Oregon Administrative Rules – Wildlife Regulations", url: "https://secure.sos.state.or.us/oard/displayDivisionRules.action?selectedDivision=2724" },
-    { label: "ODFW Nongame Wildlife Program", url: "https://myodfw.com/wildlife-viewing/species/nongame-wildlife" }
-  ],
-  notes: "Oregon prohibits killing or relocating native snakes without authorization. Western Rattlesnake is the only venomous species."
-},
+        title: "Oregon",
+        summary: [
+          "Native reptiles and amphibians are regulated as nongame wildlife by Oregon Department of Fish and Wildlife.",
+          "Collection, possession, or transport may require authorization.",
+          "Commercial collection or trade of native snakes is restricted."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or guided away if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Western Rattlesnake is Oregon's only native venomous snake.",
+          "Contact ODFW or a licensed wildlife control professional for removal."
+        ],
+        protectedSnakes: [
+          "Western Rattlesnake - regulated.",
+          "Rubber Boa - regulated.",
+          "Western Groundsnake - regulated.",
+          "Common Gartersnake - regulated.",
+          "Northwestern Gartersnake - regulated."
+        ],
+        links: [
+          { label: "ODFW - Reptiles", url: "https://myodfw.com/wildlife-viewing/species/reptiles" },
+          { label: "Oregon Wildlife Rules", url: "https://secure.sos.state.or.us/oard/displayDivisionRules.action?selectedDivision=2724" },
+          { label: "ODFW - Nongame Wildlife", url: "https://myodfw.com/wildlife-viewing/species/nongame-wildlife" }
+        ],
+        notes: "Western Rattlesnake is Oregon's only venomous snake."
+      },
 
       "PA": {
-  title: "Pennsylvania",
-  summary: [
-    "All native snakes are regulated by the Pennsylvania Fish & Boat Commission (PFBC).",
-    "It is unlawful to take, kill, import, export, sell, or transport native reptiles except under PFBC rules.",
-    "Methods of capture are limited (hand, snake hook/tongs, or small traps/nets). No firearms, chemicals, or habitat destruction."
-  ],
-  relocation: [
-    "Inside your property: non-venomous snakes can be removed humanely if necessary.",
-    "Crossing property lines or releasing snakes elsewhere risks violating transport/possession rules — do not relocate across properties or onto public land without authorization.",
-    "Venomous snakes (timber rattlesnake, copperhead) require a PFBC Venomous Snake Permit to capture, handle, or possess.",
-    "DWR recommends contacting a licensed wildlife control professional if you need assistance with removal."
-  ],
-  protectedSnakes: [
-    "Eastern Massasauga Rattlesnake — Federally threatened, fully protected in PA.",
-    "Timber Rattlesnake — heavily regulated; permit, tagging, and size/season limits apply.",
-    "Eastern Copperhead — regulated under venomous snake permit rules.",
-    "Other state-listed threatened or endangered snakes (e.g., Kirtland’s Snake, Rough Green Snake) — cannot be taken, killed, or possessed."
-  ],
-  links: [
-    { label: "PFBC – Reptile & Amphibian Regulations", url: "https://www.pa.gov/agencies/fishandboat/conservation/species-management/reptiles-and-amphibians/regulations.html" },
-    { label: "58 Pa. Code Chapter 79 (Reptiles & Amphibians)", url: "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/058/chapter79/chap79toc.html" }
-  ],
-  notes: "Venomous snake handling requires a PFBC permit. Non-venomous relocation across property lines may violate possession/transport laws."
-},
+        title: "Pennsylvania",
+        summary: [
+          "Native reptiles and amphibians are regulated by the Pennsylvania Fish and Boat Commission.",
+          "It is unlawful to take, kill, possess, import, export, sell, or transport native reptiles except under PFBC rules.",
+          "Venomous snake permits are required for timber rattlesnake and eastern copperhead activities covered by PFBC regulation."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or removed humanely if necessary and lawful.",
+          "Across properties or public land: relocation may violate transport or possession rules without authorization.",
+          "Venomous snakes: Timber Rattlesnake and Eastern Copperhead require PFBC venomous snake permit rules for covered take, capture, handling, or possession.",
+          "Contact PFBC or a qualified wildlife control professional for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Massasauga Rattlesnake - federally threatened and fully protected.",
+          "Timber Rattlesnake - regulated by permit, season, tagging, and size rules.",
+          "Eastern Copperhead - regulated under venomous snake permit rules.",
+          "Kirtland's Snake - protected if state listed.",
+          "Rough Greensnake - protected if state listed."
+        ],
+        links: [
+          { label: "PFBC - Reptile and Amphibian Regulations", url: "https://www.pa.gov/agencies/fishandboat/conservation/species-management/reptiles-and-amphibians/regulations.html" },
+          { label: "PFBC - Venomous Snake Permit", url: "https://www.pa.gov/services/fishandboat/apply-for-venomous-snake-permit" },
+          { label: "58 Pa. Code Chapter 79", url: "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/058/chapter79/chap79toc.html" }
+        ],
+        notes: "Correction made: PA agency is PFBC, not DWR."
+      },
+
       "RI": {
-  title: "Rhode Island",
-  summary: [
-    "All native reptiles and amphibians are protected under Rhode Island law.",
-    "It is illegal to kill, harass, possess, or sell any native snake without a permit.",
-    "Non-native/exotic snakes are regulated separately and may require permits."
-  ],
-  relocation: [
-    "On your property: you may leave a snake alone or gently guide it away without harming it.",
-    "Across properties/public land: relocation into new areas is unlawful without RIDEM authorization.",
-    "Rhode Island does not have any naturally occurring venomous snake species today; timber rattlesnake is extirpated.",
-    "For removal needs, contact licensed rehabilitators or permitted nuisance wildlife control specialists."
-  ],
-  protectedSnakes: [
-    "All native snakes are protected by law.",
-    "Examples: Eastern Ratsnake, Eastern Milksnake, Smooth Greensnake, Eastern Hognose Snake, Ring-necked Snake, Red-bellied Snake, Dekay’s Brownsnake, Eastern Ribbonsnake, Common Garter Snake."
-  ],
-  links: [
-    { label: "RIDEM – Division of Fish & Wildlife", url: "https://dem.ri.gov/natural-resources-bureau/fish-wildlife" },
-    { label: "Rhode Island General Laws – Wildlife Protection", url: "https://webserver.rilin.state.ri.us/Statutes/TITLE20/INDEX.HTM" }
-  ],
-  notes: "Rhode Island currently has no native venomous snakes. All native species are legally protected."
-},
+        title: "Rhode Island",
+        summary: [
+          "Native reptiles and amphibians are protected under Rhode Island law.",
+          "It is illegal to kill, harass, possess, or sell native snakes without authorization.",
+          "Rhode Island currently has no native venomous snake species."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently guided away if safe.",
+          "Across properties or public land: relocation without authorization may be unlawful.",
+          "Contact RIDEM or a permitted wildlife professional for removal."
+        ],
+        protectedSnakes: [
+          "All native snakes are protected.",
+          "Eastern Ratsnake.",
+          "Eastern Milksnake.",
+          "Smooth Greensnake.",
+          "Eastern Hognose Snake.",
+          "Eastern Ribbonsnake."
+        ],
+        links: [
+          { label: "RIDEM - Fish and Wildlife", url: "https://dem.ri.gov/natural-resources-bureau/fish-wildlife" },
+          { label: "Rhode Island Wildlife Laws", url: "https://webserver.rilegislature.gov/Statutes/TITLE20/INDEX.HTM" }
+        ],
+        notes: "Rhode Island currently has no native venomous snakes."
+      },
 
       "SC": {
-  title: "South Carolina",
-  summary: [
-    "All native snakes are classified as nongame wildlife under South Carolina law and are protected unless specifically permitted.",
-    "It is illegal to kill, capture, or possess native snakes without authorization.",
-    "Non-native/exotic snakes (large constrictors, cobras) are separately regulated — some require permits, others are prohibited."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes can be left alone or gently moved within your property.",
-    "Across properties/public land: relocation is considered unlawful transport/take without authorization from SCDNR.",
-    "Venomous snakes: copperhead, cottonmouth, timber rattlesnake, pigmy rattlesnake, eastern diamondback rattlesnake, and coral snake are all protected. They cannot be killed or relocated without a permit.",
-    "For removal, contact a licensed wildlife control operator authorized by SCDNR."
-  ],
-  protectedSnakes: [
-    "Eastern Diamondback Rattlesnake (Crotalus adamanteus) — protected.",
-    "Timber Rattlesnake (Crotalus horridus) — protected.",
-    "Pigmy Rattlesnake (Sistrurus miliarius) — protected.",
-    "Eastern Coral Snake (Micrurus fulvius) — protected.",
-    "All native snakes are considered protected nongame wildlife."
-  ],
-  links: [
-    { label: "SCDNR – Snakes of South Carolina", url: "https://www.dnr.sc.gov/wildlife/reptiles/snakes/index.html" },
-    { label: "South Carolina Code – Nongame & Endangered Species", url: "https://www.scstatehouse.gov/code/t50c015.php" },
-    { label: "SCDNR – Venomous Snakes", url: "https://www.dnr.sc.gov/wildlife/reptiles/snakes/venomous.html" }
-  ],
-  notes: "All snakes in South Carolina are protected as nongame wildlife. Killing or relocating them without authorization is illegal."
-},
+        title: "South Carolina",
+        summary: [
+          "Native reptiles and amphibians are regulated by South Carolina Department of Natural Resources.",
+          "Many native snakes are protected under nongame wildlife rules, and protected status can vary by species.",
+          "Listed, protected, or regulated species cannot be collected, possessed, transported, sold, or relocated without authorization."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or gently moved only if safe and lawful.",
+          "Across properties or public land: relocation may be considered transport or take and may require authorization.",
+          "Venomous snakes occur in South Carolina. Handling should be left to qualified individuals.",
+          "Contact SCDNR or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "Eastern Diamondback Rattlesnake - protected or conservation concern.",
+          "Timber Rattlesnake - protected or conservation concern.",
+          "Pigmy Rattlesnake - regulated.",
+          "Eastern Coral Snake - regulated.",
+          "Other native snakes may be protected under state rules."
+        ],
+        links: [
+          { label: "SCDNR - Snakes of South Carolina", url: "https://www.dnr.sc.gov/wildlife/reptiles/snakes/index.html" },
+          { label: "SCDNR - Herp FAQs", url: "https://www.dnr.sc.gov/wildlife/herps/faqs.html" },
+          { label: "South Carolina Nongame and Endangered Species", url: "https://www.scstatehouse.gov/code/t50c015.php" }
+        ],
+        notes: "Wording softened: protections vary by species, so verify with SCDNR before handling or relocating."
+      },
 
       "SD": {
-  title: "South Dakota",
-  summary: [
-    "Most native snakes are classified as nongame wildlife and regulated by South Dakota Game, Fish & Parks (GFP).",
-    "It is illegal to take, possess, transport, or sell native snakes without authorization, except in limited cases.",
-    "Permits are required for possession, scientific, or educational use."
-  ],
-  relocation: [
-    "On your property: non-venomous snakes may be left alone or guided away. Relocation across properties without permission is not allowed.",
-    "Across properties/public land: relocation or transport requires GFP authorization.",
-    "Venomous snakes: Prairie Rattlesnake is the only venomous species in South Dakota. It may be killed only if posing immediate danger to humans; otherwise regulated.",
-    "For snake issues, GFP recommends contacting licensed wildlife professionals."
-  ],
-  protectedSnakes: [
-    "Prairie Rattlesnake (Crotalus viridis) — venomous; regulated.",
-    "Other native snakes may be listed as nongame or Species of Greatest Conservation Need."
-  ],
-  links: [
-    { label: "South Dakota GFP – Snakes", url: "https://gfp.sd.gov/wildlife/snakes/" },
-    { label: "South Dakota Admin Rules – Nongame, Threatened & Endangered", url: "https://rules.sd.gov/" },
-    { label: "SD GFP – Species of Greatest Conservation Need", url: "https://gfp.sd.gov/wildlife-conservation/" }
-  ],
-  notes: "Prairie rattlesnakes are the only venomous snake in South Dakota. Killing them is only allowed if they pose immediate danger."
-},
+        title: "South Dakota",
+        summary: [
+          "Native snakes are regulated by South Dakota Game, Fish and Parks.",
+          "Taking, possessing, transporting, or selling native snakes may require authorization.",
+          "Species of greatest conservation need may receive additional attention."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or guided away if safe.",
+          "Across properties or public land: relocation or transport may require authorization.",
+          "Prairie Rattlesnake is South Dakota's only venomous snake.",
+          "Contact GFP or a licensed wildlife professional for removal."
+        ],
+        protectedSnakes: [
+          "Prairie Rattlesnake - regulated.",
+          "Other native snakes may be nongame or species of greatest conservation need."
+        ],
+        links: [
+          { label: "South Dakota GFP - Snakes", url: "https://gfp.sd.gov/wildlife/snakes/" },
+          { label: "South Dakota Rules", url: "https://rules.sd.gov/" },
+          { label: "South Dakota Wildlife Conservation", url: "https://gfp.sd.gov/wildlife-conservation/" }
+        ],
+        notes: "Prairie Rattlesnake is the only venomous snake in South Dakota."
+      },
 
       "TN": {
-  title: "Tennessee",
-  summary: [
-    "All native snakes are classified as nongame wildlife and are protected under TWRA regulations.",
-    "It is illegal to kill, harm, capture, or possess native snakes without a TWRA permit.",
-    "Buying, selling, or collecting native snakes is prohibited."
-  ],
-  relocation: [
-    "On your property: you may let a snake be or gently guide it away without harming it.",
-    "Across properties/public land: relocating snakes is restricted and considered unlawful take without authorization.",
-    "Venomous snakes: copperhead, cottonmouth, timber rattlesnake, and pygmy rattlesnake are all protected and may not be killed or captured.",
-    "For snake removal, contact a licensed wildlife control operator approved by TWRA."
-  ],
-  protectedSnakes: [
-    "All native snakes in Tennessee are legally protected.",
-    "Venomous species: Copperhead, Cottonmouth, Timber Rattlesnake, Pygmy Rattlesnake."
-  ],
-  links: [
-    { label: "TWRA – Nuisance Wildlife & Snake Info", url: "https://www.tn.gov/twra/wildlife/nuisance-wildlife.html" },
-    { label: "TWRA – Venomous Snakes of Tennessee", url: "https://www.tn.gov/twra/wildlife/reptiles/venomous-snakes.html" },
-    { label: "Tennessee Code – Wildlife Resources", url: "https://law.justia.com/codes/tennessee/title-70/" }
-  ],
-  notes: "Snakes may not be killed in Tennessee. All native species are protected. Contact TWRA or licensed wildlife control for assistance."
-},
+        title: "Tennessee",
+        summary: [
+          "Native snakes are protected as nongame wildlife under Tennessee Wildlife Resources Agency rules.",
+          "It is illegal to kill, harm, capture, or possess native snakes without proper authorization.",
+          "Buying, selling, or collecting native snakes is prohibited unless authorized."
+        ],
+        relocation: [
+          "On your property: you may leave a snake alone or gently guide it away without harming it.",
+          "Across properties or public land: relocation may be considered unlawful take or transport without authorization.",
+          "Venomous snakes: Copperhead, Cottonmouth, Timber Rattlesnake, and Pygmy Rattlesnake are native and protected.",
+          "Contact TWRA or a licensed wildlife control operator for removal."
+        ],
+        protectedSnakes: [
+          "All native snakes are protected.",
+          "Copperhead.",
+          "Cottonmouth.",
+          "Timber Rattlesnake.",
+          "Pygmy Rattlesnake."
+        ],
+        links: [
+          { label: "TWRA - Snakes", url: "https://www.tn.gov/twra/wildlife/reptiles/snakes.html" },
+          { label: "TWRA - Nuisance Wildlife", url: "https://www.tn.gov/twra/wildlife/nuisance-wildlife.html" },
+          { label: "Tennessee Code - Wildlife Resources", url: "https://law.justia.com/codes/tennessee/title-70/" }
+        ],
+        notes: "Tennessee native snakes are protected."
+      },
 
       "TX": {
-  title: "Texas",
-  summary: [
-    "All native snakes are considered wildlife under Texas Parks & Wildlife Department (TPWD) regulations.",
-    "Commercial collection or sale of most native snakes requires a license.",
-    "Collecting from public roads/ROW requires a Reptile & Amphibian Stamp."
-  ],
-  relocation: [
-    "On your property: you may move a non-venomous snake within your property.",
-    "Across properties/public land: relocation or release requires landowner permission and may require a hunting license.",
-    "Venomous snakes: private landowners may remove them on their property, but transport or sale requires permits.",
-    "TPWD encourages contacting licensed professionals for safe relocation."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — State threatened; illegal to kill, take, or possess.",
-    "Louisiana Pine Snake (Pituophis ruthveni) — Federally threatened; ESA protected."
-  ],
-  links: [
-    { label: "TPWD – Nongame & Rare Species", url: "https://tpwd.texas.gov/huntwild/wild/species/" },
-    { label: "TPWD – Reptiles & Amphibians Regulations", url: "https://tpwd.texas.gov/regulations/outdoor-annual/animals/reptiles-and-amphibians" },
-    { label: "Texas Admin Code – Nongame Regulations", url: "https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=31&pt=2&ch=65&sch=C&rl=Y" }
-  ],
-  notes: "Timber rattlesnake is state-threatened and fully protected. Louisiana pine snake is federally threatened. Always confirm TPWD rules before relocating snakes."
-},
+        title: "Texas",
+        summary: [
+          "Native snakes are regulated by Texas Parks and Wildlife Department.",
+          "Commercial collection or sale of most native snakes requires a license.",
+          "Collecting reptiles from public roadways or rights of way requires a Reptile and Amphibian Stamp and compliance with TPWD rules."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be moved within your property if safe and lawful.",
+          "Across properties or public land: relocation or release requires landowner permission and may require proper licensing.",
+          "Venomous snakes: transport, possession, or sale may trigger permit or license requirements.",
+          "Contact TPWD or a qualified snake removal professional for guidance."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - state threatened and protected.",
+          "Louisiana Pine Snake - federally threatened.",
+          "Other native snakes may be regulated by license, season, or rule."
+        ],
+        links: [
+          { label: "TPWD - Reptile and Amphibian Regulations", url: "https://tpwd.texas.gov/regulations/outdoor-annual/animals/reptiles-and-amphibians" },
+          { label: "TPWD - Nongame and Rare Species", url: "https://tpwd.texas.gov/huntwild/wild/species/" },
+          { label: "Texas Admin Code - Nongame Regulations", url: "https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=5&ti=31&pt=2&ch=65&sch=C&rl=Y" }
+        ],
+        notes: "Timber Rattlesnake is state threatened in Texas."
+      },
 
       "UT": {
-  title: "Utah",
-  summary: [
-    "Native reptiles are regulated by the Utah Division of Wildlife Resources (UDWR).",
-    "Commercial collection or sale of native reptiles is prohibited without a license.",
-    "Some species are fully protected and cannot be collected, kept, or relocated."
-  ],
-  relocation: [
-    "On your property: you may move a non-venomous snake within your property.",
-    "Off your property: relocation or transport requires permission and may need a Certificate of Registration (COR) from UDWR.",
-    "Venomous snakes: all rattlesnakes are protected by law — it is illegal to harass, capture, or kill them.",
-    "For removals, contact UDWR or a licensed wildlife professional."
-  ],
-  protectedSnakes: [
-    "All rattlesnake species in Utah are protected (e.g., Great Basin rattlesnake, midget-faded rattlesnake).",
-    "Smooth Greensnake (Opheodrys vernalis) — species of concern."
-  ],
-  links: [
-    { label: "Utah DWR – Native Reptiles & Amphibians", url: "https://wildlife.utah.gov/species/reptiles-amphibians.html" },
-    { label: "Utah DWR – Rattlesnakes", url: "https://wildlife.utah.gov/rattlesnakes.html" },
-    { label: "Utah Admin Code R657-53", url: "https://rules.utah.gov/publicat/code/r657/r657-053.htm" }
-  ],
-  notes: "It is illegal to kill or harass rattlesnakes in Utah. UDWR issues CORs for lawful possession or relocation of some native reptiles."
-},
+        title: "Utah",
+        summary: [
+          "Native reptiles are regulated by Utah Division of Wildlife Resources.",
+          "Commercial collection or sale of native reptiles is prohibited without authorization.",
+          "Some species are protected and cannot be collected, kept, or relocated without authorization."
+        ],
+        relocation: [
+          "On your property: non-venomous snakes may be left alone or moved if safe and lawful.",
+          "Across properties or public land: relocation may require permission or a Certificate of Registration.",
+          "Rattlesnakes are protected by law in Utah and may not be harassed, captured, or killed except as allowed by rule.",
+          "Contact UDWR or a qualified wildlife professional for removal."
+        ],
+        protectedSnakes: [
+          "All rattlesnake species in Utah are protected.",
+          "Smooth Greensnake - species of concern."
+        ],
+        links: [
+          { label: "Utah DWR - Reptiles and Amphibians", url: "https://wildlife.utah.gov/species/reptiles-amphibians.html" },
+          { label: "Utah DWR - Rattlesnakes", url: "https://wildlife.utah.gov/rattlesnakes.html" },
+          { label: "Utah Admin Code R657-53", url: "https://rules.utah.gov/publicat/code/r657/r657-053.htm" }
+        ],
+        notes: "It is illegal to kill or harass rattlesnakes in Utah except as allowed by rule."
+      },
 
       "VT": {
-  title: "Vermont",
-  summary: [
-    "On June 5, 2025, Vermont passed HB 231 to extend legal protections to all reptiles and amphibians, prohibiting kill, collect, harass, import, export, possess, or transport unless allowed by rule.",
-    "In addition, Vermont’s endangered/threatened species law prohibits take, possession, or transport of listed species without permit and protects their critical habitats.",
-    "Timber rattlesnake historically present but now very rare in VT; most snakes are non-venomous."
-  ],
-  relocation: [
-    "Relocation of snakes across property lines or into new areas risks violating the newly expanded protections unless explicitly allowed.",
-    "Even non-threatened reptiles now have baseline protection under HB 231, so handling should be cautious and legal under state rules.",
-    "For species listed as threatened or endangered, any take/possession/transport requires a permit under Vermont law.",
-    "If a snake is in your dwelling and it's non-venomous, consider humane trapping and release within your property or contact wildlife professionals familiar with VT rules."
-  ],
-  protectedSnakes: [
-    "Timber Rattlesnake (Crotalus horridus) — historically present but very rare in Vermont",
-    // You can list any state-designated threatened or endangered snakes (if Vermont has them)
-  ],
-  links: [
-    { label: "Vermont HB 231 amphibian & reptile protections", url: "https://ncel.net/articles/vermont-prohibits-trade-in-endangered-species-while-protecting-amphibians-and-reptiles/" },
-    { label: "10 V.S.A. Chapter 123 – Endangered/Threatened species law", url: "https://legislature.vermont.gov/statutes/fullchapter/10/123" }
-  ],
-  notes: "Because of HB 231, even non-threatened reptiles now have legal baseline protection in Vermont."
-},
+        title: "Vermont",
+        summary: [
+          "Vermont passed H.231, now Act 47, in 2025 to expand protections for reptiles and amphibians.",
+          "Vermont law also protects endangered and threatened species and their habitats.",
+          "Handling, possession, transport, import, export, or relocation may be restricted unless allowed by rule or permit."
+        ],
+        relocation: [
+          "Across properties or public land: relocating snakes may violate Vermont wildlife rules unless specifically allowed.",
+          "Even non-listed reptiles now have baseline legal protections under Act 47.",
+          "For listed species, any take, possession, or transport requires authorization.",
+          "Contact Vermont Fish and Wildlife for current guidance."
+        ],
+        protectedSnakes: [
+          "Timber Rattlesnake - historically present and very rare in Vermont.",
+          "Other reptiles may be protected under Act 47 or endangered species rules."
+        ],
+        links: [
+          { label: "Vermont H.231 / Act 47 Status", url: "https://legislature.vermont.gov/bill/status/2026/H.231" },
+          { label: "10 V.S.A. Chapter 123 - Endangered Species", url: "https://legislature.vermont.gov/statutes/fullchapter/10/123" },
+          { label: "Vermont Fish and Wildlife", url: "https://vtfishandwildlife.com/" }
+        ],
+        notes: "Updated to reference the official Vermont Legislature page for H.231 / Act 47."
+      },
 
       "VA": {
         title: "Virginia",
         summary: [
-          "Personal possession limit: up to one non-SGCN reptile or amphibian per household for private use only. No threatened, endangered, or SGCN species.",
-          "Possession, import, export, sale, or release of wild animals is unlawful unless specifically permitted by law or regulation.",
-          "Most snakes are harmless and help control rodents. Virginia has three venomous species: copperhead (statewide), timber rattlesnake in mountains and a small southeast area as canebrake, and cottonmouth southeast of Petersburg in wet areas.",
-          "DWR staff do not remove snakes from homes or properties. Use a pest control company permitted by DWR if removal is necessary."
+          "Native reptiles and amphibians are regulated by Virginia Department of Wildlife Resources.",
+          "Personal possession is limited to one non-SGCN reptile or amphibian per physical address for private use only.",
+          "Threatened, endangered, and Species of Greatest Conservation Need are protected from unauthorized possession or take.",
+          "Virginia has three venomous snake types: copperhead, cottonmouth, and timber rattlesnake."
         ],
         relocation: [
-          "On your property: you may carefully move a non-venomous snake on your own property.",
-          "Crossing property lines: moving snakes off your property is restricted and may require permission or permits. Never release on public lands without permission.",
-          "Venomous species: local ordinances may prohibit private ownership or relocation. The canebrake population of timber rattlesnake in SE Virginia is state endangered. Do not collect or relocate without a permit.",
-          "If a snake is inside and known non-venomous: you can cover with a bucket, slide a board under it, and release outside. Seal entry points to prevent return.",
-          "For removals beyond your comfort level: contact a pest control company permitted by DWR to handle snakes."
+          "On your property: you may carefully move a non-venomous snake on your own property if safe.",
+          "Across property lines or public land: relocation is restricted and may require authorization.",
+          "Venomous snakes: do not collect or relocate without authorization. The canebrake population of timber rattlesnake in southeast Virginia is state endangered.",
+          "Virginia DWR does not remove snakes from homes or properties. Contact a pest control company permitted by DWR if removal is necessary."
         ],
         protectedSnakes: [
-          "Timber Rattlesnake (canebrake population in SE Virginia is state endangered)",
-          "Northern (Eastern) Pinesnake - Tier I SGCN"
+          "Timber Rattlesnake, canebrake population in southeast Virginia - state endangered.",
+          "Northern Pinesnake - Tier I Species of Greatest Conservation Need.",
+          "Other listed or SGCN species may be protected."
         ],
         links: [
-          { label: "Virginia DWR - Snakes", url: "https://dwr.virginia.gov/wildlife/snakes/" },
-          { label: "Wildlife Regulations (4VAC15)", url: "https://dwr.virginia.gov/wildlife/regulations/" }
+          { label: "Virginia DWR - Snakes", url: "https://dwr.virginia.gov/wildlife/nuisance/snakes/" },
+          { label: "Virginia Wildlife Regulations", url: "https://dwr.virginia.gov/wildlife/regulations/" }
         ],
-        notes: "Prevention tips: remove rock and brush piles, keep grass short, seal gaps around pipes and vents, and address rodent issues."
+        notes: "Virginia DWR confirms the one non-SGCN reptile or amphibian per physical address rule."
       },
-      "WA": { title: "Washington", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "WV": { title: "West Virginia", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "WI": { title: "Wisconsin", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "WY": { title: "Wyoming", summary: ["Summary coming soon."], protectedSnakes: [], links: [] },
-      "GU": {
-  title: "Guam",
-  summary: [
-    "Guam has no native snakes. The **Brown Tree Snake (Boiga irregularis)** is an invasive species that has wreaked havoc on Guam’s ecosystem.",
-    "Because this species is invasive, Guam’s authorities focus on eradication, prevention, and strict biosecurity to stop its spread.",
-    "Capture, transport, or release of this snake is heavily regulated under federal and local programs."
-  ],
-  relocation: [
-    "Relocation generally is not allowed — the focus is removal and eradication rather than relocating snakes to protect ecosystems.",
-    "People finding brown tree snakes are encouraged to report sightings to Guam’s wildlife or biosecurity authorities (e.g. hotline 488-RAIL for reporting rats, cats, snakes).",
-    "Strong measures are taken to prevent the snake from being transported off island (cargo inspections, dog detection, snake-exclusion protocols).",
-    "Because the snake is invasive and destructive, any handling, trapping or movement of it is under strict control by government agencies."
-  ],
-  protectedSnakes: [
-    // Because Guam’s issue is invasive snakes, “protected” snakes in the usual sense doesn’t apply. But we can note:
-    "None native — brown tree snake is invasive and not protected; rather, removal is mandated."
-  ],
-  links: [
-    { label: "USFWS Brown Tree Snake Control Act", url: "https://www.fws.gov/law/brown-tree-snake-eradication-and-control-act" },
-    { label: "Guam DAWR Kontra i Kulepbla (reporting snakes)", url: "https://doag.guam.gov/dawr-kontra-i-kulepbla/" }
-  ],
-  notes: "Guam’s regulatory focus is on removal and prevention. Because the Brown Tree Snake is invasive, rules differ radically from states with native snakes."
-}
 
+      "WA": {
+        title: "Washington",
+        summary: [
+          "Summary coming soon. Always verify with Washington Department of Fish and Wildlife before handling, relocating, transporting, or releasing any snake."
+        ],
+        relocation: [
+          "Do not relocate snakes across properties or onto public land without checking current Washington rules."
+        ],
+        protectedSnakes: [],
+        links: [
+          { label: "Washington Department of Fish and Wildlife", url: "https://wdfw.wa.gov/" }
+        ],
+        notes: "Detailed state summary pending."
+      },
+
+      "WV": {
+        title: "West Virginia",
+        summary: [
+          "Summary coming soon. Always verify with West Virginia Division of Natural Resources before handling, relocating, transporting, or releasing any snake."
+        ],
+        relocation: [
+          "Do not relocate snakes across properties or onto public land without checking current West Virginia rules."
+        ],
+        protectedSnakes: [],
+        links: [
+          { label: "West Virginia Division of Natural Resources", url: "https://wvdnr.gov/" }
+        ],
+        notes: "Detailed state summary pending."
+      },
+
+      "WI": {
+        title: "Wisconsin",
+        summary: [
+          "Summary coming soon. Always verify with Wisconsin Department of Natural Resources before handling, relocating, transporting, or releasing any snake."
+        ],
+        relocation: [
+          "Do not relocate snakes across properties or onto public land without checking current Wisconsin rules."
+        ],
+        protectedSnakes: [],
+        links: [
+          { label: "Wisconsin DNR", url: "https://dnr.wisconsin.gov/" }
+        ],
+        notes: "Detailed state summary pending."
+      },
+
+      "WY": {
+        title: "Wyoming",
+        summary: [
+          "Summary coming soon. Always verify with Wyoming Game and Fish Department before handling, relocating, transporting, or releasing any snake."
+        ],
+        relocation: [
+          "Do not relocate snakes across properties or onto public land without checking current Wyoming rules."
+        ],
+        protectedSnakes: [],
+        links: [
+          { label: "Wyoming Game and Fish Department", url: "https://wgfd.wyo.gov/" }
+        ],
+        notes: "Detailed state summary pending."
+      },
+
+      "GU": {
+        title: "Guam",
+        summary: [
+          "Guam has no native snakes.",
+          "The Brown Tree Snake is invasive and has caused major ecological damage.",
+          "Guam focuses on prevention, detection, removal, and biosecurity rather than relocation."
+        ],
+        relocation: [
+          "Do not relocate or release snakes in Guam.",
+          "Report Brown Tree Snake sightings to Guam wildlife or biosecurity authorities.",
+          "Handling, trapping, or movement of Brown Tree Snakes is controlled by government programs."
+        ],
+        protectedSnakes: [
+          "None native. Brown Tree Snake is invasive and not protected."
+        ],
+        links: [
+          { label: "USFWS - Brown Tree Snake Control Act", url: "https://www.fws.gov/law/brown-tree-snake-eradication-and-control-act" },
+          { label: "Guam DAWR - Kontra i Kulepbla", url: "https://doag.guam.gov/dawr-kontra-i-kulepbla/" }
+        ],
+        notes: "Guam's rules focus on invasive snake removal and prevention."
+      }
     };
 
-    // ========================= STATES LIST =========================
-    // All 50 states plus Guam
     const STATES = [
       ["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],
       ["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],
@@ -1359,20 +1498,15 @@
       ["GU","Guam"]
     ];
 
-    // ========================= RENDERING =========================
-    const sel = document.getElementById('stateSelect');
-    const panel = document.getElementById('statePanel');
-    const lastUpdatedEl = document.getElementById('lastUpdated');
+    const sel = document.getElementById("stateSelect");
+    const panel = document.getElementById("statePanel");
 
-    // Build the dropdown
     STATES.forEach(([code, name]) => {
-      const opt = document.createElement('option');
+      const opt = document.createElement("option");
       opt.value = code;
       opt.textContent = name;
       sel.appendChild(opt);
     });
-
-    lastUpdatedEl.textContent = new Date().toLocaleDateString();
 
     function escapeHtml(s) {
       return String(s)
@@ -1383,58 +1517,69 @@
 
     function renderState(code) {
       const rec = LAWS[code];
+
       if (!rec) {
         panel.innerHTML = `<div class="muted">We have not posted a summary for this state yet. Please check your state wildlife agency.</div>`;
         return;
       }
 
-      const bullets = (rec.summary || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
-      const relocation = (rec.relocation || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
-      const protectedList = (rec.protectedSnakes || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
-      const links = (rec.links || []).map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join('');
+      const bullets = (rec.summary || []).map(s => `<li>${escapeHtml(s)}</li>`).join("");
+      const relocation = (rec.relocation || []).map(s => `<li>${escapeHtml(s)}</li>`).join("");
+      const protectedList = (rec.protectedSnakes || []).map(s => `<li>${escapeHtml(s)}</li>`).join("");
+      const invasiveList = (rec.invasiveSnakes || []).map(s => `<li>${escapeHtml(s)}</li>`).join("");
+      const links = (rec.links || []).map(l => `<li><a target="_blank" rel="noopener" href="${encodeURI(l.url)}">${escapeHtml(l.label)}</a></li>`).join("");
 
       panel.innerHTML = `
         <div class="state-meta">
           <strong>${escapeHtml(rec.title)}</strong>
-          ${rec.notes ? `<span class="pill" title="Note">${escapeHtml(rec.notes)}</span>` : ``}
+          ${rec.notes ? `<div><span class="pill">${escapeHtml(rec.notes)}</span></div>` : ""}
         </div>
+
         <div class="law-body">
-          ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ''}
-          ${relocation ? `<h3>Relocation rules</h3><ul>${relocation}</ul>` : ''}
+          ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ""}
+
+          ${relocation ? `<h3>Relocation rules</h3><ul>${relocation}</ul>` : ""}
+
           <h3>Protected snakes</h3>
           ${protectedList ? `<ul>${protectedList}</ul>` : `<p class="muted">Protected list pending. Use the official resources below.</p>`}
-          ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ''}
+
+          ${invasiveList ? `<h3>Invasive or prohibited snakes</h3><ul>${invasiveList}</ul>` : ""}
+
+          ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ""}
+
+          <div class="alert" style="margin-top:16px;">
+            This summary is not legal advice. Always verify current rules with the official agency before handling, relocating, transporting, releasing, or possessing any snake.
+          </div>
         </div>
       `;
     }
 
-    // Handle dropdown changes
-    sel.addEventListener('change', () => {
+    sel.addEventListener("change", () => {
       const code = sel.value;
+
       if (!code) {
         panel.innerHTML = `<div class="muted">No state selected</div>`;
         history.replaceState(null, "", "laws.html");
         localStorage.removeItem("fsr:lastState");
         return;
       }
+
       renderState(code);
       history.replaceState(null, "", `laws.html?state=${encodeURIComponent(code)}`);
       localStorage.setItem("fsr:lastState", code);
     });
 
-    // Deep link + restore last
     (function initSelection() {
       const params = new URLSearchParams(window.location.search);
       const urlState = params.get("state");
       const saved = localStorage.getItem("fsr:lastState");
       const start = urlState || saved || "";
+
       if (start && STATES.find(([c]) => c === start)) {
         sel.value = start;
         renderState(start);
       }
     })();
-
-    // OPTIONAL: Sheet loader can be added later if you want to manage content from Google Sheets.
   </script>
 </body>
 </html>
