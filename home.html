@@ -355,6 +355,30 @@
         text-align: center;
       }
     }
+    .loading-notice {
+  background: #225533;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 12px 0;
+  animation: pulseLoading 1.5s infinite;
+}
+
+@keyframes pulseLoading {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
   </style>
 </head>
 <body>
@@ -402,7 +426,7 @@
             Free • Volunteer-based • No signup required
           </p>
 
-          <div id="closestNotice" class="helper" style="margin:12px 0 12px;"></div>
+          <div id="closestNotice" class="loading-notice" style="display:none;"></div>
           <div id="closestResults" class="results-grid"></div>
         </div>
       </div>
@@ -451,7 +475,7 @@
 
     btnGeo?.addEventListener('click', () => {
       clearUI();
-      notice.textContent = 'Getting your location...';
+      notice.textContent = 'Please wait while volunteers are loaded...';
 
       if (!('geolocation' in navigator)) {
         notice.textContent = 'Geolocation is not supported by this browser.';
@@ -460,7 +484,7 @@
 
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const { latitude, longitude } = pos.coords;
-        notice.textContent = 'Finding the closest volunteers...';
+        notice.textContent = 'Please wait while volunteers are loaded...';
 
         try {
           const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
