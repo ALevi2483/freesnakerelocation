@@ -423,7 +423,7 @@
           </div>
 
           <p class="helper" style="text-align:center; margin: 8px 0 0;">
-            Free • Volunteer-based • No signup required
+            Free • Volunteer-based
           </p>
 
           <div id="closestNotice" class="loading-notice" style="display:none;"></div>
@@ -474,33 +474,35 @@
     const results = document.getElementById('closestResults');
 
     btnGeo?.addEventListener('click', () => {
-      clearUI();
-      notice.textContent = 'Please wait while volunteers are loaded...';
+  clearUI();
 
-      if (!('geolocation' in navigator)) {
-        notice.textContent = 'Geolocation is not supported by this browser.';
-        return;
-      }
+  notice.style.display = 'block';
+  notice.textContent = 'Please wait while volunteers are loaded...';
 
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        notice.textContent = 'Please wait while volunteers are loaded...';
+  if (!('geolocation' in navigator)) {
+    notice.style.display = 'block';
+    notice.textContent = 'Geolocation is not supported by this browser.';
+    return;
+  }
 
-        try {
-          const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
-          await renderResults(res);
-        } catch (e) {
-          showError(e);
-        }
-      }, () => {
-        notice.textContent = 'Location permission was denied. Please enable GPS and try again.';
-      }, {
-        enableHighAccuracy: true,
-        timeout: 12000,
-        maximumAge: 0
-      });
-    });
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const { latitude, longitude } = pos.coords;
 
+    try {
+      const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
+      await renderResults(res);
+    } catch (e) {
+      showError(e);
+    }
+  }, () => {
+    notice.style.display = 'block';
+    notice.textContent = 'Location permission was denied. Please enable GPS and try again.';
+  }, {
+    enableHighAccuracy: true,
+    timeout: 12000,
+    maximumAge: 0
+  });
+});
     async function renderResults(res) {
       const text = await res.text();
       let rows;
@@ -548,10 +550,10 @@
     }
 
     function clearUI() {
-      results.innerHTML = '';
-      notice.textContent = '';
-    }
-
+  results.innerHTML = '';
+  notice.textContent = '';
+  notice.style.display = 'none';
+}
     function showError(e) {
       notice.textContent = 'Could not load results. Please try again.';
       console.error(e);
