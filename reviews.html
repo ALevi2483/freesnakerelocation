@@ -97,9 +97,9 @@
 
     .controls {
       display: grid;
-      grid-template-columns: 1fr 220px 220px;
+      grid-template-columns: 1fr 220px;
       gap: 12px;
-      margin: 24px 0;
+      margin: 24px 0 16px;
     }
 
     input,
@@ -112,9 +112,44 @@
       font: inherit;
     }
 
+    .rating-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 22px;
+    }
+
+    .rating-filter {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .rating-filter:hover,
+    .rating-filter.active {
+      background: var(--brand);
+      color: white;
+      border-color: var(--brand);
+    }
+
+    .rating-filter .stars-small {
+      color: var(--gold);
+      margin-right: 5px;
+    }
+
+    .rating-filter.active .stars-small {
+      color: white;
+    }
+
     .reviews-grid {
-      column-count: 3;
-      column-gap: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 18px;
       margin-top: 18px;
     }
 
@@ -124,12 +159,6 @@
       border-radius: 14px;
       padding: 18px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      display: inline-block;
-      width: 100%;
-      margin-bottom: 18px;
-      break-inside: avoid;
-      -webkit-column-break-inside: avoid;
-      page-break-inside: avoid;
     }
 
     .review-top {
@@ -151,7 +180,6 @@
       color: var(--muted);
       font-size: .85rem;
       text-align: right;
-      white-space: nowrap;
     }
 
     .comment {
@@ -198,10 +226,6 @@
     }
 
     @media (max-width: 950px) {
-      .reviews-grid {
-        column-count: 2;
-      }
-
       .controls {
         grid-template-columns: 1fr;
       }
@@ -213,7 +237,7 @@
 
     @media (max-width: 650px) {
       .reviews-grid {
-        column-count: 1;
+        grid-template-columns: 1fr;
       }
 
       .hero h2 {
@@ -266,12 +290,15 @@
       <select id="stateFilter">
         <option value="">All States</option>
       </select>
+    </section>
 
-      <select id="sortSelect">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-        <option value="highest">Highest Rated</option>
-      </select>
+    <section class="rating-filters" id="ratingFilters">
+      <button class="rating-filter active" data-rating="">All Reviews (0)</button>
+      <button class="rating-filter" data-rating="5"><span class="stars-small">★★★★★</span> 5 Star (0)</button>
+      <button class="rating-filter" data-rating="4"><span class="stars-small">★★★★☆</span> 4 Star (0)</button>
+      <button class="rating-filter" data-rating="3"><span class="stars-small">★★★☆☆</span> 3 Star (0)</button>
+      <button class="rating-filter" data-rating="2"><span class="stars-small">★★☆☆☆</span> 2 Star (0)</button>
+      <button class="rating-filter" data-rating="1"><span class="stars-small">★☆☆☆☆</span> 1 Star (0)</button>
     </section>
 
     <div id="reviewsStatus" class="loading">
@@ -294,12 +321,13 @@
       `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
     let reviews = [];
+    let selectedRating = '';
 
     const reviewsGrid = document.getElementById('reviewsGrid');
     const reviewsStatus = document.getElementById('reviewsStatus');
     const searchInput = document.getElementById('searchInput');
     const stateFilter = document.getElementById('stateFilter');
-    const sortSelect = document.getElementById('sortSelect');
+    const ratingFilters = document.getElementById('ratingFilters');
 
     loadReviews();
 
@@ -328,12 +356,15 @@
             ratingRaw: getCell(cells, 4),
             comments: getCell(cells, 5),
             rating: parseRating(getCell(cells, 4)),
-            date: parseDate(getCell(cells, 0))
+            date: parseGoogleDate(getCell(cells, 0))
           };
         }).filter(r => r.comments && r.rating > 0);
 
+        reviews.sort((a, b) => b.date - a.date);
+
         setupFilters();
         updateStats();
+        updateRatingButtons();
         renderReviews();
 
       } catch (error) {
@@ -362,11 +393,33 @@
       return match ? Number(match[0]) : 0;
     }
 
-    function parseDate(value) {
-      const date = new Date(value);
-      return isNaN(date)
-        ? new Date(0)
-        : date;
+    function parseGoogleDate(value) {
+      if (!value) {
+        return new Date(0);
+      }
+
+      const stringValue = String(value);
+
+      const googleDateMatch = stringValue.match(
+        /Date\((\d+),(\d+),(\d+),(\d+),(\d+),(\d+)\)/
+      );
+
+      if (googleDateMatch) {
+        const [, year, month, day, hour, minute, second] = googleDateMatch;
+
+        return new Date(
+          Number(year),
+          Number(month),
+          Number(day),
+          Number(hour),
+          Number(minute),
+          Number(second)
+        );
+      }
+
+      const normalDate = new Date(stringValue);
+
+      return isNaN(normalDate) ? new Date(0) : normalDate;
     }
 
     function setupFilters() {
@@ -397,10 +450,33 @@
       document.getElementById('fiveStarReviews').textContent = fiveStars;
     }
 
+    function updateRatingButtons() {
+      const counts = {
+        1: reviews.filter(r => r.rating === 1).length,
+        2: reviews.filter(r => r.rating === 2).length,
+        3: reviews.filter(r => r.rating === 3).length,
+        4: reviews.filter(r => r.rating === 4).length,
+        5: reviews.filter(r => r.rating === 5).length
+      };
+
+      const buttons = ratingFilters.querySelectorAll('.rating-filter');
+
+      buttons.forEach(button => {
+        const rating = button.dataset.rating;
+
+        if (rating === '') {
+          button.textContent = `All Reviews (${reviews.length})`;
+          return;
+        }
+
+        const starText = renderStars(Number(rating));
+        button.innerHTML = `<span class="stars-small">${starText}</span> ${rating} Star (${counts[rating]})`;
+      });
+    }
+
     function renderReviews() {
       const searchTerm = searchInput.value.toLowerCase().trim();
       const selectedState = stateFilter.value;
-      const sortBy = sortSelect.value;
 
       let filtered = reviews.filter(review => {
         const searchable =
@@ -411,21 +487,12 @@
 
         return (
           (!searchTerm || searchable.includes(searchTerm)) &&
-          (!selectedState || state === selectedState)
+          (!selectedState || state === selectedState) &&
+          (!selectedRating || review.rating === Number(selectedRating))
         );
       });
 
-      filtered.sort((a, b) => {
-        if (sortBy === 'oldest') {
-          return a.date - b.date;
-        }
-
-        if (sortBy === 'highest') {
-          return b.rating - a.rating;
-        }
-
-        return b.date - a.date;
-      });
+      filtered.sort((a, b) => b.date - a.date);
 
       reviewsGrid.innerHTML = '';
 
@@ -453,7 +520,7 @@
             </div>
 
             <div class="date">
-              ${formatDate(review.date)}
+              ${formatDateTime(review.date)}
             </div>
           </div>
 
@@ -479,15 +546,17 @@
       return '★'.repeat(rating) + '☆'.repeat(5 - rating);
     }
 
-    function formatDate(date) {
+    function formatDateTime(date) {
       if (!date || date.getTime() === 0) {
         return '';
       }
 
-      return date.toLocaleDateString(undefined, {
+      return date.toLocaleString(undefined, {
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
       });
     }
 
@@ -520,7 +589,24 @@
 
     searchInput.addEventListener('input', renderReviews);
     stateFilter.addEventListener('change', renderReviews);
-    sortSelect.addEventListener('change', renderReviews);
+
+    ratingFilters.addEventListener('click', event => {
+      const button = event.target.closest('.rating-filter');
+
+      if (!button) {
+        return;
+      }
+
+      selectedRating = button.dataset.rating;
+
+      ratingFilters.querySelectorAll('.rating-filter').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      button.classList.add('active');
+
+      renderReviews();
+    });
   </script>
 
 </body>
