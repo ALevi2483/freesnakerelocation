@@ -1,269 +1,405 @@
-ChatGPT Plus
-
-
-
-
-
-
-
-
-
-
-250B91B7-7473-4240-B639-4F81AEC47B78.jpeg
-52F1F87D-D419-4A44-AAD7-C099ED1E72DA.png
-
-Jason is describing a real issue, but the explanation is only partly correct.
-
-Here's what's actually happening:
-
-If your website uses the browser's "Use My Location" feature, the browser estimates the person's location using a combination of:
-
-GPS (on phones, if allowed)
-
-WiFi network locations
-
-Cell towers
-
-IP address
-
-If GPS isn't available or isn't accurate, it falls back to IP or WiFi positioning, which can easily be hundreds of yards or even several miles off.
-
-Different devices, browsers, and networks will return different locations. That's why one person may appear 0.4 miles away while another appears 6 miles away.
-
-The problem is probably not with your volunteer's pin. If you stored his latitude/longitude correctly, his pin isn't moving.
-
-The problem is likely the searcher's location.
-
-The best fix
-Instead of automatically searching from "Current Location," let users choose:
-
-Search by:
-
-📍 Use My Current Location
-
-🏠 Enter My Address or ZIP Code
-
-When someone enters an address, use a geocoding service (Google Maps, Mapbox, OpenStreetMap/Nominatim, etc.) to convert that address into exact coordinates. Those coordinates are usually much more accurate than browser geolocation.
-
-Many sites (like Home Depot, Walmart, and Lowe's) do exactly this because browser geolocation isn't reliable enough.
-
-Even better
-Offer all three options:
-
-Use My Current Location
-
-Enter Address
-
-Drop a Pin on the Map
-
-That gives users the most control.
-
-One thing I'd also verify
-Make sure you're storing volunteers as latitude/longitude coordinates, not just addresses.
-
-For example:
-
-Volunteer
-Latitude: 31.053242
-Longitude: -97.905511
-Then calculate distance using those coordinates.
-
-If you're instead geocoding the volunteer's address every time someone searches, slight differences between geocoding providers can also introduce errors.
-
-I'd be happy to take a look at the code for FreeSnakeRelocation.com. If you can share the location search code (or tell me whether you're using Google Maps, Mapbox, Leaflet, or another mapping library), I can probably identify exactly why some users are seeing volunteers several miles away and suggest a precise fix.
-
-
-
-Pasted text.txt
-Document
-   this is the current code... how should i change it?
-
-Thought for 13s
-FreeSnakeRelocation.com should keep your current GPS button, but add an address/ZIP search box. Your code only uses navigator.geolocation.getCurrentPosition(), so bad device/IP/WiFi location can throw the search off. MDN also notes geolocation requires HTTPS and depends on the device/browser location result. Google’s Geocoding API converts an address into latitude/longitude, which is what you need. 
-
- 
-
-Add this under your GPS button:
-
-<div style="margin-top:14px;">
-  <input
-    id="addressInput"
-    type="text"
-    placeholder="Enter your address, city, or ZIP code"
-    style="width:100%;padding:14px;border:1px solid #ccc;border-radius:10px;font-size:1rem;"
-  />
-  <button id="btnAddressFind" class="btn btn-secondary" style="width:100%;margin-top:10px;">
-    Search by Address or ZIP
-  </button>
-</div>
-
-Give feedback
-Then add this inside your first <script> block near your other constants:
-
-const GOOGLE_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
-const btnAddress = document.getElementById('btnAddressFind');
-const addressInput = document.getElementById('addressInput');
-Then add this below your GPS button listener:
-
-btnAddress?.addEventListener('click', async () => {
-  clearUI();
-
-  const address = addressInput.value.trim();
-
-  if (!address) {
-    notice.style.display = 'block';
-    notice.textContent = 'Please enter an address, city, or ZIP code.';
-    return;
-  }
-
-  notice.style.display = 'block';
-  notice.textContent = 'Finding your location...';
-
-  try {
-    const geoUrl =
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_API_KEY}`;
-
-    const geoRes = await fetch(geoUrl);
-    const geoData = await geoRes.json();
-
-    if (!geoData.results || geoData.results.length === 0) {
-      notice.textContent = 'We could not find that address. Please try again.';
-      return;
-    }
-
-    const loc = geoData.results[0].geometry.location;
-    const latitude = loc.lat;
-    const longitude = loc.lng;
-
-    notice.textContent = 'Please wait while volunteers are loaded...';
-
-    const res = await fetch(
-      `${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`,
-      { cache: 'no-store' }
-    );
-
-    await renderResults(res);
-  } catch (e) {
-    showError(e);
-  }
-});
-Also change your GPS error message to this:
-
-notice.textContent = 'Location permission was denied or your device location was inaccurate. Please search by address or ZIP code instead.';
-Best setup:
-
-Primary option: Enter Address or ZIP Code
-Backup option: Use My Current Location
-That will fix the “I’m showing 6 miles away” problem for most users.
-
-
-image.png
-
-image.png
-
-Pasted text.txt
-Document
-
-image.png
-
-That part looks correct.
-
-The issue is likely one of these:
-
-You edited the code but did not publish/update the live page
-
-Your browser is still showing cached old code
-
-The button ID in the HTML does not match the JavaScript
-
-Check line 471:
-
-const btnAddress = document.getElementById('btnAddressFind');
-Now search your HTML for:
-
-id="btnAddressFind"
-
-Give feedback
-It must look like this:
-
-<button id="btnAddressFind" class="btn btn-primary" type="button">
-  Search by Address or ZIP
-</button>
-
-Give feedback
-If that matches, then publish/save the page again and hard refresh:
-
-CTRL + F5
-Also, you pasted another live API key in the screenshot. Rotate/delete that one too before leaving it live.
-
-
-image.png
-is this correct or do you need to see somehting else?
-
-Yes, that part is correct.
-
-The fact that you're still getting "Address search is not set up yet..." tells me the browser is not running the code you're looking at.
-
-That message only appears if this condition evaluates to true:
-
-if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY_HERE')
-Since your screenshot clearly shows a real API key, that code should never display that message.
-
-Let's find the real problem
-Open your website.
-
-Right-click anywhere on the page.
-
-Click Inspect.
-
-Go to the Console tab.
-
-Then click Search by Address or ZIP.
-
-Tell me exactly what appears in the console.
-
-Also answer these questions:
-What program are you editing this page with?
-
-Google Sites?
-
-WordPress?
-
-GoDaddy Website Builder?
-
-Dreamweaver?
-
-Visual Studio Code?
-
-Something else?
-
-Is freesnakerelocation.com
-
-
-image.png
-
-Yes, that screenshot shows the API key line is filled in correctly.
-
-I need to see the part below this, starting around where it says:
-
-async function searchByAddress()
-Specifically, show me the section with this line:
-
-if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY_HERE')
-Also, delete or regenerate that API key after this. It is visible in the screenshot.
-
-
 <!DOCTYPE html>
 
-<html lang="en"> <head> <meta charset="UTF-8" /> <title>Free Snake Relocation | Find Local Snake Relocation Help</title> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <meta name="description" content="Free Snake Relocation helps you find local volunteer snake relocators near you. Use GPS to find the closest help, learn about snakes, and connect with experienced volunteers." /> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Free Snake Relocation | Find Local Snake Relocation Help</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free Snake Relocation helps you find local volunteer snake relocators near you. Use GPS to find the closest help, learn about snakes, and connect with experienced volunteers." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
-<style> * { box-sizing: border-box; } html { scroll-behavior: smooth; } body { margin: 0; font-family: 'Inter', sans-serif; background: #f4f8f4; color: #233127; line-height: 1.65; font-size: 16px; } a { color: #225533; font-weight: 600; text-decoration: none; } a:hover { text-decoration: underline; } .content-wrapper { max-width: 1100px; margin: 0 auto; padding: 24px 18px 40px; } .hero { background: linear-gradient(180deg, #e5f3e8 0%, #dcecdf 100%); border: 1px solid #d3e2d5; border-radius: 18px; padding: 28px 18px 22px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); } .hero-inner { max-width: 820px; margin: 0 auto; text-align: center; } .eyebrow { display: inline-block; margin-bottom: 10px; padding: 6px 10px; border-radius: 999px; background: #edf6ef; color: #225533; font-size: 0.85rem; font-weight: 700; border: 1px solid #d8e7db; } .hero h1 { margin: 0 0 12px; font-size: 2.4rem; line-height: 1.15; color: #163b25; } .hero-subtext { margin: 0 auto 18px; max-width: 720px; font-size: 1.08rem; color: #425247; } .trust-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 0 0 22px; } .trust-pill { background: #ffffff; color: #284130; border: 1px solid #d7e3d9; border-radius: 999px; padding: 8px 12px; font-size: 0.92rem; font-weight: 600; } .finder-card { background: #ffffff; border: 1px solid #dce7de; border-radius: 16px; padding: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.05); text-align: left; max-width: 760px; margin: 0 auto; } .finder-card h2 { margin: 0 0 8px; font-size: 1.85rem; line-height: 1.2; color: #1f2d23; } .helper { color: #5d6d62; font-size: 1rem; } .finder-actions { display: flex; justify-content: center; margin: 20px 0 10px; } .btn { appearance: none; display: inline-block; border: 1px solid transparent; border-radius: 10px; padding: 16px 20px; cursor: pointer; font-family: inherit; font-size: 1.08rem; font-weight: 700; transition: transform .15s ease, background .15s ease, box-shadow .15s ease; text-decoration: none; } .btn:hover { text-decoration: none; transform: translateY(-1px); } .btn-primary { background: #225533; color: #fff; border-color: #225533; box-shadow: 0 6px 14px rgba(34,85,51,0.18); } .btn-primary:hover { background: #1b472b; } .btn-secondary { background: #f3f3f3; color: #333; border: 1px solid #ccc; } .results-grid { display: grid; gap: 12px; margin-top: 14px; } .card { background: #fff; border: 1px solid #dfe7df; border-radius: 12px; padding: 14px; } .contact-line { margin-top: 6px; font-weight: 700; color: #253229; } .text-note { font-size: .9rem; color: #47614d; margin-top: 2px; } .section-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 22px 0 24px; } .info-card { background: #fff; border: 1px solid #dde6de; border-radius: 14px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); } .info-card h3 { margin: 0 0 8px; color: #225533; font-size: 1.15rem; } .info-card p { margin: 0; color: #4b5b50; } .disclaimer-box { background: #fff7e6; border: 2px solid #d6b24c; border-radius: 14px; padding: 18px 18px 16px; margin: 0 0 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); } .disclaimer-box h2 { color: #7a5a00; margin: 0 0 10px; font-size: 1.2rem; } .disclaimer-box p { margin: 0 0 10px; color: #4d430f; } .disclaimer-box p:last-child { margin-bottom: 0; } .bottom-note { background: #eef5ef; border: 1px solid #d7e2d8; border-radius: 14px; padding: 16px 18px; color: #3d5142; margin-top: 10px; } footer { text-align: center; font-size: .92rem; color: #68786d; margin: 28px 0 8px; } .modal { display: none; position: fixed; z-index: 9999; inset: 0; width: 100%; height: 100%; background: rgba(0,0,0,.72); overflow: auto; } .modal-content { background: #fff; margin: 5% auto; padding: 22px; border-radius: 12px; max-width: 680px; width: 92%; max-height: 90vh; box-shadow: 0 10px 30px rgba(0,0,0,.28); position: relative; overflow-y: auto; text-align: left; } .modal-content h2 { margin: 0 0 12px; color: #225533; font-size: 1.45rem; line-height: 1.3; } .modal-content p { margin: 0 0 12px; color: #333; font-size: 1rem; line-height: 1.6; } .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; flex-wrap: wrap; } .modal-actions .btn { font-size: 1rem; padding: 12px 16px; border-radius: 8px; } .modal-small { font-size: .92rem; color: #666; margin-top: 6px; } @media (max-width: 900px) { .section-grid { grid-template-columns: 1fr; } } @media (max-width: 640px) { .content-wrapper { padding: 16px 14px 32px; } .hero { padding: 24px 14px 18px; } .hero h1 { font-size: 1.9rem; } .hero-subtext { font-size: 1rem; } .finder-card { padding: 18px; } .finder-card h2 { font-size: 1.5rem; } .finder-actions { margin-top: 18px; } .finder-actions .btn { width: 100%; text-align: center; } } .loading-notice { background: #225533; color: #fff; font-weight: 700; text-align: center; padding: 12px; border-radius: 10px; margin: 12px 0; animation: pulseLoading 1.5s infinite; } @keyframes pulseLoading { 0% { opacity: 1; } 50% { opacity: .5; } 100% { opacity: 1; } } </style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-</head> <body>
+    html {
+      scroll-behavior: smooth;
+    }
 
-<div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle"> <div class="modal-content"> <h2 id="disclaimerTitle">Important Disclaimer</h2> <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p> <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact.</p> <p>By using this website, you acknowledge that you use it at your own risk. If you need immediate help, guaranteed service, emergency assistance, or a licensed pest control provider, do not rely solely on this website.</p> <p class="modal-small">Please also read our <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">full disclaimer</a>.</p> <div class="modal-actions"> <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Read Full Disclaimer</a> <button id="acceptDisclaimer" class="btn btn-primary" type="button">I Understand</button> </div> </div> </div>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f4f8f4;
+      color: #233127;
+      line-height: 1.65;
+      font-size: 16px;
+    }
 
-<div class="content-wrapper">
+    a {
+      color: #225533;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .content-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #e5f3e8 0%, #dcecdf 100%);
+      border: 1px solid #d3e2d5;
+      border-radius: 18px;
+      padding: 28px 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    .hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #edf6ef;
+      color: #225533;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid #d8e7db;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 2.4rem;
+      line-height: 1.15;
+      color: #163b25;
+    }
+
+    .hero-subtext {
+      margin: 0 auto 18px;
+      max-width: 720px;
+      font-size: 1.08rem;
+      color: #425247;
+    }
+
+    .trust-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 22px;
+    }
+
+    .trust-pill {
+      background: #ffffff;
+      color: #284130;
+      border: 1px solid #d7e3d9;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .finder-card {
+      background: #ffffff;
+      border: 1px solid #dce7de;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      text-align: left;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .finder-card h2 {
+      margin: 0 0 8px;
+      font-size: 1.85rem;
+      line-height: 1.2;
+      color: #1f2d23;
+    }
+
+    .helper {
+      color: #5d6d62;
+      font-size: 1rem;
+    }
+
+    .finder-actions {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0 10px;
+    }
+
+    .btn {
+      appearance: none;
+      display: inline-block;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1.08rem;
+      font-weight: 700;
+      transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #225533;
+      color: #fff;
+      border-color: #225533;
+      box-shadow: 0 6px 14px rgba(34,85,51,0.18);
+    }
+
+    .btn-primary:hover {
+      background: #1b472b;
+    }
+
+    .btn-secondary {
+      background: #f3f3f3;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    .results-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #dfe7df;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .contact-line {
+      margin-top: 6px;
+      font-weight: 700;
+      color: #253229;
+    }
+
+    .text-note {
+      font-size: .9rem;
+      color: #47614d;
+      margin-top: 2px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 22px 0 24px;
+    }
+
+    .info-card {
+      background: #fff;
+      border: 1px solid #dde6de;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+
+    .info-card h3 {
+      margin: 0 0 8px;
+      color: #225533;
+      font-size: 1.15rem;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: #4b5b50;
+    }
+
+    .disclaimer-box {
+      background: #fff7e6;
+      border: 2px solid #d6b24c;
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      margin: 0 0 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .disclaimer-box h2 {
+      color: #7a5a00;
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .disclaimer-box p {
+      margin: 0 0 10px;
+      color: #4d430f;
+    }
+
+    .disclaimer-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .bottom-note {
+      background: #eef5ef;
+      border: 1px solid #d7e2d8;
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: #3d5142;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: .92rem;
+      color: #68786d;
+      margin: 28px 0 8px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,.72);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 22px;
+      border-radius: 12px;
+      max-width: 680px;
+      width: 92%;
+      max-height: 90vh;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+      position: relative;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .modal-content h2 {
+      margin: 0 0 12px;
+      color: #225533;
+      font-size: 1.45rem;
+      line-height: 1.3;
+    }
+
+    .modal-content p {
+      margin: 0 0 12px;
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .modal-actions .btn {
+      font-size: 1rem;
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+
+    .modal-small {
+      font-size: .92rem;
+      color: #666;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .content-wrapper {
+        padding: 16px 14px 32px;
+      }
+
+      .hero {
+        padding: 24px 14px 18px;
+      }
+
+      .hero h1 {
+        font-size: 1.9rem;
+      }
+
+      .hero-subtext {
+        font-size: 1rem;
+      }
+
+      .finder-card {
+        padding: 18px;
+      }
+
+      .finder-card h2 {
+        font-size: 1.5rem;
+      }
+
+      .finder-actions {
+        margin-top: 18px;
+      }
+
+      .finder-actions .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    .loading-notice {
+  background: #225533;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 12px 0;
+  animation: pulseLoading 1.5s infinite;
+}
+
+@keyframes pulseLoading {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+  </style>
+
+</head>
+<body>
+
+  <div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle">
+    <div class="modal-content">
+      <h2 id="disclaimerTitle">Important Disclaimer</h2>
+      <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
+      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact.</p>
+      <p>By using this website, you acknowledge that you use it at your own risk. If you need immediate help, guaranteed service, emergency assistance, or a licensed pest control provider, do not rely solely on this website.</p>
+      <p class="modal-small">Please also read our <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">full disclaimer</a>.</p>
+      <div class="modal-actions">
+        <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Read Full Disclaimer</a>
+        <button id="acceptDisclaimer" class="btn btn-primary" type="button">I Understand</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
 
 <section class="hero">
   <div class="hero-inner">
@@ -329,13 +465,142 @@ Also, delete or regenerate that API key after this. It is visible in the screens
 <footer>
   © 2025 Free Snake Relocation · Volunteer-run · <a href="/disclaimer.html">Disclaimer</a>
 </footer>
-</div>
 
-<script> const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec'; const TOP_N = 3; const btnGeo = document.getElementById('btnGeoFind'); const notice = document.getElementById('closestNotice'); const results = document.getElementById('closestResults'); btnGeo?.addEventListener('click', () => { clearUI(); notice.style.display = 'block'; notice.textContent = 'Please wait while volunteers are loaded...'; if (!('geolocation' in navigator)) { notice.style.display = 'block'; notice.textContent = 'Geolocation is not supported by this browser.'; return; } navigator.geolocation.getCurrentPosition(async (pos) => { const { latitude, longitude } = pos.coords; try { const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' }); await renderResults(res); } catch (e) { showError(e); } }, () => { notice.style.display = 'block'; notice.textContent = 'Location permission was denied. Please enable GPS and try again.'; }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }); }); async function renderResults(res) { const text = await res.text(); let rows; try { rows = JSON.parse(text); } catch (err) { notice.textContent = 'The server returned an invalid response.'; console.error('Parse error:', text); return; } if (!Array.isArray(rows) || rows.length === 0) { notice.textContent = 'No volunteers were found near your location.'; return; } notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`; results.innerHTML = rows.map(renderCard).join(''); } function renderCard(r) { const name = esc(r['Full Name'] || 'Name N/A'); const phone = esc(r['Phone'] || ''); const email = esc(r['Email'] || ''); const city = esc(r['City'] || ''); const state = esc(r['State'] || ''); const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi away` : ''; const emailHref = email ? `href="mailto:${email}"` : ''; return ` <div class="card"> <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"> <div> <strong>${name}</strong> ${miles ? `<span class="helper">• ${miles}</span>` : ''} <div class="helper">${city}${city && state ? ', ' : ''}${state}</div> ${phone ? `<div class="contact-line">Phone: ${phone}</div><div class="text-note">Prefer text first. Many volunteers screen calls.</div>` : ''} </div> <div style="display:flex;gap:8px;align-items:center;"> ${emailHref ? `<a class="btn btn-secondary" ${emailHref}>Email</a>` : ''} </div> </div> </div> `; } function clearUI() { results.innerHTML = ''; notice.textContent = ''; notice.style.display = 'none'; } function showError(e) { notice.textContent = 'Could not load results. Please try again.'; console.error(e); } function esc(s) { return String(s || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); } </script>
+  </div>
 
-<script> window.addEventListener('load', () => { const modal = document.getElementById('disclaimerModal'); const acceptBtn = document.getElementById('acceptDisclaimer'); const storageKey = 'fsr_disclaimer_ack_v1'; if (!modal || !acceptBtn) return; const alreadyAccepted = localStorage.getItem(storageKey); if (alreadyAccepted === 'yes') { modal.style.display = 'none'; modal.setAttribute('aria-hidden', 'true'); return; } modal.style.display = 'block'; modal.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; acceptBtn.addEventListener('click', () => { localStorage.setItem(storageKey, 'yes'); modal.style.display = 'none'; modal.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }); }); </script>
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
+    const TOP_N = 3;
 
-</body> </html>
+    const btnGeo = document.getElementById('btnGeoFind');
+    const notice = document.getElementById('closestNotice');
+    const results = document.getElementById('closestResults');
 
+    btnGeo?.addEventListener('click', () => {
+  clearUI();
 
-Close
+  notice.style.display = 'block';
+  notice.textContent = 'Please wait while volunteers are loaded...';
+
+  if (!('geolocation' in navigator)) {
+    notice.style.display = 'block';
+    notice.textContent = 'Geolocation is not supported by this browser.';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const { latitude, longitude } = pos.coords;
+
+    try {
+      const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
+      await renderResults(res);
+    } catch (e) {
+      showError(e);
+    }
+  }, () => {
+    notice.style.display = 'block';
+    notice.textContent = 'Location permission was denied. Please enable GPS and try again.';
+  }, {
+    enableHighAccuracy: true,
+    timeout: 12000,
+    maximumAge: 0
+  });
+});
+    async function renderResults(res) {
+      const text = await res.text();
+      let rows;
+
+      try {
+        rows = JSON.parse(text);
+      } catch (err) {
+        notice.textContent = 'The server returned an invalid response.';
+        console.error('Parse error:', text);
+        return;
+      }
+
+      if (!Array.isArray(rows) || rows.length === 0) {
+        notice.textContent = 'No volunteers were found near your location.';
+        return;
+      }
+
+      notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
+      results.innerHTML = rows.map(renderCard).join('');
+    }
+
+    function renderCard(r) {
+      const name = esc(r['Full Name'] || 'Name N/A');
+      const phone = esc(r['Phone'] || '');
+      const email = esc(r['Email'] || '');
+      const city = esc(r['City'] || '');
+      const state = esc(r['State'] || '');
+      const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi away` : '';
+      const emailHref = email ? `href="mailto:${email}"` : '';
+
+      return `
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <div>
+              <strong>${name}</strong> ${miles ? `<span class="helper">• ${miles}</span>` : ''}
+              <div class="helper">${city}${city && state ? ', ' : ''}${state}</div>
+              ${phone ? `<div class="contact-line">Phone: ${phone}</div><div class="text-note">Prefer text first. Many volunteers screen calls.</div>` : ''}
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              ${emailHref ? `<a class="btn btn-secondary" ${emailHref}>Email</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function clearUI() {
+  results.innerHTML = '';
+  notice.textContent = '';
+  notice.style.display = 'none';
+}
+    function showError(e) {
+      notice.textContent = 'Could not load results. Please try again.';
+      console.error(e);
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[m]));
+    }
+  </script>
+
+  <script>
+    window.addEventListener('load', () => {
+      const modal = document.getElementById('disclaimerModal');
+      const acceptBtn = document.getElementById('acceptDisclaimer');
+      const storageKey = 'fsr_disclaimer_ack_v1';
+
+      if (!modal || !acceptBtn) return;
+
+      const alreadyAccepted = localStorage.getItem(storageKey);
+
+      if (alreadyAccepted === 'yes') {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        return;
+      }
+
+      modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem(storageKey, 'yes');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
+    });
+  </script>
+
+</body>
+</html>
