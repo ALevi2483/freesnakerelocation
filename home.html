@@ -8,13 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -31,9 +26,7 @@
       text-decoration: none;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
     .content-wrapper {
       max-width: 1100px;
@@ -155,14 +148,30 @@
       box-shadow: 0 6px 14px rgba(34,85,51,0.18);
     }
 
-    .btn-primary:hover {
-      background: #1b472b;
-    }
+    .btn-primary:hover { background: #1b472b; }
 
     .btn-secondary {
       background: #f3f3f3;
       color: #333;
       border: 1px solid #ccc;
+    }
+
+    .address-search {
+      margin-top: 14px;
+    }
+
+    .address-search input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .address-search button {
+      width: 100%;
+      margin-top: 10px;
     }
 
     .results-grid {
@@ -236,9 +245,7 @@
       color: #4d430f;
     }
 
-    .disclaimer-box p:last-child {
-      margin-bottom: 0;
-    }
+    .disclaimer-box p:last-child { margin-bottom: 0; }
 
     .bottom-note {
       background: #eef5ef;
@@ -315,72 +322,43 @@
       margin-top: 6px;
     }
 
+    .loading-notice {
+      background: #225533;
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 12px 0;
+      animation: pulseLoading 1.5s infinite;
+    }
+
+    @keyframes pulseLoading {
+      0% { opacity: 1; }
+      50% { opacity: .5; }
+      100% { opacity: 1; }
+    }
+
     @media (max-width: 900px) {
-      .section-grid {
-        grid-template-columns: 1fr;
-      }
+      .section-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px) {
-      .content-wrapper {
-        padding: 16px 14px 32px;
-      }
-
-      .hero {
-        padding: 24px 14px 18px;
-      }
-
-      .hero h1 {
-        font-size: 1.9rem;
-      }
-
-      .hero-subtext {
-        font-size: 1rem;
-      }
-
-      .finder-card {
-        padding: 18px;
-      }
-
-      .finder-card h2 {
-        font-size: 1.5rem;
-      }
-
-      .finder-actions {
-        margin-top: 18px;
-      }
-
+      .content-wrapper { padding: 16px 14px 32px; }
+      .hero { padding: 24px 14px 18px; }
+      .hero h1 { font-size: 1.9rem; }
+      .hero-subtext { font-size: 1rem; }
+      .finder-card { padding: 18px; }
+      .finder-card h2 { font-size: 1.5rem; }
+      .finder-actions { margin-top: 18px; }
       .finder-actions .btn {
         width: 100%;
         text-align: center;
       }
     }
-    .loading-notice {
-  background: #225533;
-  color: #fff;
-  font-weight: 700;
-  text-align: center;
-  padding: 12px;
-  border-radius: 10px;
-  margin: 12px 0;
-  animation: pulseLoading 1.5s infinite;
-}
-
-@keyframes pulseLoading {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: .5;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
   </style>
 </head>
+
 <body>
 
   <div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle">
@@ -402,9 +380,11 @@
     <section class="hero">
       <div class="hero-inner">
         <div class="eyebrow">Free volunteer snake relocation help</div>
+
         <h1>Find Local Snake Relocation Help Near You</h1>
+
         <p class="hero-subtext">
-          Connect with volunteer snake relocators in your area. Use your GPS location to find the closest available help, learn about local snakes, and handle the situation safely.
+          Connect with volunteer snake relocators in your area. Use your GPS location or enter your address to find the closest available help, learn about local snakes, and handle the situation safely.
         </p>
 
         <div class="trust-row">
@@ -416,10 +396,27 @@
 
         <div class="finder-card" aria-labelledby="closest-title">
           <h2 id="closest-title">Find the Closest Relocator</h2>
-          <p class="helper">Get connected to the 3 closest volunteers near you right now.</p>
+
+          <p class="helper">
+            Get connected to the 3 closest volunteers near you right now.
+          </p>
+
+          <div class="address-search">
+            <input
+              id="addressInput"
+              type="text"
+              placeholder="Enter your address, city, or ZIP code"
+              autocomplete="street-address"
+            />
+            <button id="btnAddressFind" class="btn btn-primary" type="button">
+              Search by Address or ZIP
+            </button>
+          </div>
 
           <div class="finder-actions">
-            <button id="btnGeoFind" class="btn btn-primary">📍 Find Help Near Me Now</button>
+            <button id="btnGeoFind" class="btn btn-secondary" type="button">
+              📍 Use My Current Location
+            </button>
           </div>
 
           <p class="helper" style="text-align:center; margin: 8px 0 0;">
@@ -435,7 +432,7 @@
     <div class="section-grid">
       <div class="info-card">
         <h3>How It Works</h3>
-        <p>Use your GPS location to find nearby volunteer snake relocators. You can then contact the person directly for help.</p>
+        <p>Enter your address or use your GPS location to find nearby volunteer snake relocators. You can then contact the person directly for help.</p>
       </div>
 
       <div class="info-card">
@@ -467,42 +464,115 @@
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
+    const GOOGLE_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY_HERE';
     const TOP_N = 3;
 
     const btnGeo = document.getElementById('btnGeoFind');
+    const btnAddress = document.getElementById('btnAddressFind');
+    const addressInput = document.getElementById('addressInput');
     const notice = document.getElementById('closestNotice');
     const results = document.getElementById('closestResults');
 
     btnGeo?.addEventListener('click', () => {
-  clearUI();
+      clearUI();
 
-  notice.style.display = 'block';
-  notice.textContent = 'Please wait while volunteers are loaded...';
+      notice.style.display = 'block';
+      notice.textContent = 'Checking your device location...';
 
-  if (!('geolocation' in navigator)) {
-    notice.style.display = 'block';
-    notice.textContent = 'Geolocation is not supported by this browser.';
-    return;
-  }
+      if (!('geolocation' in navigator)) {
+        notice.style.display = 'block';
+        notice.textContent = 'Geolocation is not supported by this browser. Please search by address or ZIP code instead.';
+        return;
+      }
 
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const { latitude, longitude } = pos.coords;
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const { latitude, longitude, accuracy } = pos.coords;
 
-    try {
-      const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
-      await renderResults(res);
-    } catch (e) {
-      showError(e);
+        try {
+          notice.textContent = accuracy
+            ? `Location found. Accuracy is about ${Math.round(accuracy)} meters. Loading volunteers...`
+            : 'Location found. Loading volunteers...';
+
+          await fetchVolunteers(latitude, longitude);
+        } catch (e) {
+          showError(e);
+        }
+      }, () => {
+        notice.style.display = 'block';
+        notice.textContent = 'Location permission was denied or your device location was inaccurate. Please search by address or ZIP code instead.';
+      }, {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 0
+      });
+    });
+
+    btnAddress?.addEventListener('click', async () => {
+      await searchByAddress();
+    });
+
+    addressInput?.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        await searchByAddress();
+      }
+    });
+
+    async function searchByAddress() {
+      clearUI();
+
+      const address = addressInput.value.trim();
+
+      if (!address) {
+        notice.style.display = 'block';
+        notice.textContent = 'Please enter an address, city, or ZIP code.';
+        return;
+      }
+
+      if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY_HERE') {
+        notice.style.display = 'block';
+        notice.textContent = 'Address search is not set up yet. Add your Google Maps API key in the code.';
+        return;
+      }
+
+      notice.style.display = 'block';
+      notice.textContent = 'Finding that address...';
+
+      try {
+        const geoUrl =
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&region=us&key=${GOOGLE_API_KEY}`;
+
+        const geoRes = await fetch(geoUrl, { cache: 'no-store' });
+        const geoData = await geoRes.json();
+
+        if (geoData.status !== 'OK' || !geoData.results || geoData.results.length === 0) {
+          notice.textContent = 'We could not find that address. Please try again with a full address, city, state, or ZIP code.';
+          console.error('Geocoding error:', geoData);
+          return;
+        }
+
+        const location = geoData.results[0].geometry.location;
+        const latitude = location.lat;
+        const longitude = location.lng;
+        const formattedAddress = geoData.results[0].formatted_address || address;
+
+        notice.textContent = `Location found: ${formattedAddress}. Loading volunteers...`;
+
+        await fetchVolunteers(latitude, longitude);
+      } catch (e) {
+        showError(e);
+      }
     }
-  }, () => {
-    notice.style.display = 'block';
-    notice.textContent = 'Location permission was denied. Please enable GPS and try again.';
-  }, {
-    enableHighAccuracy: true,
-    timeout: 12000,
-    maximumAge: 0
-  });
-});
+
+    async function fetchVolunteers(latitude, longitude) {
+      const res = await fetch(
+        `${SCRIPT_URL}?lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}&limit=${TOP_N}`,
+        { cache: 'no-store' }
+      );
+
+      await renderResults(res);
+    }
+
     async function renderResults(res) {
       const text = await res.text();
       let rows;
@@ -530,7 +600,9 @@
       const email = esc(r['Email'] || '');
       const city = esc(r['City'] || '');
       const state = esc(r['State'] || '');
-      const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi away` : '';
+      const miles = typeof r['Distance'] === 'number'
+        ? `${Number(r['Distance']).toFixed(1)} mi away`
+        : '';
       const emailHref = email ? `href="mailto:${email}"` : '';
 
       return `
@@ -550,11 +622,13 @@
     }
 
     function clearUI() {
-  results.innerHTML = '';
-  notice.textContent = '';
-  notice.style.display = 'none';
-}
+      results.innerHTML = '';
+      notice.textContent = '';
+      notice.style.display = 'none';
+    }
+
     function showError(e) {
+      notice.style.display = 'block';
       notice.textContent = 'Could not load results. Please try again.';
       console.error(e);
     }
