@@ -508,7 +508,7 @@
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
 
-    // Replace this with your NEW restricted Google Maps API key.
+    // Google Maps API key for address geocoding.
     const GOOGLE_API_KEY = 'AIzaSyBBrFyurt2hMyvAbbnUr7bN0WgCLta2dmk';
 
     const TOP_N = 3;
@@ -575,7 +575,7 @@
         return;
       }
 
-      if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'AIzaSyBBrFyurt2hMyvAbbnUr7bN0WgCLta2dmk') {
+      if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'PASTE_YOUR_NEW_GOOGLE_MAPS_API_KEY_HERE') {
         notice.style.display = 'block';
         notice.textContent = 'Address search is not set up yet. Add your restricted Google Maps API key in the code.';
         return;
@@ -679,7 +679,7 @@ if (geoData.status !== 'OK') {
 
     function showError(e) {
       notice.style.display = 'block';
-      notice.textContent = 'Could not load results. Please try again.';
+      notice.textContent = 'Could not load results. Please try again. If this keeps happening, use the GPS option.';
       console.error(e);
     }
 
