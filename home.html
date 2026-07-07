@@ -591,11 +591,16 @@
         const geoRes = await fetch(geoUrl, { cache: 'no-store' });
         const geoData = await geoRes.json();
 
-        if (geoData.status !== 'OK' || !geoData.results || geoData.results.length === 0) {
-          notice.textContent = 'We could not find that location. Try a full street address, city and state, or ZIP code.';
-          console.error('Geocoding error:', geoData);
-          return;
-        }
+if (geoData.status !== 'OK') {
+    console.log(geoData);
+
+    notice.textContent =
+        "Google returned: " +
+        geoData.status +
+        (geoData.error_message ? " - " + geoData.error_message : "");
+
+    return;
+}
 
         const bestResult = geoData.results[0];
         const location = bestResult.geometry.location;
