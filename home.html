@@ -507,17 +507,17 @@
 
         <div class="social-proof">
           Trusted by thousands of homeowners
-          <span>1,700+ volunteer snake relocators across the United States.</span>
+          <span id="socialProofDetail">Loading current volunteer network...</span>
         </div>
 
         <div class="stats-grid" aria-label="Free Snake Relocation impact numbers">
           <div class="stat-card">
-            <span id="volunteerCounter" class="stat-number" data-count="1700" data-suffix="+">0</span>
+            <span id="volunteerCounter" class="stat-number">0</span>
             <span class="stat-label">Volunteer Relocators</span>
           </div>
 
           <div class="stat-card">
-            <span id="stateCounter" class="stat-number" data-count="49" data-suffix="+">0</span>
+            <span id="stateCounter" class="stat-number">0</span>
             <span class="stat-label">States Covered</span>
           </div>
         </div>
@@ -604,9 +604,51 @@
 
 
   <script>
-    function animateCounter(el) {
-      const end = Number(el.dataset.count || 0);
-      const suffix = el.dataset.suffix || '';
+    async function loadStats() {
+      const volunteerEl = document.getElementById('volunteerCounter');
+      const stateEl = document.getElementById('stateCounter');
+      const socialProofDetail = document.getElementById('socialProofDetail');
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?stats=true`, {
+          cache: 'no-store'
+        });
+
+        const stats = await response.json();
+
+        if (!stats || stats.ok === false) {
+          throw new Error(stats && stats.message ? stats.message : 'Stats response failed.');
+        }
+
+        const volunteers = Number(stats.volunteers || 0);
+        const states = Number(stats.states || 0);
+
+        animateCounter(volunteerEl, volunteers);
+        animateCounter(stateEl, states);
+
+        if (socialProofDetail) {
+          socialProofDetail.textContent =
+            `${volunteers.toLocaleString()} volunteer snake relocators across ${states.toLocaleString()} states.`;
+        }
+
+      } catch (err) {
+        console.error('Could not load live stats:', err);
+
+        animateCounter(volunteerEl, 1700);
+        animateCounter(stateEl, 49);
+
+        if (socialProofDetail) {
+          socialProofDetail.textContent =
+            '1,700+ volunteer snake relocators across the United States.';
+        }
+      }
+    }
+
+    function animateCounter(el, end) {
+      if (!el) return;
+
+      end = Number(end || 0);
+
       const duration = 1200;
       const startTime = performance.now();
 
@@ -615,25 +657,22 @@
         const eased = 1 - Math.pow(1 - progress, 3);
         const value = Math.floor(eased * end);
 
-        el.textContent = value.toLocaleString() + suffix;
+        el.textContent = value.toLocaleString();
 
         if (progress < 1) {
           requestAnimationFrame(update);
         } else {
-          el.textContent = end.toLocaleString() + suffix;
+          el.textContent = end.toLocaleString();
         }
       }
 
       requestAnimationFrame(update);
     }
-
-    window.addEventListener('load', () => {
-      document.querySelectorAll('.stat-number').forEach(animateCounter);
-    });
   </script>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
+    window.addEventListener("load", loadStats);
     const TOP_N = 3;
 
     const btnGeo = document.getElementById('btnGeoFind');
