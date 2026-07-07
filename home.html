@@ -8,13 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -31,9 +26,7 @@
       text-decoration: none;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
     .content-wrapper {
       max-width: 1100px;
@@ -155,9 +148,7 @@
       box-shadow: 0 6px 14px rgba(34,85,51,0.18);
     }
 
-    .btn-primary:hover {
-      background: #1b472b;
-    }
+    .btn-primary:hover { background: #1b472b; }
 
     .btn-secondary {
       background: #f3f3f3;
@@ -254,9 +245,7 @@
       color: #4d430f;
     }
 
-    .disclaimer-box p:last-child {
-      margin-bottom: 0;
-    }
+    .disclaimer-box p:last-child { margin-bottom: 0; }
 
     .bottom-note {
       background: #eef5ef;
@@ -345,17 +334,9 @@
     }
 
     @keyframes pulseLoading {
-      0% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: .5;
-      }
-
-      100% {
-        opacity: 1;
-      }
+      0% { opacity: 1; }
+      50% { opacity: .5; }
+      100% { opacity: 1; }
     }
 
     @media (max-width: 900px) {
@@ -507,10 +488,6 @@
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
-
-    // Google Maps API key for address geocoding.
-    
-
     const TOP_N = 3;
 
     const btnGeo = document.getElementById('btnGeoFind');
@@ -565,33 +542,13 @@
     });
 
     async function searchByAddress() {
-  clearUI();
+      clearUI();
 
-  const address = addressInput.value.trim();
+      const address = addressInput.value.trim();
 
-  if (!address) {
-    notice.style.display = 'block';
-    notice.textContent = 'Please enter an address, city, or ZIP code.';
-    return;
-  }
-
-  notice.style.display = 'block';
-  notice.textContent = 'Finding that location...';
-
-  try {
-    const res = await fetch(
-      `${SCRIPT_URL}?address=${encodeURIComponent(address)}&limit=${TOP_N}`,
-      { cache: 'no-store' }
-    );
-
-    await renderResults(res);
-  } catch (e) {
-    showError(e);
-  }
-}
-      if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'PASTE_YOUR_NEW_GOOGLE_MAPS_API_KEY_HERE') {
+      if (!address) {
         notice.style.display = 'block';
-        notice.textContent = 'Address search is not set up yet. Add your restricted Google Maps API key in the code.';
+        notice.textContent = 'Please enter an address, city, or ZIP code.';
         return;
       }
 
@@ -599,30 +556,12 @@
       notice.textContent = 'Finding that location...';
 
       try {
+        const res = await fetch(
+          `${SCRIPT_URL}?address=${encodeURIComponent(address)}&limit=${TOP_N}`,
+          { cache: 'no-store' }
+        );
 
-        const geoRes = await fetch(geoUrl, { cache: 'no-store' });
-        const geoData = await geoRes.json();
-
-if (geoData.status !== 'OK') {
-    console.log(geoData);
-
-    notice.textContent =
-        "Google returned: " +
-        geoData.status +
-        (geoData.error_message ? " - " + geoData.error_message : "");
-
-    return;
-}
-
-        const bestResult = geoData.results[0];
-        const location = bestResult.geometry.location;
-        const latitude = location.lat;
-        const longitude = location.lng;
-        const formattedAddress = bestResult.formatted_address || address;
-
-        notice.textContent = `Location found: ${formattedAddress}. Loading volunteers...`;
-
-        await fetchVolunteers(latitude, longitude);
+        await renderResults(res);
       } catch (e) {
         showError(e);
       }
@@ -638,32 +577,24 @@ if (geoData.status !== 'OK') {
     }
 
     async function renderResults(res) {
-  const text = await res.text();
-  let data;
+      const text = await res.text();
+      let data;
 
-  try {
-    data = JSON.parse(text);
-  } catch (err) {
-    notice.textContent = 'The server returned an invalid response.';
-    console.error('Parse error:', text);
-    return;
-  }
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        notice.textContent = 'The server returned an invalid response.';
+        console.error('Parse error:', text);
+        return;
+      }
 
-  const rows = Array.isArray(data) ? data : data.results;
+      const rows = Array.isArray(data) ? data : data.results;
 
-  if (!data.ok && data.message) {
-    notice.textContent = data.message;
-    return;
-  }
+      if (!Array.isArray(data) && data.ok === false && data.message) {
+        notice.textContent = data.message;
+        return;
+      }
 
-  if (!Array.isArray(rows) || rows.length === 0) {
-    notice.textContent = 'No volunteers were found near your location.';
-    return;
-  }
-
-  notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
-  results.innerHTML = rows.map(renderCard).join('');
-}
       if (!Array.isArray(rows) || rows.length === 0) {
         notice.textContent = 'No volunteers were found near your location.';
         return;
