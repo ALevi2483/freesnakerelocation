@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Free Snake Relocation | Find Local Snake Relocation Help</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Free Snake Relocation helps you find local volunteer snake relocators near you. Use GPS to find the closest help, learn about snakes, and connect with experienced volunteers." />
+  <meta name="description" content="Free Snake Relocation helps you find local volunteer snake relocators near you. Use GPS, address, city, or ZIP code to find the closest help, learn about snakes, and connect with experienced volunteers." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
@@ -166,6 +165,24 @@
       border: 1px solid #ccc;
     }
 
+    .address-search {
+      margin-top: 14px;
+    }
+
+    .address-search input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .address-search button {
+      width: 100%;
+      margin-top: 10px;
+    }
+
     .results-grid {
       display: grid;
       gap: 12px;
@@ -316,6 +333,31 @@
       margin-top: 6px;
     }
 
+    .loading-notice {
+      background: #225533;
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 12px 0;
+      animation: pulseLoading 1.5s infinite;
+    }
+
+    @keyframes pulseLoading {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .5;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 900px) {
       .section-grid {
         grid-template-columns: 1fr;
@@ -356,33 +398,9 @@
         text-align: center;
       }
     }
-    .loading-notice {
-  background: #225533;
-  color: #fff;
-  font-weight: 700;
-  text-align: center;
-  padding: 12px;
-  border-radius: 10px;
-  margin: 12px 0;
-  animation: pulseLoading 1.5s infinite;
-}
-
-@keyframes pulseLoading {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: .5;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
   </style>
-
 </head>
+
 <body>
 
   <div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle">
@@ -401,111 +419,207 @@
 
   <div class="content-wrapper">
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="eyebrow">Free volunteer snake relocation help</div>
-    <h1>Find Local Snake Relocation Help Near You</h1>
-    <p class="hero-subtext">
-      Connect with volunteer snake relocators in your area. Use your GPS location to find the closest available help, learn about local snakes, and handle the situation safely.
-    </p>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">Free volunteer snake relocation help</div>
 
-    <div class="trust-row">
-      <div class="trust-pill">Free to use</div>
-      <div class="trust-pill">Volunteer-based</div>
-      <div class="trust-pill">Humane relocation focus</div>
-      <div class="trust-pill">Nationwide educational resource</div>
-    </div>
+        <h1>Find Local Snake Relocation Help Near You</h1>
 
-    <div class="finder-card" aria-labelledby="closest-title">
-      <h2 id="closest-title">Find the Closest Relocator</h2>
-      <p class="helper">Get connected to the 3 closest volunteers near you right now.</p>
+        <p class="hero-subtext">
+          Connect with volunteer snake relocators in your area. Enter your address, city, or ZIP code to find the closest available help, learn about local snakes, and handle the situation safely.
+        </p>
 
-      <div class="finder-actions">
-        <button id="btnGeoFind" class="btn btn-primary">📍 Find Help Near Me Now</button>
+        <div class="trust-row">
+          <div class="trust-pill">Free to use</div>
+          <div class="trust-pill">Volunteer-based</div>
+          <div class="trust-pill">Humane relocation focus</div>
+          <div class="trust-pill">Nationwide educational resource</div>
+        </div>
+
+        <div class="finder-card" aria-labelledby="closest-title">
+          <h2 id="closest-title">Find the Closest Relocator</h2>
+
+          <p class="helper">
+            Get connected to the 3 closest volunteers near you right now.
+          </p>
+
+          <div class="address-search">
+            <input
+              id="addressInput"
+              type="text"
+              placeholder="Street address, city, or ZIP code"
+              autocomplete="street-address"
+            />
+
+            <button id="btnAddressFind" class="btn btn-primary" type="button">
+              Search by Address or ZIP
+            </button>
+          </div>
+
+          <div class="finder-actions">
+            <button id="btnGeoFind" class="btn btn-secondary" type="button">
+              📍 Use My Current Location
+            </button>
+          </div>
+
+          <p class="helper" style="text-align:center; margin: 8px 0 0;">
+            Free • Volunteer-based
+          </p>
+
+          <div id="closestNotice" class="loading-notice" style="display:none;"></div>
+          <div id="closestResults" class="results-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-grid">
+      <div class="info-card">
+        <h3>How It Works</h3>
+        <p>Enter your address, city, or ZIP code to find nearby volunteer snake relocators. You can then contact the person directly for help.</p>
       </div>
 
-      <p class="helper" style="text-align:center; margin: 8px 0 0;">
-        Free • Volunteer-based
-      </p>
+      <div class="info-card">
+        <h3>Become a Volunteer</h3>
+        <p>If you have snake handling experience and want to help others, <a href="/volunteer.html">apply here</a> to join the directory.</p>
+      </div>
 
-      <div id="closestNotice" class="loading-notice" style="display:none;"></div>
-      <div id="closestResults" class="results-grid"></div>
+      <div class="info-card">
+        <h3>Learn Before You Act</h3>
+        <p>Visit our <a href="/education.html">snake education section</a> to learn about local species and safe response steps.</p>
+      </div>
     </div>
-  </div>
-</section>
 
-<div class="section-grid">
-  <div class="info-card">
-    <h3>How It Works</h3>
-    <p>Use your GPS location to find nearby volunteer snake relocators. You can then contact the person directly for help.</p>
-  </div>
+    <div class="disclaimer-box">
+      <h2>Important Disclaimer</h2>
+      <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
+      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact. Use of this website is at your own risk.</p>
+      <p><a href="/disclaimer.html">Read the full disclaimer here</a>.</p>
+    </div>
 
-  <div class="info-card">
-    <h3>Become a Volunteer</h3>
-    <p>If you have snake handling experience and want to help others, <a href="/volunteer.html">apply here</a> to join the directory.</p>
-  </div>
+    <div class="bottom-note">
+      Found a bad listing, outdated information, or another issue? <a href="/Contact.html">Contact us here</a>.
+    </div>
 
-  <div class="info-card">
-    <h3>Learn Before You Act</h3>
-    <p>Visit our <a href="/education.html">snake education section</a> to learn about local species and safe response steps.</p>
-  </div>
-</div>
-
-<div class="disclaimer-box">
-  <h2>Important Disclaimer</h2>
-  <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
-  <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact. Use of this website is at your own risk.</p>
-  <p><a href="/disclaimer.html">Read the full disclaimer here</a>.</p>
-</div>
-
-<div class="bottom-note">
-  Found a bad listing, outdated information, or another issue? <a href="/Contact.html">Contact us here</a>.
-</div>
-
-<footer>
-  © 2025 Free Snake Relocation · Volunteer-run · <a href="/disclaimer.html">Disclaimer</a>
-</footer>
-
+    <footer>
+      © 2025 Free Snake Relocation · Volunteer-run · <a href="/disclaimer.html">Disclaimer</a>
+    </footer>
   </div>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
+
+    // Replace this with your NEW restricted Google Maps API key.
+    const GOOGLE_API_KEY = 'PASTE_YOUR_NEW_GOOGLE_MAPS_API_KEY_HERE';
+
     const TOP_N = 3;
 
     const btnGeo = document.getElementById('btnGeoFind');
+    const btnAddress = document.getElementById('btnAddressFind');
+    const addressInput = document.getElementById('addressInput');
     const notice = document.getElementById('closestNotice');
     const results = document.getElementById('closestResults');
 
+    btnAddress?.addEventListener('click', async () => {
+      await searchByAddress();
+    });
+
+    addressInput?.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        await searchByAddress();
+      }
+    });
+
     btnGeo?.addEventListener('click', () => {
-  clearUI();
+      clearUI();
 
-  notice.style.display = 'block';
-  notice.textContent = 'Please wait while volunteers are loaded...';
+      notice.style.display = 'block';
+      notice.textContent = 'Checking your device location...';
 
-  if (!('geolocation' in navigator)) {
-    notice.style.display = 'block';
-    notice.textContent = 'Geolocation is not supported by this browser.';
-    return;
-  }
+      if (!('geolocation' in navigator)) {
+        notice.style.display = 'block';
+        notice.textContent = 'Geolocation is not supported by this browser. Please search by address, city, or ZIP code instead.';
+        return;
+      }
 
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const { latitude, longitude } = pos.coords;
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const { latitude, longitude, accuracy } = pos.coords;
 
-    try {
-      const res = await fetch(`${SCRIPT_URL}?lat=${latitude}&lon=${longitude}&limit=${TOP_N}`, { cache: 'no-store' });
-      await renderResults(res);
-    } catch (e) {
-      showError(e);
+        try {
+          notice.textContent = accuracy
+            ? `Location found. Accuracy is about ${Math.round(accuracy)} meters. Loading volunteers...`
+            : 'Location found. Loading volunteers...';
+
+          await fetchVolunteers(latitude, longitude);
+        } catch (e) {
+          showError(e);
+        }
+      }, () => {
+        notice.style.display = 'block';
+        notice.textContent = 'Location permission was denied or your device location was inaccurate. Please search by address, city, or ZIP code instead.';
+      }, {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 0
+      });
+    });
+
+    async function searchByAddress() {
+      clearUI();
+
+      const address = addressInput.value.trim();
+
+      if (!address) {
+        notice.style.display = 'block';
+        notice.textContent = 'Please enter an address, city, or ZIP code.';
+        return;
+      }
+
+      if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'AIzaSyBBrFyurt2hMyvAbbnUr7bN0WgCLta2dmk') {
+        notice.style.display = 'block';
+        notice.textContent = 'Address search is not set up yet. Add your restricted Google Maps API key in the code.';
+        return;
+      }
+
+      notice.style.display = 'block';
+      notice.textContent = 'Finding that location...';
+
+      try {
+        const geoUrl =
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&region=us&key=${encodeURIComponent(GOOGLE_API_KEY)}`;
+
+        const geoRes = await fetch(geoUrl, { cache: 'no-store' });
+        const geoData = await geoRes.json();
+
+        if (geoData.status !== 'OK' || !geoData.results || geoData.results.length === 0) {
+          notice.textContent = 'We could not find that location. Try a full street address, city and state, or ZIP code.';
+          console.error('Geocoding error:', geoData);
+          return;
+        }
+
+        const bestResult = geoData.results[0];
+        const location = bestResult.geometry.location;
+        const latitude = location.lat;
+        const longitude = location.lng;
+        const formattedAddress = bestResult.formatted_address || address;
+
+        notice.textContent = `Location found: ${formattedAddress}. Loading volunteers...`;
+
+        await fetchVolunteers(latitude, longitude);
+      } catch (e) {
+        showError(e);
+      }
     }
-  }, () => {
-    notice.style.display = 'block';
-    notice.textContent = 'Location permission was denied. Please enable GPS and try again.';
-  }, {
-    enableHighAccuracy: true,
-    timeout: 12000,
-    maximumAge: 0
-  });
-});
+
+    async function fetchVolunteers(latitude, longitude) {
+      const res = await fetch(
+        `${SCRIPT_URL}?lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}&limit=${TOP_N}`,
+        { cache: 'no-store' }
+      );
+
+      await renderResults(res);
+    }
+
     async function renderResults(res) {
       const text = await res.text();
       let rows;
@@ -553,11 +667,13 @@
     }
 
     function clearUI() {
-  results.innerHTML = '';
-  notice.textContent = '';
-  notice.style.display = 'none';
-}
+      results.innerHTML = '';
+      notice.textContent = '';
+      notice.style.display = 'none';
+    }
+
     function showError(e) {
+      notice.style.display = 'block';
       notice.textContent = 'Could not load results. Please try again.';
       console.error(e);
     }
