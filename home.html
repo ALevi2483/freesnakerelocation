@@ -93,6 +93,87 @@
       font-weight: 600;
     }
 
+    .hero-alert {
+      background: #ffffff;
+      border: 1px solid #d7e3d9;
+      border-radius: 16px;
+      padding: 18px;
+      margin: 0 auto 18px;
+      max-width: 760px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    .hero-alert h2 {
+      margin: 0 0 6px;
+      color: #163b25;
+      font-size: 1.6rem;
+      line-height: 1.2;
+    }
+
+    .hero-alert .dont-kill {
+      margin: 0 0 8px;
+      color: #7a2f12;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .hero-alert p {
+      margin: 0;
+      color: #3f5145;
+      font-size: 1.02rem;
+    }
+
+    .social-proof {
+      margin: 0 auto 18px;
+      max-width: 760px;
+      text-align: center;
+      color: #284130;
+      font-weight: 700;
+    }
+
+    .social-proof span {
+      display: block;
+      font-size: 0.98rem;
+      color: #526457;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 760px;
+      margin: 0 auto 22px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid #d7e3d9;
+      border-radius: 16px;
+      padding: 18px 14px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    .stat-number {
+      display: block;
+      color: #163b25;
+      font-size: 2.15rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      display: block;
+      color: #4b5b50;
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+
     .finder-card {
       background: #ffffff;
       border: 1px solid #dce7de;
@@ -370,6 +451,18 @@
         font-size: 1.5rem;
       }
 
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-alert h2 {
+        font-size: 1.35rem;
+      }
+
+      .stat-number {
+        font-size: 1.9rem;
+      }
+
       .finder-actions {
         margin-top: 18px;
       }
@@ -404,10 +497,33 @@
       <div class="hero-inner">
         <div class="eyebrow">Free volunteer snake relocation help</div>
 
-        <h1>Find Local Snake Relocation Help Near You</h1>
+        <h1>Free Snake Relocation Help Near You</h1>
+
+        <div class="hero-alert" aria-label="Found a snake message">
+          <h2>Found a snake?</h2>
+          <div class="dont-kill">Don't kill it.</div>
+          <p>Most snakes are harmless and beneficial. We'll help you connect with a nearby volunteer who can safely relocate it at no cost.</p>
+        </div>
+
+        <div class="social-proof">
+          Trusted by thousands of homeowners
+          <span>1,700+ volunteer snake relocators across the United States.</span>
+        </div>
+
+        <div class="stats-grid" aria-label="Free Snake Relocation impact numbers">
+          <div class="stat-card">
+            <span id="volunteerCounter" class="stat-number" data-count="1700" data-suffix="+">0</span>
+            <span class="stat-label">Volunteer Relocators</span>
+          </div>
+
+          <div class="stat-card">
+            <span id="stateCounter" class="stat-number" data-count="49" data-suffix="+">0</span>
+            <span class="stat-label">States Covered</span>
+          </div>
+        </div>
 
         <p class="hero-subtext">
-          Connect with volunteer snake relocators in your area. Enter your address, city, or ZIP code to find the closest available help, learn about local snakes, and handle the situation safely.
+          Enter your address, city, or ZIP code to find the closest available help, learn about local snakes, and handle the situation safely.
         </p>
 
         <div class="trust-row">
@@ -485,6 +601,36 @@
       © 2025 Free Snake Relocation · Volunteer-run · <a href="/disclaimer.html">Disclaimer</a>
     </footer>
   </div>
+
+
+  <script>
+    function animateCounter(el) {
+      const end = Number(el.dataset.count || 0);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function update(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.floor(eased * end);
+
+        el.textContent = value.toLocaleString() + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = end.toLocaleString() + suffix;
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.stat-number').forEach(animateCounter);
+    });
+  </script>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
