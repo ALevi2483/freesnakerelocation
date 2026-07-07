@@ -15,6 +15,7 @@
       --brand-dark: #234a34;
       --border: #e1e8e1;
       --gold: #f5b301;
+      --soft: #edf6ef;
     }
 
     * {
@@ -218,6 +219,47 @@
       color: var(--muted);
     }
 
+    .loading {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .loading-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid var(--soft);
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .reviews-grid.is-loading {
+      display: none;
+    }
+
+    .fade-in {
+      animation: fadeIn .25s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     footer {
       text-align: center;
       padding: 28px 12px;
@@ -269,17 +311,17 @@
 
     <section class="stats">
       <div class="stat-card">
-        <div class="stat-number" id="totalReviews">0</div>
+        <div class="stat-number" id="totalReviews">...</div>
         <div class="stat-label">Total Reviews</div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-number" id="avgRating">0.0</div>
+        <div class="stat-number" id="avgRating">...</div>
         <div class="stat-label">Average Rating</div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-number" id="fiveStarReviews">0</div>
+        <div class="stat-number" id="fiveStarReviews">...</div>
         <div class="stat-label">Five-Star Reviews</div>
       </div>
     </section>
@@ -293,19 +335,22 @@
     </section>
 
     <section class="rating-filters" id="ratingFilters">
-      <button class="rating-filter active" data-rating="">All Reviews (0)</button>
-      <button class="rating-filter" data-rating="5"><span class="stars-small">★★★★★</span> 5 Star (0)</button>
-      <button class="rating-filter" data-rating="4"><span class="stars-small">★★★★☆</span> 4 Star (0)</button>
-      <button class="rating-filter" data-rating="3"><span class="stars-small">★★★☆☆</span> 3 Star (0)</button>
-      <button class="rating-filter" data-rating="2"><span class="stars-small">★★☆☆☆</span> 2 Star (0)</button>
-      <button class="rating-filter" data-rating="1"><span class="stars-small">★☆☆☆☆</span> 1 Star (0)</button>
+      <button class="rating-filter active" data-rating="">All Reviews (...)</button>
+      <button class="rating-filter" data-rating="5"><span class="stars-small">★★★★★</span> 5 Star (...)</button>
+      <button class="rating-filter" data-rating="4"><span class="stars-small">★★★★☆</span> 4 Star (...)</button>
+      <button class="rating-filter" data-rating="3"><span class="stars-small">★★★☆☆</span> 3 Star (...)</button>
+      <button class="rating-filter" data-rating="2"><span class="stars-small">★★☆☆☆</span> 2 Star (...)</button>
+      <button class="rating-filter" data-rating="1"><span class="stars-small">★☆☆☆☆</span> 1 Star (...)</button>
     </section>
 
     <div id="reviewsStatus" class="loading">
-      Loading reviews...
+      <div class="loading-row">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Loading verified relocation stories...</span>
+      </div>
     </div>
 
-    <section id="reviewsGrid" class="reviews-grid"></section>
+    <section id="reviewsGrid" class="reviews-grid is-loading"></section>
 
   </main>
 
@@ -370,6 +415,11 @@
       } catch (error) {
         console.error(error);
 
+        document.getElementById('totalReviews').textContent = '—';
+        document.getElementById('avgRating').textContent = '—';
+        document.getElementById('fiveStarReviews').textContent = '—';
+
+        reviewsGrid.classList.add('is-loading');
         reviewsStatus.className = 'error';
 
         reviewsStatus.innerHTML = `
@@ -497,6 +547,7 @@
       reviewsGrid.innerHTML = '';
 
       if (!filtered.length) {
+        reviewsGrid.classList.add('is-loading');
         reviewsStatus.className = 'empty';
         reviewsStatus.style.display = 'block';
         reviewsStatus.textContent = 'No reviews found.';
@@ -504,6 +555,8 @@
       }
 
       reviewsStatus.style.display = 'none';
+      reviewsGrid.classList.remove('is-loading');
+      reviewsGrid.classList.add('fade-in');
 
       reviewsGrid.innerHTML = filtered
         .map(renderReviewCard)
