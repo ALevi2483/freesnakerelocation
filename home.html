@@ -163,6 +163,18 @@
       font-size: 2.15rem;
       font-weight: 800;
       line-height: 1.1;
+      min-height: 2.4rem;
+    }
+
+    .stat-number.loading-stat {
+      color: #6a7a6f;
+      animation: statPulse 1.2s infinite;
+    }
+
+    @keyframes statPulse {
+      0% { opacity: .45; }
+      50% { opacity: 1; }
+      100% { opacity: .45; }
     }
 
     .stat-label {
@@ -512,12 +524,12 @@
 
         <div class="stats-grid" aria-label="Free Snake Relocation impact numbers">
           <div class="stat-card">
-            <span id="volunteerCounter" class="stat-number">0</span>
+            <span id="volunteerCounter" class="stat-number loading-stat">...</span>
             <span class="stat-label">Volunteer Relocators</span>
           </div>
 
           <div class="stat-card">
-            <span id="stateCounter" class="stat-number">0</span>
+            <span id="stateCounter" class="stat-number loading-stat">...</span>
             <span class="stat-label">States Covered</span>
           </div>
         </div>
@@ -648,8 +660,9 @@
       if (!el) return;
 
       end = Number(end || 0);
+      el.classList.remove('loading-stat');
 
-      const duration = 1200;
+      const duration = 900;
       const startTime = performance.now();
 
       function update(now) {
