@@ -509,7 +509,7 @@
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYvJrlkMEfP3EfuySAo9mHXNLl75expJZG9aj69oN4MeGdBvnPp0dHKS7kWGzVH3YK2A/exec';
 
     // Google Maps API key for address geocoding.
-    const GOOGLE_API_KEY = 'AIzaSyBBrFyurt2hMyvAbbnUr7bN0WgCLta2dmk';
+    
 
     const TOP_N = 3;
 
@@ -565,16 +565,30 @@
     });
 
     async function searchByAddress() {
-      clearUI();
+  clearUI();
 
-      const address = addressInput.value.trim();
+  const address = addressInput.value.trim();
 
-      if (!address) {
-        notice.style.display = 'block';
-        notice.textContent = 'Please enter an address, city, or ZIP code.';
-        return;
-      }
+  if (!address) {
+    notice.style.display = 'block';
+    notice.textContent = 'Please enter an address, city, or ZIP code.';
+    return;
+  }
 
+  notice.style.display = 'block';
+  notice.textContent = 'Finding that location...';
+
+  try {
+    const res = await fetch(
+      `${SCRIPT_URL}?address=${encodeURIComponent(address)}&limit=${TOP_N}`,
+      { cache: 'no-store' }
+    );
+
+    await renderResults(res);
+  } catch (e) {
+    showError(e);
+  }
+}
       if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'PASTE_YOUR_NEW_GOOGLE_MAPS_API_KEY_HERE') {
         notice.style.display = 'block';
         notice.textContent = 'Address search is not set up yet. Add your restricted Google Maps API key in the code.';
@@ -585,8 +599,6 @@
       notice.textContent = 'Finding that location...';
 
       try {
-        const geoUrl =
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&region=us&key=${encodeURIComponent(GOOGLE_API_KEY)}`;
 
         const geoRes = await fetch(geoUrl, { cache: 'no-store' });
         const geoData = await geoRes.json();
@@ -626,17 +638,32 @@ if (geoData.status !== 'OK') {
     }
 
     async function renderResults(res) {
-      const text = await res.text();
-      let rows;
+  const text = await res.text();
+  let data;
 
-      try {
-        rows = JSON.parse(text);
-      } catch (err) {
-        notice.textContent = 'The server returned an invalid response.';
-        console.error('Parse error:', text);
-        return;
-      }
+  try {
+    data = JSON.parse(text);
+  } catch (err) {
+    notice.textContent = 'The server returned an invalid response.';
+    console.error('Parse error:', text);
+    return;
+  }
 
+  const rows = Array.isArray(data) ? data : data.results;
+
+  if (!data.ok && data.message) {
+    notice.textContent = data.message;
+    return;
+  }
+
+  if (!Array.isArray(rows) || rows.length === 0) {
+    notice.textContent = 'No volunteers were found near your location.';
+    return;
+  }
+
+  notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
+  results.innerHTML = rows.map(renderCard).join('');
+}
       if (!Array.isArray(rows) || rows.length === 0) {
         notice.textContent = 'No volunteers were found near your location.';
         return;
