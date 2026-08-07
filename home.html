@@ -634,6 +634,7 @@
 
         const volunteers = Number(stats.volunteers || 0);
         const states = Number(stats.states || 0);
+        const dc = stats.dc === true;
 
         animateCounter(volunteerEl, volunteers);
         animateCounter(stateEl, states);
