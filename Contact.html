@@ -2,87 +2,603 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact Us – Free Snake Removal Help | FreeSnakeRelocation.com</title>
-  <meta name="description" content="Contact Free Snake Relocation to ask questions, update your listing, or get support. Visit our site to connect with a free volunteer near you." />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Free Snake Relocation | Directory Support</title>
+  <meta name="description" content="Contact Free Snake Relocation administrators about directory listings, removals, website issues, or concerns. For snake help, contact a volunteer directly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green-950: #102d1c;
+      --green-900: #163b25;
+      --green-800: #1b472b;
+      --green-700: #225533;
+      --green-600: #2e6d45;
+      --green-100: #e8f3eb;
+      --green-050: #f5f9f5;
+      --cream: #fff8e8;
+      --red-050: #fff3f1;
+      --red-700: #9a2f24;
+      --text: #26322a;
+      --muted: #58635c;
+      --border: #dce5de;
+      --white: #ffffff;
+      --shadow: 0 14px 35px rgba(21, 59, 37, 0.10);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9f5;
-      color: #333;
       margin: 0;
-      padding: 0;
-    }
-
-    .content-wrapper {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    h1, h2, h3 {
-      color: #225533;
-    }
-
-    ul {
-      padding-left: 20px;
-      margin-top: 0.5rem;
-      margin-bottom: 1.5rem;
+      background:
+        radial-gradient(circle at top right, rgba(46, 109, 69, 0.10), transparent 34rem),
+        var(--green-050);
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      line-height: 1.65;
     }
 
     a {
-      color: #226644;
-      text-decoration: underline;
+      color: var(--green-700);
     }
 
     a:hover {
-      color: #2e7d57;
+      color: var(--green-950);
+    }
+
+    a:focus-visible {
+      outline: 3px solid #edc453;
+      outline-offset: 3px;
+    }
+
+    .page-shell {
+      width: min(100% - 32px, 1060px);
+      margin: 0 auto;
+      padding: 34px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--green-900), var(--green-600));
+      color: var(--white);
+      padding: clamp(28px, 6vw, 58px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      position: absolute;
+      right: -65px;
+      bottom: -110px;
+      width: 280px;
+      height: 280px;
+      border: 36px solid rgba(255, 255, 255, 0.07);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      margin: 0 0 10px;
+      color: #dff1e4;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin-bottom: 14px;
+      font-size: clamp(2rem, 5vw, 3.35rem);
+      line-height: 1.08;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin-bottom: 24px;
+      color: #eef8f1;
+      font-size: clamp(1rem, 2.5vw, 1.18rem);
+    }
+
+    .hero-actions,
+    .card-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 10px 17px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .button-primary {
+      background: var(--white);
+      color: var(--green-900);
+    }
+
+    .button-primary:hover {
+      background: #eff8f1;
+      color: var(--green-950);
+    }
+
+    .button-ghost {
+      border-color: rgba(255, 255, 255, 0.75);
+      color: var(--white);
+    }
+
+    .button-ghost:hover {
+      border-color: var(--white);
+      background: rgba(255, 255, 255, 0.10);
+      color: var(--white);
+    }
+
+    .button-green {
+      background: var(--green-700);
+      color: var(--white);
+    }
+
+    .button-green:hover {
+      background: var(--green-900);
+      color: var(--white);
+    }
+
+    .button-outline {
+      border-color: var(--green-700);
+      background: transparent;
+      color: var(--green-700);
+    }
+
+    .button-outline:hover {
+      background: var(--green-100);
+      color: var(--green-950);
+    }
+
+    .urgent-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 15px;
+      margin: 24px 0;
+      border: 1px solid #dfc064;
+      border-radius: 16px;
+      background: #fff8e8;
+      padding: 20px;
+      color: #493d15;
+    }
+
+    .urgent-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      background: #f4dc91;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .urgent-card strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.08rem;
+    }
+
+    .urgent-card p {
+      margin-bottom: 8px;
+    }
+
+    .urgent-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-intro {
+      margin: 38px 0 18px;
+    }
+
+    .section-intro h2 {
+      margin-bottom: 7px;
+      color: var(--green-900);
+      font-size: clamp(1.45rem, 3vw, 2rem);
+    }
+
+    .section-intro p {
+      max-width: 760px;
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .contact-card {
+      display: flex;
+      min-height: 100%;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--white);
+      padding: 24px;
+      box-shadow: 0 7px 20px rgba(21, 59, 37, 0.06);
+    }
+
+    .card-label {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 13px;
+      border-radius: 999px;
+      background: var(--green-100);
+      padding: 5px 10px;
+      color: var(--green-800);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .contact-card h3 {
+      margin-bottom: 9px;
+      color: var(--green-900);
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+    }
+
+    .contact-card ul {
+      margin: 0 0 22px;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .contact-card li + li {
+      margin-top: 7px;
+    }
+
+    .card-actions {
+      margin-top: auto;
+    }
+
+    .email-line {
+      overflow-wrap: anywhere;
+      font-weight: 800;
+    }
+
+    .process-panel {
+      margin-top: 22px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--white);
+      padding: clamp(22px, 5vw, 34px);
+      box-shadow: 0 7px 20px rgba(21, 59, 37, 0.06);
+    }
+
+    .process-panel h2 {
+      margin-bottom: 8px;
+      color: var(--green-900);
+    }
+
+    .process-panel > p {
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 22px 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: steps;
+    }
+
+    .steps li {
+      position: relative;
+      border-radius: 12px;
+      background: var(--green-050);
+      padding: 54px 16px 17px;
+      color: var(--muted);
+      counter-increment: steps;
+    }
+
+    .steps li::before {
+      position: absolute;
+      top: 15px;
+      left: 16px;
+      display: grid;
+      width: 29px;
+      height: 29px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green-700);
+      color: var(--white);
+      content: counter(steps);
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .steps strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--green-900);
+    }
+
+    .privacy-note {
+      margin: 22px 0 0;
+      border-left: 4px solid var(--green-700);
+      border-radius: 4px;
+      background: var(--green-050);
+      padding: 13px 15px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .emergency-panel {
+      margin-top: 22px;
+      border: 1px solid #ecc8c2;
+      border-radius: 16px;
+      background: var(--red-050);
+      padding: 22px;
+    }
+
+    .emergency-panel h2 {
+      margin-bottom: 7px;
+      color: var(--red-700);
+      font-size: 1.3rem;
+    }
+
+    .emergency-panel p {
+      margin-bottom: 8px;
+      color: #62352f;
+    }
+
+    .emergency-panel p:last-child {
+      margin-bottom: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 18px;
+      margin-top: 34px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      text-align: center;
+    }
+
+    .footer-links a {
+      font-weight: 700;
+    }
+
+    @media (max-width: 760px) {
+      .page-shell {
+        width: min(100% - 22px, 1060px);
+        padding-top: 14px;
+      }
+
+      .hero {
+        border-radius: 16px;
+        padding: 26px 20px;
+      }
+
+      .contact-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .urgent-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions .button,
+      .card-actions .button {
+        width: 100%;
+      }
+
+      .contact-card,
+      .process-panel {
+        padding: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .button {
+        transition: none;
+      }
     }
   </style>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-GB09EFLTCW');
-</script>
+  <!-- Google tag (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB09EFLTCW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-GB09EFLTCW');
+  </script>
 </head>
 <body>
-  <div class="content-wrapper">
-    <h1 style="display: none;">Free Snake Removal Contact Page</h1>
+  <main class="page-shell">
+    <section class="hero" aria-labelledby="pageTitle">
+      <p class="eyebrow">Directory administration and support</p>
+      <h1 id="pageTitle">Contact Free Snake Relocation</h1>
+      <p class="hero-copy">Contact Free Snake Relocation administrators for listing removals, public listing concerns, website problems, or general directory questions. For snake relocation help, contact a listed volunteer directly.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="find.html">Find Snake Help</a>
+        <a class="button button-ghost" href="faq.html">Read the FAQ</a>
+      </div>
+    </section>
 
-    <h2>Contact Us</h2>
-    <p>Have a question, suggestion, or update for the Free Snake Relocation Directory? We’d love to hear from you.</p>
+    <aside class="urgent-card" aria-label="Time-sensitive snake help notice">
+      <div class="urgent-icon" aria-hidden="true">!</div>
+      <div>
+        <strong>Do not email the administrators for time-sensitive snake help.</strong>
+        <p>Use the <a href="find.html">Find Help page</a> and text a listed volunteer directly. Free Snake Relocation does not receive relocation requests, select a volunteer, schedule a response, or dispatch anyone.</p>
+        <p>If nobody responds, try another nearby listing or contact local animal control, your state wildlife agency, or a licensed pest control provider as appropriate.</p>
+      </div>
+    </aside>
 
-    <h3>General Inquiries / Feedback</h3>
-    <p>
-      For questions about the website, directory updates, or suggestions for improvement, please email us at:<br>
-      <strong><a href="mailto:FreeSnakeRelocation@gmail.com">FreeSnakeRelocation@gmail.com</a></strong>
-    </p>
+    <div class="section-intro">
+      <h2>Choose the reason you are contacting us</h2>
+      <p>Using the correct process helps administrators keep the public directory accurate without becoming involved in private relocation arrangements.</p>
+    </div>
 
-    <h3>Need Immediate Snake Help?</h3>
-    <p><strong>Do not email for time-sensitive snake relocation requests.</strong></p>
-    <p>If you need a snake relocated, please visit our <a href="find.html">Find a Volunteer</a> page. You can search in three ways:</p>
-    <ul>
-      <li><strong>Search by State and City:</strong> Use dropdown menus to filter by state and city.</li>
-      <li><strong>View the Volunteer Map:</strong> Use our interactive map to zoom in on your location and contact someone nearby.</li>
-    </ul>
-    <p>Once you locate a volunteer:</p>
-    <ul>
-      <li><strong>Send them a text message.</strong> Most volunteers respond faster to text than calls from unknown numbers.</li>
-    </ul>
-    <p><strong>Note:</strong> Free Snake Relocation does not provide emergency dispatch services. All volunteers operate independently and are not supervised, endorsed, or dispatched by this directory.</p>
+    <section class="contact-grid" aria-label="Contact options">
+      <article class="contact-card">
+        <span class="card-label">Snake help</span>
+        <h3>I need someone to relocate a snake</h3>
+        <p>Search the public directory by state and city. Choose a volunteer and send that person a text with the location and a safe-distance photo if available.</p>
+        <ul>
+          <li>Do not send the request to the administrator email.</li>
+          <li>Availability and response times are not guaranteed.</li>
+          <li>The website cannot see or manage your conversation.</li>
+        </ul>
+        <div class="card-actions">
+          <a class="button button-green" href="find.html">Search the Directory</a>
+        </div>
+      </article>
 
-    <h3>Volunteer Listing Updates or Removal</h3>
-    <p>
-      Need to update or remove your listing from the directory? You can either:
-    </p>
-    <ul>
-      <li>Submit a new form and select: <em>“I'm already listed but need to update my information”</em>.</li>
-      <li>Email us directly at: <a href="mailto:FreeSnakeRelocation@gmail.com">FreeSnakeRelocation@gmail.com</a>. In order to update your record and place your volunteer pin on the map, we need a specific address to use. It does not need to be your home address if you’re not comfortable sharing that—many volunteers use a nearby landmark, such as a park or shopping center.</li>
-    </ul>
-  </div>
+      <article class="contact-card">
+        <span class="card-label">Listing update</span>
+        <h3>I moved or changed my phone number</h3>
+        <p>Submit the volunteer form again and select <strong>“I'm already listed, but need to update my information.”</strong> Enter all current information, not only the field that changed.</p>
+        <ul>
+          <li>Do not apply as a first-time volunteer again.</li>
+          <li>An administrator will review the update.</li>
+          <li>The approved update will replace the existing public listing.</li>
+        </ul>
+        <div class="card-actions">
+          <a class="button button-green" href="https://docs.google.com/forms/d/e/1FAIpQLSdYvznR_h4AuaUjjUIVdOVpqjhHUmURxPnYqXiFkQYBiIwi_g/viewform?usp=header" target="_blank" rel="noopener noreferrer">Open the Volunteer Form</a>
+        </div>
+      </article>
+
+      <article class="contact-card">
+        <span class="card-label">Listing removal</span>
+        <h3>I want my listing removed</h3>
+        <p>Email the administrators from the address you normally use and identify the exact public listing. Include:</p>
+        <ul>
+          <li>Your full name as shown</li>
+          <li>Your listed phone number</li>
+          <li>Your listed city and state</li>
+          <li>A clear request to remove the listing</li>
+        </ul>
+        <div class="card-actions">
+          <a class="button button-green" href="mailto:FreeSnakeRelocation@gmail.com?subject=Remove%20My%20Directory%20Listing">Request Listing Removal</a>
+        </div>
+      </article>
+
+      <article class="contact-card">
+        <span class="card-label">Listing concern</span>
+        <h3>I need to report a public listing</h3>
+        <p>Email the administrators with enough information to identify the listing and understand the concern. Include:</p>
+        <ul>
+          <li>The listed name, phone number, city, and state</li>
+          <li>A factual description of what happened</li>
+          <li>The date of the interaction</li>
+          <li>Relevant screenshots or records, if available</li>
+        </ul>
+        <div class="card-actions">
+          <a class="button button-green" href="mailto:FreeSnakeRelocation@gmail.com?subject=Public%20Listing%20Concern">Report a Listing Concern</a>
+        </div>
+      </article>
+
+      <article class="contact-card">
+        <span class="card-label">Website support</span>
+        <h3>I found a website problem</h3>
+        <p>Report broken links, incorrect page text, search problems, or other technical issues. Include the page address, what you expected, and what happened.</p>
+        <ul>
+          <li>A screenshot often helps.</li>
+          <li>Include the device and browser if the issue only happens on one device.</li>
+          <li>Do not include private or sensitive information.</li>
+        </ul>
+        <div class="card-actions">
+          <a class="button button-green" href="mailto:FreeSnakeRelocation@gmail.com?subject=Website%20Problem">Report a Website Problem</a>
+        </div>
+      </article>
+
+      <article class="contact-card">
+        <span class="card-label">General contact</span>
+        <h3>I have a directory question or suggestion</h3>
+        <p>Email the administrators about the website, directory policies, partnership ideas, or suggestions. This inbox does not provide snake identification or relocation dispatch.</p>
+        <p class="email-line"><a href="mailto:FreeSnakeRelocation@gmail.com?subject=Directory%20Question">FreeSnakeRelocation@gmail.com</a></p>
+        <div class="card-actions">
+          <a class="button button-outline" href="mailto:FreeSnakeRelocation@gmail.com?subject=Directory%20Question">Email the Administrators</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="process-panel" aria-labelledby="updateProcessHeading">
+      <h2 id="updateProcessHeading">How listing updates work</h2>
+      <p>Use the same process for a new phone number, a move, a name correction, or another significant change.</p>
+      <ol class="steps">
+        <li><strong>Submit the form</strong>Select the option stating that you are already listed and need to update your information.</li>
+        <li><strong>Administrator review</strong>An administrator compares the request with the existing record and checks that the required information is present.</li>
+        <li><strong>Public listing update</strong>After approval, the existing listing is updated. The directory does not intentionally create a second active listing.</li>
+      </ol>
+      <p class="privacy-note"><strong>Privacy reminder:</strong> Do not email Social Security numbers, government identification, medical records, account passwords, or other sensitive information. The volunteer form only needs the information requested for the directory listing.</p>
+    </section>
+
+    <section class="emergency-panel" aria-labelledby="emergencyHeading">
+      <h2 id="emergencyHeading">Snakebite or immediate danger</h2>
+      <p>If a snake bites someone, seek emergency medical attention immediately. Do not wait for an email response or a directory volunteer. Do not drive yourself if the bite may make you dizzy or cause you to pass out.</p>
+      <p>Do not try to catch or kill the snake for identification. If it can be done safely, take a photo from a distance. Read the <a href="https://www.cdc.gov/niosh/outdoor-workers/about/venomous-snakes.html" target="_blank" rel="noopener noreferrer">CDC snakebite guidance</a>.</p>
+    </section>
+
+    <nav class="footer-links" aria-label="Related pages">
+      <a href="find.html">Find Help</a>
+      <a href="volunteer.html">Join or Update</a>
+      <a href="faq.html">FAQ</a>
+      <a href="disclaimer.html">Full Disclaimer</a>
+    </nav>
+  </main>
 </body>
 </html>
