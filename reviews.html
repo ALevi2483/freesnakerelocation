@@ -359,12 +359,9 @@
   </footer>
 
   <script>
-    const SHEET_ID = '1CQt-kDc7E9dPNbOGQaIOHIayTHD7xmU4X-h4EDlwaSA';
-    const SHEET_NAME = 'Form Responses 1';
-
-    const SHEET_URL =
-      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-
+    const REVIEWS_API_URL =
+  'https://script.google.com/macros/s/AKfycbyLp84jiVVodnyS8rYAonccV9SX6UKs4wqGorKm7ROS5uVyTlGAf4OuZJ_IzTDqZTKYng/exec?mode=reviews';
+    
     let reviews = [];
     let selectedRating = '';
 
@@ -377,59 +374,56 @@
     loadReviews();
 
     async function loadReviews() {
-      try {
-        const response = await fetch(SHEET_URL);
+  try {
+    const response = await fetch(REVIEWS_API_URL, {
+      cache: 'no-store'
+    });
 
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const text = await response.text();
-
-        const json = JSON.parse(
-          text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1)
-        );
-
-        reviews = json.table.rows.map(row => {
-          const cells = row.c || [];
-
-          return {
-            timestamp: getCell(cells, 0),
-            email: getCell(cells, 1),
-            name: getCell(cells, 2) || 'Anonymous',
-            location: getCell(cells, 3),
-            ratingRaw: getCell(cells, 4),
-            comments: getCell(cells, 5),
-            rating: parseRating(getCell(cells, 4)),
-            date: parseGoogleDate(getCell(cells, 0))
-          };
-        }).filter(r => r.comments && r.rating > 0);
-
-        reviews.sort((a, b) => b.date - a.date);
-
-        setupFilters();
-        updateStats();
-        updateRatingButtons();
-        renderReviews();
-
-      } catch (error) {
-        console.error(error);
-
-        document.getElementById('totalReviews').textContent = '—';
-        document.getElementById('avgRating').textContent = '—';
-        document.getElementById('fiveStarReviews').textContent = '—';
-
-        reviewsGrid.classList.add('is-loading');
-        reviewsStatus.className = 'error';
-
-        reviewsStatus.innerHTML = `
-          Reviews could not load.<br><br>
-          Make sure the Google Sheet is shared as:<br>
-          <strong>Anyone with the link can view</strong>
-        `;
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
     }
 
+    const json = await response.json();
+
+    if (!json.ok || !Array.isArray(json.reviews)) {
+      throw new Error(json.error || 'Invalid reviews response');
+    }
+
+    reviews = json.reviews.map(review => {
+      const rating = Number(review.rating) || 0;
+      const date = new Date(review.date || '');
+
+      return {
+        name: String(review.name || 'Anonymous').trim(),
+        location: String(review.location || '').trim(),
+        ratingRaw: String(rating),
+        comments: String(review.comments || '').trim(),
+        rating: rating,
+        date: Number.isNaN(date.getTime()) ? new Date(0) : date
+      };
+    }).filter(review => review.comments && review.rating > 0);
+
+    reviews.sort((a, b) => b.date - a.date);
+
+    setupFilters();
+    updateStats();
+    updateRatingButtons();
+    renderReviews();
+
+  } catch (error) {
+    console.error('Reviews failed to load:', error);
+
+    document.getElementById('totalReviews').textContent = '-';
+    document.getElementById('avgRating').textContent = '-';
+    document.getElementById('fiveStarReviews').textContent = '-';
+
+    reviewsGrid.classList.add('is-loading');
+    reviewsStatus.className = 'error';
+    reviewsStatus.innerHTML =
+      'Reviews could not load. Please refresh the page and try again.';
+  }
+}
+    
     function getCell(cells, index) {
       return cells[index] &&
              cells[index].v !== null &&
