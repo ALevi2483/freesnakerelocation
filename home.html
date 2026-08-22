@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Free Snake Relocation | Find Local Snake Relocation Help</title>
+  <title>Free Snake Relocation Directory | Find Nearby Volunteers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Free Snake Relocation helps you find local volunteer snake relocators near you. Use GPS, address, city, or ZIP code to find the closest help, learn about snakes, and connect with experienced volunteers." />
+  <meta name="description" content="Search the Free Snake Relocation directory by address, city, ZIP code, or GPS. Review nearby listings and text independent volunteers directly." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
@@ -291,6 +291,38 @@
       margin-top: 2px;
     }
 
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #27372c;
+      font-weight: 700;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-small {
+      padding: 10px 14px;
+      font-size: .95rem;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: #225533;
+      color: #fff;
+      font-weight: 800;
+    }
+
     .section-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -506,52 +538,53 @@
 
     <section class="hero">
       <div class="hero-inner">
-        <div class="eyebrow">Free volunteer snake relocation help</div>
+        <div class="eyebrow">Free volunteer snake relocation directory</div>
 
         <h1>Free Snake Relocation Help Near You</h1>
 
         <div class="hero-alert" aria-label="Found a snake message">
           <h2>Found a snake?</h2>
           <div class="dont-kill">Don't kill it.</div>
-          <p>Most snakes are harmless and beneficial. We'll help you connect with a nearby volunteer who can safely relocate it at no cost.</p>
+          <p>Most snakes are harmless and beneficial. Search the directory, choose a nearby listing, and text the volunteer directly. Each volunteer acts independently, and a response is not guaranteed.</p>
         </div>
 
         <div class="social-proof">
-          Trusted by thousands of homeowners
+          Community-powered volunteer directory
           <span id="socialProofDetail">Loading current volunteer network...</span>
         </div>
 
         <div class="stats-grid" aria-label="Free Snake Relocation impact numbers">
           <div class="stat-card">
             <span id="volunteerCounter" class="stat-number loading-stat">...</span>
-            <span class="stat-label">Volunteer Relocators</span>
+            <span class="stat-label">Listed Volunteers</span>
           </div>
 
           <div class="stat-card">
             <span id="stateCounter" class="stat-number loading-stat">...</span>
-            <span class="stat-label">States Covered</span>
+            <span class="stat-label">States With Listings</span>
           </div>
         </div>
 
         <p class="hero-subtext">
-          Enter your address, city, or ZIP code to find the closest available help, learn about local snakes, and handle the situation safely.
+          Search by address, city, ZIP code, or GPS to view the three nearest directory listings. The site does not dispatch, assign, or confirm the availability of volunteers.
         </p>
 
         <div class="trust-row">
-          <div class="trust-pill">Free to use</div>
-          <div class="trust-pill">Volunteer-based</div>
-          <div class="trust-pill">Humane relocation focus</div>
-          <div class="trust-pill">Nationwide educational resource</div>
+          <div class="trust-pill">Free directory</div>
+          <div class="trust-pill">Contact volunteers directly</div>
+          <div class="trust-pill">Text first</div>
+          <div class="trust-pill">No dispatch service</div>
         </div>
 
         <div class="finder-card" aria-labelledby="closest-title">
-          <h2 id="closest-title">Find the Closest Relocator</h2>
+          <h2 id="closest-title">Search Nearby Listings</h2>
 
           <p class="helper">
-            Get connected to the 3 closest volunteers near you right now.
+            View the three nearest listings, then choose whom to text. A listing does not guarantee that a volunteer is currently available.
           </p>
 
           <div class="address-search">
+            <label class="field-label" for="addressInput">Your location</label>
             <input
               id="addressInput"
               type="text"
@@ -560,7 +593,7 @@
             />
 
             <button id="btnAddressFind" class="btn btn-primary" type="button">
-              Search by Address or ZIP
+              Show Nearby Listings
             </button>
           </div>
 
@@ -571,7 +604,7 @@
           </div>
 
           <p class="helper" style="text-align:center; margin: 8px 0 0;">
-            Free • Volunteer-based
+            Text first. Contact volunteers directly. Response is not guaranteed.
           </p>
 
           <div id="closestNotice" class="loading-notice" style="display:none;"></div>
@@ -582,25 +615,45 @@
 
     <div class="section-grid">
       <div class="info-card">
-        <h3>How It Works</h3>
-        <p>Enter your address, city, or ZIP code to find nearby volunteer snake relocators. You can then contact the person directly for help.</p>
+        <div class="step-number" aria-hidden="true">1</div>
+        <h3>Search the Directory</h3>
+        <p>Enter your location to see the nearest listed volunteers, ordered by distance.</p>
       </div>
 
       <div class="info-card">
-        <h3>Become a Volunteer</h3>
-        <p>If you have snake handling experience and want to help others, <a href="/volunteer.html">apply here</a> to join the directory.</p>
+        <div class="step-number" aria-hidden="true">2</div>
+        <h3>Choose Whom to Contact</h3>
+        <p>Review the nearby listings and text one or more volunteers directly. The directory does not choose for you.</p>
+      </div>
+
+      <div class="info-card">
+        <div class="step-number" aria-hidden="true">3</div>
+        <h3>Try Another Listing if Needed</h3>
+        <p>Volunteers may be working, driving, sleeping, or unavailable. If there is no reply, contact another listing.</p>
+      </div>
+    </div>
+
+    <div class="section-grid">
+      <div class="info-card">
+        <h3>What to Include in Your Text</h3>
+        <p>Share your city, where the snake is, and a clear photo taken from a safe distance. Keep people and pets away.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Join or Update the Directory</h3>
+        <p><a href="/volunteer.html">Use the volunteer form</a> to apply or to update an existing phone number, name, or location.</p>
       </div>
 
       <div class="info-card">
         <h3>Learn Before You Act</h3>
-        <p>Visit our <a href="/education.html">snake education section</a> to learn about local species and safe response steps.</p>
+        <p>Visit our <a href="/education.html">snake education section</a> for identification resources and safer response steps.</p>
       </div>
     </div>
 
     <div class="disclaimer-box">
-      <h2>Important Disclaimer</h2>
+      <h2>Directory Only, Not a Dispatch Service</h2>
       <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
-      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact. Use of this website is at your own risk.</p>
+      <p>Administrators do not take relocation requests, select volunteers, coordinate responses, or monitor conversations. We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact. Use of this website is at your own risk.</p>
       <p><a href="/disclaimer.html">Read the full disclaimer here</a>.</p>
     </div>
 
@@ -609,7 +662,7 @@
     </div>
 
     <footer>
-      © 2025 Free Snake Relocation · Volunteer-run · <a href="/disclaimer.html">Disclaimer</a>
+      © <span id="currentYear">2026</span> Free Snake Relocation · Volunteer-run directory · <a href="/disclaimer.html">Disclaimer</a>
     </footer>
   </div>
 
@@ -793,22 +846,25 @@
       }
 
       if (!Array.isArray(rows) || rows.length === 0) {
-        notice.textContent = 'No volunteers were found near your location.';
+        notice.textContent = 'No nearby directory listings were found for that location.';
         return;
       }
 
-      notice.textContent = `Showing the ${Math.min(rows.length, TOP_N)} closest volunteers:`;
+      notice.textContent = `Nearby directory listings, ordered by distance. Choose whom to contact:`;
       results.innerHTML = rows.map(renderCard).join('');
     }
 
     function renderCard(r) {
+      const phoneRaw = String(r['Phone'] || '').trim();
+      const emailRaw = String(r['Email'] || '').trim();
       const name = esc(r['Full Name'] || 'Name N/A');
-      const phone = esc(r['Phone'] || '');
-      const email = esc(r['Email'] || '');
+      const phone = esc(phoneRaw);
       const city = esc(r['City'] || '');
       const state = esc(r['State'] || '');
       const miles = typeof r['Distance'] === 'number' ? `${Number(r['Distance']).toFixed(1)} mi away` : '';
-      const emailHref = email ? `href="mailto:${email}"` : '';
+      const smsNumber = phoneRaw.replace(/[^\d+]/g, '');
+      const smsHref = smsNumber ? `href="sms:${smsNumber}"` : '';
+      const emailHref = emailRaw ? `href="mailto:${encodeURIComponent(emailRaw)}"` : '';
 
       return `
         <div class="card">
@@ -816,10 +872,11 @@
             <div>
               <strong>${name}</strong> ${miles ? `<span class="helper">• ${miles}</span>` : ''}
               <div class="helper">${city}${city && state ? ', ' : ''}${state}</div>
-              ${phone ? `<div class="contact-line">Phone: ${phone}</div><div class="text-note">Prefer text first. Many volunteers screen calls.</div>` : ''}
+              ${phone ? `<div class="contact-line">${phone}</div><div class="text-note">Independent volunteer. Text first; response is not guaranteed.</div>` : ''}
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              ${emailHref ? `<a class="btn btn-secondary" ${emailHref}>Email</a>` : ''}
+            <div class="contact-actions">
+              ${smsHref ? `<a class="btn btn-primary btn-small" ${smsHref}>Text Volunteer</a>` : ''}
+              ${emailHref ? `<a class="btn btn-secondary btn-small" ${emailHref}>Email</a>` : ''}
             </div>
           </div>
         </div>
@@ -851,9 +908,12 @@
 
   <script>
     window.addEventListener('load', () => {
+      const year = document.getElementById('currentYear');
       const modal = document.getElementById('disclaimerModal');
       const acceptBtn = document.getElementById('acceptDisclaimer');
       const storageKey = 'fsr_disclaimer_ack_v1';
+
+      if (year) year.textContent = new Date().getFullYear();
 
       if (!modal || !acceptBtn) return;
 
