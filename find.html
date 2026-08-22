@@ -2,448 +2,762 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Find a Snake Relocator | FreeSnakeRelocation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Free Snake Removal Help Near You | Volunteer Directory</title>
+  <meta name="description" content="Search the Free Snake Relocation directory by state and city, then text an independent volunteer directly for possible snake removal help." />
+  <link rel="canonical" href="https://www.freesnakerelocation.com/find.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --bg: #f4f8f4;
       --card: #ffffff;
-      --text: #1e2a1f;
-      --muted: #55635a;
-      --brand: #2d593f;
-      --brand-dark: #234a34;
-      --border: #e6eae6;
-      --warn-bg: #fff8e1;
-      --warn-border: #d6b700;
+      --text: #233127;
+      --muted: #58675d;
+      --brand: #225533;
+      --brand-dark: #163b25;
+      --brand-soft: #eaf4ec;
+      --border: #d9e4db;
+      --warn-bg: #fff8e8;
+      --warn-border: #d7ad43;
+      --warn-text: #4d3e0c;
+      --danger: #8b2e18;
+      --focus: #1c6fd1;
     }
+
     * { box-sizing: border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 Arial, sans-serif; }
-    main { max-width: 980px; margin: 24px auto; padding: 0 16px; }
-    h1, h2 { color: var(--brand); margin: 0 0 10px; }
-    label { display:block; font-weight:600; margin: 14px 0 6px; }
-    select { width: 100%; max-width: 420px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background:#fff; }
-    .row { display:flex; gap:16px; flex-wrap:wrap; }
 
-    .results-wrap { margin-top: 16px; }
-    .contact-note {
-      background: #f5faf5;
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    button,
+    select { font: inherit; }
+
+    a { color: var(--brand); }
+
+    a:hover { text-decoration-thickness: 2px; }
+
+    button:focus-visible,
+    select:focus-visible,
+    a:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    [hidden] { display: none !important; }
+
+    main {
+      width: min(1040px, 100%);
+      margin: 0 auto;
+      padding: 24px 18px 44px;
+    }
+
+    .page-header { margin-bottom: 20px; }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 10px;
+      border: 1px solid #d6e5d9;
+      border-radius: 999px;
+      background: #edf6ef;
+      color: var(--brand);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--brand-dark);
+      line-height: 1.2;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.45rem, 3vw, 1.8rem);
+    }
+
+    .intro {
+      max-width: 820px;
+      margin: 0;
+      color: #435147;
+      font-size: 1.05rem;
+    }
+
+    .directory-note {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 18px 0 22px;
+      padding: 14px 16px;
+      border: 1px solid #cfe0d2;
+      border-radius: 12px;
+      background: var(--brand-soft);
+      color: #294432;
+    }
+
+    .directory-note-icon {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 800;
+      line-height: 28px;
+      text-align: center;
+    }
+
+    .directory-note strong { display: block; }
+
+    .panel {
+      margin-bottom: 24px;
+      padding: 22px;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-    }
-    .results {
-      padding: 12px;
+      border-radius: 16px;
       background: var(--card);
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(25, 67, 39, 0.06);
     }
 
-    iframe { width: 100%; height: 760px; border: 0; border-radius: 8px; }
-
-    .disclaimer-banner {
-      background-color: var(--warn-bg);
-      border: 1px solid var(--warn-border);
-      padding: 14px;
-      margin: 14px 0 22px;
-      border-radius: 8px;
-      color: #4f4500;
+    .section-intro {
+      margin: 0 0 16px;
+      color: var(--muted);
     }
-    .disclaimer-banner strong {
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 720px;
+    }
+
+    label {
       display: block;
       margin-bottom: 6px;
-    }
-    .disclaimer-banner a {
-      color: var(--brand-dark);
+      color: #27392d;
       font-weight: 700;
-      text-decoration: underline;
     }
 
-    small { color: #566; }
+    select {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 42px 10px 12px;
+      border: 1px solid #aebbb1;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    select:disabled {
+      background: #f1f3f1;
+      color: #778078;
+      cursor: not-allowed;
+    }
+
+    .load-status {
+      min-height: 1.5rem;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .contact-guidance {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--warn-border);
+      border-radius: 10px;
+      background: var(--warn-bg);
+      color: var(--warn-text);
+    }
+
+    .contact-guidance strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .contact-note {
+      margin: 12px 0;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f7faf7;
+      color: #415047;
+      font-weight: 600;
+    }
+
+    .result-summary {
+      min-height: 1.6rem;
+      margin: 16px 0 9px;
+      color: #33493a;
+      font-weight: 700;
+    }
+
+    .results {
+      display: grid;
+      gap: 10px;
+    }
+
+    .empty-state {
+      padding: 22px 16px;
+      border: 1px dashed #b9c6bb;
+      border-radius: 10px;
+      background: #fafcfa;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .empty-state p { margin: 0 0 10px; }
 
     .result-card {
-      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 15px 16px;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 12px;
       background: #fff;
     }
-    .result-card + .result-card { margin-top: 10px; }
 
-    .result-top {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
+    .result-name {
+      margin: 0;
+      color: #172b1e;
+      font-size: 1.05rem;
+      font-weight: 800;
     }
-    .result-name { font-weight: 800; color: var(--text); }
-    .result-phone a {
-      color: #225533;
+
+    .result-location,
+    .result-phone {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .result-phone { color: #2f4435; }
+
+    .text-button,
+    .retry-button {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid var(--brand);
+      border-radius: 9px;
+      background: var(--brand);
+      color: #fff;
       font-weight: 800;
       text-decoration: none;
-    }
-    .result-phone a:hover { text-decoration: underline; }
-
-    .result-sub {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-    .text-preferred {
-      margin-top: 6px;
-      font-size: 0.92rem;
-      color: var(--muted);
+      cursor: pointer;
     }
 
-    .results-warning {
-      background: #fff8e8;
-      border: 1px solid #d6b24c;
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      color: #4d430f;
-      font-size: 0.95rem;
+    .text-button:hover,
+    .retry-button:hover {
+      background: var(--brand-dark);
+      text-decoration: none;
     }
-    .results-warning strong {
-      display: block;
-      margin-bottom: 6px;
-    }
-    .results-warning a {
-      color: var(--brand-dark);
+
+    .unavailable {
+      color: var(--danger);
+      font-size: 0.9rem;
       font-weight: 700;
-      text-decoration: underline;
     }
+
+    .search-tip {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .map-panel { padding-bottom: 18px; }
 
     .map-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       justify-content: space-between;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin: 10px 0 0;
+      margin-bottom: 14px;
     }
-    .map-actions span { color: var(--muted); font-size: 0.95rem; }
-    .map-actions a {
-      color: #225533;
+
+    .map-actions p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .map-link {
+      flex: 0 0 auto;
+      padding: 9px 12px;
+      border: 1px solid #b9cbbd;
+      border-radius: 9px;
+      background: #f4faf5;
+      color: var(--brand);
       font-weight: 700;
       text-decoration: none;
-      padding: 8px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: #f5faf5;
     }
-    .map-actions a:hover { text-decoration: underline; }
+
+    .map-link:hover {
+      background: #e9f4eb;
+      text-decoration: none;
+    }
+
+    .map-frame {
+      width: 100%;
+      height: min(680px, 72vh);
+      min-height: 460px;
+      border: 0;
+      border-radius: 12px;
+      background: #e9eeea;
+    }
+
+    .map-delay-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
 
     .modal {
-      display: none;
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: rgba(0,0,0,0.72);
       overflow: auto;
+      padding: 24px 12px;
+      background: rgba(10, 20, 13, 0.76);
     }
+
     .modal-content {
-      background: #fff;
-      margin: 5% auto;
-      padding: 22px;
-      border-radius: 12px;
-      max-width: 680px;
-      width: 92%;
-      max-height: 90vh;
+      width: min(680px, 100%);
+      max-height: calc(100vh - 48px);
+      margin: 2vh auto;
       overflow-y: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+      padding: 24px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.3);
     }
-    .modal-content h2 {
-      margin: 0 0 12px;
-      color: var(--brand);
-      font-size: 1.45rem;
-      line-height: 1.3;
-    }
+
+    .modal-content h2 { margin-top: 0; }
+
     .modal-content p {
       margin: 0 0 12px;
-      color: #333;
-      font-size: 1rem;
-      line-height: 1.6;
+      color: #354039;
     }
+
+    .modal-small {
+      color: #606a63;
+      font-size: 0.92rem;
+    }
+
     .modal-actions {
       display: flex;
       justify-content: flex-end;
       gap: 10px;
       margin-top: 18px;
-      flex-wrap: wrap;
-    }
-    .modal-btn {
-      appearance: none;
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 1rem;
-      cursor: pointer;
-      border: 1px solid transparent;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .modal-btn-secondary {
-      background: #f3f3f3;
-      color: #333;
-      border-color: #ccc;
-    }
-    .modal-btn-primary {
-      background: var(--brand);
-      color: #fff;
-      border-color: var(--brand);
-    }
-    .modal-small {
-      font-size: 0.92rem;
-      color: #666;
-      margin-top: 6px;
     }
 
-    @media (max-width:600px){
-      .map-actions { flex-direction: column; align-items: stretch; }
-      .map-actions a { text-align: center; }
+    .modal-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 10px 15px;
+      border-radius: 9px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal-button-secondary {
+      border: 1px solid #bac2bc;
+      background: #f5f6f5;
+      color: #303a33;
+    }
+
+    .modal-button-primary {
+      border: 1px solid var(--brand);
+      background: var(--brand);
+      color: #fff;
+    }
+
+    @media (max-width: 700px) {
+      main { padding: 18px 12px 34px; }
+
+      .panel { padding: 17px 14px; }
+
+      .search-grid { grid-template-columns: 1fr; }
+
+      .result-card { grid-template-columns: 1fr; }
+
+      .text-button { width: 100%; }
+
+      .map-actions,
+      .modal-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .map-link,
+      .modal-button { text-align: center; }
+
+      .map-frame {
+        height: 560px;
+        min-height: 420px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 <body>
-  <div id="disclaimerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="disclaimerTitle">
+  <div
+    id="disclaimerModal"
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="disclaimerTitle"
+    aria-describedby="disclaimerDescription"
+    hidden>
     <div class="modal-content">
-      <h2 id="disclaimerTitle">Important Disclaimer</h2>
-      <p><strong>Free Snake Relocation is an informational platform only.</strong> All individuals listed act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual.</p>
-      <p>We do not guarantee availability, response time, qualifications, actions, outcomes, or safety. Any contact, communication, or service is solely between you and the individual you choose to contact.</p>
-      <p>By using this website, you acknowledge that you use it at your own risk. If you need immediate help, guaranteed service, emergency assistance, or a licensed pest control provider, do not rely solely on this website.</p>
-      <p class="modal-small">Please also read our <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer">full disclaimer</a>.</p>
+      <h2 id="disclaimerTitle">Before You Use the Directory</h2>
+      <div id="disclaimerDescription">
+        <p><strong>Free Snake Relocation provides a public directory. It is not a dispatch service.</strong></p>
+        <p>Every person listed acts independently. Directory administrators do not assign, supervise, train, certify, insure, or control volunteers. Administrators do not participate in or monitor your communications with them.</p>
+        <p>We do not guarantee that anyone will respond or be available. You decide whom to contact and whether to accept help. Use the directory at your own risk.</p>
+        <p>If you need emergency assistance or guaranteed service, contact emergency services, local animal control, wildlife authorities, or a licensed pest control provider as appropriate.</p>
+      </div>
+      <p class="modal-small">You can also read the <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">full disclaimer</a>.</p>
       <div class="modal-actions">
-        <a href="/disclaimer.html" target="_blank" rel="noopener noreferrer" class="modal-btn modal-btn-secondary">Read Full Disclaimer</a>
-        <button id="acceptDisclaimer" class="modal-btn modal-btn-primary" type="button">I Understand</button>
+        <a href="disclaimer.html" target="_blank" rel="noopener noreferrer" class="modal-button modal-button-secondary">Read Full Disclaimer</a>
+        <button id="acceptDisclaimer" class="modal-button modal-button-primary" type="button">I Understand</button>
       </div>
     </div>
   </div>
 
   <main>
-    <h1>Find a Snake Relocator</h1>
+    <header class="page-header">
+      <span class="eyebrow">Volunteer Directory</span>
+      <h1>Find Snake Removal Help Near You</h1>
+      <p class="intro">Search the Free Snake Relocation directory by state and city. Choose a listing and text that independent volunteer directly to ask whether they can help.</p>
+    </header>
 
-    <div class="disclaimer-banner">
-      <strong>Important Disclaimer</strong>
-      This directory is an informational platform only. Individuals listed on this page act independently as volunteers. We do not assign, dispatch, supervise, train, screen, certify, insure, or control any listed individual. We do not guarantee availability, response time, qualifications, actions, outcomes, or safety.
-      <br><br>
-      Any contact, communication, or service is solely between you and the individual you choose to contact, at your own risk.
-      <br><br>
-      <a href="/disclaimer.html">Read the full disclaimer here</a>.
+    <div class="directory-note" role="note">
+      <span class="directory-note-icon" aria-hidden="true">i</span>
+      <div>
+        <strong>This website does not dispatch volunteers.</strong>
+        You choose whom to contact. Directory administrators do not assign jobs, promise a response, or monitor conversations.
+      </div>
     </div>
 
-    <section>
-      <h2>Search by State & City</h2>
-      <div class="row">
+    <section class="panel" aria-labelledby="searchHeading">
+      <h2 id="searchHeading">Search by State and City</h2>
+      <p class="section-intro">Select a state first. The city list will then show locations with active directory listings.</p>
+
+      <div class="search-grid">
         <div>
-          <label for="stateSelect">Select State</label>
-          <select id="stateSelect"></select>
+          <label for="stateSelect">State</label>
+          <select id="stateSelect" disabled>
+            <option value="">Loading states...</option>
+          </select>
         </div>
+
         <div>
-          <label for="citySelect">Select City</label>
-          <select id="citySelect"></select>
+          <label for="citySelect">City</label>
+          <select id="citySelect" disabled>
+            <option value="">Select a state first</option>
+          </select>
         </div>
       </div>
 
-      <div class="results-wrap">
-        <div class="results-warning">
-          <strong>Before contacting a volunteer</strong>
-          Use your own judgment before contacting anyone listed here. Listing on this site does not mean we verified, endorsed, trained, certified, or guarantee that person. If you need immediate help or guaranteed service, contact local animal control, wildlife authorities, emergency services, or a licensed pest control provider as appropriate.
-        </div>
+      <p id="loadStatus" class="load-status" role="status" aria-live="polite">Loading the directory...</p>
 
-        <div class="contact-note" id="contactNote" aria-live="polite">
-          Text preferred. Calls from unknown numbers may not be answered.
-        </div>
-
-        <div id="stateCityResults" class="results"></div>
+      <div class="contact-guidance">
+        <strong>Before contacting a volunteer</strong>
+        A published listing does not mean the person is currently available, trained, certified, insured, or endorsed by this website. Use your own judgment. If one volunteer does not respond, text another listing in the same area or check a nearby city.
       </div>
+
+      <div class="contact-note">Text preferred. Calls from unknown numbers may not be answered.</div>
+
+      <p id="resultSummary" class="result-summary" aria-live="polite"></p>
+      <div id="stateCityResults" class="results">
+        <div class="empty-state">Loading volunteer listings...</div>
+      </div>
+
+      <p class="search-tip">No listing in your city? Check nearby cities or use the map below. Volunteers may travel outside the city shown on their listing.</p>
     </section>
 
-    <section style="margin-top:28px;">
-      <div class="map-actions" aria-live="polite">
-        <span>Having trouble loading the map?</span>
-        <a href="https://www.google.com/maps/d/viewer?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w"
-           target="_blank" rel="noopener">
-          Open in Google Maps
+    <section class="panel map-panel" aria-labelledby="mapHeading">
+      <h2 id="mapHeading">Browse the Volunteer Map</h2>
+
+      <div class="map-actions">
+        <p>Use the full Google map if the embedded map does not load or is difficult to use on your device.</p>
+        <a
+          class="map-link"
+          href="https://www.google.com/maps/d/viewer?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w"
+          target="_blank"
+          rel="noopener noreferrer">
+          Open Full Map
         </a>
       </div>
 
-      <h2>View Relocators on the Map</h2>
       <iframe
+        class="map-frame"
         src="https://www.google.com/maps/d/embed?mid=1__R7DSwXpME1vtvTbOTOBlZXV6CsO3w"
+        loading="lazy"
         allowfullscreen
-        title="Free Snake Relocation Map">
+        title="Map of Free Snake Relocation volunteer listings">
       </iframe>
+
+      <p class="map-delay-note">The searchable directory may show an approved change before the separate Google map finishes updating.</p>
     </section>
   </main>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLp84jiVVodnyS8rYAonccV9SX6UKs4wqGorKm7ROS5uVyTlGAf4OuZJ_IzTDqZTKYng/exec';
 
-    const TEXT_PREFERRED_NOTE = 'Text preferred. Calls from unknown numbers may not be answered.';
+    const stateSelect = document.getElementById('stateSelect');
+    const citySelect = document.getElementById('citySelect');
+    const loadStatus = document.getElementById('loadStatus');
+    const resultSummary = document.getElementById('resultSummary');
+    const resultsElement = document.getElementById('stateCityResults');
 
-    let rows = [];
+    let directoryRows = [];
+    let cityLabels = new Map();
 
-    init();
+    stateSelect.addEventListener('change', handleStateChange);
+    citySelect.addEventListener('change', handleCityChange);
 
-    async function init() {
-      setLoading(true);
-      clearSelects();
+    loadDirectory();
 
-      document.getElementById('contactNote').textContent = TEXT_PREFERRED_NOTE;
+    async function loadDirectory() {
+      setLoadingState();
 
       try {
-        const res = await fetch(`${SCRIPT_URL}?mode=full`, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) throw new Error('Response was not JSON (check access/deploy URL)');
+        const response = await fetch(`${SCRIPT_URL}?mode=full`, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Directory request returned ${response.status}`);
 
-        rows = (await res.json()) || [];
-        const valid = rows.filter(r => r && normalizeState(r.State) && normalizeCity(r.City));
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) throw new Error('Directory response was not JSON');
 
-        const states = [...new Set(valid.map(r => normalizeState(r.State)))].sort();
-        const stateSelect = document.getElementById('stateSelect');
-        stateSelect.innerHTML = `<option value="">--Select State--</option>` + states.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
-        stateSelect.onchange = onStateChange;
+        const payload = await response.json();
+        if (!Array.isArray(payload)) throw new Error('Directory response was not a list');
 
-        const citySelect = document.getElementById('citySelect');
-        citySelect.innerHTML = `<option value="">--Select City--</option>`;
-        citySelect.onchange = onCityChange;
+        directoryRows = payload.filter(row =>
+          row &&
+          normalizeState(row.State) &&
+          normalizeCityKey(row.City)
+        );
 
-        document.getElementById('stateCityResults').innerHTML = `<em>Select a state, then a city.</em>`;
-      } catch (err) {
-        console.error(err);
-        document.getElementById('stateCityResults').innerHTML =
-          `<em>Couldn’t load directory. Verify your Apps Script deployment URL and access (Web app → Anyone).<br><small>${escapeHtml(String(err))}</small></em>`;
-      } finally {
-        setLoading(false);
+        const states = [...new Set(directoryRows.map(row => normalizeState(row.State)))]
+          .sort((a, b) => a.localeCompare(b));
+
+        stateSelect.innerHTML = '<option value="">Select a state</option>' +
+          states.map(state => `<option value="${escapeHtml(state)}">${escapeHtml(state)}</option>`).join('');
+        stateSelect.disabled = false;
+
+        citySelect.innerHTML = '<option value="">Select a state first</option>';
+        citySelect.disabled = true;
+
+        loadStatus.textContent = `${directoryRows.length.toLocaleString()} active volunteer listings loaded.`;
+        resultSummary.textContent = '';
+        showEmptyState('Select a state, then select a city.');
+      } catch (error) {
+        console.error('Directory load failed:', error);
+        stateSelect.innerHTML = '<option value="">Directory unavailable</option>';
+        citySelect.innerHTML = '<option value="">Directory unavailable</option>';
+        stateSelect.disabled = true;
+        citySelect.disabled = true;
+        loadStatus.textContent = 'The searchable directory did not load.';
+        resultSummary.textContent = '';
+        resultsElement.innerHTML = `
+          <div class="empty-state">
+            <p>Please try again. You can also use the volunteer map below while the directory reloads.</p>
+            <button class="retry-button" id="retryDirectory" type="button">Try Again</button>
+          </div>`;
+        document.getElementById('retryDirectory').addEventListener('click', loadDirectory);
       }
     }
 
-    function onStateChange() {
-      const state = normalizeState(document.getElementById('stateSelect').value);
-      const citySelect = document.getElementById('citySelect');
+    function handleStateChange() {
+      const selectedState = normalizeState(stateSelect.value);
+      resultSummary.textContent = '';
 
-      if (!state) {
-        citySelect.innerHTML = `<option value="">--Select City--</option>`;
-        document.getElementById('stateCityResults').innerHTML = `<em>Select a state, then a city.</em>`;
+      if (!selectedState) {
+        citySelect.innerHTML = '<option value="">Select a state first</option>';
+        citySelect.disabled = true;
+        showEmptyState('Select a state, then select a city.');
         return;
       }
 
-      const cities = [...new Set(rows
-        .filter(r => normalizeState(r.State) === state)
-        .map(r => normalizeCity(r.City))
-        .filter(Boolean)
-      )].sort();
+      cityLabels = new Map();
 
-      citySelect.innerHTML = `<option value="">--Select City--</option>` + cities.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-      document.getElementById('stateCityResults').innerHTML = `<em>Select a city.</em>`;
+      directoryRows
+        .filter(row => normalizeState(row.State) === selectedState)
+        .forEach(row => {
+          const key = normalizeCityKey(row.City);
+          if (key && !cityLabels.has(key)) cityLabels.set(key, cleanCityLabel(row.City));
+        });
+
+      const cities = [...cityLabels.entries()]
+        .sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: 'base' }));
+
+      citySelect.innerHTML = '<option value="">Select a city</option>' +
+        cities.map(([key, label]) => `<option value="${escapeHtml(key)}">${escapeHtml(label)}</option>`).join('');
+      citySelect.disabled = false;
+      showEmptyState('Now select a city.');
+      citySelect.focus();
     }
 
-    function onCityChange() {
-      const state = normalizeState(document.getElementById('stateSelect').value);
-      const city = normalizeCity(document.getElementById('citySelect').value);
-      if (!state || !city) return;
+    function handleCityChange() {
+      const selectedState = normalizeState(stateSelect.value);
+      const selectedCityKey = normalizeCityKey(citySelect.value);
 
-      const filtered = rows.filter(r =>
-        normalizeState(r.State) === state &&
-        normalizeCity(r.City) === city
-      );
+      if (!selectedState || !selectedCityKey) {
+        resultSummary.textContent = '';
+        showEmptyState('Select a city to view volunteer listings.');
+        return;
+      }
 
-      const html = filtered.length
-        ? filtered.map(r => renderRelocator(r)).join('')
-        : `<em>No relocators found for this city.</em>`;
+      const matches = directoryRows
+        .filter(row =>
+          normalizeState(row.State) === selectedState &&
+          normalizeCityKey(row.City) === selectedCityKey
+        )
+        .sort((a, b) => String(a['Full Name'] || '').localeCompare(String(b['Full Name'] || '')));
 
-      document.getElementById('stateCityResults').innerHTML = html;
+      const cityLabel = cityLabels.get(selectedCityKey) || cleanCityLabel(citySelect.options[citySelect.selectedIndex].text);
+      const listingWord = matches.length === 1 ? 'listing' : 'listings';
+      resultSummary.textContent = `${matches.length} volunteer ${listingWord} in ${cityLabel}, ${selectedState}`;
+
+      if (!matches.length) {
+        showEmptyState('No active volunteer listings were found for this city. Check a nearby city or use the map below.');
+        return;
+      }
+
+      resultsElement.innerHTML = matches
+        .map(row => renderVolunteer(row, cityLabel, selectedState))
+        .join('');
     }
 
-    function renderRelocator(r) {
-      const name = r['Full Name'] || 'Name N/A';
-      const phoneRaw = r['Phone'] || 'Phone N/A';
+    function renderVolunteer(row, city, state) {
+      const name = String(row['Full Name'] || 'Volunteer listing').trim();
+      const phoneDisplay = String(row.Phone || '').trim();
+      const phoneDigits = phoneDisplay.replace(/\D/g, '');
 
-      const phoneDigits = String(phoneRaw).replace(/[^\d+]/g, '');
-      const smsLink = phoneDigits && phoneRaw !== 'Phone N/A' ? `sms:${phoneDigits}` : null;
-
-      const distLine = r['Distance']
-        ? `<div class="result-sub">${escapeHtml(String(r['Distance']))} mi away</div>`
-        : '';
-
-      const phoneHtml = smsLink
-        ? `<span class="result-phone"><a href="${smsLink}">${escapeHtml(phoneRaw)}</a></span>`
-        : `<span class="result-phone">${escapeHtml(phoneRaw)}</span>`;
+      const action = phoneDigits
+        ? `<a class="text-button" href="sms:${phoneDigits}" aria-label="Text ${escapeHtml(name)}">Text Volunteer</a>`
+        : '<span class="unavailable">Phone number unavailable</span>';
 
       return `
-        <div class="result-card">
-          <div class="result-top">
-            <span class="result-name">${escapeHtml(name)}</span>
-            ${phoneHtml}
+        <article class="result-card">
+          <div>
+            <h3 class="result-name">${escapeHtml(name)}</h3>
+            <div class="result-location">${escapeHtml(city)}, ${escapeHtml(state)}</div>
+            ${phoneDisplay ? `<div class="result-phone">Text: ${escapeHtml(phoneDisplay)}</div>` : ''}
           </div>
-          ${distLine}
-          <div class="text-preferred">${escapeHtml(TEXT_PREFERRED_NOTE)}</div>
-        </div>
-      `;
+          <div>${action}</div>
+        </article>`;
+    }
+
+    function setLoadingState() {
+      directoryRows = [];
+      cityLabels = new Map();
+      stateSelect.disabled = true;
+      citySelect.disabled = true;
+      stateSelect.innerHTML = '<option value="">Loading states...</option>';
+      citySelect.innerHTML = '<option value="">Select a state first</option>';
+      loadStatus.textContent = 'Loading the directory...';
+      resultSummary.textContent = '';
+      showEmptyState('Loading volunteer listings...');
+    }
+
+    function showEmptyState(message) {
+      resultsElement.innerHTML = `<div class="empty-state">${escapeHtml(message)}</div>`;
     }
 
     function normalizeState(value) {
       return String(value || '')
-        .replace(/\u00A0/g, ' ')
+        .replace(/\u00a0/g, ' ')
         .trim()
         .toUpperCase();
     }
 
-    function normalizeCity(value) {
+    function normalizeCityKey(value) {
+      return cleanCityLabel(value).toLocaleLowerCase();
+    }
+
+    function cleanCityLabel(value) {
       return String(value || '')
-        .replace(/\u00A0/g, ' ')
+        .replace(/\u00a0/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
     }
 
-    function clearSelects() {
-      document.getElementById('stateSelect').innerHTML = `<option value="">--Select State--</option>`;
-      document.getElementById('citySelect').innerHTML = `<option value="">--Select City--</option>`;
-    }
-
-    function setLoading(on) {
-      const target = document.getElementById('stateCityResults');
-      if (on) target.innerHTML = `<em>Loading directory…</em>`;
-    }
-
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[character]));
     }
   </script>
 
   <script>
-    window.addEventListener('load', () => {
+    window.addEventListener('load', showDisclaimerIfNeeded);
+
+    function showDisclaimerIfNeeded() {
       const modal = document.getElementById('disclaimerModal');
-      const acceptBtn = document.getElementById('acceptDisclaimer');
+      const acceptButton = document.getElementById('acceptDisclaimer');
       const storageKey = 'fsr_disclaimer_ack_v2';
 
-      if (!modal || !acceptBtn) return;
-
-      const alreadyAccepted = localStorage.getItem(storageKey);
-
-      if (alreadyAccepted === 'yes') {
-        modal.style.display = 'none';
-        modal.setAttribute('aria-hidden', 'true');
-        return;
+      let accepted = false;
+      try {
+        accepted = window.localStorage.getItem(storageKey) === 'yes';
+      } catch (error) {
+        console.info('Disclaimer preference could not be read.');
       }
 
-      modal.style.display = 'block';
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+      if (accepted) return;
 
-      acceptBtn.addEventListener('click', () => {
-        localStorage.setItem(storageKey, 'yes');
-        modal.style.display = 'none';
-        modal.setAttribute('aria-hidden', 'true');
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      acceptButton.focus();
+
+      acceptButton.addEventListener('click', () => {
+        try {
+          window.localStorage.setItem(storageKey, 'yes');
+        } catch (error) {
+          console.info('Disclaimer preference could not be saved.');
+        }
+
+        modal.hidden = true;
         document.body.style.overflow = '';
-      });
-    });
+        stateSelect.focus();
+      }, { once: true });
+    }
   </script>
 </body>
 </html>
