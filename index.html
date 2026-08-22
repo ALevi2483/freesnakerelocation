@@ -2,26 +2,174 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Free Snake Relocation – Volunteer Directory and Snake Removal Help</title>
-  <meta name="description" content="Explore the Free Snake Relocation directory to find safe, humane, volunteer-based snake removal services. Browse tools, maps, and educational content across the U.S." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Snake Relocation Directory | Find Nearby Volunteers</title>
+  <meta name="description" content="Search the Free Snake Relocation directory, text independent volunteers directly, update a listing, and find snake education and legal resources." />
 
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; }
-    header { background-color: #226644; color: #fff; padding: 1rem; text-align: center; font-size: 1.8rem; font-weight: bold; }
-    nav { background-color: #2e7d57; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
-    .nav-links { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; }
-    .nav-links a { color: #fff; padding: 1rem; text-decoration: none; font-weight: bold; }
-    .nav-links a:hover { background-color: #1c5a40; }
-    .hamburger { display: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem 1rem; color: #fff; font-weight: bold; border: 2px solid #fff; border-radius: 5px; box-shadow: 0 0 5px rgba(255,255,255,.3); margin: .5rem auto; }
-    .hamburger:active { transform: scale(1.05); }
-    iframe { width: 100%; height: calc(100vh - 130px); border: none; }
-    @media (max-width: 768px) {
-      .nav-links { flex-direction: column; display: none; }
-      .nav-links.show { display: flex; }
-      .hamburger { display: block; }
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      height: 100%;
     }
-    .hidden-h1 { display: none; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: #183324;
+      background: #f4f8f4;
+    }
+
+    header {
+      flex: 0 0 auto;
+      background: #226644;
+      color: #fff;
+      padding: .8rem 1rem;
+      text-align: center;
+    }
+
+    .site-title {
+      margin: 0;
+      font-size: 1.75rem;
+      line-height: 1.15;
+    }
+
+    .site-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-subtitle {
+      display: block;
+      margin-top: .2rem;
+      font-size: .88rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      opacity: .9;
+    }
+
+    nav {
+      flex: 0 0 auto;
+      background: #2e7d57;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .nav-links a {
+      color: #fff;
+      padding: .85rem .9rem;
+      text-decoration: none;
+      font-size: .95rem;
+      font-weight: 700;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      background: #1c5a40;
+      outline: none;
+    }
+
+    .nav-links a.active {
+      background: #1c5a40;
+      border-bottom-color: #fff;
+    }
+
+    .hamburger {
+      display: none;
+      appearance: none;
+      cursor: pointer;
+      margin: .55rem auto;
+      padding: .55rem 1rem;
+      color: #fff;
+      background: #1c5a40;
+      border: 2px solid #fff;
+      border-radius: 6px;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .hamburger:focus-visible {
+      outline: 3px solid #d7f1df;
+      outline-offset: 2px;
+    }
+
+    .directory-note {
+      flex: 0 0 auto;
+      padding: .55rem 1rem;
+      color: #4d430f;
+      background: #fff7e6;
+      border-bottom: 1px solid #d6b24c;
+      text-align: center;
+      font-size: .9rem;
+      line-height: 1.35;
+    }
+
+    main {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #f4f8f4;
+    }
+
+    @media (max-width: 768px) {
+      .site-title {
+        font-size: 1.4rem;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      nav {
+        flex-direction: column;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-links a {
+        width: 100%;
+        padding: .75rem 1rem;
+        text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,.18);
+      }
+
+      .nav-links a.active {
+        border-bottom-color: rgba(255,255,255,.18);
+        box-shadow: inset 4px 0 0 #fff;
+      }
+
+      .directory-note {
+        font-size: .82rem;
+      }
+    }
   </style>
 
   <!-- Google tag (GA4) -->
@@ -31,59 +179,113 @@
     function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
 
-    // Base config for the shell page
-    gtag('config', 'G-QH22J22EL6');
+    // Virtual page views are sent when a directory page opens in the frame.
+    gtag('config', 'G-QH22J22EL6', { send_page_view: false });
 
-    // Helper: log a virtual page view for iframe navigation
     function logPageView(path, title) {
       if (typeof gtag !== 'function') return;
-      // Use a clean page_path per inner page so GA4 reports look like normal navigation
+
       gtag('event', 'page_view', {
         page_title: title || path,
-        page_location: window.location.origin + '/' + path,
+        page_location: new URL(path, window.location.href).href,
         page_path: '/' + path
       });
     }
   </script>
 </head>
+
 <body>
-  <h1 class="hidden-h1">Free Snake Removal Directory Navigation Frame</h1>
+  <header>
+    <h1 class="site-title">
+      <a href="home.html" target="contentFrame" data-page="home.html" data-title="Home">Free Snake Relocation</a>
+      <span class="site-subtitle">Volunteer Directory</span>
+    </h1>
+  </header>
 
-  <header>Free Snake Relocation</header>
+  <nav aria-label="Main navigation">
+    <button
+      class="hamburger"
+      id="menuButton"
+      type="button"
+      aria-expanded="false"
+      aria-controls="navLinks"
+    >☰ Menu</button>
 
-  <nav>
-    <div class="hamburger" onclick="toggleMenu()">☰ Menu</div>
     <div class="nav-links" id="navLinks">
-      <a href="home.html"       target="contentFrame" onclick="closeMenu(); logPageView('home.html','Home')">Home</a>
-      <a href="volunteer.html"  target="contentFrame" onclick="closeMenu(); logPageView('volunteer.html','Volunteer')">Volunteer</a>
-      <a href="find.html"       target="contentFrame" onclick="closeMenu(); logPageView('find.html','Find a Relocator')">Find Help</a>
-      <a href="education.html"  target="contentFrame" onclick="closeMenu(); logPageView('education.html','Snakes by State')">Snake ID</a>
-      <a href="laws.html"       target="contentFrame" onclick="closeMenu(); logPageView('laws.html','Snake Laws By State')">Laws</a>
-      <a href="faq.html"        target="contentFrame" onclick="closeMenu(); logPageView('faq.html','FAQ')">FAQ</a>
-      <a href="resources.html"  target="contentFrame" onclick="closeMenu(); logPageView('resources.html','Resources')">Resources</a>
-      <a href="reviews.html"    target="contentFrame" onclick="closeMenu(); logPageView('reviews.html','Reviews')">Reviews</a>
-      <a href="Contact.html"    target="contentFrame" onclick="closeMenu(); logPageView('Contact.html','Contact Us')">Contact Us</a>
-      <a href="legacy.html"      target="contentFrame" onclick="closeMenu(); logPageView('legacy.html','Legacy')">Legacy</a>
-      
+      <a class="active" aria-current="page" href="home.html" target="contentFrame" data-title="Home">Home</a>
+      <a href="find.html" target="contentFrame" data-title="Search Directory">Search Directory</a>
+      <a href="volunteer.html" target="contentFrame" data-title="Join or Update">Join or Update</a>
+      <a href="education.html" target="contentFrame" data-title="Snake Identification">Snake ID</a>
+      <a href="laws.html" target="contentFrame" data-title="Snake Laws by State">Laws</a>
+      <a href="faq.html" target="contentFrame" data-title="Frequently Asked Questions">FAQ</a>
+      <a href="resources.html" target="contentFrame" data-title="Resources">Resources</a>
+      <a href="reviews.html" target="contentFrame" data-title="Reviews">Reviews</a>
+      <a href="legacy.html" target="contentFrame" data-title="Legacy">Legacy</a>
+      <a href="Contact.html" target="contentFrame" data-title="Contact Administrators">Contact Admin</a>
     </div>
   </nav>
 
-  <!-- Default load -->
-  <iframe src="home.html" name="contentFrame" id="contentFrame"></iframe>
+  <div class="directory-note" role="note">
+    <strong>Directory only:</strong> Search listings and text volunteers directly. Administrators do not dispatch or assign volunteers.
+  </div>
+
+  <main>
+    <iframe
+      src="home.html"
+      name="contentFrame"
+      id="contentFrame"
+      title="Free Snake Relocation directory content"
+    ></iframe>
+  </main>
 
   <script>
+    const menuButton = document.getElementById('menuButton');
+    const navLinks = document.getElementById('navLinks');
+    const navigationLinks = document.querySelectorAll('[data-page], #navLinks a');
+
     function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('show');
+      const isOpen = navLinks.classList.toggle('show');
+      menuButton.setAttribute('aria-expanded', String(isOpen));
     }
+
     function closeMenu() {
-      const nav = document.getElementById('navLinks');
-      if (window.innerWidth <= 768 && nav.classList.contains('show')) {
-        nav.classList.remove('show');
-      }
+      navLinks.classList.remove('show');
+      menuButton.setAttribute('aria-expanded', 'false');
     }
-    // Fire a virtual page view for the default iframe load too
-    window.addEventListener('DOMContentLoaded', function () {
-      logPageView('home.html','Home');
+
+    function setActiveLink(path) {
+      document.querySelectorAll('#navLinks a').forEach((link) => {
+        const isActive = link.getAttribute('href') === path;
+        link.classList.toggle('active', isActive);
+
+        if (isActive) {
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    navigationLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        const path = link.getAttribute('href');
+        const title = link.dataset.title || link.textContent.trim();
+
+        closeMenu();
+        setActiveLink(path);
+        document.title = `${title} | Free Snake Relocation Directory`;
+        logPageView(path, title);
+      });
+    });
+
+    menuButton.addEventListener('click', toggleMenu);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMenu();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      logPageView('home.html', 'Home');
     });
   </script>
 </body>
