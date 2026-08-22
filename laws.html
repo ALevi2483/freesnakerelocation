@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Relocation Laws by State | Free Snake Relocation</title>
-  <meta name="description" content="Snake relocation laws and protected species by U.S. state. Always verify with your state wildlife agency before handling or relocating wildlife." />
-  <link rel="icon" href="/favicon.ico" />
+  <title>Snake Laws by State | Official Wildlife Resources</title>
+  <meta name="description" content="Review snake laws by state, questions to ask before moving wildlife, and links to state and federal wildlife resources. Always verify current rules before acting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #ffffff;
@@ -145,40 +147,407 @@
       color: var(--muted);
     }
   </style>
+
+  <style>
+    :root {
+      --green-900: #163b25;
+      --green-800: #1b472b;
+      --green-700: #225533;
+      --green-100: #e5f3e8;
+      --green-050: #f4f8f4;
+      --ink: #233127;
+      --muted: #526457;
+      --line: #d7e3d9;
+      --warning-bg: #fff8e8;
+      --warning-border: #d6b24c;
+      --warning-ink: #4d430f;
+      --info-bg: #eef6f0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--green-050);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--green-700);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    a:hover { color: var(--green-900); }
+
+    a:focus-visible,
+    select:focus-visible {
+      outline: 3px solid #efb321;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 16px;
+      z-index: 10;
+      padding: 10px 14px;
+      border-radius: 0 0 8px 8px;
+      background: var(--green-900);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .skip-link:focus { top: 0; }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      max-width: none;
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .hero {
+      padding: 34px 24px;
+      border: 1px solid #d3e2d5;
+      border-radius: 18px;
+      background: linear-gradient(180deg, var(--green-100) 0%, #dcecdf 100%);
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 11px;
+      border: 1px solid #cfdfd2;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--green-700);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--green-900);
+      line-height: 1.25;
+    }
+
+    h1 {
+      margin: 0 auto 12px;
+      font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    .hero-copy {
+      max-width: 820px;
+      margin: 0 auto;
+      color: #425247;
+      font-size: 1.07rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 22px;
+    }
+
+    .button-link {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 16px;
+      border: 1px solid #b9cfbf;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--green-700);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .button-link:hover {
+      background: #f7fbf8;
+      color: var(--green-900);
+      text-decoration: none;
+    }
+
+    .directory-notice {
+      margin-top: 22px;
+      padding: 17px 18px;
+      border: 1px solid var(--warning-border);
+      border-radius: 12px;
+      background: var(--warning-bg);
+      color: var(--warning-ink);
+      text-align: left;
+    }
+
+    .directory-notice strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.05rem;
+    }
+
+    .lookup-layout {
+      display: grid;
+      grid-template-columns: minmax(250px, 340px) minmax(0, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .card {
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+    }
+
+    .picker-card {
+      position: sticky;
+      top: 16px;
+    }
+
+    .picker-card h2,
+    .state-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+    }
+
+    .picker-help {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    label {
+      color: var(--green-900);
+      font-weight: 800;
+    }
+
+    select {
+      min-height: 48px;
+      margin-top: 7px;
+      border: 1px solid #afc6b5;
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    .verify-list {
+      margin: 18px 0 0;
+      padding: 16px;
+      border-radius: 10px;
+      background: var(--info-bg);
+    }
+
+    .verify-list strong {
+      display: block;
+      color: var(--green-900);
+      margin-bottom: 7px;
+    }
+
+    .verify-list ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .state-card { min-height: 380px; }
+
+    .empty-state {
+      display: grid;
+      min-height: 330px;
+      place-items: center;
+      padding: 28px;
+      border: 2px dashed #c8d9cc;
+      border-radius: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--green-900);
+      font-size: 1.15rem;
+    }
+
+    .state-meta {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .state-meta h2 { margin-bottom: 6px; }
+
+    .resource-box {
+      padding: 16px;
+      border: 1px solid #b9d1bf;
+      border-radius: 11px;
+      background: #f2f8f3;
+    }
+
+    .resource-box h3,
+    .law-body h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+
+    .resource-box ul,
+    .law-body ul {
+      margin: 0;
+      padding-left: 21px;
+    }
+
+    .law-body { line-height: 1.6; }
+
+    .law-body section {
+      padding-top: 19px;
+    }
+
+    .plain-notes {
+      margin-top: 19px;
+      padding-top: 19px;
+      border-top: 1px solid var(--line);
+    }
+
+    .plain-notes > p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .alert {
+      margin-top: 18px;
+      border-color: var(--warning-border);
+      background: var(--warning-bg);
+      color: var(--warning-ink);
+      font-size: 0.95rem;
+    }
+
+    .federal-card {
+      margin-top: 22px;
+    }
+
+    .federal-card h2 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+    }
+
+    .federal-card p { margin: 0 0 12px; }
+
+    .federal-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      margin: 0;
+      padding-left: 21px;
+    }
+
+    footer {
+      margin-top: 26px;
+      padding: 20px 0 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.91rem;
+    }
+
+    .pill {
+      border-color: #c7d8cb;
+      background: #f6faf7;
+      color: var(--muted);
+    }
+
+    @media (max-width: 820px) {
+      .lookup-layout { grid-template-columns: 1fr; }
+      .picker-card { position: static; }
+      .federal-links { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .container { width: min(100% - 20px, 1120px); }
+      .hero { padding: 27px 17px; }
+      .card { padding: 17px; }
+      .button-link { width: 100%; }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Keep your existing site header/menu include here -->
+  <a class="skip-link" href="#main-content">Skip to laws lookup</a>
 
-  <main class="container">
-    <h1>Relocation Laws by State</h1>
+  <main class="container" id="main-content">
+    <section class="hero" aria-labelledby="page-title">
+      <span class="eyebrow">Wildlife rules and resources</span>
+      <h1 id="page-title">Snake Laws by State</h1>
+      <p class="hero-copy">
+        Snake laws by state can affect whether a person may capture, possess, transport, or release a snake. Select a location below for agency resources and plain language notes, then confirm the current rule directly with the responsible wildlife agency before acting.
+      </p>
 
-    <p class="lead">
-      Select your state to view a plain language summary, relocation rules, and protected snakes. This page is not legal advice. Wildlife rules change, and local ordinances may also apply. Always verify with your state wildlife agency before handling, relocating, transporting, releasing, or possessing any snake.
-    </p>
+      <div class="hero-actions">
+        <a class="button-link" href="find.html">Find a volunteer</a>
+        <a class="button-link" href="disclaimer.html">Read the directory disclaimer</a>
+      </div>
 
-    <div class="row">
-      <section class="card" aria-labelledby="pick-state">
-        <label id="pick-state" for="stateSelect">Choose a state or territory</label>
-        <select id="stateSelect">
-          <option value="">Select a state</option>
+      <div class="directory-notice">
+        <strong>Do not treat this page as legal permission</strong>
+        Rules can change and may depend on the species, county, city, property, public land, destination, and reason for moving the animal. Free Snake Relocation does not authorize wildlife handling, issue permits, assign volunteers, or dispatch anyone. The directory and its administrators do not provide legal advice.
+      </div>
+    </section>
+
+    <div class="lookup-layout">
+      <section class="card picker-card" aria-labelledby="pick-state">
+        <h2 id="pick-state">Choose your location</h2>
+        <p class="picker-help">Select a state or territory to see resources and notes.</p>
+        <label for="stateSelect">State or territory</label>
+        <select id="stateSelect" aria-describedby="state-help">
+          <option value="">Select a location</option>
         </select>
 
-        <div style="margin-top:12px">
-          <div class="alert">
-            Reminder: Regulations and protected lists change. This page is an educational starting point only. Always confirm current rules with the official state wildlife agency before handling or relocating any snake.
-          </div>
+        <div class="verify-list" id="state-help">
+          <strong>Before moving any snake, confirm:</strong>
+          <ol>
+            <li>Is the species protected?</li>
+            <li>Is a license or permit required?</li>
+            <li>May the snake be captured or possessed?</li>
+            <li>May it be transported and released there?</li>
+            <li>Do local or public land rules also apply?</li>
+          </ol>
         </div>
       </section>
 
-      <section class="card" id="statePanel" aria-live="polite">
-        <div class="muted">No state selected</div>
+      <section class="card state-card" id="statePanel" aria-live="polite" aria-atomic="true">
+        <div class="empty-state">
+          <div>
+            <strong>No location selected</strong>
+            Choose a state or territory to begin.
+          </div>
+        </div>
       </section>
     </div>
 
+    <section class="card federal-card" aria-labelledby="federal-heading">
+      <h2 id="federal-heading">Federal rules may also apply</h2>
+      <p>Federal protection can apply in addition to state and local rules. Use these U.S. Fish and Wildlife Service resources when a protected species may be involved.</p>
+      <ul class="federal-links">
+        <li><a href="https://www.fws.gov/species/endangered-species/about-endangered-species-act" target="_blank" rel="noopener">Endangered Species Act overview</a></li>
+        <li><a href="https://www.fws.gov/program/endangered-species/species" target="_blank" rel="noopener">Federally listed species resources</a></li>
+        <li><a href="https://www.fws.gov/page/endangered-species-permits-frequently-asked-questions" target="_blank" rel="noopener">Endangered species permit questions</a></li>
+        <li><a href="https://www.fws.gov/locations" target="_blank" rel="noopener">Find a U.S. Fish and Wildlife Service office</a></li>
+      </ul>
+    </section>
+
     <footer>
-      <span>Content reviewed: May 2026</span><br />
-      <span>This page is a plain language resource and is not legal advice. Always verify with the official agency links listed for your state.</span>
+      <span>Page updated August 2026. Agency rules and protected species lists can change at any time.</span><br />
+      <span>Use this page as a starting point only. Confirm current requirements directly with the appropriate agency or a qualified local attorney.</span>
     </footer>
   </main>
 
@@ -1519,7 +1888,12 @@
       const rec = LAWS[code];
 
       if (!rec) {
-        panel.innerHTML = `<div class="muted">We have not posted a summary for this state yet. Please check your state wildlife agency.</div>`;
+        panel.innerHTML = `
+          <div class="empty-state">
+            <strong>No state information is available yet.</strong>
+            Check the state wildlife agency before handling, moving, transporting, possessing, or releasing a snake.
+          </div>
+        `;
         return;
       }
 
@@ -1531,48 +1905,89 @@
 
       panel.innerHTML = `
         <div class="state-meta">
-          <strong>${escapeHtml(rec.title)}</strong>
-          ${rec.notes ? `<div><span class="pill">${escapeHtml(rec.notes)}</span></div>` : ""}
+          <h2>${escapeHtml(rec.title)}</h2>
+          ${rec.notes ? `<span class="pill">${escapeHtml(rec.notes)}</span>` : ""}
+        </div>
+
+        <div class="resource-box">
+          <h3>Start with agency and regulatory resources</h3>
+          ${links
+            ? `<ul>${links}</ul>`
+            : `<p>Contact the state wildlife agency for current rules and permit requirements.</p>`}
         </div>
 
         <div class="law-body">
-          ${bullets ? `<h3>Key points</h3><ul>${bullets}</ul>` : ""}
+          <div class="plain-notes">
+            <h3>Plain language notes to verify</h3>
+            <p>These notes may be incomplete or out of date. They are not a substitute for current regulations, permit terms, or agency guidance.</p>
 
-          ${relocation ? `<h3>Relocation rules</h3><ul>${relocation}</ul>` : ""}
+            ${bullets ? `<section><h3>General notes</h3><ul>${bullets}</ul></section>` : ""}
 
-          <h3>Protected snakes</h3>
-          ${protectedList ? `<ul>${protectedList}</ul>` : `<p class="muted">Protected list pending. Use the official resources below.</p>`}
+            ${relocation ? `<section><h3>Relocation notes</h3><ul>${relocation}</ul></section>` : ""}
 
-          ${invasiveList ? `<h3>Invasive or prohibited snakes</h3><ul>${invasiveList}</ul>` : ""}
+            ${protectedList
+              ? `<section><h3>Species that may have special protection</h3><p class="muted">Examples only. This is not a complete protected species list.</p><ul>${protectedList}</ul></section>`
+              : `<section><h3>Protected species</h3><p class="muted">No examples are posted here. Check the official resources above for current protected species lists.</p></section>`}
 
-          ${links ? `<h3>Official resources</h3><ul>${links}</ul>` : ""}
+            ${invasiveList ? `<section><h3>Invasive or prohibited species notes</h3><ul>${invasiveList}</ul></section>` : ""}
+          </div>
 
-          <div class="alert" style="margin-top:16px;">
-            This summary is not legal advice. Always verify current rules with the official agency before handling, relocating, transporting, releasing, or possessing any snake.
+          <div class="alert">
+            Do not rely on this summary alone. Free Snake Relocation does not provide legal permission, permits, or authorization. Confirm current state, federal, local, and property-specific rules before taking action.
           </div>
         </div>
       `;
+    }
+
+    function safeStorageGet(key) {
+      try {
+        return window.localStorage.getItem(key) || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function safeStorageSet(key, value) {
+      try {
+        if (value) window.localStorage.setItem(key, value);
+        else window.localStorage.removeItem(key);
+      } catch (error) {
+        // The state selector still works when storage is blocked.
+      }
+    }
+
+    function safeReplaceUrl(url) {
+      try {
+        window.history.replaceState(null, "", url);
+      } catch (error) {
+        // Some restricted browsers block history changes.
+      }
     }
 
     sel.addEventListener("change", () => {
       const code = sel.value;
 
       if (!code) {
-        panel.innerHTML = `<div class="muted">No state selected</div>`;
-        history.replaceState(null, "", "laws.html");
-        localStorage.removeItem("fsr:lastState");
+        panel.innerHTML = `
+          <div class="empty-state">
+            <strong>No state selected.</strong>
+            Choose a state above to view agency links and notes to verify.
+          </div>
+        `;
+        safeReplaceUrl("laws.html");
+        safeStorageSet("fsr:lastState", "");
         return;
       }
 
       renderState(code);
-      history.replaceState(null, "", `laws.html?state=${encodeURIComponent(code)}`);
-      localStorage.setItem("fsr:lastState", code);
+      safeReplaceUrl(`laws.html?state=${encodeURIComponent(code)}`);
+      safeStorageSet("fsr:lastState", code);
     });
 
     (function initSelection() {
       const params = new URLSearchParams(window.location.search);
       const urlState = params.get("state");
-      const saved = localStorage.getItem("fsr:lastState");
+      const saved = safeStorageGet("fsr:lastState");
       const start = urlState || saved || "";
 
       if (start && STATES.find(([c]) => c === start)) {
