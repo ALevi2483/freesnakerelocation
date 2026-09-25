@@ -198,7 +198,9 @@
       margin-bottom: 5px;
     }
 
-    /* AWARD RECIPIENTS */
+    /* ========================================
+       AWARD RECIPIENTS
+       ======================================== */
 
     .recipients-section {
       background: var(--green-dark);
@@ -226,33 +228,39 @@
     .recipient-card {
       max-width: 920px;
       margin: auto;
-      display: grid;
-      grid-template-columns: 330px 1fr;
       background: white;
       color: var(--text);
       border: 3px solid var(--gold);
       border-radius: 18px;
-      overflow: hidden;
+      padding: 32px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
     }
 
     .recipient-photo-wrap {
-      background: #eee8dc;
-      min-height: 100%;
+      float: left;
+      width: 220px;
+      height: 220px;
+      margin: 0 28px 18px 0;
     }
 
     .recipient-photo {
-      width: 100%;
-      height: 100%;
-      min-height: 520px;
+      width: 220px;
+      height: 220px;
       object-fit: cover;
+      object-position: center;
+      border-radius: 14px;
+      border: 2px solid var(--border);
     }
 
     .recipient-info {
-      padding: 34px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 0;
+      display: block;
+    }
+
+    .recipient-card::after {
+      content: "";
+      display: block;
+      clear: both;
     }
 
     .recipient-year {
@@ -381,7 +389,12 @@
       font-weight: bold;
     }
 
+    /* ========================================
+       MOBILE
+       ======================================== */
+
     @media (max-width: 800px) {
+
       .grid,
       .award-list,
       .photo-grid,
@@ -402,22 +415,53 @@
       }
 
       .recipients-section {
-        padding: 26px 18px;
+        padding: 26px 16px;
+      }
+
+      .recipients-intro {
+        margin-bottom: 24px;
       }
 
       .recipient-card {
-        grid-template-columns: 1fr;
+        padding: 22px;
+      }
+
+      .recipient-photo-wrap {
+        float: none;
+        width: 170px;
+        height: 170px;
+        margin: 0 auto 20px;
       }
 
       .recipient-photo {
-        height: auto;
-        min-height: 0;
-        max-height: 600px;
+        width: 170px;
+        height: 170px;
         object-fit: cover;
+        object-position: center;
+        border-radius: 14px;
       }
 
       .recipient-info {
-        padding: 26px;
+        padding: 0;
+      }
+
+      .recipient-year {
+        text-align: center;
+      }
+
+      .inaugural-badge {
+        display: block;
+        width: fit-content;
+        margin: 0 auto 14px;
+      }
+
+      .recipient-info h3 {
+        text-align: center;
+        font-size: 1.9rem;
+      }
+
+      .recipient-award {
+        text-align: center;
       }
     }
   </style>
@@ -645,7 +689,6 @@
     </section>
 
 
-
     <!-- ===================================== -->
     <!-- JASON LANDERS LEGACY AWARD RECIPIENTS -->
     <!-- ===================================== -->
@@ -750,7 +793,6 @@
     </section>
 
 
-
     <section class="deadline">
 
       <div>
@@ -769,7 +811,6 @@
       </div>
 
     </section>
-
 
 
     <section id="nominate" class="card">
@@ -876,7 +917,6 @@ Nominations are due by September 1.</div>
     </section>
 
 
-
     <section class="card">
 
       <h2>Carrying the Mission Forward</h2>
@@ -902,7 +942,6 @@ Nominations are due by September 1.</div>
   </main>
 
 
-
   <footer>
 
     <p>
@@ -912,7 +951,6 @@ Nominations are due by September 1.</div>
     </p>
 
   </footer>
-
 
 
   <script>
