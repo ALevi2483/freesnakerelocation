@@ -19,6 +19,7 @@
       --muted: #5f5f5f;
       --green-dark: #11351f;
       --gold: #b8860b;
+      --gold-light: #f1d58a;
       --border: #ddd0b5;
       --shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
     }
@@ -59,7 +60,7 @@
     }
 
     .eyebrow {
-      color: #f1d58a;
+      color: var(--gold-light);
       font-weight: bold;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -197,6 +198,103 @@
       margin-bottom: 5px;
     }
 
+    /* AWARD RECIPIENTS */
+
+    .recipients-section {
+      background: var(--green-dark);
+      color: white;
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+      margin-bottom: 36px;
+    }
+
+    .recipients-section > h2 {
+      color: white;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .recipients-intro {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      text-align: center;
+      color: #edf3ee;
+    }
+
+    .recipient-card {
+      max-width: 850px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      background: white;
+      color: var(--text);
+      border: 3px solid var(--gold);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+    }
+
+    .recipient-photo {
+      width: 100%;
+      height: 100%;
+      min-height: 390px;
+      object-fit: cover;
+    }
+
+    .recipient-info {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .recipient-year {
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .recipient-info h3 {
+      font-size: 2rem;
+      margin: 0 0 4px;
+      line-height: 1.15;
+    }
+
+    .recipient-award {
+      font-weight: bold;
+      color: var(--green-dark);
+      margin: 0 0 18px;
+    }
+
+    .recipient-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .inaugural-badge {
+      display: inline-block;
+      width: fit-content;
+      background: #fff7df;
+      border: 1px solid var(--gold);
+      color: #5d4605;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.82rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+
+    .legacy-quote {
+      text-align: center;
+      color: var(--gold-light);
+      font-weight: bold;
+      margin: 28px 0 0;
+      font-size: 1.05rem;
+    }
+
     .deadline {
       background: var(--green-dark);
       color: white;
@@ -267,7 +365,7 @@
     }
 
     footer a {
-      color: #f1d58a;
+      color: var(--gold-light);
       font-weight: bold;
     }
 
@@ -290,11 +388,31 @@
       .photo-card img {
         height: 300px;
       }
+
+      .recipients-section {
+        padding: 25px 18px;
+      }
+
+      .recipient-card {
+        grid-template-columns: 1fr;
+      }
+
+      .recipient-photo {
+        height: auto;
+        min-height: 0;
+        max-height: 520px;
+        object-fit: cover;
+      }
+
+      .recipient-info {
+        padding: 25px;
+      }
     }
   </style>
 </head>
 
 <body>
+
   <section class="hero">
     <div class="hero-inner">
       <div class="eyebrow">Jason Landers Legacy Program</div>
@@ -307,13 +425,16 @@
         humane relocation.
       </p>
 
+      <a class="btn" href="#recipients">Award Recipients</a>
       <a class="btn" href="#nominate">Submit a Nomination</a>
       <a class="btn" href="#program">Learn About the Program</a>
     </div>
   </section>
 
   <main>
+
     <section class="grid">
+
       <div class="card">
         <h2>Where It Started</h2>
 
@@ -363,6 +484,7 @@
           forward.
         </div>
       </div>
+
     </section>
 
     <section class="card">
@@ -375,6 +497,7 @@
       </p>
 
       <div class="photo-grid">
+
         <div class="photo-card">
           <img
             src="images/landers%20hook.jpg"
@@ -401,6 +524,7 @@
           />
           <p>Remembering the person behind the mission</p>
         </div>
+
       </div>
     </section>
 
@@ -415,6 +539,7 @@
       </p>
 
       <div class="award-list">
+
         <div class="award-box">
           <h3>Jason Landers Legacy Award</h3>
 
@@ -449,6 +574,7 @@
             <li>Not a participation award</li>
           </ul>
         </div>
+
       </div>
 
       <div class="recognition-note">
@@ -461,9 +587,75 @@
       </div>
     </section>
 
+
+    <!-- AWARD RECIPIENTS -->
+
+    <section id="recipients" class="recipients-section">
+
+      <h2>Jason Landers Legacy Award Recipients</h2>
+
+      <p class="recipients-intro">
+        Each year, the Jason Landers Legacy Award recognizes one
+        volunteer whose service reflects the compassion, dedication,
+        education, conservation, and commitment to humane snake
+        relocation that Jason brought to this community.
+      </p>
+
+      <!-- 2026 RECIPIENT -->
+
+      <article class="recipient-card">
+
+        <img
+          class="recipient-photo"
+          src="images/miracle.jpg"
+          alt="Miracle Bennett, 2026 Jason Landers Legacy Award recipient"
+          loading="lazy"
+        />
+
+        <div class="recipient-info">
+
+          <div class="recipient-year">2026 Recipient</div>
+
+          <span class="inaugural-badge">
+            Inaugural Award Recipient
+          </span>
+
+          <h3>Miracle Bennett</h3>
+
+          <p class="recipient-award">
+            Jason Landers Legacy Award
+          </p>
+
+          <p>
+            Miracle Bennett is the first recipient of the Jason Landers
+            Legacy Award, recognizing her service to the snake relocation
+            community and her commitment to the values at the heart of
+            Jason Landers' mission.
+          </p>
+
+          <p>
+            As the inaugural recipient, Miracle becomes part of the
+            history of the Legacy Program and represents the volunteers
+            who continue carrying Jason's mission forward through
+            conservation, education, compassion, and humane snake
+            relocation.
+          </p>
+
+        </div>
+
+      </article>
+
+      <p class="legacy-quote">
+        Honoring the legacy. Recognizing those who carry it forward.
+      </p>
+
+    </section>
+
+
     <section class="deadline">
       <div>
         <h2>Nomination Deadline</h2>
+
         <p>
           Nominations for this year's Jason Landers Legacy Program are
           due by September 1.
@@ -472,6 +664,7 @@
 
       <div class="date-box">September 1</div>
     </section>
+
 
     <section id="nominate" class="card">
       <h2>Submit a Nomination</h2>
@@ -491,17 +684,21 @@
           A volunteer who helps people with professionalism and
           compassion.
         </li>
+
         <li>
           A volunteer who promotes public education and responsible
           snake coexistence.
         </li>
+
         <li>
           A volunteer who supports humane relocation and conservation.
         </li>
+
         <li>
           A volunteer who contributes positively to the snake education,
           conservation, and humane relocation community.
         </li>
+
         <li>
           A volunteer whose actions help carry Jason's mission forward.
         </li>
@@ -560,7 +757,9 @@ Optional Photos or Links:
 Attach photos, screenshots, posts, or links that support this nomination.
 
 Nominations are due by September 1.</div>
+
     </section>
+
 
     <section class="card">
       <h2>Carrying the Mission Forward</h2>
@@ -581,7 +780,9 @@ Nominations are due by September 1.</div>
         Honoring the legacy. Carrying the mission.
       </div>
     </section>
+
   </main>
+
 
   <footer>
     <p>
@@ -589,6 +790,7 @@ Nominations are due by September 1.</div>
       <a href="disclaimer.html">Directory Disclaimer</a>
     </p>
   </footer>
+
 
   <script>
     function openNominationEmail() {
@@ -622,5 +824,6 @@ Nominations are due by September 1.`;
         encodeURIComponent(body);
     }
   </script>
+
 </body>
 </html>
