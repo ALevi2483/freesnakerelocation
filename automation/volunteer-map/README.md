@@ -116,3 +116,13 @@ response spreadsheet and the private deployment settings in place. Run
 from **Listings Master** and **Do Not List**, logs counts only, and leaves both
 workbooks untouched. Treat candidates as an estimate for migration. Review
 invalid active exclusions and ambiguous checkbox flags before any export.
+
+### Check Census place coverage
+
+Add `CityCoverage.gs` with the current version of `RosterAudit.gs`, then run
+`auditCityCoverage` in the private project. If the Census download fails, use
+the [Census Gazetteer files page](https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html)
+to download the national **Places** ZIP. Upload the ZIP to restricted Google
+Drive and set `CENSUS_PLACES_FILE_ID` to the uploaded file ID. Rerun the audit.
+The Drive option uses the existing Drive authorization. The audit reads the
+public Census data and private roster locally in Apps Script and logs counts only.

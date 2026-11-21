@@ -4,9 +4,7 @@ const CENSUS_PLACES_ZIP =
 function auditCityCoverage() {
   const id = clean(PR.getProperty('ROSTER_SPREADSHEET_ID'));
   if (!id) throw new Error('SET_ROSTER_SPREADSHEET_ID');
-  const response = UrlFetchApp.fetch(CENSUS_PLACES_ZIP, {muteHttpExceptions: true});
-  if (response.getResponseCode() !== 200) throw new Error('CENSUS_DOWNLOAD_FAILED');
-  const files = Utilities.unzip(response.getBlob().setContentType('application/zip'));
+  const files = Utilities.unzip(censusArchive_());
   const places = files.find(file => /gaz_place_national\.txt$/i.test(file.getName()));
   if (!places) throw new Error('CENSUS_PLACE_FILE_MISSING');
   const lookup = censusPlaceLookup_(places.getDataAsString());
@@ -15,6 +13,17 @@ function auditCityCoverage() {
   const roster = rosterColumns_(book, 'Listings Master', ['Listing ID', 'Status', 'City', 'State', 'Phone']);
   const exclusions = rosterColumns_(book, 'Do Not List', ['Phone', 'Active'], 'Active');
   console.log(JSON.stringify(summarizeCityCoverage_(roster, exclusions, lookup)));
+}
+
+function censusArchive_() {
+  const fileId = clean(PR.getProperty('CENSUS_PLACES_FILE_ID'));
+  if (fileId) {
+    return DriveApp.getFileById(fileId).getBlob().setContentType('application/zip');
+  }
+  const response = UrlFetchApp.fetch(CENSUS_PLACES_ZIP, {muteHttpExceptions: true});
+  const status = response.getResponseCode();
+  if (status !== 200) throw new Error('CENSUS_DOWNLOAD_FAILED_HTTP_' + status);
+  return response.getBlob().setContentType('application/zip');
 }
 
 function censusPlaceLookup_(data) {

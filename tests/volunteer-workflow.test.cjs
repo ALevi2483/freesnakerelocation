@@ -250,3 +250,17 @@ test('Census coverage counts only unique place matches for eligible listings', (
   });
   assert.doesNotMatch(report, /example|ambiguous|757/i);
 });
+
+test('Census archive can be read from private Drive without a network download', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/CityCoverage.gs', 'utf8'));
+  f.properties.set('CENSUS_PLACES_FILE_ID', 'synthetic-file');
+  f.run(`
+    const DriveApp = {getFileById(id) {
+      if (id !== 'synthetic-file') throw new Error('wrong file');
+      return {getBlob: () => ({setContentType: mime => mime})};
+    }};
+    const UrlFetchApp = {fetch() { throw new Error('unexpected download'); }};
+  `);
+  assert.equal(f.run('censusArchive_()'), 'application/zip');
+});
