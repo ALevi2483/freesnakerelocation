@@ -72,7 +72,9 @@ function popup(point) {
 }
 
 async function start() {
-  if (!config.browserKey || !config.mapId || !validFeedUrl(config.feedUrl)) {
+  const localDemo = window.location.origin === 'http://localhost:8000' && !config.feedUrl;
+  const feedUrl = localDemo ? './demo-feed.json' : config.feedUrl;
+  if (!config.browserKey || !config.mapId || (!localDemo && !validFeedUrl(feedUrl))) {
     mapStatus.textContent = 'This preview is awaiting setup. Use the current directory link above.';
     return;
   }
@@ -123,7 +125,7 @@ async function start() {
 
   async function refresh() {
     try {
-      const response = await fetch(config.feedUrl, {
+      const response = await fetch(feedUrl, {
         cache: 'no-store', credentials: 'omit', signal: AbortSignal.timeout(12000),
       });
       if (!response.ok) throw new Error('FEED_UNAVAILABLE');
@@ -160,7 +162,8 @@ async function start() {
         clusterer.addMarkers(markers);
         revision = nextRevision;
       }
-      mapStatus.textContent = data.missing
+      mapStatus.textContent = localDemo ? 'Demo: ' + data.points.length + ' fictional locations shown.'
+        : data.missing
         ? 'Some approved locations are temporarily unavailable.'
         : data.points.length + ' approved locations shown.';
     } catch {

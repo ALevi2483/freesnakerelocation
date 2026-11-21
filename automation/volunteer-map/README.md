@@ -95,3 +95,14 @@ Official references
 ## Repository checks
 
 From the checkout root, run `node --test tests/volunteer-workflow.test.cjs`, `node --check map-preview/map.js`, and `git diff --check`. The Node tests use synthetic rows and simulated Google services. They exercise idempotent intake, matching and invalid addresses, duplicate handling, publication filtering, approval, replacement, removal, consent and quota limits. For a local page check, run `python3 -m http.server 8000` and open `/map-preview/`. The unconfigured preview should point visitors to the current directory. With Playwright and Chromium available, run `node tests/volunteer-map-browser.cjs` while the server is running. Set `CHROMIUM_PATH` if using a system Chromium and `MAP_TEST_ORIGIN` if serving on another origin. This test simulates the Maps client, cluster adapter and feed at mobile and desktop sizes. Actual Google authorization, map tiles, terms, runtime quotas and anonymous cross-origin behavior require the owner-approved sandbox.
+
+### Test the Google map locally with fictional markers
+
+Use a local copy of the development branch. In `map-preview/config.js`, set the
+website-restricted test key and JavaScript Map ID, leaving `feedUrl` blank. From
+the repository root run `python3 -m http.server 8000 --bind 127.0.0.1` (or
+`py -m http.server 8000 --bind 127.0.0.1` on Windows). Open
+`http://localhost:8000/map-preview/`. This exact origin uses the bundled fictional
+markers and exercises the real Google Maps controls and search without fetching
+Apps Script. Keep local configuration out of Git. This check leaves the signed-out
+connection to the real feed for a later test.
