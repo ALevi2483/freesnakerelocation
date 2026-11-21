@@ -29,7 +29,7 @@ function rosterColumns_(book, name, fields, typedField) {
     Object.fromEntries(fields.map((field, index) => [field, columns[index][row][0]])));
 }
 
-function summarizeRoster_(roster, exclusions) {
+function summarizeRoster_(roster, exclusions, onCandidate = () => {}) {
   const counts = {
     active: 0, removed: 0, otherStatus: 0, blockedByPhone: 0,
     invalidActiveExclusions: 0, unknownExclusionFlags: 0,
@@ -72,6 +72,7 @@ function summarizeRoster_(roster, exclusions) {
     if (phone && !isBlocked && uniqueId && city && state) {
       counts.candidateListings++;
       cityStates.add(JSON.stringify([city, state]));
+      onCandidate(city, state);
     }
   }
   counts.candidateCityStatePairs = cityStates.size;

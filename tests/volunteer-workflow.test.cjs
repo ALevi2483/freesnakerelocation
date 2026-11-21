@@ -226,3 +226,27 @@ test('the private roster audit counts candidates without exposing source values'
   });
   assert.doesNotMatch(report, /757|example city/i);
 });
+
+test('Census coverage counts only unique place matches for eligible listings', () => {
+  const f = fixture();
+  for (const name of ['RosterAudit', 'CityCoverage']) {
+    f.run(fs.readFileSync(`automation/volunteer-map/${name}.gs`, 'utf8'));
+  }
+  const report = f.run(`JSON.stringify(summarizeCityCoverage_([
+    {'Listing ID':'1', Status:'Active', City:'Example', State:'VA', Phone:'757-555-0101'},
+    {'Listing ID':'2', Status:'Active', City:'Example', State:'va', Phone:'757-555-0102'},
+    {'Listing ID':'3', Status:'Active', City:'Ambiguous', State:'VA', Phone:'757-555-0103'},
+    {'Listing ID':'4', Status:'Active', City:'Example', State:'NC', Phone:'757-555-0104'},
+    {'Listing ID':'5', Status:'Active', City:'Example', State:'VA', Phone:'757-555-0105'}
+  ], [{Phone:'757-555-0105', Active:true}], censusPlaceLookup_([
+    'USPS\\tNAME\\tINTPTLAT\\tINTPTLONG',
+    'VA\\tExample city\\t37\\t-77',
+    'VA\\tAmbiguous city\\t36\\t-77',
+    'VA\\tAmbiguous CDP\\t37\\t-77'
+  ].join('\\n'))))`);
+  assert.deepEqual(JSON.parse(report), {
+    candidateListings: 4, matchedListings: 2, unmatchedListings: 2,
+    matchedCityStatePairs: 1, unmatchedCityStatePairs: 2,
+  });
+  assert.doesNotMatch(report, /example|ambiguous|757/i);
+});
