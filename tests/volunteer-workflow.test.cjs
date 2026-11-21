@@ -199,3 +199,30 @@ test('default profile imports the current form and keeps the phone and agreement
   f.run("rawForm[0][4] = 'Unexpected renamed name field'");
   assert.throws(() => f.run('sourceData(book, registration)'), /SOURCE_HEADER_MISMATCH/);
 });
+
+test('the private roster audit counts candidates without exposing source values', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/RosterAudit.gs', 'utf8'));
+  const report = f.run(`JSON.stringify(summarizeRoster_([
+    {'Listing ID':'a', Status:'Active', City:'Example City', State:'VA', Phone:'757-555-0101'},
+    {'Listing ID':'b', Status:'Active', City:' example city ', State:'va', Phone:'757-555-0102'},
+    {'Listing ID':'c', Status:'Active', City:'Example City', State:'VA', Phone:'757-555-0103'},
+    {'Listing ID':'d', Status:'Removed', City:'Example City', State:'VA', Phone:'757-555-0104'},
+    {'Listing ID':'e', Status:'Active', City:'Example City', State:'VA', Phone:''},
+    {'Listing ID':'f', Status:'Active', City:'', State:'VA', Phone:'757-555-0105'},
+    {'Listing ID':'d', Status:'Active', City:'Example City', State:'VA', Phone:'757-555-0104'},
+    {'Listing ID':'g', Status:'Pending', City:'Example City', State:'VA', Phone:'757-555-0106'}
+  ], [
+    {Phone:'+1 (757) 555-0103', Active:true},
+    {Phone:'757-555-0102', Active:false},
+    {Phone:'invalid', Active:true},
+    {Phone:'757-555-0107', Active:'FALSE'}
+  ]))`);
+  assert.deepEqual(JSON.parse(report), {
+    active: 6, removed: 1, otherStatus: 1, blockedByPhone: 1,
+    invalidActiveExclusions: 1, unknownExclusionFlags: 1,
+    activeWithMissingOrInvalidPhone: 1, activeWithMissingOrDuplicateId: 1,
+    activeWithMissingCityOrState: 1, candidateListings: 2, candidateCityStatePairs: 1,
+  });
+  assert.doesNotMatch(report, /757|example city/i);
+});

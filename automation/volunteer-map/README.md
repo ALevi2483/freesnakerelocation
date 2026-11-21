@@ -106,3 +106,13 @@ the repository root run `python3 -m http.server 8000 --bind 127.0.0.1` (or
 markers and exercises the real Google Maps controls and search without fetching
 Apps Script. Keep local configuration out of Git. This check leaves the signed-out
 connection to the real feed for a later test.
+
+### Audit the production roster privately
+
+In the private test Apps Script project, add `RosterAudit.gs` and set
+`ROSTER_SPREADSHEET_ID` to the existing production workbook ID. Keep the test
+response spreadsheet and the private deployment settings in place. Run
+`auditProductionRoster` in the editor. This reads the minimum columns needed
+from **Listings Master** and **Do Not List**, logs counts only, and leaves both
+workbooks untouched. Treat candidates as an estimate for migration. Review
+invalid active exclusions and ambiguous checkbox flags before any export.
