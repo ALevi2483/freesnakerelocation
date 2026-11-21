@@ -12,7 +12,7 @@ The code adds a standalone [map preview](../../map-preview/index.html), an Apps 
 
 1. In Google Forms, open the volunteer form as an editor. Open **Responses → View in Sheets** and note the response tab name and the column headers. Identify where approved listings and removal requests currently live. Verify whether edits to existing responses write back to this tab.
 2. Keep the form responses, workbook and backups private. If you want help mapping real fields, provide the column headers with a synthetic example, or authorize access to a private sandbox via an approved Google connection. For an end-to-end launch review, access is needed to the form settings, linked response workbook schema and sharing settings, existing Apps Script deployment sources or owner-provided exports, My Maps layer configuration, and the Cloud project settings when approved. Share settings or sanitized exports through a secure channel. Keep real responses and secret values out of chat and GitHub.
-3. Create a private test workbook and a copy of the form linked to that workbook. Use synthetic volunteer names, aliases, consent and contact data. If you eventually authorize real geocoder testing, use a public landmark address for a synthetic volunteer and keep precise publication disabled. The installed workflow can process separate street, locality, region, postal and country columns. If the real form collects a single unstructured address, uses multiple languages for location labels, or lacks country or region, adapt the field mapping and validation in the sandbox before migration. Do not reformat or move old responses just to test.
+3. Create a private test workbook and a copy of the form linked to that workbook. Use synthetic volunteer names, aliases, consent and contact data. If you eventually authorize real geocoder testing, use a public landmark address for a synthetic volunteer and keep precise publication disabled. For the first installation check, copy only row 1 of the real response tab into a new private spreadsheet. Keep the headings in row 1 and add only synthetic submissions. This lets you verify the exact mapping and authorization safely before connecting a copy of the form for trigger tests.
 
 ## 2. Install Apps Script privately
 
@@ -26,14 +26,16 @@ The code adds a standalone [map preview](../../map-preview/index.html), an Apps 
    | `RESPONSE_TAB` | The exact Form response tab name |
    | `REVIEW_TAB` | Optional. Defaults to `Map Review` |
    | `ADMIN_EMAIL` | The address that should receive private workflow notices |
-   | `SOURCE_FIELDS` | JSON object mapping workflow fields to sheet headers |
+   | `SOURCE_FIELDS` | Leave unset for the existing Free Snake Relocation form. Use a JSON object only for a different form schema |
    | `GEOCODING_ENABLED` | Leave `false` until you approve sending test addresses to Google Maps |
    | `DAILY_GEOCODE_LIMIT` | Optional. Starts at 100 actual requests per rolling 24 hours, including scheduled refreshes. Valid range is 1–500 |
    | `PUBLIC_FEED_ENABLED` | Leave `false` until publication of the approved fields has been authorized |
    | `PRECISE_PUBLICATION_ENABLED` | Leave `false`. Enable only after separate owner approval of the precise-location consent policy |
    | `PUBLIC_FEED_URL` | Leave blank until you have an authorized Google Apps Script web app URL |
 
-   Example `SOURCE_FIELDS`
+   With `SOURCE_FIELDS` unset, the built-in profile reads **Timestamp**, **Full Name**, the full **Street Address number** question, **City**, **State**, the full **Phone Number** question, and **Which applies to you?**. Header checks ignore leading and trailing whitespace, including the phone header’s trailing space. The disclaimer and agreement checkboxes remain in the original response sheet for private review. The application type and phone stay private. Phone matches flag possible duplicates for human review. Because this form has no country or ZIP column, the geocoding query uses the street, city, state and a U.S. default. Confirm the U.S. scope before enabling geocoding. The form has no public alias or separate location-precision opt-in. Its existing agreement about listing contact information does not serve as consent for precise markers.
+
+   Example `SOURCE_FIELDS` for a different schema
 
    ```json
    {
@@ -58,7 +60,7 @@ The code adds a standalone [map preview](../../map-preview/index.html), an Apps 
 ## 3. Review registrations and changes
 
 1. After approving the use of Maps for private address validation, set `GEOCODING_ENABLED` to `true`. Run a reconciliation or wait for the trigger. A fully matched address can become `VALIDATED`. An incomplete address, a partial match, an ambiguous result, a postal mismatch or a result below rooftop accuracy needs review. Some legitimate rural, non-U.S. or newly built addresses will require a correction because geocoder results and locality labels vary. Correct the source response or request a new submission, then reject the stale entry. Use **RETRY** on a pending row after a temporary problem has been resolved. Geocoder and quota errors are recorded as safe execution errors and emailed to the administrator.
-2. Read the duplicate IDs and compare the private records. The script detects matching email or matching name and address. It cannot reliably identify all duplicates. Confirm the intended address and the public alias before approving. Clear an approval command if you need to pause it. A blocked approval remains queued and can proceed once prerequisites are met.
+2. Read the duplicate IDs and compare the private records. The script flags matching phone numbers, matching names and addresses, and matching email where an email field is configured. It cannot reliably identify all duplicates. Confirm the intended address and the public alias before approving. Clear an approval command if you need to pause it. A blocked approval remains queued and can proceed once prerequisites are met.
 3. For a new listing choose **APPROVE APPROXIMATE**. The marker uses a verified Google locality centroid. A shared marker lists all volunteers at the same point. Zoom or select a cluster to see the area markers. **APPROVE PRECISE** only works when enabled globally and the response records explicit consent. The marker then shows the confirmed rooftop coordinate and can offer directions.
 4. For an update, copy the current listing’s **ID** to **Replace ID** on the new pending row and approve the new row. The old row becomes **SUPERSEDED**. To honor a removal or revoked consent, choose **REMOVE** on the active row. If appropriate, approve a new approximate record after confirming consent. **REJECT** closes a pending row. The source response stays in place. Old live directories and My Maps need their existing removal process until cutover.
 5. Scheduled reconciliation processes queued actions. For urgent removal, run reconciliation from the editor after entering **REMOVE**, or immediately set `PUBLIC_FEED_ENABLED` to `false` to pause the feed. Set `PRECISE_PUBLICATION_ENABLED` to `false` to filter precise points out of new responses immediately. Already-open tabs refresh up to every five minutes, and any information previously published may have been copied.

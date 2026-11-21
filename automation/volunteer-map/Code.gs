@@ -13,6 +13,12 @@ function setupWorkflow() {
     review.getRange(1, 1, 1, REVIEW_COLUMNS.length).setValues([REVIEW_COLUMNS]);
     review.setFrozenRows(1);
   }
+  const header = review.getDataRange().getValues()[0];
+  const oldColumns = REVIEW_COLUMNS.slice(0, -2);
+  if (header.join('|') === oldColumns.join('|')) {
+    DriveApp.getFileById(config.bookId).makeCopy('Volunteer workflow backup ' + new Date().toISOString());
+    review.getRange(1, oldColumns.length + 1, 1, 2).setValues([REVIEW_COLUMNS.slice(-2)]);
+  }
   reviewRows(review);
   const rules = SpreadsheetApp.newDataValidation().requireValueInList([
     'APPROVE APPROXIMATE', 'APPROVE PRECISE', 'REMOVE', 'REJECT', 'RETRY'
@@ -31,24 +37,28 @@ function setupWorkflow() {
 }
 
 function configuration() {
-  const fields = JSON.parse(PR.getProperty('SOURCE_FIELDS') || '{}');
+  const custom = PR.getProperty('SOURCE_FIELDS');
+  const fields = custom ? JSON.parse(custom) : REGISTRATION_FIELDS;
+  const defaultCountry = custom ? '' : 'US';
   const bookId = PR.getProperty('RESPONSE_SHEET_ID');
   const source = PR.getProperty('RESPONSE_TAB');
   const review = PR.getProperty('REVIEW_TAB') || 'Map Review';
   const email = PR.getProperty('ADMIN_EMAIL');
   if (!bookId || !source || source === review || !email ||
-      !['timestamp', 'name', 'address', 'city', 'region', 'country'].every(key => fields[key])) {
+      !fields || !['timestamp', 'name', 'address', 'city', 'region'].every(key => fields[key]) ||
+      ![fields.country, defaultCountry].some(Boolean)) {
     throw new Error('CHECK_PRIVATE_WORKFLOW_CONFIGURATION');
   }
-  return { fields, bookId, source, review, email };
+  return { fields, defaultCountry, bookId, source, review, email };
 }
 
 function sourceData(book, config) {
   const sheet = book.getSheetByName(config.source);
   if (!sheet || sheet.getLastColumn() < 1) throw new Error('SOURCE_TAB_MISSING');
-  const [headers, ...values] = sheet.getDataRange().getDisplayValues();
+  const [headerValues, ...values] = sheet.getDataRange().getDisplayValues();
+  const headers = headerValues.map(clean);
   Object.values(config.fields).filter(Boolean).forEach(field => {
-    if (headers.filter(header => header === field).length !== 1) throw new Error('SOURCE_HEADER_MISMATCH');
+    if (headers.filter(header => header === clean(field)).length !== 1) throw new Error('SOURCE_HEADER_MISMATCH');
   });
   return {headers, values};
 }
@@ -118,7 +128,7 @@ function reconcileVolunteers() {
           SpreadsheetApp.flush();
           refreshPublic(reviewRows(sheet));
         },
-        () => ingest(sheet, rows, sourceData(book, config), config.fields),
+        () => ingest(sheet, rows, sourceData(book, config), config.fields, config.defaultCountry),
         () => validatePending(sheet, rows)
       ];
       const failures = new Set();
@@ -185,21 +195,23 @@ function updateReview(sheet, index, row, columns, handledAction) {
   }
 }
 
-function ingest(sheet, rows, source, fields) {
+function ingest(sheet, rows, source, fields, defaultCountry) {
   const seen = new Set(rows.map(row => row[COL.ID]));
   const knownAddresses = new Map(rows.filter(row => row[COL['Address check']] === 'VALIDATED')
     .map(row => [normalize(addressQuery(rowRecord(row))), 'VALIDATED']));
   let inserted = 0;
   for (const values of source.values) {
     if (inserted >= MAX_INTAKE_PER_RUN) break;
-    if (!values.some(value => clean(value))) continue;
-    const record = recordFrom(values, source.headers, fields);
+    if (!clean(values[source.headers.indexOf(clean(fields.timestamp))])) continue;
+    const record = recordFrom(values, source.headers, fields, defaultCountry);
     const id = digest(JSON.stringify(record));
     if (seen.has(id)) continue;
     const duplicates = duplicateIds(record, rows);
     const row = [id, record.timestamp, record.name, record.email, record.address, record.city,
       record.region, record.postal, record.country, record.precise, record.alias,
-      knownAddresses.get(normalize(addressQuery(record))) || '', duplicates.join(', '), 'PENDING', '', '', '', duplicates.length ? 'POTENTIAL_DUPLICATE' : '', ''];
+      knownAddresses.get(normalize(addressQuery(record))) || '', duplicates.join(', '),
+      'PENDING', '', '', '', duplicates.length ? 'POTENTIAL_DUPLICATE' : '', '',
+      record.phone || '', record.applicationType || ''];
     writeRow(sheet, rows.length, row);
     rows.push(row);
     seen.add(id);
@@ -269,7 +281,9 @@ function applyActions(sheet, rows) {
     const priorReplaced = previous >= 0 && rows[previous][COL.Status] === 'SUPERSEDED' &&
       rows[previous][COL['Superseded by']] === row[COL.ID];
     const record = rowRecord(row);
-    const duplicates = duplicateIds({...record, name: row[COL.Name], email: row[COL.Email]},
+    const duplicates = duplicateIds({
+      ...record, name: row[COL.Name], email: row[COL.Email], phone: row[COL['Phone (private)']]
+    },
       rows.filter(other => other !== row));
     const liveDuplicates = duplicates.filter(id => rows.some(other => other[COL.ID] === id && active(other)));
     let issue = '';

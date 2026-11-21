@@ -1,8 +1,17 @@
 const REVIEW_COLUMNS = [
   'ID', 'Submitted', 'Name', 'Email', 'Address', 'City', 'Region', 'Postal', 'Country',
   'Precise consent', 'Public alias', 'Address check', 'Potential duplicate IDs',
-  'Status', 'Action', 'Replace ID', 'Public locality', 'Issue', 'Superseded by'
+  'Status', 'Action', 'Replace ID', 'Public locality', 'Issue', 'Superseded by', 'Phone (private)', 'Application type'
 ];
+const REGISTRATION_FIELDS = Object.freeze({
+  timestamp: 'Timestamp',
+  name: 'Full Name',
+  address: 'Street Address number (must put a full address that we can pull specific GPS coordinates.)',
+  city: 'City',
+  region: 'State',
+  phone: 'Phone Number (Use this exact format, e.g., 555-123-4567). Do not use parentheses and make sure you use the hyphens.',
+  applicationType: 'Which applies to you?'
+});
 const COL = Object.fromEntries(REVIEW_COLUMNS.map((name, i) => [name, i]));
 const PUBLIC_CACHE = 'public-map-v1';
 const CACHE_SECONDS = 21600;
@@ -17,15 +26,24 @@ function normalize(value) {
   return clean(value).normalize('NFKC').toLowerCase().replace(/\s+/g, ' ');
 }
 
-function recordFrom(values, headers, fields) {
-  const field = key => fields[key] ? clean(values[headers.indexOf(fields[key])]) : '';
-  return {
+function recordFrom(values, headers, fields, defaultCountry = '') {
+  const field = key => fields[key] ? clean(values[headers.indexOf(clean(fields[key]))]) : '';
+  const record = {
     timestamp: field('timestamp'), name: field('name'), email: field('email'),
     address: field('address'), city: field('city'), region: field('region'),
-    postal: field('postal'), country: field('country'),
+    postal: field('postal'), country: field('country') || defaultCountry,
     precise: normalize(field('preciseConsent')) === 'yes, show my precise location',
     alias: safeAlias(field('publicAlias'))
   };
+  if (fields.phone) record.phone = field('phone');
+  if (fields.applicationType) record.applicationType = field('applicationType');
+  return record;
+}
+
+function phoneKey(value) {
+  const digits = clean(value).replace(/[^0-9]/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) return digits.slice(1);
+  return digits.length === 10 ? digits : '';
 }
 
 function addressQuery(record) {
@@ -34,6 +52,7 @@ function addressQuery(record) {
 }
 
 function duplicateIds(record, rows) {
+  const phone = phoneKey(record.phone);
   return rows.filter(row => {
     if (['REMOVED', 'REJECTED', 'SUPERSEDED'].includes(row[COL.Status])) return false;
     const sameEmail = normalize(record.email) && normalize(record.email) === normalize(row[COL.Email]);
@@ -41,7 +60,8 @@ function duplicateIds(record, rows) {
       ['Name', 'Address', 'City', 'Region', 'Country'].every(
         (column, i) => normalize(row[COL[column]]) === normalize(
           [record.name, record.address, record.city, record.region, record.country][i]));
-    return sameEmail || samePersonAtAddress;
+    const samePhone = phone && phone === phoneKey(row[COL['Phone (private)']]);
+    return sameEmail || samePhone || samePersonAtAddress;
   }).map(row => row[COL.ID]);
 }
 

@@ -156,3 +156,46 @@ test('public requests never geocode; failures and quota limits keep review state
   f.properties.set('PUBLIC_FEED_ENABLED', 'false');
   assert.equal(f.feed().error, 'MAP_UNAVAILABLE');
 });
+
+test('default profile imports the current form and keeps the phone and agreement out of the feed', () => {
+  const f = fixture();
+  f.properties.delete('SOURCE_FIELDS');
+  f.run(`
+    const registration = configuration();
+    const rawForm = [
+      ['Timestamp', 'Disclaimer\\nAgreement', 'Which applies to you?',
+        'Please agree to each of the following by checking the boxes next to each requirement.',
+        'Full Name', REGISTRATION_FIELDS.address, 'City', 'State',
+        REGISTRATION_FIELDS.phone + ' ', '', ''],
+      ['2026-02-01 12:00', 'I Agree / Accept', 'First application', 'Accepted',
+        'Synthetic Volunteer', '123 Example St', 'Austin', 'TX', '512-555-0100', '', ''],
+      ['2026-02-02 12:00', 'I Agree / Accept', 'Update', 'Accepted',
+        'Updated Volunteer', '123 Another St', 'Austin', 'TX', '+1 (512) 555-0100', '', ''],
+      ['', '', '', '', '', '', '', '', '', '', 'This is outside the form inputs']
+    ];
+    const book = {getSheetByName: () => ({
+      getLastColumn: () => rawForm[0].length,
+      getDataRange: () => ({getDisplayValues: () => rawForm}),
+    })};
+    ingest(sheet, rows, sourceData(book, registration), registration.fields, registration.defaultCountry);
+    validatePending(sheet, rows);
+  `);
+  assert.equal(f.run('rows.length'), 2);
+  assert.equal(f.run("rows[0][COL.Country]"), 'US');
+  assert.equal(f.run("rows[0][COL.Postal]"), '');
+  assert.equal(f.run("rows[0][COL['Phone (private)']]"), '512-555-0100');
+  assert.equal(f.run("rows[0][COL['Application type']]"), 'First application');
+  assert.equal(f.run("rows[1][COL.Issue]"), 'POTENTIAL_DUPLICATE');
+  assert.equal(f.run("rows[0][COL['Precise consent']]"), false);
+  assert.equal(f.calls[0], '123 Example St, Austin, TX, US');
+
+  f.run("rows[0][COL.Action] = 'APPROVE APPROXIMATE'; applyActions(sheet, rows); refreshPublic(rows)");
+  assert.deepEqual(f.feed().points, [
+    {label: 'Volunteer relocator', locality: 'Austin, TX, US', lat: 30, lng: -97, precise: false},
+  ]);
+  f.run("rows[1][COL.Action] = 'APPROVE APPROXIMATE'; applyActions(sheet, rows)");
+  assert.equal(f.run('rows[1][COL.Issue]'), 'ACTIVE_DUPLICATE_REQUIRES_REPLACEMENT');
+
+  f.run("rawForm[0][4] = 'Unexpected renamed name field'");
+  assert.throws(() => f.run('sourceData(book, registration)'), /SOURCE_HEADER_MISMATCH/);
+});
