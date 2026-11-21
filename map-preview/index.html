@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex">
+  <title>Volunteer Map Preview | Free Snake Relocation</title>
+  <link rel="stylesheet" href="map.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@googlemaps/markerclusterer@2.6.2/dist/index.min.js"
+    integrity="sha384-EVwzhfwoZgEjEQ2ffmvGXq5cOevVMtRZTog22siWEV3jCmD0BahdPQHx8y/VIhbi"
+    crossorigin="anonymous"></script>
+  <script type="module" src="map.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Find a Snake Relocator</h1>
+    <p>Directory only. Volunteers operate independently. Read the <a href="../disclaimer.html">full disclaimer</a> before using the map.</p>
+    <p>Most markers show a volunteer’s approximate area. Use the <a href="../find.html">current search directory and map</a> for live listings.</p>
+    <form id="search" role="search">
+      <label for="location">Address, city, or ZIP code</label>
+      <div class="search-controls">
+        <input id="location" type="search" maxlength="200" required disabled>
+        <button type="submit" disabled>Search map</button>
+      </div>
+    </form>
+    <p id="search-status" role="status"></p>
+    <p id="map-status" role="status">Loading the map preview…</p>
+    <div id="map" role="region" aria-label="Volunteer location map"></div>
+    <noscript>The map preview requires JavaScript.</noscript>
+  </main>
+</body>
+</html>

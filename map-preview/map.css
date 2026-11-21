@@ -1,0 +1,22 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #15261d;
+  background: #f4f8f4;
+}
+body { margin: 0; }
+main { max-width: 72rem; margin: auto; padding: 1rem; }
+h1 { color: #15492e; }
+a { color: #155d3b; }
+label { display: block; font-weight: 600; margin-bottom: .35rem; }
+.search-controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+input, button {
+  font: inherit;
+  padding: .65rem;
+  border: 1px solid #426653;
+  border-radius: .35rem;
+}
+input { width: min(100%, 26rem); box-sizing: border-box; }
+button { background: #15492e; color: white; }
+button:disabled { opacity: .6; }
+#map { min-height: 22rem; height: min(65vh, 42rem); border-radius: .5rem; }
+#map-status, #search-status { margin-block: .5rem; }
