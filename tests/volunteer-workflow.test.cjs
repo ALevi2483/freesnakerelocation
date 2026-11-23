@@ -298,3 +298,23 @@ test('coverage review groups unmatched locations and excludes private fields', (
     {city: 'ambiguous', state: 'va', count: 1, issue: 'AMBIGUOUS'}
   ]);
 });
+
+test('locality spelling and consolidated-city aliases preserve ambiguity and state boundaries', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/CityCoverage.gs', 'utf8'));
+  const result = f.run(`JSON.stringify((() => {
+    const match = placeMatches_(censusPlaceLookup_([
+      'USPS|NAME|INTPTLAT|INTPTLONG',
+      'GA|Athens-Clarke County unified government (balance)|33|-83',
+      'FL|St. Augustine city|29|-81',
+      "MO|Lee's Summit city|38|-94",
+      'VA|Mount Example town|37|-77',
+      'VA|Mt Example CDP|36|-76'
+    ].join('\\n')));
+    return [match('athens','ga'), match('athens','tn'), match('st augustine','fl'),
+      match('lees summit','mo'), match('mt. example','va')];
+  })())`);
+  assert.deepEqual(JSON.parse(result), [
+    {lat:33,lng:-83}, null, {lat:29,lng:-81}, {lat:38,lng:-94}, null,
+  ]);
+});

@@ -79,18 +79,50 @@ function censusPlaceLookup_(data) {
   return lookup;
 }
 
+const CONSOLIDATED_CITY_NAMES = {
+  '["athens","ga"]': 'athens-clarke county',
+  '["nashville","tn"]': 'nashville-davidson',
+  '["lexington","ky"]': 'lexington-fayette'
+};
+
+function placeSpelling_(name) {
+  return normalize(name).replace(/['’]/g, '').replace(/[.-]/g, ' ')
+    .replace(/\s+/g, ' ').trim().replace(/^st /, 'saint ').replace(/^mt /, 'mount ');
+}
+
+function placeMatches_(lookup) {
+  const spellings = new Map();
+  for (const [key, point] of lookup) {
+    const [city, state] = JSON.parse(key);
+    const spelling = JSON.stringify([placeSpelling_(city), state]);
+    spellings.set(spelling, spellings.has(spelling) ? null : point);
+  }
+  return (city, state) => {
+    const key = JSON.stringify([city, state]);
+    if (lookup.has(key)) return lookup.get(key);
+    const alias = CONSOLIDATED_CITY_NAMES[key];
+    if (alias) {
+      const target = JSON.stringify([alias, state]);
+      if (lookup.has(target)) return lookup.get(target);
+    }
+    return spellings.get(JSON.stringify([placeSpelling_(city), state]));
+  };
+}
+
 function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => {}) {
   const matched = new Set();
   const unmatched = new Map();
   let matchedListings = 0;
+  const match = placeMatches_(lookup);
   const totals = summarizeRoster_(roster, exclusions, (city, state) => {
     const key = JSON.stringify([city, state]);
-    if (lookup.get(key)) {
+    const point = match(city, state);
+    if (point) {
       matched.add(key);
       matchedListings++;
     } else {
       if (!unmatched.has(key)) unmatched.set(key, {
-        city, state, count: 0, issue: lookup.has(key) ? 'AMBIGUOUS' : 'NO_EXACT_MATCH'
+        city, state, count: 0, issue: point === null ? 'AMBIGUOUS' : 'NO_EXACT_MATCH'
       });
       unmatched.get(key).count++;
     }
