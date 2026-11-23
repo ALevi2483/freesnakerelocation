@@ -370,3 +370,19 @@ test('the roster-sized feed is gated, omits private fields, and rejects an incom
   f.run("rosterPages.delete('roster-feed:test-uuid:2')");
   assert.deepEqual(f.feed(), {version: 2, error: 'MAP_UNAVAILABLE'});
 });
+
+test('supplemental Census data matches explicit counties and civil towns while preserving place ambiguity', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/CityCoverage.gs', 'utf8'));
+  const output = f.run(`JSON.stringify((() => {
+    const header = 'USPS|NAME|INTPTLAT|INTPTLONG\\n';
+    const places = censusPlaceLookup_(header + 'VA|Example city|37|-78\\nVA|Example CDP|36|-77');
+    addSupplementalPlaces_(places, censusPlaceLookup_(header + 'AL|Sample County|32|-86', 'county'));
+    addSupplementalPlaces_(places, censusPlaceLookup_(header +
+      'CT|Sample town|41|-73\\nCT|Fictional CCD|41|-73\\nVA|Example town|37|-78', 'subdivision'));
+    const match = placeMatches_(places);
+    return [match('sample county','al'),match('sample','al'),
+      match('sample','ct'),match('fictional','ct'),match('example','va')];
+  })())`);
+  assert.deepEqual(JSON.parse(output), [{lat:32,lng:-86},null,{lat:41,lng:-73},null,null]);
+});

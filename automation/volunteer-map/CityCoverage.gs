@@ -39,10 +39,18 @@ function writeCityReport_(name, header, rows) {
 function readCityCoverage_() {
   const id = clean(PR.getProperty('ROSTER_SPREADSHEET_ID'));
   if (!id) throw new Error('SET_ROSTER_SPREADSHEET_ID');
-  const files = Utilities.unzip(censusArchive_());
-  const places = files.find(file => /gaz_place_national\.txt$/i.test(file.getName()));
-  if (!places) throw new Error('CENSUS_PLACE_FILE_MISSING');
-  const lookup = censusPlaceLookup_(places.getDataAsString());
+  const places = censusText_(censusArchive_(), /gaz_place_national\.txt$/i);
+  const lookup = censusPlaceLookup_(places);
+  const supplemental = [
+    ['CENSUS_COUNTIES_FILE_ID', /gaz_counties_national\.txt$/i, 'county'],
+    ['CENSUS_COUSUB_FILE_ID', /gaz_cousubs?_national\.txt$/i, 'subdivision']
+  ];
+  for (const [property, filename, kind] of supplemental) {
+    const fileId = clean(PR.getProperty(property));
+    if (!fileId) continue;
+    const data = censusText_(DriveApp.getFileById(fileId).getBlob(), filename);
+    addSupplementalPlaces_(lookup, censusPlaceLookup_(data, kind));
+  }
 
   const book = SpreadsheetApp.openById(id);
   const roster = rosterColumns_(book, 'Listings Master', ['Listing ID', 'Status', 'City', 'State', 'Phone']);
@@ -53,6 +61,19 @@ function readCityCoverage_() {
     row => unmatched.push(row), row => matched.push(row));
   const eligibility = summarizeRoster_(roster, exclusions);
   return {totals, unmatched, matched, eligibility};
+}
+
+function censusText_(archive, filename) {
+  const file = Utilities.unzip(archive.setContentType('application/zip'))
+    .find(entry => filename.test(entry.getName()));
+  if (!file) throw new Error('CENSUS_ARCHIVE_FILE_MISMATCH');
+  return file.getDataAsString();
+}
+
+function addSupplementalPlaces_(places, supplemental) {
+  for (const [key, point] of supplemental) {
+    if (!places.has(key)) places.set(key, point);
+  }
 }
 
 function censusArchive_() {
@@ -66,7 +87,7 @@ function censusArchive_() {
   return response.getBlob().setContentType('application/zip');
 }
 
-function censusPlaceLookup_(data) {
+function censusPlaceLookup_(data, kind = 'place') {
   const [first, ...lines] = data.replace(/^\uFEFF/, '').trimStart().split(/\r?\n/);
   const required = ['USPS', 'NAME', 'INTPTLAT', 'INTPTLONG'];
   const delimiter = ['\t', '|'].find(separator => {
@@ -84,8 +105,15 @@ function censusPlaceLookup_(data) {
     const lat = Number(latitude);
     const lng = Number(longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) continue;
-    const place = normalize(name).replace(
-      / (?:city and borough|consolidated government|metropolitan government|unified government|urban county|municipality|borough|village|city|town|cdp)(?: \(balance\))?$/, '');
+    const nameKey = normalize(name);
+    let place = nameKey;
+    if (kind === 'subdivision') {
+      if (!/ (?:town|township|borough|city|village)$/.test(nameKey)) continue;
+      place = nameKey.replace(/ (?:town|township|borough|city|village)$/, '');
+    } else if (kind === 'place') {
+      place = nameKey.replace(
+        / (?:city and borough|consolidated government|metropolitan government|unified government|urban county|municipality|borough|village|city|town|cdp)(?: \(balance\))?$/, '');
+    }
     const key = JSON.stringify([place, normalize(state)]);
     if (!lookup.has(key)) lookup.set(key, {lat, lng});
     else lookup.set(key, null); // Resolve same-name locations through a private review.
