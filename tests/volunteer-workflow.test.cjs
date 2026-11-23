@@ -318,3 +318,25 @@ test('locality spelling and consolidated-city aliases preserve ambiguity and sta
     {lat:33,lng:-83}, null, {lat:29,lng:-81}, {lat:38,lng:-94}, null,
   ]);
 });
+
+test('roster preview groups listings by locality and uses only Census coordinates', () => {
+  const f = fixture();
+  for (const name of ['RosterAudit', 'CityCoverage']) {
+    f.run(fs.readFileSync(`automation/volunteer-map/${name}.gs`, 'utf8'));
+  }
+  const output = f.run(`JSON.stringify((() => {
+    const roster = Array.from({length: 1840}, (_, index) => ({
+      'Listing ID': index + 1, Status: 'Active', City: 'City ' + (index % 1181),
+      State: 'VA', Phone: '757-555-0101', Coordinates: 'private coordinates'
+    }));
+    const lookup = new Map(roster.map(row => [JSON.stringify([normalize(row.City), 'va']), {lat:37,lng:-77}]));
+    const matched = [];
+    const totals = summarizeCityCoverage_(roster, [], lookup, undefined, row => matched.push(row));
+    return {totals, count: matched.length, first: matched[0]};
+  })())`);
+  const report = JSON.parse(output);
+  assert.equal(report.totals.matchedListings, 1840);
+  assert.equal(report.count, 1181);
+  assert.deepEqual(report.first, {city:'city 0', state:'va', count:2, lat:37, lng:-77});
+  assert.doesNotMatch(output, /757|private coordinates/i);
+});

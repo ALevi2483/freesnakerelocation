@@ -6,22 +6,34 @@ function auditCityCoverage() {
 }
 
 function createCityReviewReport() {
+  const {unmatched} = readCityCoverage_();
+  writeCityReport_('City Review', ['City', 'State', 'Affected listings', 'Match issue'],
+    unmatched.map(row => ["'" + row.city, "'" + row.state, row.count, row.issue]));
+  console.log('CITY_REVIEW_CREATED: ' + unmatched.length + ' location pairs');
+}
+
+function createRosterMapPreview() {
+  const {matched, totals} = readCityCoverage_();
+  writeCityReport_('Roster Map Preview', ['City', 'State', 'Listings', 'Latitude', 'Longitude'],
+    matched.map(row => ["'" + row.city, "'" + row.state, row.count, row.lat, row.lng]));
+  console.log(JSON.stringify(totals));
+}
+
+function writeCityReport_(name, header, rows) {
   const testId = clean(PR.getProperty('RESPONSE_SHEET_ID'));
   const rosterId = clean(PR.getProperty('ROSTER_SPREADSHEET_ID'));
   if (!testId || !rosterId || testId === rosterId) throw new Error('REVIEW_REQUIRES_SEPARATE_TEST_WORKBOOK');
-  const {unmatched} = readCityCoverage_();
-  const values = [['City', 'State', 'Affected listings', 'Match issue'], ...unmatched.map(row => [
-    "'" + row.city, "'" + row.state, row.count, row.issue
-  ])];
+  const values = [header, ...rows];
   withWorkflowLock(() => {
     const book = SpreadsheetApp.openById(testId);
-    if (book.getSheetByName('City Review')) throw new Error('CITY_REVIEW_ALREADY_EXISTS');
-    const sheet = book.insertSheet('City Review');
-    sheet.getRange(1, 1, values.length, values[0].length).setValues(values);
+    if (book.getSheetByName(name)) throw new Error('CITY_REPORT_ALREADY_EXISTS');
+    const sheet = book.insertSheet(name);
+    const extraRows = values.length - sheet.getMaxRows();
+    if (extraRows > 0) sheet.insertRowsAfter(sheet.getMaxRows(), extraRows);
+    sheet.getRange(1, 1, values.length, header.length).setValues(values);
     sheet.setFrozenRows(1);
     SpreadsheetApp.flush();
   });
-  console.log('CITY_REVIEW_CREATED: ' + unmatched.length + ' location pairs');
 }
 
 function readCityCoverage_() {
@@ -36,8 +48,10 @@ function readCityCoverage_() {
   const roster = rosterColumns_(book, 'Listings Master', ['Listing ID', 'Status', 'City', 'State', 'Phone']);
   const exclusions = rosterColumns_(book, 'Do Not List', ['Phone', 'Active'], 'Active');
   const unmatched = [];
-  const totals = summarizeCityCoverage_(roster, exclusions, lookup, row => unmatched.push(row));
-  return {totals, unmatched};
+  const matched = [];
+  const totals = summarizeCityCoverage_(roster, exclusions, lookup,
+    row => unmatched.push(row), row => matched.push(row));
+  return {totals, unmatched, matched};
 }
 
 function censusArchive_() {
@@ -109,8 +123,8 @@ function placeMatches_(lookup) {
   };
 }
 
-function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => {}) {
-  const matched = new Set();
+function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => {}, onMatched = () => {}) {
+  const matched = new Map();
   const unmatched = new Map();
   let matchedListings = 0;
   const match = placeMatches_(lookup);
@@ -118,7 +132,8 @@ function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => 
     const key = JSON.stringify([city, state]);
     const point = match(city, state);
     if (point) {
-      matched.add(key);
+      if (!matched.has(key)) matched.set(key, {city, state, count: 0, lat: point.lat, lng: point.lng});
+      matched.get(key).count++;
       matchedListings++;
     } else {
       if (!unmatched.has(key)) unmatched.set(key, {
@@ -127,6 +142,7 @@ function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => 
       unmatched.get(key).count++;
     }
   });
+  for (const row of matched.values()) onMatched(row);
   [...unmatched.values()].sort((a, b) => b.count - a.count ||
     a.state.localeCompare(b.state) || a.city.localeCompare(b.city)).forEach(onUnmatched);
   return {
