@@ -407,3 +407,22 @@ test('removal review includes only currently eligible unmatched listing IDs', ()
   })())`);
   assert.deepEqual(JSON.parse(review), [{id:'A', city:'no match', state:'va', issue:'NO_EXACT_MATCH'}]);
 });
+
+test('removal verification rejects stale, duplicate and non-Boolean approvals', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/RemovalReview.gs', 'utf8'));
+  const report = f.run(`JSON.stringify((() => {
+    const row = {'Listing ID':'A', City:'Demo', State:'VA', 'Match issue':'NO_EXACT_MATCH',
+      'Approve removal':true};
+    return compareRemovalReview_([
+      row, row, {...row, 'Listing ID':'B'}, {...row, 'Listing ID':'C', 'Approve removal':'TRUE'},
+      {...row, 'Listing ID':'D', 'Approve removal':false}
+    ], [
+      {id:'A', city:'demo', state:'va', issue:'NO_EXACT_MATCH'},
+      {id:'B', city:'different city', state:'va', issue:'NO_EXACT_MATCH'}
+    ]);
+  })())`);
+  assert.deepEqual(JSON.parse(report), {
+    approved: 3, stillUnmatched: 1, changedOrMissing: 1, invalidOrDuplicate: 2,
+  });
+});
