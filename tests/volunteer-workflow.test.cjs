@@ -274,3 +274,27 @@ test('Census coverage parses pipe-delimited Gazetteer files with padded headers'
   ].join('\\r\\n')).get(JSON.stringify(['example', 'va'])))`);
   assert.deepEqual(JSON.parse(point), {lat: 37.123, lng: -77.456});
 });
+
+test('coverage review groups unmatched locations and excludes private fields', () => {
+  const f = fixture();
+  for (const name of ['RosterAudit', 'CityCoverage']) {
+    f.run(fs.readFileSync(`automation/volunteer-map/${name}.gs`, 'utf8'));
+  }
+  const report = f.run(`JSON.stringify((() => {
+    const rows = [
+      {City: 'No Match', State: 'VA'},
+      {City: 'Ambiguous', State: 'VA'},
+      {City: 'NO MATCH', State: 'va'}
+    ].map((row, index) => ({
+      ...row, Status: 'Active', Phone: '757-555-0101', 'Listing ID': index + 1
+    }));
+    const review = [];
+    summarizeCityCoverage_(rows, [], new Map([['["ambiguous","va"]', null]]),
+      row => review.push(row));
+    return review;
+  })())`);
+  assert.deepEqual(JSON.parse(report), [
+    {city: 'no match', state: 'va', count: 2, issue: 'NO_EXACT_MATCH'},
+    {city: 'ambiguous', state: 'va', count: 1, issue: 'AMBIGUOUS'}
+  ]);
+});
