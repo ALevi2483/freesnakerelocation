@@ -51,6 +51,27 @@ function validPoint(point) {
     Number.isFinite(point.lng) && Math.abs(point.lat) <= 90 && Math.abs(point.lng) <= 180;
 }
 
+function readRosterPreview(csv) {
+  const [header, ...lines] = csv.trim().split(/\r?\n/);
+  if (header !== 'City,State,Listings,Latitude,Longitude' || !lines.length || lines.length > 5000) {
+    throw new Error('INVALID_ROSTER_CSV');
+  }
+  const points = lines.map(line => {
+    const fields = line.match(/^("(?:[^"]|"")*"|[^",]*),("(?:[^"]|"")*"|[^",]*),([^,]+),([^,]+),([^,]+)$/);
+    if (!fields) throw new Error('INVALID_ROSTER_CSV');
+    const [city, state] = fields.slice(1, 3).map(value =>
+      value.replace(/^"(.*)"$/, '$1').replace(/""/g, '"').trim());
+    const [count, lat, lng] = fields.slice(3).map(value => Number(value.trim()));
+    if (!city || city.length > 100 || !/^[a-z]{2}$/i.test(state) ||
+        !Number.isSafeInteger(count) || count < 1 || count > 100000 ||
+        fields.slice(3).some(value => !value.trim())) throw new Error('INVALID_ROSTER_CSV');
+    return {label: count + (count === 1 ? ' volunteer listing' : ' volunteer listings'),
+      locality: city + ', ' + state.toUpperCase(), precise: false, lat, lng, count};
+  });
+  if (!points.every(validPoint)) throw new Error('INVALID_ROSTER_CSV');
+  return points;
+}
+
 function popup(point) {
   const box = document.createElement('div');
   const title = document.createElement('strong');
@@ -123,6 +144,38 @@ async function start() {
     }
   });
 
+  function renderPoints(points) {
+    const nextRevision = JSON.stringify(points);
+    if (revision !== nextRevision) {
+      info.close();
+      clusterer.clearMarkers();
+      const groups = new globalThis.Map();
+      for (const point of points) {
+        const key = point.lat + ',' + point.lng;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(point);
+      }
+      const markers = [...groups.values()].map(group => {
+        const [point] = group;
+        const marker = new AdvancedMarkerElement({
+          position: {lat: point.lat, lng: point.lng},
+          title: group.length === 1 ? point.label :
+            group.length + (group.every(item => item.count) ? ' locations in this area' : ' volunteers in this area'),
+          gmpClickable: true,
+        });
+        marker.addListener('click', () => {
+          const details = document.createElement('div');
+          details.append(...group.map(popup));
+          info.setContent(details);
+          info.open({map, anchor: marker});
+        });
+        return marker;
+      });
+      clusterer.addMarkers(markers);
+      revision = nextRevision;
+    }
+  }
+
   async function refresh() {
     try {
       const response = await fetch(feedUrl, {
@@ -134,34 +187,7 @@ async function start() {
           data.points.length > 350 || !data.points.every(validPoint)) {
         throw new Error('INVALID_FEED');
       }
-      const nextRevision = JSON.stringify(data.points);
-      if (revision !== nextRevision) {
-        info.close();
-        clusterer.clearMarkers();
-        const groups = new globalThis.Map();
-        for (const point of data.points) {
-          const key = point.lat + ',' + point.lng;
-          if (!groups.has(key)) groups.set(key, []);
-          groups.get(key).push(point);
-        }
-        const markers = [...groups.values()].map(group => {
-          const [point] = group;
-          const marker = new AdvancedMarkerElement({
-            position: {lat: point.lat, lng: point.lng},
-            title: group.length === 1 ? point.label : group.length + ' volunteers in this area',
-            gmpClickable: true,
-          });
-          marker.addListener('click', () => {
-            const details = document.createElement('div');
-            details.append(...group.map(popup));
-            info.setContent(details);
-            info.open({map, anchor: marker});
-          });
-          return marker;
-        });
-        clusterer.addMarkers(markers);
-        revision = nextRevision;
-      }
+      renderPoints(data.points);
       mapStatus.textContent = localDemo ? 'Demo: ' + data.points.length + ' fictional locations shown.'
         : data.missing
         ? 'Some approved locations are temporarily unavailable.'
@@ -172,11 +198,38 @@ async function start() {
       revision = '';
       mapStatus.textContent = 'Volunteer locations could not be loaded. Use the current directory link above.';
     } finally {
-      setTimeout(refresh, 5 * 60 * 1000);
+      if (!localDemo) setTimeout(refresh, 5 * 60 * 1000);
     }
   }
 
   await refresh();
+  if (localDemo) {
+    const label = document.createElement('label');
+    label.textContent = 'Load private Roster Map Preview CSV';
+    const picker = document.createElement('input');
+    picker.type = 'file';
+    picker.accept = '.csv,text/csv';
+    label.append(picker);
+    mapStatus.before(label);
+    picker.addEventListener('change', async () => {
+      const file = picker.files[0];
+      if (!file) return;
+      picker.disabled = true;
+      try {
+        if (file.size > 1024 * 1024) throw new Error('ROSTER_CSV_TOO_LARGE');
+        const points = readRosterPreview(await file.text());
+        renderPoints(points);
+        const listings = points.reduce((sum, point) => sum + point.count, 0);
+        mapStatus.textContent = 'Private preview: ' + listings + ' listings across ' +
+          points.length + ' city/state pairs.';
+      } catch {
+        mapStatus.textContent = 'Could not load this CSV. Download the Roster Map Preview tab as CSV.';
+      } finally {
+        picker.value = '';
+        picker.disabled = false;
+      }
+    });
+  }
 }
 
 start().catch(() => {
