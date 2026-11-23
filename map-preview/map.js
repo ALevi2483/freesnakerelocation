@@ -51,25 +51,30 @@ function validPoint(point) {
     Number.isFinite(point.lng) && Math.abs(point.lat) <= 90 && Math.abs(point.lng) <= 180;
 }
 
+function rosterPoint(city, state, count, lat, lng) {
+  if (typeof city !== 'string' || !city.trim() || city.length > 100 ||
+      typeof state !== 'string' || !/^[a-z]{2}$/i.test(state) ||
+      !Number.isSafeInteger(count) || count < 1 || count > 100000) throw new Error('INVALID_ROSTER_POINT');
+  const point = {label: count + (count === 1 ? ' volunteer listing' : ' volunteer listings'),
+    locality: city + ', ' + state.toUpperCase(), precise: false, lat, lng, count};
+  if (!validPoint(point)) throw new Error('INVALID_ROSTER_POINT');
+  return point;
+}
+
 function readRosterPreview(csv) {
   const [header, ...lines] = csv.trim().split(/\r?\n/);
   if (header !== 'City,State,Listings,Latitude,Longitude' || !lines.length || lines.length > 5000) {
     throw new Error('INVALID_ROSTER_CSV');
   }
-  const points = lines.map(line => {
+  return lines.map(line => {
     const fields = line.match(/^("(?:[^"]|"")*"|[^",]*),("(?:[^"]|"")*"|[^",]*),([^,]+),([^,]+),([^,]+)$/);
     if (!fields) throw new Error('INVALID_ROSTER_CSV');
     const [city, state] = fields.slice(1, 3).map(value =>
       value.replace(/^"(.*)"$/, '$1').replace(/""/g, '"').trim());
     const [count, lat, lng] = fields.slice(3).map(value => Number(value.trim()));
-    if (!city || city.length > 100 || !/^[a-z]{2}$/i.test(state) ||
-        !Number.isSafeInteger(count) || count < 1 || count > 100000 ||
-        fields.slice(3).some(value => !value.trim())) throw new Error('INVALID_ROSTER_CSV');
-    return {label: count + (count === 1 ? ' volunteer listing' : ' volunteer listings'),
-      locality: city + ', ' + state.toUpperCase(), precise: false, lat, lng, count};
+    if (fields.slice(3).some(value => !value.trim())) throw new Error('INVALID_ROSTER_CSV');
+    return rosterPoint(city, state, count, lat, lng);
   });
-  if (!points.every(validPoint)) throw new Error('INVALID_ROSTER_CSV');
-  return points;
 }
 
 function popup(point) {
@@ -183,15 +188,26 @@ async function start() {
       });
       if (!response.ok) throw new Error('FEED_UNAVAILABLE');
       const data = await response.json();
-      if (data.version !== 1 || !Array.isArray(data.points) ||
-          data.points.length > 350 || !data.points.every(validPoint)) {
-        throw new Error('INVALID_FEED');
+      if (data.version === 2) {
+        if (!Array.isArray(data.locations) || data.locations.length > 5000 ||
+            !data.locations.every(row => Array.isArray(row) && row.length === 5)) {
+          throw new Error('INVALID_ROSTER_FEED');
+        }
+        const points = data.locations.map(row => rosterPoint(...row));
+        renderPoints(points);
+        const listings = points.reduce((sum, point) => sum + point.count, 0);
+        mapStatus.textContent = listings + ' listings across ' + points.length + ' city/state pairs.' +
+          (data.missing ? ' Some approved locations are unavailable.' : '');
+      } else {
+        if (data.version !== 1 || !Array.isArray(data.points) ||
+            data.points.length > 350 || !data.points.every(validPoint)) {
+          throw new Error('INVALID_FEED');
+        }
+        renderPoints(data.points);
+        mapStatus.textContent = localDemo ? 'Demo: ' + data.points.length + ' fictional locations shown.'
+          : data.missing ? 'Some approved locations are temporarily unavailable.'
+          : data.points.length + ' approved locations shown.';
       }
-      renderPoints(data.points);
-      mapStatus.textContent = localDemo ? 'Demo: ' + data.points.length + ' fictional locations shown.'
-        : data.missing
-        ? 'Some approved locations are temporarily unavailable.'
-        : data.points.length + ' approved locations shown.';
     } catch {
       info.close();
       clusterer.clearMarkers();

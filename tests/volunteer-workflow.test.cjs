@@ -340,3 +340,33 @@ test('roster preview groups listings by locality and uses only Census coordinate
   assert.deepEqual(report.first, {city:'city 0', state:'va', count:2, lat:37, lng:-77});
   assert.doesNotMatch(output, /757|private coordinates/i);
 });
+
+test('the roster-sized feed is gated, omits private fields, and rejects an incomplete snapshot', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/RosterFeed.gs', 'utf8'));
+  f.run(`
+    const rosterPages = new Map();
+    const rosterCache = {
+      put: (key, value) => rosterPages.set(key, value),
+      get: key => rosterPages.get(key),
+      getAll: keys => Object.fromEntries(keys.filter(key => rosterPages.has(key))
+        .map(key => [key, rosterPages.get(key)]))
+    };
+    CacheService.getScriptCache = () => rosterCache;
+    Utilities.getUuid = () => 'test-uuid';
+    writeRosterSnapshot_(rosterCache, Array.from({length: 1181}, (_, index) => ({
+      city: 'Synthetic ' + index, state: 'va', lat: 37, lng: -77, count: 2,
+      phone: '757-555-0101', address: 'Private street'
+    })), 167);
+  `);
+  assert.equal(f.feed().error, 'MAP_UNAVAILABLE');
+  f.properties.set('ROSTER_FEED_ENABLED', 'true');
+  const feed = f.feed();
+  assert.equal(feed.version, 2);
+  assert.equal(feed.locations.length, 1181);
+  assert.equal(feed.missing, 167);
+  assert.deepEqual(feed.locations[0], ['Synthetic 0', 'VA', 2, 37, -77]);
+  assert.doesNotMatch(JSON.stringify(feed), /757-555|Private street/);
+  f.run("rosterPages.delete('roster-feed:test-uuid:2')");
+  assert.deepEqual(f.feed(), {version: 2, error: 'MAP_UNAVAILABLE'});
+});

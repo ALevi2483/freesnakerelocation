@@ -358,7 +358,15 @@ function refreshPublic(rows) {
 
 function doGet() {
   let body = JSON.stringify({ version: 1, error: 'MAP_UNAVAILABLE' });
-  if (PR.getProperty('PUBLIC_FEED_ENABLED') === 'true') {
+  if (PR.getProperty('ROSTER_FEED_ENABLED') === 'true') {
+    body = JSON.stringify({version: 2, error: 'MAP_UNAVAILABLE'});
+    try {
+      const roster = readRosterSnapshot_(CacheService.getScriptCache());
+      if (roster) body = JSON.stringify(roster);
+    } catch (_) {
+      // Fail closed if a cached page is missing or the roster module is unavailable.
+    }
+  } else if (PR.getProperty('PUBLIC_FEED_ENABLED') === 'true') {
     try {
       const snapshot = JSON.parse(CacheService.getScriptCache().get(PUBLIC_CACHE) || 'null');
       if (snapshot && Date.now() - snapshot.builtAt < SNAPSHOT_SECONDS * 1000) {
@@ -374,8 +382,10 @@ function doGet() {
 }
 
 function checkPublicFeed() {
-  if (PR.getProperty('PUBLIC_FEED_ENABLED') !== 'true') return;
+  const rosterMode = PR.getProperty('ROSTER_FEED_ENABLED') === 'true';
+  if (!rosterMode && PR.getProperty('PUBLIC_FEED_ENABLED') !== 'true') return;
   const url = PR.getProperty('PUBLIC_FEED_URL') || '';
+  if (rosterMode && !url) return; // The private test deployment has no anonymous health URL.
   const config = configuration();
   try {
     if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(url)) {
@@ -383,7 +393,9 @@ function checkPublicFeed() {
     }
     const response = UrlFetchApp.fetch(url, {muteHttpExceptions: true});
     const body = response.getResponseCode() === 200 ? JSON.parse(response.getContentText()) : null;
-    if (!body || body.version !== 1 || !Array.isArray(body.points) || body.missing) {
+    const healthy = body && (rosterMode ? body.version === 2 && Array.isArray(body.locations) :
+      body.version === 1 && Array.isArray(body.points) && !body.missing);
+    if (!healthy) {
       throw new Error('PUBLIC_FEED_HEALTH_CHECK_FAILED');
     }
   } catch (error) {

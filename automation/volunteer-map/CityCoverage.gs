@@ -51,7 +51,8 @@ function readCityCoverage_() {
   const matched = [];
   const totals = summarizeCityCoverage_(roster, exclusions, lookup,
     row => unmatched.push(row), row => matched.push(row));
-  return {totals, unmatched, matched};
+  const eligibility = summarizeRoster_(roster, exclusions);
+  return {totals, unmatched, matched, eligibility};
 }
 
 function censusArchive_() {

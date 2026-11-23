@@ -126,3 +126,23 @@ to download the national **Places** ZIP. Upload the ZIP to restricted Google
 Drive and set `CENSUS_PLACES_FILE_ID` to the uploaded file ID. Rerun the audit.
 The Drive option uses the existing Drive authorization. The audit reads the
 public Census data and private roster locally in Apps Script and logs counts only.
+
+### Test the automated roster-sized feed in the private project
+
+Keep the web app access at **Only myself** and the old test feed disabled.
+Install the current `Code.gs`, `CityCoverage.gs`, and `RosterFeed.gs`. The
+existing roster and Census file properties supply the inputs. Set
+`ROSTER_FEED_ENABLED` to `true`, run `refreshRosterMapFeed`, and open the
+editor-only `/dev` URL. Check the version 2 response and aggregate counts.
+When ready to check scheduling, run `installRosterRefreshTrigger` once.
+It creates a 15-minute refresh trigger. Set `ROSTER_FEED_ENABLED` back to
+`false` after private testing. Enable signed-out access only after owner
+approval, and use a separately reviewed cutover for the live site.
+
+The roster feed reads approved rows from **Listings Master**, applies
+**Do Not List**, and uses the Census place data as the only coordinate source.
+The version 2 output contains city, state, count, and approximate coordinates.
+Unmatched locations are counted but omitted. An incomplete cache or an
+ambiguous exclusion flag makes the feed unavailable. The 25-minute snapshot
+expiry bounds stale listings after an interruption. A browser refreshes its
+view every five minutes. The feed does not update **Listings Master** itself.
