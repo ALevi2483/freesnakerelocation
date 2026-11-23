@@ -386,3 +386,24 @@ test('supplemental Census data matches explicit counties and civil towns while p
   })())`);
   assert.deepEqual(JSON.parse(output), [{lat:32,lng:-86},null,{lat:41,lng:-73},null,null]);
 });
+
+test('removal review includes only currently eligible unmatched listing IDs', () => {
+  const f = fixture();
+  for (const name of ['RosterAudit', 'CityCoverage']) {
+    f.run(fs.readFileSync(`automation/volunteer-map/${name}.gs`, 'utf8'));
+  }
+  const review = f.run(`JSON.stringify((() => {
+    const rows = [
+      {'Listing ID':'A', Status:'Active', City:'No Match', State:'VA', Phone:'757-555-0101'},
+      {'Listing ID':'B', Status:'Active', City:'Covered', State:'VA', Phone:'757-555-0102'},
+      {'Listing ID':'C', Status:'Removed', City:'No Match', State:'VA', Phone:'757-555-0103'},
+      {'Listing ID':'D', Status:'Active', City:'No Match', State:'VA', Phone:'757-555-0104'}
+    ];
+    const result = [];
+    summarizeCityCoverage_(rows, [{Phone:'757-555-0104', Active:true}],
+      new Map([['["covered","va"]', {lat:37,lng:-77}]]), undefined, undefined,
+      row => result.push(row));
+    return result;
+  })())`);
+  assert.deepEqual(JSON.parse(review), [{id:'A', city:'no match', state:'va', issue:'NO_EXACT_MATCH'}]);
+});

@@ -19,6 +19,22 @@ function createRosterMapPreview() {
   console.log(JSON.stringify(totals));
 }
 
+function createUnmatchedRemovalReview() {
+  const {unmatchedListings, eligibility} = readCityCoverage_();
+  if (eligibility.invalidActiveExclusions || eligibility.unknownExclusionFlags) {
+    throw new Error('ROSTER_EXCLUSIONS_NEED_REVIEW');
+  }
+  const rows = unmatchedListings.sort((a, b) => a.state.localeCompare(b.state) ||
+    a.city.localeCompare(b.city) || a.id.localeCompare(b.id));
+  writeCityReport_('Unmatched Removal Review', ['Listing ID', 'City', 'State', 'Match issue', 'Approve removal'],
+    rows.map(row => ["'" + row.id, "'" + row.city, "'" + row.state, row.issue, false]));
+  if (rows.length) {
+    const test = SpreadsheetApp.openById(clean(PR.getProperty('RESPONSE_SHEET_ID')));
+    test.getSheetByName('Unmatched Removal Review').getRange(2, 5, rows.length, 1).insertCheckboxes();
+  }
+  console.log('UNMATCHED_REMOVAL_REVIEW_CREATED: ' + rows.length + ' listings');
+}
+
 function writeCityReport_(name, header, rows) {
   const testId = clean(PR.getProperty('RESPONSE_SHEET_ID'));
   const rosterId = clean(PR.getProperty('ROSTER_SPREADSHEET_ID'));
@@ -57,10 +73,11 @@ function readCityCoverage_() {
   const exclusions = rosterColumns_(book, 'Do Not List', ['Phone', 'Active'], 'Active');
   const unmatched = [];
   const matched = [];
+  const unmatchedListings = [];
   const totals = summarizeCityCoverage_(roster, exclusions, lookup,
-    row => unmatched.push(row), row => matched.push(row));
+    row => unmatched.push(row), row => matched.push(row), row => unmatchedListings.push(row));
   const eligibility = summarizeRoster_(roster, exclusions);
-  return {totals, unmatched, matched, eligibility};
+  return {totals, unmatched, matched, eligibility, unmatchedListings};
 }
 
 function censusText_(archive, filename) {
@@ -152,12 +169,13 @@ function placeMatches_(lookup) {
   };
 }
 
-function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => {}, onMatched = () => {}) {
+function summarizeCityCoverage_(roster, exclusions, lookup,
+  onUnmatched = () => {}, onMatched = () => {}, onUnmatchedListing = () => {}) {
   const matched = new Map();
   const unmatched = new Map();
   let matchedListings = 0;
   const match = placeMatches_(lookup);
-  const totals = summarizeRoster_(roster, exclusions, (city, state) => {
+  const totals = summarizeRoster_(roster, exclusions, (city, state, id) => {
     const key = JSON.stringify([city, state]);
     const point = match(city, state);
     if (point) {
@@ -165,10 +183,10 @@ function summarizeCityCoverage_(roster, exclusions, lookup, onUnmatched = () => 
       matched.get(key).count++;
       matchedListings++;
     } else {
-      if (!unmatched.has(key)) unmatched.set(key, {
-        city, state, count: 0, issue: point === null ? 'AMBIGUOUS' : 'NO_EXACT_MATCH'
-      });
+      const issue = point === null ? 'AMBIGUOUS' : 'NO_EXACT_MATCH';
+      if (!unmatched.has(key)) unmatched.set(key, {city, state, count: 0, issue});
       unmatched.get(key).count++;
+      onUnmatchedListing({id, city, state, issue});
     }
   });
   for (const row of matched.values()) onMatched(row);
