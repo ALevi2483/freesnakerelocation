@@ -27,13 +27,18 @@ function censusArchive_() {
 }
 
 function censusPlaceLookup_(data) {
-  const [first, ...lines] = data.split(/\r?\n/);
-  const headers = first.replace(/^\uFEFF/, '').split('\t').map(clean);
-  const fields = ['USPS', 'NAME', 'INTPTLAT', 'INTPTLONG'].map(field => headers.indexOf(field));
-  if (fields.includes(-1)) throw new Error('CENSUS_HEADER_MISMATCH');
+  const [first, ...lines] = data.replace(/^\uFEFF/, '').trimStart().split(/\r?\n/);
+  const required = ['USPS', 'NAME', 'INTPTLAT', 'INTPTLONG'];
+  const delimiter = ['\t', '|'].find(separator => {
+    const headers = first.split(separator).map(clean);
+    return required.every(field => headers.includes(field));
+  });
+  if (!delimiter) throw new Error('CENSUS_HEADER_MISMATCH');
+  const headers = first.split(delimiter).map(clean);
+  const fields = required.map(field => headers.indexOf(field));
   const lookup = new Map();
   for (const line of lines) {
-    const cells = line.split('\t');
+    const cells = line.split(delimiter);
     const [state, name, latitude, longitude] = fields.map(index => clean(cells[index]));
     if (!state || !name || !latitude || !longitude) continue;
     const lat = Number(latitude);

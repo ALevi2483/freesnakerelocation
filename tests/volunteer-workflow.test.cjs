@@ -264,3 +264,13 @@ test('Census archive can be read from private Drive without a network download',
   `);
   assert.equal(f.run('censusArchive_()'), 'application/zip');
 });
+
+test('Census coverage parses pipe-delimited Gazetteer files with padded headers', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/CityCoverage.gs', 'utf8'));
+  const point = f.run(`JSON.stringify(censusPlaceLookup_([
+    '\\uFEFFUSPS|GEOID|GEOIDFQ|NAME|INTPTLAT|INTPTLONG  ',
+    'VA|1234567|1600000US1234567|Example city|37.123|-77.456  '
+  ].join('\\r\\n')).get(JSON.stringify(['example', 'va'])))`);
+  assert.deepEqual(JSON.parse(point), {lat: 37.123, lng: -77.456});
+});
