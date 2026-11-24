@@ -26,7 +26,24 @@
     </form>
     <p id="search-status" role="status"></p>
     <p id="map-status" role="status">Loading the map preview…</p>
-    <div id="map" role="region" aria-label="Volunteer location map"></div>
+    <div id="volunteer-directory" hidden>
+      <button id="directory-toggle" type="button" aria-controls="directory-panel"
+        aria-expanded="false">Volunteer Directory</button>
+    </div>
+    <div class="map-layout">
+      <aside id="directory-panel" aria-label="Volunteer Directory" hidden>
+        <label for="volunteer-name">Search Volunteers by Name</label>
+        <div class="directory-search">
+          <input id="volunteer-name" type="search" maxlength="100" autocomplete="off">
+          <button id="clear-volunteer-name" type="button" aria-label="Clear volunteer name search" disabled>×</button>
+        </div>
+        <p id="directory-count" role="status" aria-live="polite"></p>
+        <ul id="directory-results" aria-label="Volunteers in alphabetical order"></ul>
+        <div id="directory-contact" hidden></div>
+        <p class="directory-note">A listing does not imply a background check or identity verification.</p>
+      </aside>
+      <div id="map" role="region" aria-label="Volunteer location map"></div>
+    </div>
     <noscript>The map preview requires JavaScript.</noscript>
   </main>
 </body>

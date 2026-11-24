@@ -7,11 +7,11 @@ function refreshRosterMapFeed() {
   withWorkflowLock(() => {
     const cache = CacheService.getScriptCache();
     try {
-      const {matched, totals, eligibility} = readCityCoverage_(PR.getProperty('ROSTER_MAP_CONTACTS_ENABLED') === 'true');
+      const {matched, totals, eligibility, directory} = readCityCoverage_(PR.getProperty('ROSTER_MAP_CONTACTS_ENABLED') === 'true');
       if (eligibility.invalidActiveExclusions || eligibility.unknownExclusionFlags) {
         throw new Error('ROSTER_EXCLUSIONS_NEED_REVIEW');
       }
-      writeRosterSnapshot_(cache, matched, totals.unmatchedListings);
+      writeRosterSnapshot_(cache, matched, totals.unmatchedListings, directory);
       console.log(JSON.stringify(totals));
     } catch (error) {
       cache.remove(ROSTER_FEED_INDEX);
@@ -32,7 +32,7 @@ function installRosterRefreshTrigger() {
   });
 }
 
-function writeRosterSnapshot_(cache, matched, missing) {
+function writeRosterSnapshot_(cache, matched, missing, directory = null) {
   if (matched.length > ROSTER_FEED_MAX_LOCATIONS) throw new Error('ROSTER_FEED_TOO_LARGE');
   const id = Utilities.getUuid();
   const keys = [];
@@ -54,9 +54,18 @@ function writeRosterSnapshot_(cache, matched, missing) {
     }
     keys.push(key);
   }
+  const directoryKeys = directory && [];
+  if (directory) {
+    for (let offset = 0; offset < directory.length; offset += ROSTER_FEED_PAGE_SIZE) {
+      const key = 'roster-directory:' + id + ':' + directoryKeys.length;
+      const page = JSON.stringify(directory.slice(offset, offset + ROSTER_FEED_PAGE_SIZE));
+      cache.put(key, page, SNAPSHOT_SECONDS);
+      directoryKeys.push(key);
+    }
+  }
   // Publish the index last so readers only see one complete set of pages.
   cache.put(ROSTER_FEED_INDEX, JSON.stringify({
-    keys, contactKeys, count: matched.length, missing, builtAt: Date.now()
+    keys, contactKeys, directoryKeys, count: matched.length, missing, builtAt: Date.now()
   }), SNAPSHOT_SECONDS);
 }
 
@@ -95,4 +104,58 @@ function approvedMapContacts_(rows) {
     else if (contacts.get(key) !== name) contacts.set(key, null);
   }
   return contacts;
+}
+
+function readVolunteerDirectory_(cache) {
+  const snapshot = JSON.parse(cache.get(ROSTER_FEED_INDEX) || 'null');
+  if (!snapshot || !Array.isArray(snapshot.directoryKeys) ||
+      Date.now() - snapshot.builtAt >= SNAPSHOT_SECONDS * 1000) return null;
+  const keys = snapshot.directoryKeys;
+  const pages = keys.length ? cache.getAll(keys) : {};
+  if (!keys.every(key => Object.prototype.hasOwnProperty.call(pages, key))) return null;
+  return {volunteers: keys.flatMap(key => JSON.parse(pages[key]))};
+}
+
+function directoryIdentity_(row) {
+  return JSON.stringify(['Full Name', 'City', 'State'].map(field => normalize(row[field])));
+}
+
+function publicVolunteerDirectory_(published, roster, exclusions, contactIndex) {
+  const entries = new Map();
+  summarizeRoster_(roster, exclusions, (city, state, id, phone) => {
+    const key = JSON.stringify([city, state, phone]);
+    const name = contactIndex.get(key);
+    if (name && city.length <= 100 && /^[a-z]{2}$/.test(state)) {
+      entries.set(key, [name, city, state.toUpperCase(), phone]);
+    }
+  });
+
+  // A name-only public row is eligible when it uniquely identifies an active
+  // master record. Never fill a withheld phone from the private workbook.
+  const master = new Map();
+  const ids = new Map();
+  for (const row of roster) {
+    const key = directoryIdentity_(row);
+    master.set(key, master.has(key) ? null : row);
+    const id = clean(row['Listing ID']);
+    if (id) ids.set(id, (ids.get(id) || 0) + 1);
+  }
+  const activeExclusions = exclusions.filter(row => row.Active === true);
+  const blockedPhones = new Set(activeExclusions.map(row => phoneKey(row.Phone)).filter(Boolean));
+  const blockedNames = new Set(activeExclusions.map(row => normalize(row['Full Name'])).filter(Boolean));
+  const publishedPhones = new Set(published.filter(row => phoneKey(row.Phone)).map(directoryIdentity_));
+  for (const row of published) {
+    const name = clean(row['Full Name']);
+    const city = normalize(row.City);
+    const state = normalize(row.State);
+    if (!name || name.length > 100 || !city || city.length > 100 || !/^[a-z]{2}$/.test(state) ||
+        phoneKey(row.Phone) || blockedNames.has(normalize(name))) continue;
+    const key = directoryIdentity_(row);
+    const target = master.get(key);
+    if (target && normalize(target.Status) === 'active' && ids.get(clean(target['Listing ID'])) === 1 &&
+        !blockedPhones.has(phoneKey(target.Phone)) && !publishedPhones.has(key)) {
+      entries.set(key, [name, city, state.toUpperCase(), '']);
+    }
+  }
+  return [...entries.values()];
 }

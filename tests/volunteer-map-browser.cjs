@@ -9,6 +9,9 @@ const mapStub = `
       element.dataset.mapControls = String(options.mapTypeControl && options.zoomControl);
     }
     fitBounds() { this.element.dataset.searched = 'true'; }
+    getZoom() { return 4; }
+    setCenter(position) { this.element.dataset.center = JSON.stringify(position); }
+    setZoom(zoom) { this.element.dataset.zoom = String(zoom); }
   }
   class Marker {
     constructor({title}) { this.title = title; }
@@ -16,6 +19,7 @@ const mapStub = `
   }
   class Info {
     close() { document.querySelector('.test-popup')?.remove(); }
+    setPosition() {}
     setContent(element) { this.element = element; element.className = 'test-popup'; }
     open({map}) { this.close(); map.element.append(this.element); }
   }
@@ -63,15 +67,17 @@ async function checkPreview(browser, viewport) {
     ];
     let available = true;
     let roster = false;
+    let volunteers = [['Iris Zebra', 'demo', 'VA', '7575550101'],
+      ['Zoe Adams', 'demo', 'VA', ''], ['Avery Smith Jr.', 'other', 'NC', '']];
     await page.route('**/map-preview/config.js', route => route.fulfill({
       contentType: 'text/javascript',
       body: "export const config = {browserKey:'synthetic',mapId:'synthetic',feedUrl:'https://script.google.com/macros/s/synthetic/exec'};",
     }));
     await page.route('https://script.google.com/**', route => {
       const query = new URL(route.request().url()).searchParams;
-      const body = query.get('mode') === 'map-contacts' ?
-        {contacts: [['<b>Sample Contact</b>', '7575550101']]} :
-        roster ? {version: 2, locations: [['demo', 'VA', 1, 37, -77]], missing: 0} :
+      const mode = query.get('mode');
+      const body = mode === 'map-contacts' ? {contacts: [['<b>Sample Contact</b>', '7575550101']]} :
+        mode === 'volunteer-directory' ? {volunteers} : roster ? {version: 2, locations: [['demo', 'VA', 1, 37, -77]], missing: 0} :
           {version: 1, points, missing: 0};
       return route.fulfill({
         status: available ? 200 : 503,
@@ -116,6 +122,38 @@ async function checkPreview(browser, viewport) {
     await page.getByText('<b>Sample Contact</b>', {exact: false}).waitFor();
     const sms = page.getByRole('link', {name: 'Text <b>Sample Contact</b> at 757-555-0101'});
     assert.equal(await sms.getAttribute('href'), 'sms:+17575550101');
+    const toggle = page.getByRole('button', {name: 'Volunteer Directory'});
+    const search = page.getByRole('searchbox', {name: 'Search Volunteers by Name'});
+    if (viewport.width <= 720 && !await search.isVisible()) await toggle.click();
+    await page.getByText('3 active volunteers').waitFor();
+    const names = page.locator('#directory-results button');
+    assert.deepEqual(await names.allTextContents(), ['Zoe Adams', 'Avery Smith Jr.', 'Iris Zebra']);
+    assert.equal(await page.locator('#directory-results').evaluate(el => getComputedStyle(el).overflowY), 'auto');
+    await search.fill('ZeB');
+    await page.getByText('1 matching volunteers', {exact:false}).waitFor();
+    assert.equal(await page.locator('#map button').count(), 1);
+    await search.fill('no results');
+    await page.getByText('No matching volunteers found', {exact:false}).waitFor();
+    await page.getByRole('button', {name:'Clear volunteer name search'}).click();
+    await page.getByText('3 active volunteers').waitFor();
+    await page.getByRole('button', {name:'Zoe Adams'}).hover();
+    await page.getByText('No public phone number').waitFor();
+    await page.getByRole('button', {name:'Iris Zebra'}).click();
+    assert.equal(await page.locator('#map').getAttribute('data-center'), '{"lat":37,"lng":-77}');
+    assert.equal(await page.locator('#map').getAttribute('data-zoom'), '17');
+    if (viewport.width <= 720) await toggle.click();
+    assert.equal(await page.getByRole('link', {name:'Call 757-555-0101'}).getAttribute('href'), 'tel:+17575550101');
+    await search.fill('avery');
+    await page.getByRole('button', {name:'1 volunteer listing'}).click();
+    assert.equal(await search.inputValue(), '');
+    assert.equal(await page.getByRole('button', {name:'Zoe Adams'}).getAttribute('aria-pressed'), 'true');
+    await toggle.click();
+    assert.equal(await search.isVisible(), false);
+    await toggle.click();
+    assert.equal(await search.isVisible(), true);
+    volunteers = volunteers.filter(row => row[0] !== 'Iris Zebra');
+    await page.getByText('2 active volunteers').waitFor();
+    assert.equal(await page.getByRole('button', {name:'Iris Zebra'}).count(), 0);
     console.log(`Passed synthetic browser map checks at ${viewport.width} × ${viewport.height}`);
   } finally {
     await page.close();
@@ -130,6 +168,7 @@ async function main() {
   try {
     await Promise.all([
       checkPreview(browser, {width: 1366, height: 900}),
+      checkPreview(browser, {width: 820, height: 1180}),
       checkPreview(browser, {width: 390, height: 844}),
     ]);
   } finally {
