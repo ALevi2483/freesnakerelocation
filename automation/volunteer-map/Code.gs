@@ -387,20 +387,35 @@ function checkPublicFeed() {
   const url = PR.getProperty('PUBLIC_FEED_URL') || '';
   if (rosterMode && !url) return; // The private test deployment has no anonymous health URL.
   const config = configuration();
+  let stage = 'URL';
+  let httpStatus;
   try {
     if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(url)) {
-      throw new Error('HEALTH_URL_MISSING');
+      throw new Error('HEALTH_URL_INVALID');
     }
+    stage = 'FETCH';
     const response = UrlFetchApp.fetch(url, {muteHttpExceptions: true});
-    const body = response.getResponseCode() === 200 ? JSON.parse(response.getContentText()) : null;
+    httpStatus = response.getResponseCode();
+    stage = 'HTTP';
+    if (httpStatus !== 200) throw new Error('HEALTH_HTTP_STATUS');
+    stage = 'JSON';
+    const body = JSON.parse(response.getContentText());
+    stage = 'RESPONSE';
+    const unavailable = body && body.error === 'MAP_UNAVAILABLE';
+    if (unavailable) {
+      stage = 'SNAPSHOT_UNAVAILABLE';
+      throw new Error('HEALTH_NO_SNAPSHOT');
+    }
     const healthy = body && (rosterMode ? body.version === 2 && Array.isArray(body.locations) :
       body.version === 1 && Array.isArray(body.points) && !body.missing);
-    if (!healthy) {
-      throw new Error('PUBLIC_FEED_HEALTH_CHECK_FAILED');
-    }
-  } catch (error) {
+    if (!healthy) throw new Error('HEALTH_RESPONSE_UNEXPECTED');
+    console.log(JSON.stringify({check: 'PUBLIC_FEED', result: 'OK', httpStatus,
+      version: body.version, locations: (rosterMode ? body.locations : body.points).length}));
+  } catch (_) {
+    console.log(JSON.stringify({check: 'PUBLIC_FEED', result: 'FAILED', stage, httpStatus}));
     notifyAdmin(config.email, 'PUBLIC_FEED_HEALTH_CHECK_FAILED',
-      'The anonymous map feed is unavailable, misconfigured, or missing approved locations.');
+      'The anonymous map feed check failed at ' + stage +
+      (httpStatus ? ' (HTTP ' + httpStatus + ')' : '') + '. See Apps Script Executions.');
     throw new Error('PUBLIC_FEED_HEALTH_CHECK_FAILED');
   }
 }

@@ -441,3 +441,20 @@ test('bulk removal targets only unique active IDs and refuses changed locations'
   assert.throws(() => f.run("approvedRemovalRows_(roster, [{...removeA, id:'C'}])"), /ROSTER_CHANGED/);
   assert.throws(() => f.run('approvedRemovalRows_([...roster, roster[2]], [removeA])'), /ROSTER_CHANGED/);
 });
+
+test('feed health logs the HTTP stage without revealing the URL or response body', () => {
+  const f = fixture();
+  f.properties.set('ROSTER_FEED_ENABLED', 'true');
+  f.properties.set('PUBLIC_FEED_URL', 'https://script.google.com/macros/s/TEST_ID/exec');
+  f.run(`
+    const logs = [];
+    const console = {log: value => logs.push(value)};
+    const UrlFetchApp = {fetch: () => ({
+      getResponseCode: () => 403, getContentText: () => 'private response'
+    })};
+  `);
+  assert.throws(() => f.run('checkPublicFeed()'), /PUBLIC_FEED_HEALTH_CHECK_FAILED/);
+  assert.deepEqual(JSON.parse(f.run('logs[0]')), {
+    check: 'PUBLIC_FEED', result: 'FAILED', stage: 'HTTP', httpStatus: 403
+  });
+});
