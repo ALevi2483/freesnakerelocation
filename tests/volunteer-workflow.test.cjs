@@ -426,3 +426,18 @@ test('removal verification rejects stale, duplicate and non-Boolean approvals', 
     approved: 3, stillUnmatched: 1, changedOrMissing: 1, invalidOrDuplicate: 2,
   });
 });
+
+test('bulk removal targets only unique active IDs and refuses changed locations', () => {
+  const f = fixture();
+  f.run(fs.readFileSync('automation/volunteer-map/RemovalReview.gs', 'utf8'));
+  f.run(`
+    const roster = [['Listing ID', 'Status', 'City', 'State'],
+      ['B', 'Removed', 'Demo', 'VA'], ['A', 'Active', 'Demo', 'VA'],
+      ['C', 'Active', 'Corrected', 'VA']];
+    const removeA = {id: 'A', city: 'demo', state: 'va'};
+  `);
+  assert.equal(f.run('approvedRemovalRows_(roster, [removeA])[0]'), 3);
+  assert.throws(() => f.run("approvedRemovalRows_(roster, [{...removeA, id:'B'}])"), /ROSTER_CHANGED/);
+  assert.throws(() => f.run("approvedRemovalRows_(roster, [{...removeA, id:'C'}])"), /ROSTER_CHANGED/);
+  assert.throws(() => f.run('approvedRemovalRows_([...roster, roster[2]], [removeA])'), /ROSTER_CHANGED/);
+});
