@@ -4,5 +4,5 @@
 export const config = Object.freeze({
   browserKey: '',
   mapId: '',
-  feedUrl: '',
+  feedUrl: 'https://script.google.com/macros/s/AKfycbwFp08IdL6vNjHN0GCGtN5ErCTRpLOHTR_yVTxHTEVsRU9okK2myiuvJ5XB8AAF0EMH/exec',
 });
