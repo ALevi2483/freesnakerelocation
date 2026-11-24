@@ -72,7 +72,7 @@ function summarizeRoster_(roster, exclusions, onCandidate = () => {}) {
     if (phone && !isBlocked && uniqueId && city && state) {
       counts.candidateListings++;
       cityStates.add(JSON.stringify([city, state]));
-      onCandidate(city, state, clean(listing['Listing ID']));
+      onCandidate(city, state, clean(listing['Listing ID']), phone);
     }
   }
   counts.candidateCityStatePairs = cityStates.size;

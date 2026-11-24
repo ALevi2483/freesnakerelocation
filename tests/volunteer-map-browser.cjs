@@ -62,15 +62,23 @@ async function checkPreview(browser, viewport) {
       {label: 'Volunteer Three', locality: 'Austin, TX', lat: 31, lng: -97, precise: true},
     ];
     let available = true;
+    let roster = false;
     await page.route('**/map-preview/config.js', route => route.fulfill({
       contentType: 'text/javascript',
       body: "export const config = {browserKey:'synthetic',mapId:'synthetic',feedUrl:'https://script.google.com/macros/s/synthetic/exec'};",
     }));
-    await page.route('https://script.google.com/**', route => route.fulfill({
-      status: available ? 200 : 503,
-      json: {version: 1, points, missing: 0},
-      headers: {'Access-Control-Allow-Origin': '*'},
-    }));
+    await page.route('https://script.google.com/**', route => {
+      const query = new URL(route.request().url()).searchParams;
+      const body = query.get('mode') === 'map-contacts' ?
+        {contacts: [['<b>Sample Contact</b>', '7575550101']]} :
+        roster ? {version: 2, locations: [['demo', 'VA', 1, 37, -77]], missing: 0} :
+          {version: 1, points, missing: 0};
+      return route.fulfill({
+        status: available ? 200 : 503,
+        json: body,
+        headers: {'Access-Control-Allow-Origin': '*'},
+      });
+    });
     await page.route('https://maps.googleapis.com/**', route =>
       route.fulfill({contentType: 'text/javascript', body: mapStub}));
 
@@ -101,6 +109,13 @@ async function checkPreview(browser, viewport) {
     available = false;
     await page.getByText('Volunteer locations could not be loaded.', {exact: false}).waitFor();
     assert.equal(await page.locator('#map button').count(), 0);
+    available = true;
+    roster = true;
+    await page.getByText('1 listings across 1 city/state pairs.').waitFor();
+    await page.getByRole('button', {name: '1 volunteer listing'}).click();
+    await page.getByText('<b>Sample Contact</b>', {exact: false}).waitFor();
+    const sms = page.getByRole('link', {name: 'Text <b>Sample Contact</b> at 757-555-0101'});
+    assert.equal(await sms.getAttribute('href'), 'sms:+17575550101');
     console.log(`Passed synthetic browser map checks at ${viewport.width} × ${viewport.height}`);
   } finally {
     await page.close();

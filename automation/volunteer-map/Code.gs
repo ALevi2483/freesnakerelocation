@@ -365,6 +365,23 @@ function doGet(event) {
       ? {browserKey, mapId} : {error: 'MAP_UNAVAILABLE'};
     return ContentService.createTextOutput(JSON.stringify(config)).setMimeType(ContentService.MimeType.JSON);
   }
+  if (event && event.parameter && event.parameter.mode === 'map-contacts') {
+    let contacts = {contacts: []};
+    if (PR.getProperty('ROSTER_FEED_ENABLED') === 'true' &&
+        PR.getProperty('ROSTER_MAP_CONTACTS_ENABLED') === 'true') {
+      try {
+        const city = normalize(event.parameter.city);
+        const state = normalize(event.parameter.state);
+        if (city && city.length <= 100 && /^[a-z]{2}$/.test(state)) {
+          contacts = readRosterSnapshot_(CacheService.getScriptCache(), {city, state}) ||
+            {error: 'CONTACTS_UNAVAILABLE'};
+        }
+      } catch (_) {
+        contacts = {error: 'CONTACTS_UNAVAILABLE'};
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify(contacts)).setMimeType(ContentService.MimeType.JSON);
+  }
   let body = JSON.stringify({ version: 1, error: 'MAP_UNAVAILABLE' });
   if (PR.getProperty('ROSTER_FEED_ENABLED') === 'true') {
     body = JSON.stringify({version: 2, error: 'MAP_UNAVAILABLE'});

@@ -52,7 +52,7 @@ function writeCityReport_(name, header, rows) {
   });
 }
 
-function readCityCoverage_() {
+function readCityCoverage_(includeContacts = false) {
   const id = clean(PR.getProperty('ROSTER_SPREADSHEET_ID'));
   if (!id) throw new Error('SET_ROSTER_SPREADSHEET_ID');
   const places = censusText_(censusArchive_(), /gaz_place_national\.txt$/i);
@@ -71,11 +71,13 @@ function readCityCoverage_() {
   const book = SpreadsheetApp.openById(id);
   const roster = rosterColumns_(book, 'Listings Master', ['Listing ID', 'Status', 'City', 'State', 'Phone']);
   const exclusions = rosterColumns_(book, 'Do Not List', ['Phone', 'Active'], 'Active');
+  const contactIndex = includeContacts ? approvedMapContacts_(rosterColumns_(book, 'Map Import',
+    ['Full Name', 'City', 'State', 'Phone'])) : null;
   const unmatched = [];
   const matched = [];
   const unmatchedListings = [];
   const totals = summarizeCityCoverage_(roster, exclusions, lookup,
-    row => unmatched.push(row), row => matched.push(row), row => unmatchedListings.push(row));
+    row => unmatched.push(row), row => matched.push(row), row => unmatchedListings.push(row), contactIndex);
   const eligibility = summarizeRoster_(roster, exclusions);
   return {totals, unmatched, matched, eligibility, unmatchedListings};
 }
@@ -170,17 +172,25 @@ function placeMatches_(lookup) {
 }
 
 function summarizeCityCoverage_(roster, exclusions, lookup,
-  onUnmatched = () => {}, onMatched = () => {}, onUnmatchedListing = () => {}) {
+  onUnmatched = () => {}, onMatched = () => {}, onUnmatchedListing = () => {}, contactIndex = null) {
   const matched = new Map();
   const unmatched = new Map();
   let matchedListings = 0;
   const match = placeMatches_(lookup);
-  const totals = summarizeRoster_(roster, exclusions, (city, state, id) => {
+  const totals = summarizeRoster_(roster, exclusions, (city, state, id, phone) => {
     const key = JSON.stringify([city, state]);
     const point = match(city, state);
     if (point) {
       if (!matched.has(key)) matched.set(key, {city, state, count: 0, lat: point.lat, lng: point.lng});
-      matched.get(key).count++;
+      const location = matched.get(key);
+      location.count++;
+      if (contactIndex) {
+        const contact = contactIndex.get(JSON.stringify([city, state, phone]));
+        if (contact) {
+          if (!location.contacts) location.contacts = [];
+          if (!location.contacts.some(existing => existing[1] === phone)) location.contacts.push([contact, phone]);
+        }
+      }
       matchedListings++;
     } else {
       const issue = point === null ? 'AMBIGUOUS' : 'NO_EXACT_MATCH';
