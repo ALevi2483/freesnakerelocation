@@ -146,3 +146,21 @@ Unmatched locations are counted but omitted. An incomplete cache or an
 ambiguous exclusion flag makes the feed unavailable. The 25-minute snapshot
 expiry bounds stale listings after an interruption. A browser refreshes its
 view every five minutes. The feed does not update **Listings Master** itself.
+
+### Deploy the alphabetical volunteer directory
+
+Install the updated `Code.gs`, `CityCoverage.gs`, and `RosterFeed.gs` in the
+Apps Script project that already refreshes the live map. Leave the existing
+roster and map-contact flags enabled. Run `refreshRosterMapFeed` once, then test
+the editor-only `/dev?mode=volunteer-directory` URL. The response contains
+approved public names, city, state and optional public phone numbers. Share
+only aggregate results when reporting the test. Deploy a new version of the
+existing public `/exec` deployment and retain its URL. Publish the website
+changes after checking the new route.
+
+The website refreshes the list on the same cycle as the map. Directory
+entries can appear without a pin if an approximate location is unavailable.
+Given-name/surname data are stored together, so the sidebar sorts by an
+inferred surname. It recognizes common suffixes, surname particles and
+“Last, First” entries. The published directory is informational and does not
+verify identity or background checks.

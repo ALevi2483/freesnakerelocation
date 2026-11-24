@@ -382,6 +382,19 @@ function doGet(event) {
     }
     return ContentService.createTextOutput(JSON.stringify(contacts)).setMimeType(ContentService.MimeType.JSON);
   }
+  if (event && event.parameter && event.parameter.mode === 'volunteer-directory') {
+    let directory;
+    if (PR.getProperty('ROSTER_FEED_ENABLED') === 'true' &&
+        PR.getProperty('ROSTER_MAP_CONTACTS_ENABLED') === 'true') {
+      try {
+        directory = readVolunteerDirectory_(CacheService.getScriptCache());
+      } catch (_) {
+        // A missing or invalid snapshot is unavailable.
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify(directory || {error: 'DIRECTORY_UNAVAILABLE'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
   let body = JSON.stringify({ version: 1, error: 'MAP_UNAVAILABLE' });
   if (PR.getProperty('ROSTER_FEED_ENABLED') === 'true') {
     body = JSON.stringify({version: 2, error: 'MAP_UNAVAILABLE'});

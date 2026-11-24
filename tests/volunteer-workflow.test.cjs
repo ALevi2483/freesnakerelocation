@@ -502,3 +502,36 @@ test('map contacts include only directory-published, eligible volunteers and sta
   assert.deepEqual(f.feed().locations, [['demo', 'VA', 2, 37, -77]]);
   assert.deepEqual(JSON.parse(f.cache.get('roster-feed:contacts-test:0')), [['demo', 'VA', 2, 37, -77]]);
 });
+
+test('alphabetical directory feed serves approved names, preserves withheld numbers, and honors removals', () => {
+  const f = fixture();
+  for (const name of ['RosterAudit', 'RosterFeed']) {
+    f.run(fs.readFileSync(`automation/volunteer-map/${name}.gs`, 'utf8'));
+  }
+  f.run(`
+    const row = (id, name, phone, status = 'Active') =>
+      ({'Listing ID':id, 'Full Name':name, City:'Unmapped', State:'VA', Phone:phone, Status:status});
+    const roster = [row('A','Public Contact','7575550101'),
+      row('B','Name Only','7575550102'), row('C','Excluded','7575550103'),
+      row('D','Removed Name','7575550104','Removed'), row('E','Private Name','7575550105')];
+    const published = roster.slice(0, 4).map(record =>
+      record['Listing ID'] === 'B' ? {...record, Phone:''} : record);
+    const entries = publicVolunteerDirectory_(published, roster,
+      [{Phone:'7575550103', Active:true}], approvedMapContacts_(published));
+    const cache = CacheService.getScriptCache();
+    cache.getAll = keys => Object.fromEntries(keys.filter(key => cache.get(key)).map(key => [key, cache.get(key)]));
+    CacheService.getScriptCache = () => cache;
+    Utilities.getUuid = () => 'directory-test';
+    writeRosterSnapshot_(cache, [], 2, entries);
+  `);
+  const directory = () => JSON.parse(f.run("doGet({parameter:{mode:'volunteer-directory'}})"));
+  assert.deepEqual(directory(), {error:'DIRECTORY_UNAVAILABLE'});
+  f.properties.set('ROSTER_FEED_ENABLED', 'true');
+  f.properties.set('ROSTER_MAP_CONTACTS_ENABLED', 'true');
+  assert.deepEqual(directory(), {volunteers:[
+    ['Public Contact','unmapped','VA','7575550101'], ['Name Only','unmapped','VA',''],
+  ]});
+  assert.deepEqual(f.feed().locations, []);
+  f.cache.delete('roster-directory:directory-test:0');
+  assert.deepEqual(directory(), {error:'DIRECTORY_UNAVAILABLE'});
+});

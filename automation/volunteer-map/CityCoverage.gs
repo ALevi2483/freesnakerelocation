@@ -69,17 +69,25 @@ function readCityCoverage_(includeContacts = false) {
   }
 
   const book = SpreadsheetApp.openById(id);
-  const roster = rosterColumns_(book, 'Listings Master', ['Listing ID', 'Status', 'City', 'State', 'Phone']);
-  const exclusions = rosterColumns_(book, 'Do Not List', ['Phone', 'Active'], 'Active');
-  const contactIndex = includeContacts ? approvedMapContacts_(rosterColumns_(book, 'Map Import',
-    ['Full Name', 'City', 'State', 'Phone'])) : null;
+  const rosterFields = ['Listing ID', 'Status', 'City', 'State', 'Phone'];
+  const exclusionFields = ['Phone', 'Active'];
+  if (includeContacts) {
+    rosterFields.push('Full Name');
+    exclusionFields.push('Full Name');
+  }
+  const roster = rosterColumns_(book, 'Listings Master', rosterFields);
+  const exclusions = rosterColumns_(book, 'Do Not List', exclusionFields, 'Active');
+  const published = includeContacts ? rosterColumns_(book, 'Map Import',
+    ['Full Name', 'City', 'State', 'Phone']) : [];
+  const contactIndex = includeContacts ? approvedMapContacts_(published) : null;
   const unmatched = [];
   const matched = [];
   const unmatchedListings = [];
   const totals = summarizeCityCoverage_(roster, exclusions, lookup,
     row => unmatched.push(row), row => matched.push(row), row => unmatchedListings.push(row), contactIndex);
   const eligibility = summarizeRoster_(roster, exclusions);
-  return {totals, unmatched, matched, eligibility, unmatchedListings};
+  const directory = includeContacts ? publicVolunteerDirectory_(published, roster, exclusions, contactIndex) : null;
+  return {totals, unmatched, matched, eligibility, unmatchedListings, directory};
 }
 
 function censusText_(archive, filename) {

@@ -1,4 +1,5 @@
 import {config} from './config.js';
+import {createVolunteerDirectory, locationKey, publicContactLinks} from './directory.js';
 
 const mapStatus = document.querySelector('#map-status');
 const searchStatus = document.querySelector('#search-status');
@@ -120,12 +121,8 @@ async function loadPinContacts(box, feedUrl, point) {
       const [name, phone] = contact;
       if (typeof name !== 'string' || !name.trim() || typeof phone !== 'string' || !/^\d{10}$/.test(phone)) continue;
       const row = document.createElement('li');
-      const text = document.createElement('a');
-      const formatted = phone.slice(0, 3) + '-' + phone.slice(3, 6) + '-' + phone.slice(6);
-      text.href = 'sms:+1' + phone;
-      text.textContent = 'Text ' + formatted;
-      text.setAttribute('aria-label', 'Text ' + name + ' at ' + formatted);
-      row.append(document.createTextNode(name + ' '), text);
+      const [call, text] = publicContactLinks(phone, name);
+      row.append(document.createTextNode(name + ' '), call, ' · ', text);
       list.append(row);
     }
     if (list.children.length) {
@@ -169,7 +166,7 @@ async function start() {
     return;
   }
   await loadGoogleMaps(browserKey);
-  const [{Map, InfoWindow}, {AdvancedMarkerElement}, {Geocoder}] = await Promise.all([
+  const [{Map, InfoWindow}, {AdvancedMarkerElement, PinElement}, {Geocoder}] = await Promise.all([
     google.maps.importLibrary('maps'),
     google.maps.importLibrary('marker'),
     google.maps.importLibrary('geocoding'),
@@ -186,6 +183,63 @@ async function start() {
   const geocoder = new Geocoder();
   let lastSearch = 0;
   let revision = '';
+  const markersByLocation = new globalThis.Map();
+  let highlightedMarker;
+  const directory = createVolunteerDirectory(entry => {
+    const selection = markersByLocation.get(entry.key);
+    if (!selection) {
+      searchStatus.textContent = 'No approximate map location is available for this listing.';
+      return false;
+    }
+    map.setCenter(selection.position);
+    map.setZoom(Math.max(map.getZoom() || 0, 17));
+    openPin(selection, true);
+    return true;
+  });
+
+  function openPin(selection, fromDirectory) {
+    const {marker, group, position} = selection;
+    if (highlightedMarker !== marker) {
+      if (highlightedMarker) {
+        highlightedMarker.zIndex = null;
+        if (PinElement) highlightedMarker.replaceChildren(new PinElement());
+      }
+      highlightedMarker = marker;
+      marker.zIndex = 1000;
+      if (PinElement) {
+        const pin = new PinElement({background: '#195437', borderColor: '#0e3322', glyphColor: '#fff', scale: 1.2});
+        marker.replaceChildren(pin);
+      }
+    }
+    const details = document.createElement('div');
+    for (const item of group) {
+      const box = popup(item);
+      details.append(box);
+      if (!localDemo && item.city) void loadPinContacts(box, feedUrl, item);
+    }
+    info.setContent(details);
+    if (fromDirectory) {
+      info.setPosition(position);
+      info.open({map, shouldFocus: false});
+    } else {
+      info.open({map, anchor: marker});
+      directory.highlight(group.filter(item => item.city).map(item => locationKey(item.city, item.state)));
+    }
+  }
+
+  async function refreshDirectory() {
+    try {
+      const url = new URL(feedUrl);
+      url.searchParams.set('mode', 'volunteer-directory');
+      const response = await fetch(url, {cache: 'no-store', credentials: 'omit', signal: AbortSignal.timeout(12000)});
+      if (!response.ok) throw new Error('DIRECTORY_UNAVAILABLE');
+      const {volunteers} = await response.json();
+      if (!Array.isArray(volunteers) || volunteers.length > 15000) throw new Error('DIRECTORY_UNAVAILABLE');
+      directory.update(volunteers);
+    } catch {
+      directory.unavailable();
+    }
+  }
 
   input.disabled = false;
   searchButton.disabled = false;
@@ -218,6 +272,8 @@ async function start() {
     if (revision !== nextRevision) {
       info.close();
       clusterer.clearMarkers();
+      markersByLocation.clear();
+      highlightedMarker = undefined;
       const groups = new globalThis.Map();
       for (const point of points) {
         const key = point.lat + ',' + point.lng;
@@ -232,16 +288,11 @@ async function start() {
             group.length + (group.every(item => item.count) ? ' locations in this area' : ' volunteers in this area'),
           gmpClickable: true,
         });
-        marker.addListener('click', () => {
-          const details = document.createElement('div');
-          for (const item of group) {
-            const box = popup(item);
-            details.append(box);
-            if (!localDemo && item.city) void loadPinContacts(box, feedUrl, item);
-          }
-          info.setContent(details);
-          info.open({map, anchor: marker});
-        });
+        const selection = {marker, group, position: {lat: point.lat, lng: point.lng}};
+        for (const item of group) {
+          if (item.city) markersByLocation.set(locationKey(item.city, item.state), selection);
+        }
+        marker.addListener('click', () => openPin(selection, false));
         return marker;
       });
       clusterer.addMarkers(markers);
@@ -266,6 +317,7 @@ async function start() {
         const listings = points.reduce((sum, point) => sum + point.count, 0);
         mapStatus.textContent = listings + ' listings across ' + points.length + ' city/state pairs.' +
           (data.missing ? ' Some approved locations are unavailable.' : '');
+        await refreshDirectory();
       } else {
         if (data.version !== 1 || !Array.isArray(data.points) ||
             data.points.length > 350 || !data.points.every(validPoint)) {
@@ -280,6 +332,9 @@ async function start() {
       info.close();
       clusterer.clearMarkers();
       revision = '';
+      markersByLocation.clear();
+      highlightedMarker = undefined;
+      directory.unavailable();
       mapStatus.textContent = 'Volunteer locations could not be loaded. Use the volunteer directory for contact information.';
     } finally {
       if (!localDemo) setTimeout(refresh, 5 * 60 * 1000);

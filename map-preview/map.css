@@ -29,3 +29,57 @@ button:disabled { opacity: .6; }
 .pin-contacts { padding-inline-start: 1.25rem; }
 .pin-contacts li { margin-block: .5rem; }
 .pin-contacts a { white-space: nowrap; }
+
+:root { --map-height: min(65vh, 42rem); }
+#volunteer-directory { margin-block: .5rem; }
+.map-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+.map-layout.has-directory { grid-template-columns: minmax(13rem, 19rem) minmax(0, 1fr); }
+#directory-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: .85rem;
+  min-height: 22rem;
+  height: var(--map-height);
+  background: #fff;
+  border: 1px solid #b9cbbd;
+  border-radius: .5rem;
+}
+#directory-panel[hidden] { display: none; }
+.directory-search { display: flex; gap: .35rem; }
+.directory-search input { min-width: 0; width: 100%; }
+.directory-search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+#directory-count, .directory-note { margin-block: .45rem; font-size: .85rem; }
+#directory-results {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+#directory-results button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #15492e;
+  border: 0;
+  border-radius: .25rem;
+  overflow-wrap: anywhere;
+}
+#directory-results button:hover,
+#directory-results button[aria-pressed="true"] {
+  background: #e1efe4;
+}
+#directory-contact {
+  padding-block: .55rem;
+  border-top: 1px solid #b9cbbd;
+  overflow-wrap: anywhere;
+}
+#directory-contact p { margin: .25rem 0; }
+.directory-note { color: #42564a; }
+@media (max-width: 720px) {
+  .map-layout.has-directory { grid-template-columns: minmax(0, 1fr); }
+  #directory-panel { min-height: 17rem; height: min(55vh, 26rem); }
+}
