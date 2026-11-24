@@ -458,3 +458,16 @@ test('feed health logs the HTTP stage without revealing the URL or response body
     check: 'PUBLIC_FEED', result: 'FAILED', stage: 'HTTP', httpStatus: 403
   });
 });
+
+test('browser configuration publishes only the website-restricted key and Map ID when enabled', () => {
+  const f = fixture();
+  const key = 'AIza' + 'A'.repeat(35);
+  f.properties.set('WEBSITE_MAPS_BROWSER_KEY', key);
+  f.properties.set('WEBSITE_MAP_ID', 'test-map-id');
+  const read = () => JSON.parse(f.run("doGet({parameter:{mode:'browser-map-config'}})"));
+  assert.deepEqual(read(), {error: 'MAP_UNAVAILABLE'});
+  f.properties.set('ROSTER_FEED_ENABLED', 'true');
+  assert.deepEqual(read(), {browserKey: key, mapId: 'test-map-id'});
+  f.properties.set('WEBSITE_MAPS_BROWSER_KEY', 'invalid');
+  assert.deepEqual(read(), {error: 'MAP_UNAVAILABLE'});
+});

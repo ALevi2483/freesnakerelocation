@@ -356,7 +356,15 @@ function refreshPublic(rows) {
   cache.put(PUBLIC_CACHE, json, SNAPSHOT_SECONDS);
 }
 
-function doGet() {
+function doGet(event) {
+  if (event && event.parameter && event.parameter.mode === 'browser-map-config') {
+    const browserKey = clean(PR.getProperty('WEBSITE_MAPS_BROWSER_KEY'));
+    const mapId = clean(PR.getProperty('WEBSITE_MAP_ID'));
+    const enabled = PR.getProperty('ROSTER_FEED_ENABLED') === 'true';
+    const config = enabled && /^AIza[\w-]{35}$/.test(browserKey) && /^[\w-]{1,128}$/.test(mapId)
+      ? {browserKey, mapId} : {error: 'MAP_UNAVAILABLE'};
+    return ContentService.createTextOutput(JSON.stringify(config)).setMimeType(ContentService.MimeType.JSON);
+  }
   let body = JSON.stringify({ version: 1, error: 'MAP_UNAVAILABLE' });
   if (PR.getProperty('ROSTER_FEED_ENABLED') === 'true') {
     body = JSON.stringify({version: 2, error: 'MAP_UNAVAILABLE'});

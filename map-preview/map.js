@@ -100,18 +100,36 @@ function popup(point) {
 async function start() {
   const localDemo = window.location.origin === 'http://localhost:8000' && !config.feedUrl;
   const feedUrl = localDemo ? './demo-feed.json' : config.feedUrl;
-  if (!config.browserKey || !config.mapId || (!localDemo && !validFeedUrl(feedUrl))) {
+  if (!localDemo && !validFeedUrl(feedUrl)) {
     mapStatus.textContent = 'This preview is awaiting setup. Use the current directory link above.';
     return;
   }
-  await loadGoogleMaps(config.browserKey);
+  let {browserKey, mapId} = config;
+  if (!browserKey && !mapId && !localDemo && location.origin === 'https://www.freesnakerelocation.com') {
+    const settingsUrl = new URL(feedUrl);
+    settingsUrl.searchParams.set('mode', 'browser-map-config');
+    const response = await fetch(settingsUrl, {
+      cache: 'no-store', credentials: 'omit', signal: AbortSignal.timeout(12000),
+    });
+    if (!response.ok) throw new Error('MAP_SETTINGS_UNAVAILABLE');
+    ({browserKey, mapId} = await response.json());
+    if (typeof browserKey !== 'string' || !/^AIza[\w-]{35}$/.test(browserKey) ||
+        typeof mapId !== 'string' || !/^[\w-]{1,128}$/.test(mapId)) {
+      throw new Error('MAP_SETTINGS_INVALID');
+    }
+  }
+  if (!browserKey || !mapId) {
+    mapStatus.textContent = 'This preview is awaiting setup. Use the current directory link above.';
+    return;
+  }
+  await loadGoogleMaps(browserKey);
   const [{Map, InfoWindow}, {AdvancedMarkerElement}, {Geocoder}] = await Promise.all([
     google.maps.importLibrary('maps'),
     google.maps.importLibrary('marker'),
     google.maps.importLibrary('geocoding'),
   ]);
   const map = new Map(document.querySelector('#map'), {
-    mapId: config.mapId,
+    mapId,
     center: {lat: 39.8, lng: -98.6},
     zoom: 4,
     mapTypeControl: true,

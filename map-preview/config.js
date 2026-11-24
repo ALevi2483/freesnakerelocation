@@ -1,5 +1,6 @@
-// Keep these blank in the shared preview until the owner approves the paid map
-// integration and any public data. A browser key must be website/API restricted.
+// Keep the browser key and map ID blank on GitHub. The live website requests
+// these settings from the configured Apps Script feed. Local tests can use
+// a local-only copy configured with the localhost-restricted test key.
 export const config = Object.freeze({
   browserKey: '',
   mapId: '',
