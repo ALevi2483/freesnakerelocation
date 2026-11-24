@@ -6,6 +6,10 @@ const form = document.querySelector('#search');
 const input = document.querySelector('#location');
 const searchButton = form.querySelector('button');
 
+if (new URLSearchParams(window.location.search).get('embedded') === '1') {
+  document.body.classList.add('embedded-map');
+}
+
 function validFeedUrl(value) {
   try {
     const url = new URL(value);
@@ -32,7 +36,7 @@ function loadGoogleMaps(key) {
     window.gm_authFailure = () => {
       clearTimeout(timeout);
       reject(new Error('MAP_AUTH_FAILED'));
-      mapStatus.textContent = 'Google Maps authorization failed. Use the current directory link above.';
+      mapStatus.textContent = 'Google Maps authorization failed. Use the volunteer directory for contact information.';
       searchButton.disabled = true;
       input.disabled = true;
     };
@@ -101,7 +105,7 @@ async function start() {
   const localDemo = window.location.origin === 'http://localhost:8000' && !config.feedUrl;
   const feedUrl = localDemo ? './demo-feed.json' : config.feedUrl;
   if (!localDemo && !validFeedUrl(feedUrl)) {
-    mapStatus.textContent = 'This preview is awaiting setup. Use the current directory link above.';
+    mapStatus.textContent = 'This preview is awaiting setup. Use the volunteer directory for contact information.';
     return;
   }
   let {browserKey, mapId} = config;
@@ -119,7 +123,7 @@ async function start() {
     }
   }
   if (!browserKey || !mapId) {
-    mapStatus.textContent = 'This preview is awaiting setup. Use the current directory link above.';
+    mapStatus.textContent = 'This preview is awaiting setup. Use the volunteer directory for contact information.';
     return;
   }
   await loadGoogleMaps(browserKey);
@@ -230,7 +234,7 @@ async function start() {
       info.close();
       clusterer.clearMarkers();
       revision = '';
-      mapStatus.textContent = 'Volunteer locations could not be loaded. Use the current directory link above.';
+      mapStatus.textContent = 'Volunteer locations could not be loaded. Use the volunteer directory for contact information.';
     } finally {
       if (!localDemo) setTimeout(refresh, 5 * 60 * 1000);
     }
@@ -267,5 +271,5 @@ async function start() {
 }
 
 start().catch(() => {
-  mapStatus.textContent = 'The map could not be loaded. Use the current directory link above.';
+  mapStatus.textContent = 'The map could not be loaded. Use the volunteer directory for contact information.';
 });
