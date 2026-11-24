@@ -471,3 +471,34 @@ test('browser configuration publishes only the website-restricted key and Map ID
   f.properties.set('WEBSITE_MAPS_BROWSER_KEY', 'invalid');
   assert.deepEqual(read(), {error: 'MAP_UNAVAILABLE'});
 });
+
+test('map contacts include only directory-published, eligible volunteers and stay out of the aggregate feed', () => {
+  const f = fixture();
+  for (const name of ['RosterAudit', 'CityCoverage', 'RosterFeed']) {
+    f.run(fs.readFileSync(`automation/volunteer-map/${name}.gs`, 'utf8'));
+  }
+  f.run(`
+    const publicRows = [
+      {'Full Name': 'Published', 'City': 'Demo', 'State': 'VA', 'Phone': '757-555-0101'},
+      {'Full Name': 'Excluded', 'City': 'Demo', 'State': 'VA', 'Phone': '757-555-0102'}
+    ];
+    const master = ['757-555-0101', '757-555-0102', '757-555-0103'].map((phone, i) =>
+      ({'Listing ID': String(i), Status: 'Active', City: 'Demo', State: 'VA', Phone: phone}));
+    const matched = [];
+    summarizeCityCoverage_(master, [{Phone: '757-555-0102', Active: true}],
+      new Map([['["demo","va"]', {lat: 37, lng: -77}]]), undefined,
+      row => matched.push(row), undefined, approvedMapContacts_(publicRows));
+    const cache = CacheService.getScriptCache();
+    cache.getAll = keys => Object.fromEntries(keys.map(key => [key, cache.get(key)]));
+    CacheService.getScriptCache = () => cache;
+    Utilities.getUuid = () => 'contacts-test';
+    writeRosterSnapshot_(cache, matched, 0);
+  `);
+  f.properties.set('ROSTER_FEED_ENABLED', 'true');
+  const contacts = () => JSON.parse(f.run("doGet({parameter:{mode:'map-contacts', city:'Demo', state:'VA'}})"));
+  assert.deepEqual(contacts(), {contacts: []});
+  f.properties.set('ROSTER_MAP_CONTACTS_ENABLED', 'true');
+  assert.deepEqual(contacts(), {contacts: [['Published', '7575550101']]});
+  assert.deepEqual(f.feed().locations, [['demo', 'VA', 2, 37, -77]]);
+  assert.deepEqual(JSON.parse(f.cache.get('roster-feed:contacts-test:0')), [['demo', 'VA', 2, 37, -77]]);
+});

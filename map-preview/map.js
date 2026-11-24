@@ -60,7 +60,7 @@ function rosterPoint(city, state, count, lat, lng) {
       typeof state !== 'string' || !/^[a-z]{2}$/i.test(state) ||
       !Number.isSafeInteger(count) || count < 1 || count > 100000) throw new Error('INVALID_ROSTER_POINT');
   const point = {label: count + (count === 1 ? ' volunteer listing' : ' volunteer listings'),
-    locality: city + ', ' + state.toUpperCase(), precise: false, lat, lng, count};
+    locality: city + ', ' + state.toUpperCase(), city, state, precise: false, lat, lng, count};
   if (!validPoint(point)) throw new Error('INVALID_ROSTER_POINT');
   return point;
 }
@@ -99,6 +99,48 @@ function popup(point) {
     box.append(link);
   }
   return box;
+}
+
+async function loadPinContacts(box, feedUrl, point) {
+  const status = document.createElement('p');
+  status.setAttribute('role', 'status');
+  status.textContent = 'Loading volunteer contacts…';
+  box.append(status);
+  try {
+    const url = new URL(feedUrl);
+    url.search = new URLSearchParams({mode: 'map-contacts', city: point.city, state: point.state});
+    const response = await fetch(url, {cache: 'no-store', credentials: 'omit', signal: AbortSignal.timeout(12000)});
+    if (!response.ok) throw new Error('CONTACTS_UNAVAILABLE');
+    const {contacts} = await response.json();
+    if (!Array.isArray(contacts)) throw new Error('CONTACTS_UNAVAILABLE');
+    const list = document.createElement('ul');
+    list.className = 'pin-contacts';
+    for (const contact of contacts) {
+      if (!Array.isArray(contact) || contact.length !== 2) continue;
+      const [name, phone] = contact;
+      if (typeof name !== 'string' || !name.trim() || typeof phone !== 'string' || !/^\d{10}$/.test(phone)) continue;
+      const row = document.createElement('li');
+      const text = document.createElement('a');
+      const formatted = phone.slice(0, 3) + '-' + phone.slice(3, 6) + '-' + phone.slice(6);
+      text.href = 'sms:+1' + phone;
+      text.textContent = 'Text ' + formatted;
+      text.setAttribute('aria-label', 'Text ' + name + ' at ' + formatted);
+      row.append(document.createTextNode(name + ' '), text);
+      list.append(row);
+    }
+    if (list.children.length) {
+      status.replaceWith(list);
+      return;
+    }
+  } catch {
+    // The directory link remains available when the contact request fails.
+  }
+  const directory = document.createElement('a');
+  directory.href = '../find.html';
+  directory.target = '_top';
+  directory.textContent = 'Open the volunteer directory';
+  status.textContent = 'Volunteer contacts are unavailable here. ';
+  status.append(directory);
 }
 
 async function start() {
@@ -192,7 +234,11 @@ async function start() {
         });
         marker.addListener('click', () => {
           const details = document.createElement('div');
-          details.append(...group.map(popup));
+          for (const item of group) {
+            const box = popup(item);
+            details.append(box);
+            if (!localDemo && item.city) void loadPinContacts(box, feedUrl, item);
+          }
           info.setContent(details);
           info.open({map, anchor: marker});
         });
