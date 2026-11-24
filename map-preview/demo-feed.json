@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "points": [
+    {"label": "Demo volunteer A", "locality": "Chesapeake, VA", "lat": 36.77, "lng": -76.29, "precise": false},
+    {"label": "Demo volunteer B", "locality": "Norfolk, VA", "lat": 36.85, "lng": -76.29, "precise": false}
+  ],
+  "missing": 0
+}
